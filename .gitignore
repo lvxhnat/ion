@@ -1,5 +1,7 @@
 *.env
+*.log
 *.DS_Store
 *.ipynb
+*.ipynb_checkpoints
 
 research-notebooks/
