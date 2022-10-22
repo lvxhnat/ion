@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+from ion.clients.configuration.candles import (
+    BaseCandlesResponseModel,
+    BaseCandlesDataModel,
+)
 from ion.clients.oanda.configs.requests import Granularities, CurrencyPairs
 from pydantic import BaseModel
 from typing import Literal, Optional, List
@@ -30,15 +34,9 @@ class RawOandaCandlesResponse(BaseModel):
     candles: List[OandaCandlesResponse]
 
 
-class FormattedOandaCandles(BaseModel):
+class FormattedOandaCandles(BaseCandlesDataModel):
     """The formatted response returned from instrument candles endpoint"""
 
-    date: str
-    vol: int
-    mid_open: Optional[float]
-    mid_high: Optional[float]
-    mid_close: Optional[float]
-    mid_low: Optional[float]
     bid_open: Optional[float]
     bid_high: Optional[float]
     bid_low: Optional[float]
@@ -49,7 +47,7 @@ class FormattedOandaCandles(BaseModel):
     ask_close: Optional[float]
 
 
-class OandaBaseDataResponse(BaseModel):
+class OandaBaseDataResponse(BaseCandlesResponseModel):
     """The response the function will return, together with metadata"""
 
     data: Optional[FormattedOandaCandles]
