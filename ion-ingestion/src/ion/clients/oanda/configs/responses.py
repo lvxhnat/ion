@@ -5,7 +5,7 @@ from ion.clients.configuration.candles import (
 )
 from ion.clients.oanda.configs.requests import Granularities, CurrencyPairs
 from pydantic import BaseModel
-from typing import Literal, Optional, List
+from typing import Literal, Optional
 
 
 class _OandaOHLCResponse(BaseModel):
@@ -26,14 +26,6 @@ class OandaCandlesResponse(BaseModel):
     ask: Optional[_OandaOHLCResponse]
 
 
-class RawOandaCandlesResponse(BaseModel):
-    """The raw response returned from the instrument candles endpoint"""
-
-    instrument: CurrencyPairs
-    granularity: Granularities
-    candles: List[OandaCandlesResponse]
-
-
 class FormattedOandaCandles(BaseCandlesDataModel):
     """The formatted response returned from instrument candles endpoint"""
 
@@ -52,4 +44,6 @@ class OandaBaseDataResponse(BaseCandlesResponseModel):
 
     data: Optional[FormattedOandaCandles]
     response_code: Literal[200]
+    symbol: CurrencyPairs
+    granularity: Granularities
     error_message: str
