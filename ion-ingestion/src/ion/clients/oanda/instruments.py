@@ -13,7 +13,6 @@ from ion.clients.oanda.configs.requests import (
 from ion.clients.oanda.helpers.time import clean_time
 
 import requests
-from typing import List
 
 
 def get_oanda_live_data(
@@ -48,8 +47,8 @@ def get_oanda_historical_data(
 def __get_oanda_base_data(
     symbol: str,
     count: int = 5000,
-    from_date: datetime.datetime = None,
-    to_date: datetime.datetime = None,
+    from_date: datetime = None,
+    to_date: datetime = None,
     granularity: str = "S5",
     price_type: str = "M",
 ) -> OandaBaseDataResponse:
@@ -104,12 +103,16 @@ def __get_oanda_base_data(
         ]
         return {
             "response_code": response.status_code,
+            "symbol": symbol,
+            "granularity": granularity,
             "data": data,
         }
 
     else:
         return {
             "response_code": response.status_code,
+            "symbol": symbol,
+            "granularity": granularity,
             "error_message": response.text,
         }
 
@@ -123,8 +126,9 @@ def __unpack_oanda_base_data(
         "vol": int(data["volume"]),
     }
 
+    keys = data.keys()
     for key in ["bid", "ask", "mid"]:
-        if key in data.keys():
+        if key in keys:
             cleaned_data[f"{key}_open"] = float(data[key]["o"])
             cleaned_data[f"{key}_high"] = float(data[key]["h"])
             cleaned_data[f"{key}_low"] = float(data[key]["l"])
