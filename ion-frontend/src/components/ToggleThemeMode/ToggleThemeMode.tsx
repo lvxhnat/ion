@@ -1,7 +1,6 @@
 import IconButton from '@mui/material/IconButton';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
-import { FC } from 'react';
 import { useThemeStore } from 'store/theme';
 
 function ToggleThemeMode() {

@@ -13,11 +13,12 @@ interface ThemeProviderProps {
 
 const ThemeProvider: FC<ThemeProviderProps> = ({ children, modeTheme }) => {
     const { mode, setMode } = useThemeStore();
-
+    console.log("modeTheme" + " " + modeTheme)
     const themeMode = modeTheme || 'light';
     let theme = createTheme(mode || themeMode);
 
     useEffect(() => {
+        console.log(themeMode, mode)
         setMode(themeMode);
     }, [setMode, themeMode]);
 

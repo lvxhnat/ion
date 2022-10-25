@@ -12,7 +12,7 @@ interface ThemeTypes {
 const MODE_EXPIRATION = 60 * 60 * 24 * 365; // 1 YEAR
 
 export const useThemeStore = create<ThemeTypes>(set => ({
-  mode: "dark",
+  mode: undefined, 
   setMode: (mode?: ThemeMode) => {
     set(state => {
       const newThemeMode = mode || (state.mode === 'dark' ? 'light' : 'dark');
