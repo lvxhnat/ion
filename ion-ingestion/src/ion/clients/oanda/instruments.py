@@ -1,9 +1,12 @@
+import json
+from typing import Callable, List
 from datetime import datetime
 
 from ion.clients.oanda.configs.responses import (
     OandaCandlesResponse,
     FormattedOandaCandles,
     OandaBaseDataResponse,
+    OandaLiveStreamResponse,
 )
 from ion.clients.oanda.configs.requests import (
     ENDPOINTS,
@@ -13,11 +16,12 @@ from ion.clients.oanda.configs.requests import (
 from ion.clients.oanda.helpers.time import clean_time
 
 import requests
+import aiohttp
+import asyncio
+import warnings
 
 
-def get_oanda_live_data(
-    symbol: str, granularity: str = "S5"
-) -> OandaBaseDataResponse:
+async def stream_oanda_live_data(symbols: List[str], callback: Callable):
     """Get oanda live data, limited to 5 data points per call to reduce latency.
 
     Args:
@@ -27,7 +31,20 @@ def get_oanda_live_data(
     Returns:
         _type_: _description_
     """
-    return __get_oanda_base_data(symbol, count=5, granularity=granularity)
+    async with aiohttp.ClientSession(raise_for_status=True) as session:
+        async with session.get(
+            ENDPOINTS["ENDPOINTS"]["INSTRUMENTS"]["PRICESTREAM"](symbols),
+            headers=HEADERS,
+            timeout=30,
+        ) as response:
+            async for line in response.content:
+                try:
+                    line: OandaLiveStreamResponse = json.loads(line)
+                    await callback(line)
+                except asyncio.exceptions.CancelledError as wse:
+                    warnings.warn(
+                        f"Websocket connection terminated by user: {str(wse)}"
+                    )
 
 
 def get_oanda_historical_data(

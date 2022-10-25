@@ -121,6 +121,7 @@ ENDPOINTS = {
     "BASE_URL": "https://api-fxtrade.oanda.com",
     "ENDPOINTS": {
         "INSTRUMENTS": {
+            "PRICESTREAM": lambda symbol: f"""https://stream-fxtrade.oanda.com/v3/accounts/{os.environ['OANDA_ACCOUNT_ID']}/pricing/stream?instruments={"%2C".join(symbol)}""",
             "CANDLES": lambda symbol: "/v3/instruments/" + symbol + "/candles",
         }
     },

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from typing import List
+
 from ion.clients.configuration.candles import (
     BaseCandlesResponseModel,
     BaseCandlesDataModel,
@@ -7,6 +9,20 @@ from ion.clients.oanda.configs.requests import Granularities, CurrencyPairs
 from pydantic import BaseModel
 from typing import Literal, Optional
 
+class _OandaLiveStreamBidAskItem(BaseModel):
+    price: str 
+    liquidity: int
+    
+class OandaLiveStreamResponse(BaseModel):
+    type: str
+    time: str
+    bids: List[_OandaLiveStreamBidAskItem]
+    asks: List[_OandaLiveStreamBidAskItem]
+    closeoutBid: str 
+    closeoutAsk: str 
+    status: str
+    tradeable: bool 
+    instrument: str
 
 class _OandaOHLCResponse(BaseModel):
     o: str
