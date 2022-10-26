@@ -1,8 +1,19 @@
+import { IntRange } from "common/types"
+
 export interface ForexTableDataType {
-    time: Date
     instrument: string
     closeoutBid: number
     closeoutAsk: number
-    bids?: Array<{price: string, liquidity: number}>
-    asks?: Array<{price: string, liquidity: number}>
+}
+
+export type StyledTableCellProps = {
+    children?: React.ReactNode,
+    isHeader?: boolean,
+    [x: string]: any, // Spread rest of props
+}
+
+export interface ForexTableHeaderType {
+    name: keyof ForexTableDataType
+    index: string 
+    width?: IntRange<0,100> 
 }

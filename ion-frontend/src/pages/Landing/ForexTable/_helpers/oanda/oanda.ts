@@ -7,7 +7,6 @@ export function unpackOandaFXStream(oandaStreamObject: string): ForexTableDataTy
     if (priceStream.type == "HEARTBEAT") return null; 
     else {
         return {
-            time: new Date(Date.parse(priceStream.time)), 
             instrument: priceStream.instrument, 
             closeoutBid: parseFloat(priceStream.closeoutBid),
             closeoutAsk: parseFloat(priceStream.closeoutAsk),
