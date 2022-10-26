@@ -1,10 +1,14 @@
 import uvicorn
-from fastapi import FastAPI
+from typing import List
+from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 
 from ion_provider.app.core.config import settings
 from ion_provider.app.api.api_v1 import api
+from ion.clients.oanda.instruments import (
+    stream_oanda_live_data,
+)
 
 app = FastAPI(
     title="ion-ingestion",
@@ -29,6 +33,18 @@ app.add_middleware(
 def home_page():
     response = RedirectResponse(url="/docs")
     return response
+
+
+@app.websocket("/oanda/ws")
+async def stream_oanda_live_prices(websocket: WebSocket):
+
+    await websocket.accept()
+    forex_subscriptions: List[str] = ["EUR_USD", "USD_SGD"]
+
+    async def callback(x):
+        await websocket.send_json(x)
+
+    await stream_oanda_live_data(forex_subscriptions, callback)
 
 
 app.include_router(api.api_router, prefix=settings.API_V1_STR)

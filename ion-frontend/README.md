@@ -1,6 +1,11 @@
-# Getting Started with Create React App
+## Ion Frontend 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Create a file called ```.env.local``` and insert the following 
+
+```
+REACT_APP_BASE_URL="http://localhost:1236/api"
+REACT_APP_WEBSOCKET_URL="ws://localhost:1236/"
+```
 
 ## Available Scripts
 

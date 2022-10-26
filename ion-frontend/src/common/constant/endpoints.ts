@@ -1,5 +1,7 @@
 export const ENDPOINTS = {
-    PRIVATE: {},
+    PRIVATE: {
+        OANDA_FX_STREAMING_ENDPOINT: "oanda/ws"
+    },
     PUBLIC: {
         BASE: "/",
     },
