@@ -35,8 +35,8 @@ async def stream_oanda_live_data(symbols: List[str], callback: Callable):
         async with session.get(
             ENDPOINTS["ENDPOINTS"]["INSTRUMENTS"]["PRICESTREAM"](symbols),
             headers=HEADERS,
-            timeout=30,
         ) as response:
+            ## Since this is a streaming endpoint, there is no need for timeouts
             async for line in response.content:
                 try:
                     line: OandaLiveStreamResponse = json.loads(line)
