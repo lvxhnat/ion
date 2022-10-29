@@ -6,6 +6,11 @@ export interface ForexTableDataType {
     closeoutAsk: number
 }
 
+export interface FormattedForexDataType extends ForexTableDataType {
+    bid_change?: -1 | 0 | 1
+    ask_change?: -1 | 0 | 1
+}
+
 export type StyledTableCellProps = {
     children?: React.ReactNode,
     isHeader?: boolean,

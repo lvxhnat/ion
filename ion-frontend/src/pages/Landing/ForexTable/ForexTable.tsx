@@ -3,6 +3,7 @@ import * as S from './style';
 import { ForexTableHeaderType, StyledTableCellProps } from './type';
 
 import { ENDPOINTS } from 'common/constant/endpoints'
+import { ColorsEnum } from 'common/theme';
 import { forexStreamStore } from 'store/prices/prices'
 import ForexTableRow from './ForexTableRow'
 import { OandaFXSocketConnection, unpackOandaFXStream } from './_helpers/oanda/oanda'
@@ -28,7 +29,7 @@ export function StyledTableCell({ children, isHeader, rest }: StyledTableCellPro
 export default function ForexTable() {
 
     const setForexStream = forexStreamStore((store: any) => store.setForexStream)
-    const subscribedForexPairs = ["EUR_USD", "USD_SGD"]
+    const subscribedForexPairs = ["EUR_USD", "USD_SGD", "USD_INR", "USD_JPY"]
 
     React.useEffect(() => {
         const url = process.env.REACT_APP_WEBSOCKET_URL

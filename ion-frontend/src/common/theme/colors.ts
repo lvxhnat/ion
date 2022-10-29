@@ -3,6 +3,8 @@ export enum ColorsEnum {
   secondary = '#FFBAAB',
   success = '#85B899',
   beer = '#FF9B00',
+  upHint = 'green',
+  downHint = 'red',
   error = '#F5734D',
   sunshine = '#FFDA00',
   tangerine = '#FF5208',
