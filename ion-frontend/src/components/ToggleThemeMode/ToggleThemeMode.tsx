@@ -1,7 +1,7 @@
-import IconButton from '@mui/material/IconButton';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import LightModeIcon from '@mui/icons-material/LightMode';
 import { useThemeStore } from 'store/theme';
+import IconButton from '@mui/material/IconButton';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 function ToggleThemeMode() {
   const { mode, setMode } = useThemeStore();
@@ -13,11 +13,11 @@ function ToggleThemeMode() {
   if (!mode) return null;
 
   return (
-    <IconButton aria-label="delete" onClick={handleClick}>
+    <IconButton aria-label="delete" onClick={handleClick} disableRipple>
       {mode === 'dark' ? (
-        <LightModeIcon data-testid="theme-mode-light-id" />
+        <Brightness7Icon data-testid="theme-mode-light-id" />
       ) : (
-        <DarkModeIcon data-testid="theme-mode-dark-id" />
+        <Brightness4Icon data-testid="theme-mode-dark-id" />
       )}
     </IconButton>
   );

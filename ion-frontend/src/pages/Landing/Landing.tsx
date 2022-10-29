@@ -1,7 +1,6 @@
 import { CssBaseline, Grid } from '@mui/material'
-import Dashboard from 'components/Dashboard/Dashboard'
 import Header from 'components/Dashboard/Header'
-import ThemeProvider from 'providers/ThemeProvider'
+import Footer from 'components/Footer'
 import ForexTable from './ForexTable'
 
 export default function Landing() {
@@ -9,10 +8,11 @@ export default function Landing() {
         <>
             <CssBaseline />
             <Header />
-            <Grid container>
-                <Grid item xs={8}></Grid>
-                <Grid item xs={4}><ForexTable /></Grid>
+            <Grid container style={{ height: "90vh" }}>
+                <Grid item xl={9} lg={8} xs={8}></Grid>
+                <Grid item xl={3} lg={4} xs={4}><ForexTable /></Grid>
             </Grid>
+            <Footer dataStreamProvider={"oanda"} />
         </>
     )
 }

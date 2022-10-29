@@ -9,8 +9,8 @@ export const TableCellLabel = styled(Typography, {
 })<{
     isHeader?: boolean;
 }>(({ theme, isHeader }) => ({
-    color: alpha(theme.palette.mode === 'light' ? ColorsEnum.black : ColorsEnum.beer, 0.5),
-    fontSize: '14px',
+    color: alpha(theme.palette.mode === 'light' ? ColorsEnum.black : ColorsEnum.beer, 1),
+    fontSize: '12px',
     fontWeight: isHeader ? 'bold' : 'default',
 }));
 
