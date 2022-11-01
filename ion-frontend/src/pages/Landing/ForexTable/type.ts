@@ -4,6 +4,7 @@ export interface ForexTableDataType {
     instrument: string
     closeoutBid: number
     closeoutAsk: number
+    spread: number
 }
 
 export interface FormattedForexDataType extends ForexTableDataType {
