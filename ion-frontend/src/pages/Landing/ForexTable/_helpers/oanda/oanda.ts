@@ -6,10 +6,13 @@ export function unpackOandaFXStream(oandaStreamObject: string): ForexTableDataTy
     const priceStream: OandaPriceStreamObjectTypes = JSON.parse(oandaStreamObject);
     if (priceStream.type == "HEARTBEAT") return null; 
     else {
+        const closeoutBid: number = parseFloat(priceStream.closeoutBid)
+        const closeoutAsk: number = parseFloat(priceStream.closeoutAsk)
         return {
             instrument: priceStream.instrument, 
-            closeoutBid: parseFloat(priceStream.closeoutBid),
-            closeoutAsk: parseFloat(priceStream.closeoutAsk),
+            closeoutBid: closeoutBid,
+            closeoutAsk: closeoutAsk,
+            spread: parseFloat(Math.abs(closeoutBid - closeoutAsk).toFixed(5)), 
         }
     }
 }
