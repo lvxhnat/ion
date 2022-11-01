@@ -3,7 +3,6 @@ import * as S from './style';
 import { ForexTableHeaderType, StyledTableCellProps } from './type';
 
 import { ENDPOINTS } from 'common/constant/endpoints'
-import { ColorsEnum } from 'common/theme';
 import { forexStreamStore } from 'store/prices/prices'
 import ForexTableRow from './ForexTableRow'
 import { OandaFXSocketConnection, unpackOandaFXStream } from './_helpers/oanda/oanda'

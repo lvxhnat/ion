@@ -4,7 +4,7 @@ import { ForexTableDataType } from "../../type";
 
 export function unpackOandaFXStream(oandaStreamObject: string): ForexTableDataType | null {
     const priceStream: OandaPriceStreamObjectTypes = JSON.parse(oandaStreamObject);
-    if (priceStream.type == "HEARTBEAT") return null; 
+    if (priceStream.type === "HEARTBEAT") return null; 
     else {
         const closeoutBid: number = parseFloat(priceStream.closeoutBid)
         const closeoutAsk: number = parseFloat(priceStream.closeoutAsk)

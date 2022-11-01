@@ -1,16 +1,25 @@
 
 import * as d3 from 'd3';
-import * as S from './style'
-import React, { useEffect } from 'react';
+import * as React from 'react';
+import * as S from './helpers/style';
+import * as T from './helpers/tooltip'
+
 import { useD3 } from 'common/hooks/useD3';
 import { useThemeStore } from 'store/theme';
 import { ColorsEnum } from 'common/theme';
 
-interface MarginProps {
-    top: number
-    bottom: number
-    left: number
-    right: number
+export type LineChartProps = {
+    data: Array<{ date: string, value: number }>,
+    width?: number,
+    height?: number,
+    margin?: {
+        top: number
+        bottom: number
+        left: number
+        right: number
+    },
+    timeParseFormat?: string,
+    normaliseY?: boolean,
 }
 
 /**
@@ -19,35 +28,25 @@ interface MarginProps {
  * 2. Multiple line charts on the same axis
  * @returns 
  */
-export default function LineChart(props: {
-    width?: number,
-    height?: number,
-    margin?: MarginProps,
-    timeParser?: string,
-    data?: Array<{ date: string, value: number }>,
-    normaliseY?: false,
-}) {
+export default function LineChart({
+    data,
+    width = 960,
+    height = 500,
+    margin = { top: 20, right: 50, bottom: 50, left: 50 },
+    timeParseFormat = "%Y-%m-%d",
+    normaliseY = false,
+}: LineChartProps) {
 
     const { mode } = useThemeStore();
-    const [data, setData] = React.useState<Array<{ date: string, value: number }>>([]);
-
-    useEffect(() => {
-        d3.csv('https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered_comma.csv').then((d: any) => setData(d))
-    }, [])
 
     const ref = useD3(
-        (svg: any) => {
-
-            let width: number = props.width ?? 960;
-            let height: number = props.height ?? 500;
-            let margin: MarginProps = props.margin ?? { top: 20, right: 50, bottom: 50, left: 50 };
+        (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
 
             // set the dimensions and margins of the graph
-            width = 960 - margin.left - margin.right
-            height = 500 - margin.top - margin.bottom
+            const formattedWidth = width - margin.left - margin.right;
+            const formattedHeight = height;
 
             // time format to parse passed date props
-            let timeParseFormat: string = props.timeParser ?? "%Y-%m-%d";
 
             // Configure the color palette of the charts
             const lineColor = mode === "light" ? ColorsEnum.black : ColorsEnum.white
@@ -58,7 +57,7 @@ export default function LineChart(props: {
              * Configure the svg container to be responsive
              * @see See [StackOverflow](https://stackoverflow.com/questions/9400615/whats-the-best-way-to-make-a-d3-js-visualisation-layout-responsive)
              */
-            svg.attr("viewBox", [0, 0, width, height])
+            svg.attr("viewBox", [0, 0, formattedWidth, formattedHeight])
                 .attr("preserveAspectRatio", "xMidYMid meet")
                 .classed("svg-content-responsive", true);
 
@@ -66,6 +65,7 @@ export default function LineChart(props: {
             var parseTime = d3.timeParse(timeParseFormat);
             data.map((d: any) => { d.date = parseTime(d.date); d.value = +d.value });
 
+            // Prep and plot the axis
             var x = d3.scaleTime().range([margin.left, width - margin.right]);
             var y = d3.scaleLinear().range([height - margin.top, margin.bottom]);
 
@@ -94,13 +94,13 @@ export default function LineChart(props: {
             svg = S.styleLineGrid({ svg, xAxis: ".xAxis", yAxis: ".yAxis" })
 
             // Calculate Area to fill the line chart
-            var area = d3.area()
+            var area: any = d3.area()
                 .x(function (d: any) { return x(d.date); })
                 .y0(height - margin.top)
                 .y1(function (d: any) { return y(d.value); });
 
             // Calculate the Line for plotting
-            var valueLine = d3.line()
+            var valueLine: any = d3.line()
                 .x((d: any) => { return x(d.date); })
                 .y((d: any) => { return y(d.value); });
 
@@ -119,6 +119,17 @@ export default function LineChart(props: {
                 .attr("stroke-width", 1)
                 .attr("d", valueLine);
 
+            T.createToolTip({
+                svg: svg,
+                x: x,
+                y: y,
+                data: data,
+                width: width,
+                height: height,
+                margin: margin,
+                timeParseFormat: timeParseFormat,
+                normaliseY: normaliseY,
+            })
         },
         [data.length]
     );
