@@ -20,10 +20,10 @@ export default function Landing() {
             <CssBaseline />
             <Header />
             <Grid container style={{ height: "90vh" }} spacing={1}>
-                <Grid item xl={9} lg={8} xs={8}>
+                <Grid item xl={9} lg={9} xs={8}>
                     <LineChart data={data} />
                 </Grid>
-                <Grid item xl={3} lg={4} xs={4}>
+                <Grid item xl={3} lg={3} xs={3}>
                     <ForexTable />
                 </Grid>
             </Grid>

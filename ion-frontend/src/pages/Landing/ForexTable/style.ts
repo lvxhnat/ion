@@ -1,17 +1,23 @@
+import { ColorsEnum } from 'common/theme';
+
 import { styled } from '@mui/system';
-import { alpha, TableRow } from '@mui/material';
+import { alpha } from '@mui/material';
+
+import TableCell from '@mui/material/TableCell'
+import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography';
 
-import { ColorsEnum } from 'common/theme';
+export const TableCellWrapper = styled(TableCell)(({ theme }) => ({
+    padding: `${theme.spacing(0.5)} ${theme.spacing(2)}`
+}))
 
 export const TableCellLabel = styled(Typography, {
     shouldForwardProp: prop => prop !== 'isHeader',
 })<{
     isHeader?: boolean;
 }>(({ theme, isHeader }) => ({
-    color: alpha(theme.palette.mode === 'light' ? ColorsEnum.black : ColorsEnum.beer, 1),
-    fontSize: '12px',
-    fontWeight: isHeader ? 'bold' : 'default',
+    color: alpha(theme.palette.mode === 'light' ? ColorsEnum.black : (isHeader ? ColorsEnum.white : ColorsEnum.beer), 1),
+    fontSize: '10px',
 }));
 
 export const StyledTableRow = styled(TableRow)(({ theme }) => ({

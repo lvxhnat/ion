@@ -1,26 +1,14 @@
 
 import * as d3 from 'd3';
 import * as React from 'react';
-import * as S from './helpers/style';
-import * as T from './helpers/tooltip'
+import * as C from './components'
+import { LineChartProps } from './type';
 
 import { useD3 } from 'common/hooks/useD3';
 import { useThemeStore } from 'store/theme';
 import { ColorsEnum } from 'common/theme';
-
-export type LineChartProps = {
-    data: Array<{ date: string, value: number }>,
-    width?: number,
-    height?: number,
-    margin?: {
-        top: number
-        bottom: number
-        left: number
-        right: number
-    },
-    timeParseFormat?: string,
-    normaliseY?: boolean,
-}
+import { calculateSMA } from './helpers/movingAverage';
+import { Grid } from '@mui/material';
 
 /**
  * A generalised line chart object, taking date as its x-axis and numerical value on its y-axis. Supports currently the following:
@@ -32,9 +20,10 @@ export default function LineChart({
     data,
     width = 960,
     height = 500,
-    margin = { top: 20, right: 50, bottom: 50, left: 50 },
+    margin = { top: 10, right: 30, bottom: 20, left: 30 },
     timeParseFormat = "%Y-%m-%d",
     normaliseY = false,
+    tooltipCrosshairs = false,
 }: LineChartProps) {
 
     const { mode } = useThemeStore();
@@ -45,18 +34,11 @@ export default function LineChart({
             // set the dimensions and margins of the graph
             const formattedWidth = width - margin.left - margin.right;
             const formattedHeight = height;
-
-            // time format to parse passed date props
-
             // Configure the color palette of the charts
             const lineColor = mode === "light" ? ColorsEnum.black : ColorsEnum.white
             const fillColor = "steelblue"
             const fillOpacity = 0.6
 
-            /**
-             * Configure the svg container to be responsive
-             * @see See [StackOverflow](https://stackoverflow.com/questions/9400615/whats-the-best-way-to-make-a-d3-js-visualisation-layout-responsive)
-             */
             svg.attr("viewBox", [0, 0, formattedWidth, formattedHeight])
                 .attr("preserveAspectRatio", "xMidYMid meet")
                 .classed("svg-content-responsive", true);
@@ -91,7 +73,10 @@ export default function LineChart({
                 .attr("class", "yAxis") // Set a class name for our y axis
                 .call(yAxis)
 
-            svg = S.styleLineGrid({ svg, xAxis: ".xAxis", yAxis: ".yAxis" })
+            C.styleGrid({
+                svg, xAxis: ".xAxis",
+                yAxis: ".yAxis"
+            })
 
             // Calculate Area to fill the line chart
             var area: any = d3.area()
@@ -106,47 +91,61 @@ export default function LineChart({
 
             svg.append("path")
                 .data([data])
-                .attr("class", "area")
+                .attr("id", "base-line-area")
                 .attr("fill", fillColor)
                 .attr("opacity", fillOpacity)
                 .attr("d", area);
 
             svg.append("path")
                 .data([data])
-                .attr("class", "line")
+                .attr("id", "base-line")
                 .attr("fill", "none")
                 .attr("stroke", lineColor)
                 .attr("stroke-width", 1)
                 .attr("d", valueLine);
 
-            T.createToolTip({
-                svg: svg,
+            C.addToolTip({
                 x: x,
                 y: y,
+                svg: svg,
                 data: data,
                 width: width,
                 height: height,
                 margin: margin,
                 timeParseFormat: timeParseFormat,
                 normaliseY: normaliseY,
+                tooltipCrosshairs: tooltipCrosshairs,
+            })
+
+            C.addDrag({
+                x: x,
+                y: y,
+                svg: svg,
             })
         },
         [data.length]
     );
 
     return (
-        <svg
-            ref={ref}
-            style={{
-                height: 500,
-                width: "100%",
-                marginRight: "0px",
-                marginLeft: "0px",
-            }}
-        >
-            <g className="plot-area" />
-            <g className="x-axis" />
-            <g className="y-axis" />
-        </svg>
+        <Grid container>
+            <Grid item xs={3}></Grid>
+            <Grid item xs={9}>
+                <div id="linechart-svg-container">
+                    <div id="linechart-tooltip" style={{ height: 20 }}></div>
+                    <svg
+                        ref={ref}
+                        style={{
+                            height: "100%",
+                            width: "100%",
+                            margin: "0px",
+                        }}
+                    >
+                        <g className="plot-area" />
+                        <g className="x-axis" />
+                        <g className="y-axis" />
+                    </svg>
+                </div>
+            </Grid>
+        </Grid>
     );
 }

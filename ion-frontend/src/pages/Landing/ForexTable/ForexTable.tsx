@@ -14,14 +14,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { ColorsEnum } from 'common/theme';
 
 export function StyledTableCell({ children, isHeader, rest }: StyledTableCellProps) {
     return (
-        <TableCell {...rest}>
+        <S.TableCellWrapper {...rest}>
             <S.TableCellLabel isHeader={isHeader}>
                 {children}
             </S.TableCellLabel>
-        </TableCell>
+        </S.TableCellWrapper>
     )
 }
 
@@ -50,13 +51,13 @@ export default function ForexTable() {
     ]
 
     return (
-        <TableContainer component={Paper}>
+        <TableContainer>
             <Table sx={{ minWidth: 150 }} size="small" aria-label="a dense table">
                 <TableHead>
-                    <TableRow>
+                    <TableRow sx={{ backgroundColor: ColorsEnum.coolgray8 }}>
                         {tableHeaders.map((headerSpecification) => {
                             return (
-                                <StyledTableCell isHeader key={headerSpecification.index}>
+                                <StyledTableCell isHeader key={headerSpecification.index} color={ColorsEnum.white}>
                                     {headerSpecification.name}
                                 </StyledTableCell>
                             )

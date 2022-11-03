@@ -5,7 +5,7 @@
  * @param yAxis yAxis className
  * @returns 
  */
-export const styleLineGrid = (props: {
+export const styleGrid = (props: {
     svg: d3.Selection<SVGElement, {}, HTMLElement, any>,
     xAxis: string,
     yAxis: string
@@ -33,5 +33,4 @@ export const styleLineGrid = (props: {
         .call(setGridLineAttributes(true))
         .call(setGridLineAttributes(false));
 
-    return svg;
 }
