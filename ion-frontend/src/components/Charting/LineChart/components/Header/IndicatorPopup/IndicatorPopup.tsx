@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as S from './style';
+
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -8,6 +10,7 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
+import CandlestickChartIcon from '@mui/icons-material/CandlestickChart';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -48,7 +51,7 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
     );
 }
 
-export default function CustomizedDialogs() {
+export default function IndicatorPopup() {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -60,9 +63,9 @@ export default function CustomizedDialogs() {
 
     return (
         <div>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Open dialog
-            </Button>
+            <S.ButtonWrapper startIcon={<CandlestickChartIcon />} onClick={handleClickOpen}>
+                Indicators
+            </S.ButtonWrapper>
             <BootstrapDialog
                 onClose={handleClose}
                 aria-labelledby="customized-dialog-title"

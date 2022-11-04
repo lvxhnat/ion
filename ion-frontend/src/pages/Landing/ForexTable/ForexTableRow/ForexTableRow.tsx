@@ -36,7 +36,7 @@ export default function ForexTableRow(props: {
                 }
 
                 return (
-                    <StyledTableCell key={`${key}_${index}`} align="right">
+                    <StyledTableCell width={key.width + "%"} key={`${key.index}_${index}`} align="right">
                         <label style={{ color: fontColor }}>
                             {data}
                         </label>

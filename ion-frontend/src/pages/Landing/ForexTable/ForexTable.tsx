@@ -9,16 +9,15 @@ import { OandaFXSocketConnection, unpackOandaFXStream } from './_helpers/oanda/o
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import { ColorsEnum } from 'common/theme';
+import { useThemeStore } from 'store/theme';
 
-export function StyledTableCell({ children, isHeader, rest }: StyledTableCellProps) {
+export function StyledTableCell({ children, isHeader, width }: StyledTableCellProps) {
     return (
-        <S.TableCellWrapper {...rest}>
+        <S.TableCellWrapper width={width}>
             <S.TableCellLabel isHeader={isHeader}>
                 {children}
             </S.TableCellLabel>
@@ -30,6 +29,7 @@ export default function ForexTable() {
 
     const setForexStream = forexStreamStore((store: any) => store.setForexStream)
     const subscribedForexPairs = ["EUR_USD", "USD_SGD", "USD_INR", "USD_JPY"]
+    const { mode } = useThemeStore();
 
     React.useEffect(() => {
         const url = process.env.REACT_APP_WEBSOCKET_URL
@@ -44,20 +44,20 @@ export default function ForexTable() {
     })
 
     const tableHeaders: Array<ForexTableHeaderType> = [
-        { name: "instrument", index: "instrument" },
-        { name: "closeoutBid", index: "closeoutBid" },
-        { name: "closeoutAsk", index: "closeoutAsk" },
-        { name: "spread", index: "spread" },
+        { name: "instrument", index: "instrument", width: 25 },
+        { name: "closeoutBid", index: "closeoutBid", width: 25 },
+        { name: "closeoutAsk", index: "closeoutAsk", width: 25 },
+        { name: "spread", index: "spread", width: 25 },
     ]
 
     return (
         <TableContainer>
             <Table sx={{ minWidth: 150 }} size="small" aria-label="a dense table">
                 <TableHead>
-                    <TableRow sx={{ backgroundColor: ColorsEnum.coolgray8 }}>
+                    <TableRow sx={{ backgroundColor: mode === "dark" ? ColorsEnum.coolgray8 : ColorsEnum.white }}>
                         {tableHeaders.map((headerSpecification) => {
                             return (
-                                <StyledTableCell isHeader key={headerSpecification.index} color={ColorsEnum.white}>
+                                <StyledTableCell isHeader width={headerSpecification.width + "%"} key={headerSpecification.index}>
                                     {headerSpecification.name}
                                 </StyledTableCell>
                             )

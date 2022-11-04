@@ -15,7 +15,7 @@ export interface FormattedForexDataType extends ForexTableDataType {
 export type StyledTableCellProps = {
     children?: React.ReactNode,
     isHeader?: boolean,
-    [x: string]: any, // Spread rest of props
+    width?: string
 }
 
 export interface ForexTableHeaderType {

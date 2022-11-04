@@ -39,7 +39,12 @@ def home_page():
 async def stream_oanda_live_prices(websocket: WebSocket):
 
     await websocket.accept()
-    forex_subscriptions: List[str] = ["EUR_USD", "USD_SGD"]
+    forex_subscriptions: List[str] = [
+        "EUR_USD",
+        "USD_SGD",
+        "USD_INR",
+        "USD_JPY",
+    ]
 
     async def callback(x):
         await websocket.send_json(x)

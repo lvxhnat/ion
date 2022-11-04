@@ -9,7 +9,9 @@ import { useThemeStore } from 'store/theme';
 import { ColorsEnum } from 'common/theme';
 import { calculateSMA } from './helpers/movingAverage';
 import { Grid } from '@mui/material';
-import CustomizedDialogs from './components/popup';
+
+import LineChartHeader from './components/Header/Header';
+import Legend from './components/Legend';
 
 /**
  * A generalised line chart object, taking date as its x-axis and numerical value on its y-axis. Supports currently the following:
@@ -137,8 +139,10 @@ export default function LineChart({
     return (
         <Grid container>
             <Grid item xs={3}>
+                <Legend />
             </Grid>
             <Grid item xs={9}>
+                <LineChartHeader />
                 <div id="linechart-svg-container">
                     <div id="linechart-tooltip" style={{ height: 20 }}></div>
                     <svg
