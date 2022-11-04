@@ -1,17 +1,17 @@
 
 import * as d3 from 'd3';
-import * as S from './style'
-import React, { useEffect } from 'react';
+import * as React from 'react';
+import * as C from './plugins'
+import { LineChartProps } from './type';
+
 import { useD3 } from 'common/hooks/useD3';
 import { useThemeStore } from 'store/theme';
 import { ColorsEnum } from 'common/theme';
+import { calculateSMA } from './helpers/movingAverage';
+import { Grid } from '@mui/material';
 
-interface MarginProps {
-    top: number
-    bottom: number
-    left: number
-    right: number
-}
+import LineChartHeader from './components/Header/Header';
+import Legend from './components/Legend';
 
 /**
  * A generalised line chart object, taking date as its x-axis and numerical value on its y-axis. Supports currently the following:
@@ -19,59 +19,47 @@ interface MarginProps {
  * 2. Multiple line charts on the same axis
  * @returns 
  */
-export default function LineChart(props: {
-    width?: number,
-    height?: number,
-    margin?: MarginProps,
-    timeParser?: string,
-    data?: Array<{ date: string, value: number }>,
-    normaliseY?: false,
-}) {
+export default function LineChart({
+    dataX,
+    dataY,
+    width = 960,
+    height = 500,
+    margin = { top: 10, right: 30, bottom: 20, left: 30 },
+    timeParseFormat = "%Y-%m-%d",
+    normaliseY = false,
+    tooltipCrosshairs = false,
+}: LineChartProps) {
 
     const { mode } = useThemeStore();
-    const [data, setData] = React.useState<Array<{ date: string, value: number }>>([]);
-
-    useEffect(() => {
-        d3.csv('https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered_comma.csv').then((d: any) => setData(d))
-    }, [])
 
     const ref = useD3(
-        (svg: any) => {
-
-            let width: number = props.width ?? 960;
-            let height: number = props.height ?? 500;
-            let margin: MarginProps = props.margin ?? { top: 20, right: 50, bottom: 50, left: 50 };
-
+        (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
             // set the dimensions and margins of the graph
-            width = 960 - margin.left - margin.right
-            height = 500 - margin.top - margin.bottom
-
-            // time format to parse passed date props
-            let timeParseFormat: string = props.timeParser ?? "%Y-%m-%d";
-
+            const formattedWidth = width - margin.left - margin.right;
+            const formattedHeight = height;
             // Configure the color palette of the charts
             const lineColor = mode === "light" ? ColorsEnum.black : ColorsEnum.white
             const fillColor = "steelblue"
             const fillOpacity = 0.6
 
-            /**
-             * Configure the svg container to be responsive
-             * @see See [StackOverflow](https://stackoverflow.com/questions/9400615/whats-the-best-way-to-make-a-d3-js-visualisation-layout-responsive)
-             */
-            svg.attr("viewBox", [0, 0, width, height])
+            const defined = d3.map(dataY, (_, i) => !isNaN(dataY[i]));
+            const indexes = d3.map(dataX, (_, i) => i); // Denotes simply an array containing index values
+
+            svg.attr("viewBox", [0, 0, formattedWidth, formattedHeight])
                 .attr("preserveAspectRatio", "xMidYMid meet")
                 .classed("svg-content-responsive", true);
 
             // Parse the time in data
             var parseTime = d3.timeParse(timeParseFormat);
-            data.map((d: any) => { d.date = parseTime(d.date); d.value = +d.value });
+            const dates: Array<Date> = dataX.map((value: string) => parseTime(value)!); // Parse time should not return null
+            const dateTime: Array<number> = dates.map((date: Date) => date.getTime());
 
+            // Prep and plot the axis
             var x = d3.scaleTime().range([margin.left, width - margin.right]);
             var y = d3.scaleLinear().range([height - margin.top, margin.bottom]);
 
-            const dates = data.map((d: any) => { return d.date; })
-            x.domain([Math.min(...dates), Math.max(...dates)]);
-            y.domain([0, d3.max(data, (d: any) => { return d.value; })]);
+            x.domain([Math.min(...dateTime), Math.max(...dateTime)]);
+            y.domain([0, Math.max(...dataY)]);
 
             const yAxis = d3.axisLeft(y)
                 .tickSize(margin.left + margin.right - width)
@@ -91,51 +79,86 @@ export default function LineChart(props: {
                 .attr("class", "yAxis") // Set a class name for our y axis
                 .call(yAxis)
 
-            svg = S.styleLineGrid({ svg, xAxis: ".xAxis", yAxis: ".yAxis" })
+            C.styleGrid({
+                svg,
+                xAxis: ".xAxis",
+                yAxis: ".yAxis"
+            })
 
             // Calculate Area to fill the line chart
-            var area = d3.area()
-                .x(function (d: any) { return x(d.date); })
+            var area: any = d3.area()
+                .defined((_, i: number) => defined[i])
+                .curve(d3.curveLinear)
+                .x((_, i: number) => x(dates[i]))
                 .y0(height - margin.top)
-                .y1(function (d: any) { return y(d.value); });
+                .y1((_, i: number) => y(dataY[i]));
 
             // Calculate the Line for plotting
-            var valueLine = d3.line()
-                .x((d: any) => { return x(d.date); })
-                .y((d: any) => { return y(d.value); });
+            var valueLine: any = d3.line()
+                .defined((_, i: number) => defined[i])
+                .x((_, i: number) => x(dates[i]))
+                .y((_, i: number) => y(dataY[i]));
 
             svg.append("path")
-                .data([data])
-                .attr("class", "area")
+                .attr("id", "base-line-area")
                 .attr("fill", fillColor)
                 .attr("opacity", fillOpacity)
-                .attr("d", area);
+                .attr("d", area(indexes.filter(i => defined[i])));
 
             svg.append("path")
-                .data([data])
-                .attr("class", "line")
+                .attr("id", "base-line")
                 .attr("fill", "none")
                 .attr("stroke", lineColor)
                 .attr("stroke-width", 1)
-                .attr("d", valueLine);
+                .attr("d", valueLine(indexes.filter(i => defined[i])));
 
+            const smas = calculateSMA(dataY, 14)
+            C.addLine({ svg: svg, id: "sma14", x: x, y: y, indexes: indexes, dataX: dates, dataY: smas })
+
+            C.addToolTip({
+                x: x,
+                y: y,
+                svg: svg,
+                dataX: dates,
+                dataY: dataY,
+                margin: margin,
+                width: width,
+                height: height,
+                tooltipCrosshairs: tooltipCrosshairs,
+            })
+
+            // C.addDrag({
+            //     x: x,
+            //     y: y,
+            //     svg: svg,
+            // })
         },
-        [data.length]
+        []
     );
 
     return (
-        <svg
-            ref={ref}
-            style={{
-                height: 500,
-                width: "100%",
-                marginRight: "0px",
-                marginLeft: "0px",
-            }}
-        >
-            <g className="plot-area" />
-            <g className="x-axis" />
-            <g className="y-axis" />
-        </svg>
+        <Grid container>
+            <Grid item xs={3}>
+                <Legend />
+            </Grid>
+            <Grid item xs={9}>
+                <LineChartHeader />
+                <div id="linechart-svg-container">
+                    <div id="linechart-tooltip" style={{ height: 20 }}></div>
+                    <svg
+                        ref={ref}
+                        style={{
+                            height: "100%",
+                            width: "100%",
+                            margin: "0px",
+                        }}
+                    >
+                        <g className="plot-area" />
+                        <g className="x-axis" />
+                        <g className="y-axis" />
+                    </svg>
+                </div>
+            </Grid>
+        </Grid>
     );
 }
