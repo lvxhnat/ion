@@ -21,7 +21,7 @@ export const darkPalette = {
   ...defaultPalette,
   mode: 'dark' as ThemeMode,
   background: {
-    default: ColorsEnum.darkGrey,
+    default: ColorsEnum.black,
   },
 };
 
