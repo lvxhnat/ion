@@ -1,7 +1,7 @@
 
 import * as d3 from 'd3';
 import * as React from 'react';
-import * as C from './components'
+import * as C from './plugins'
 import { LineChartProps } from './type';
 
 import { useD3 } from 'common/hooks/useD3';
@@ -9,6 +9,7 @@ import { useThemeStore } from 'store/theme';
 import { ColorsEnum } from 'common/theme';
 import { calculateSMA } from './helpers/movingAverage';
 import { Grid } from '@mui/material';
+import CustomizedDialogs from './components/popup';
 
 /**
  * A generalised line chart object, taking date as its x-axis and numerical value on its y-axis. Supports currently the following:
@@ -40,7 +41,7 @@ export default function LineChart({
             const fillOpacity = 0.6
 
             const defined = d3.map(dataY, (_, i) => !isNaN(dataY[i]));
-            const indexes = d3.map(dataX, (_, i) => i);
+            const indexes = d3.map(dataX, (_, i) => i); // Denotes simply an array containing index values
 
             svg.attr("viewBox", [0, 0, formattedWidth, formattedHeight])
                 .attr("preserveAspectRatio", "xMidYMid meet")
@@ -135,7 +136,8 @@ export default function LineChart({
 
     return (
         <Grid container>
-            <Grid item xs={3}></Grid>
+            <Grid item xs={3}>
+            </Grid>
             <Grid item xs={9}>
                 <div id="linechart-svg-container">
                     <div id="linechart-tooltip" style={{ height: 20 }}></div>

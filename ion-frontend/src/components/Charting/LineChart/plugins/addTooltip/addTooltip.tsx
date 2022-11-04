@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { LineChartProps } from '../type';
+import { LineChartProps } from '../../type';
 
 type CreateToolTipProps = {
     x: any,
