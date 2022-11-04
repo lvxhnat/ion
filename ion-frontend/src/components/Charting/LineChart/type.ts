@@ -1,7 +1,6 @@
-export type DataType = Array<{ date: string, value: number }>
-
 export type LineChartProps = {
-    data: DataType,
+    dataX: Array<string>,
+    dataY: Array<number>,
     width?: number,
     height?: number,
     margin?: {

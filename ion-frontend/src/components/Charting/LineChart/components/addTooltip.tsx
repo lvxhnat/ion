@@ -1,17 +1,28 @@
 import * as d3 from 'd3';
 import { LineChartProps } from '../type';
 
-type CreateToolTipProps = LineChartProps & {
+type CreateToolTipProps = {
     x: any,
     y: any,
     svg: d3.Selection<SVGElement, {}, HTMLElement, any>,
+    dataX: Array<Date>,
+    dataY: Array<number>,
+    margin: {
+        top: number
+        bottom: number
+        left: number
+        right: number
+    },
+    width: number,
+    height: number,
+    tooltipCrosshairs: boolean,
 }
 
 export const addToolTip = (props: Required<CreateToolTipProps>) => {
 
     const svg = props.svg;
+    const bisect = d3.bisector((d: any) => d).left;
 
-    const bisect = d3.bisector(function (d: any) { return d.date; }).left;
     const focus = svg.append("g").style("opacity", 0);
 
     const fontColor = "white"
@@ -69,23 +80,24 @@ export const addToolTip = (props: Required<CreateToolTipProps>) => {
     function mousemove(e: any) {
         // https://stackoverflow.com/questions/68156231/d3-x-invert-returning-invalid-date-from-d3-pointer-d3-v6
         var x0 = props.x.invert(d3.pointer(e, svg.node())[0]);
-        const i = bisect(props.data, x0, 1);
-        const d0: any = props.data[i - 1]
-        const d1: any = props.data[i]
-        if (d0 && d1) {
-            const d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+        const i = bisect(props.dataX, x0, 1);
+        const d0: any = props.dataX[i - 1]
+        const d1: any = props.dataX[i]
 
-            tooltip.html(`<b>Date:</b> ${d.date} <b>Price:</b> $ ${d.value}`)
+        if (d0 && d1) {
+            const d = x0 - d0 > d1 - x0 ? d1 : d0;
+
+            tooltip.html(`<b>Date:</b> ${props.dataX[i]} <b>Price:</b> $ ${props.dataY[i]}`)
 
             focus.select("#tooltip-point-tracker")
-                .attr("transform", `translate(${props.x(d.date)}, ${props.y(d.value)})`);
+                .attr("transform", `translate(${props.x(props.dataX[i])}, ${props.y(props.dataY[i])})`);
 
             focus.select("#tooltip-x-line")
-                .attr("transform", `translate(${props.x(d.date)}, 0)`);
+                .attr("transform", `translate(${props.x(props.dataX[i])}, 0)`);
 
             if (props.tooltipCrosshairs) {
                 focus.select("#tooltip-y-line")
-                    .attr("transform", `translate(0, ${props.y(d.value)})`)
+                    .attr("transform", `translate(0, ${props.y(props.dataY[i])})`)
                     .attr("x2", props.width);
             }
         }

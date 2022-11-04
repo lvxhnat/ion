@@ -7,19 +7,4 @@ export const addDrag = (props: {
 }) => {
 
     const svg = props.svg;
-
-    svg.on("mousedown", () => {
-        console.log("mousedown!")
-        highlightRange()
-    })
-
-    function highlightRange() {
-        svg.append("rect")
-            .attr("class", "rectangle")
-            .call(dragRect)
-    }
-
-    const dragRect: any = d3.drag().on("drag", (e) => {
-        console.log()
-    })
 }

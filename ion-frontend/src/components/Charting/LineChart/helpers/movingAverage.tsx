@@ -16,19 +16,17 @@ export function calculateSMA(
     period: number,
     decimalPlaces = 2
 ) {
-    let currSum: number = 0;
-    let roundConst: number = Math.pow(10, decimalPlaces);
     let sma = new Array(array.length);
 
-    for (let i = 0; i < array.length; i++) {
-        if (i < period) {
-            currSum += array[i];
-            sma[i] = NaN;
-        }
-        else {
-            currSum += (array[i] - array[i - period]) / period;
-            sma[i] = Math.round(currSum * roundConst) / roundConst;
-        }
+    // Initialise the first values
+    for (let i = 0; i < period - 1; i++) {
+        sma[i] = NaN;
+        sma[period - 1] = sma[period - 1] ? sma[period - 1] + array[i] : array[i];
+    }
+    sma[period - 1] = (sma[period - 1] + array[period - 1]) / period;
+
+    for (let i = period; i < array.length; i++) {
+        sma[i] = sma[i - 1] + (array[i] - array[i - period]) / period;
     }
 
     return sma;
