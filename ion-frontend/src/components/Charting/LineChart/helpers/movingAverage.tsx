@@ -38,5 +38,19 @@ export function calculateEMA(
     smoothing = 2,
     decimalPlaces = 2,
 ) {
+    const multiplier = smoothing / (period + 1);
+    let ema = new Array(array.length);
 
+    // Calculate SMA First 
+    for (let i = 0; i < period - 1; i++) {
+        ema[i] = NaN;
+        ema[period - 1] = ema[period - 1] ? ema[period - 1] + array[i] : array[i];
+    }
+    ema[period - 1] = (ema[period - 1] + array[period - 1]) / period;
+
+    for (let i = period; i < array.length; i++) {
+        ema[i] = array[i] * multiplier + ema[i - 1] * (1 - multiplier)
+    }
+
+    return ema;
 }

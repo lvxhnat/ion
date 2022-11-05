@@ -31,6 +31,11 @@ export default function LineChart({
 }: LineChartProps) {
 
     const { mode } = useThemeStore();
+    const [legend, setLegend] = React.useState([{
+        name: "test", color: "white", f: () => console.log("s"), indicators: [{
+            name: "sma", color: "yellow", f: () => d3.selectAll("#sma14").remove()
+        }]
+    }]);
 
     const ref = useD3(
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
@@ -139,7 +144,7 @@ export default function LineChart({
     return (
         <Grid container>
             <Grid item xs={3}>
-                <Legend />
+                <Legend data={legend} />
             </Grid>
             <Grid item xs={9}>
                 <LineChartHeader />

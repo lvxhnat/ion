@@ -6,29 +6,16 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { LegendHeaderType, StyledTableCellProps } from './type';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
-function createData(
-    name: string,
-    calories: number,
-    fat: number,
-    carbs: number,
-    protein: number,
-) {
-    return { name, calories, fat, carbs, protein };
-}
+import { LegendDataType, LegendHeaderType, LegendProps, StyledTableCellProps } from './type';
+import { ColorsEnum } from 'common/theme';
+import { IconButton } from '@mui/material';
+import { useThemeStore } from 'store/theme';
 
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
-export function StyledTableCell({ children, isHeader, width }: StyledTableCellProps) {
+export function StyledTableCell({ children, isHeader, width, colSpan }: StyledTableCellProps) {
     return (
-        <S.TableCellWrapper width={width}>
+        <S.TableCellWrapper width={width} colSpan={colSpan ? colSpan : 1}>
             <S.TableCellLabel isHeader={isHeader}>
                 {children}
             </S.TableCellLabel>
@@ -37,11 +24,18 @@ export function StyledTableCell({ children, isHeader, width }: StyledTableCellPr
 }
 
 const tableHeaders: Array<LegendHeaderType> = [
-    { name: "color", index: "color", width: 10 },
-    { name: "indicator", index: "indicator", width: 75 },
+    { name: "", index: "remove", width: 5 },
+    { name: "", index: "color", width: 10 },
+    { name: "", index: "indicator", width: 85 },
 ]
 
-export default function Legend() {
+function ColorBox(props: { color: string }) {
+    return (
+        <div style={{ backgroundColor: props.color, width: '30px', height: "10px" }} />
+    )
+}
+export default function Legend(props: { data: LegendProps }) {
+    const { mode } = useThemeStore()
     return (
         <TableContainer style={{ width: '100%' }}>
             <Table size="small">
@@ -61,20 +55,55 @@ export default function Legend() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {/* {rows.map((row) => (
-                        <TableRow
-                            key={row.name}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <StyledTableCell component="th" scope="row">
-                                {row.name}
-                            </StyledTableCell>
-                            <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                            <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                            <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                            <StyledTableCell align="right">{row.protein}</StyledTableCell>
-                        </TableRow>
-                    ))} */}
+                    {props.data.map((legendData: LegendDataType) => {
+                        return (
+                            <>
+                                <TableRow
+                                    key={`${legendData.name}_${legendData.color}`}
+                                >
+                                    <StyledTableCell width="5%">
+                                        <S.TableCellLabelWrapper>
+                                            <IconButton disableRipple sx={{ padding: 0 }} onClick={legendData.f}>
+                                                <RemoveRedEyeIcon sx={{ fontSize: "12px" }} />
+                                            </IconButton>
+                                        </S.TableCellLabelWrapper>
+                                    </StyledTableCell>
+                                    <StyledTableCell width="10%">
+                                        <S.TableCellLabelWrapper>
+                                            <ColorBox color={legendData.color} />
+                                        </S.TableCellLabelWrapper>
+                                    </StyledTableCell>
+                                    <StyledTableCell width="85%">
+                                        {legendData.name}
+                                    </StyledTableCell>
+                                </TableRow>
+                                {legendData.indicators.map((subLegendData) => {
+                                    return (
+                                        <TableRow
+                                            key={`${subLegendData.name}_${subLegendData.color}`}
+                                            sx={{ backgroundColor: mode === "dark" ? ColorsEnum.darkGrey : ColorsEnum.bone }}
+                                        >
+                                            <StyledTableCell width="5%">
+                                                <S.TableCellLabelWrapper>
+                                                    <IconButton disableRipple sx={{ padding: 0 }} onClick={subLegendData.f}>
+                                                        <RemoveRedEyeIcon sx={{ fontSize: "12px" }} />
+                                                    </IconButton>
+                                                </S.TableCellLabelWrapper>
+                                            </StyledTableCell>
+                                            <StyledTableCell width="10%">
+                                                <S.TableCellLabelWrapper>
+                                                    <ColorBox color={subLegendData.color} />
+                                                </S.TableCellLabelWrapper>
+                                            </StyledTableCell>
+                                            <StyledTableCell width="85%">
+                                                {subLegendData.name}
+                                            </StyledTableCell>
+                                        </TableRow>
+                                    )
+                                })}
+                            </>
+                        )
+                    })}
                 </TableBody>
             </Table>
         </TableContainer>

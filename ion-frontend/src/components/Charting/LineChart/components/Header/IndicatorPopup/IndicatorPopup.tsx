@@ -9,8 +9,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
 import CandlestickChartIcon from '@mui/icons-material/CandlestickChart';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+
+import Search from 'components/Search';
+import SidebarPrompt from './SidebarPrompt';
+import ChoiceTable from './ChoiceTable';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -68,28 +73,31 @@ export default function IndicatorPopup() {
             </S.ButtonWrapper>
             <BootstrapDialog
                 onClose={handleClose}
-                aria-labelledby="customized-dialog-title"
                 open={open}
             >
                 <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-                    Modal title
+                    <Typography style={{ fontSize: '14px' }}>
+                        Indicators, Metrics, Strategies
+                    </Typography>
                 </BootstrapDialogTitle>
-                <DialogContent dividers>
-                    <Typography gutterBottom>
-                        Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-                        dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-                        consectetur ac, vestibulum at eros.
-                    </Typography>
-                    <Typography gutterBottom>
-                        Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-                        Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-                    </Typography>
-                    <Typography gutterBottom>
-                        Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
-                        magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
-                        ullamcorper nulla non metus auctor fringilla.
-                    </Typography>
+
+                <DialogContent dividers style={{ padding: 0 }}>
+                    <S.SearchWrapper>
+                        <Search placeholder={'Search'} fullWidth />
+                    </S.SearchWrapper>
                 </DialogContent>
+
+                <DialogContent dividers style={{ padding: 0, width: 600, height: 400 }}>
+                    <Grid container style={{ height: "100%" }}>
+                        <Grid item xs={4}>
+                            <SidebarPrompt />
+                        </Grid>
+                        <Grid item xs={8}>
+                            <ChoiceTable />
+                        </Grid>
+                    </Grid>
+                </DialogContent>
+
                 <DialogActions>
                     <Button autoFocus onClick={handleClose}>
                         Save changes
