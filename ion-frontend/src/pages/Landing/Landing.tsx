@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import * as React from 'react';
 
 import { CssBaseline, Grid } from '@mui/material';
-import LineChart from 'components/Charting/LineChart';
+import TSChart from 'components/Charting/TSChart';
 import Header from 'components/Dashboard/Header';
 import Footer from 'components/Footer';
 import ForexTable from './ForexTable';
@@ -29,7 +29,7 @@ export default function Landing() {
                 <Grid item xl={9} lg={9} xs={8}>
                     {
                         data ?
-                            <LineChart dataX={data.X} dataY={data.Y.map((d: string) => parseFloat(d))} /> :
+                            <TSChart dataX={data.X} dataY={data.Y.map((d: string) => parseFloat(d))} /> :
                             null
                     }
                 </Grid>

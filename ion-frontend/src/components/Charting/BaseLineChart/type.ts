@@ -10,6 +10,10 @@ export type LineChartProps = {
         right: number
     },
     timeParseFormat?: string,
-    normaliseY?: boolean,
-    tooltipCrosshairs?: boolean,
+    showAverage?: boolean,
+    showGrid?: boolean,
+    showAxis?: boolean,
+    showArea?: boolean,
+    showNormalised?: boolean,
+    showTooltip?: boolean,
 }

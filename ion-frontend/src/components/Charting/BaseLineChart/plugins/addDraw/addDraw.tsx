@@ -30,7 +30,6 @@ export const addDraw = () => {
             .attr("stroke-width", 2)
             .attr("stroke", "green");
         drawContainer.on('mousemove', mousemove);
-        console.log(drawContainer, "down")
     }
 
     function mousemove(e: any) {
@@ -38,12 +37,10 @@ export const addDraw = () => {
         let m = d3.pointer(e);
         line.attr("x2", m[0])
             .attr("y2", m[1]);
-
     }
 
     function mouseup() {
         drawContainer.on("mousemove", () => null);
-        console.log(drawContainer)
     }
 }
 

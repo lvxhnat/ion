@@ -38,16 +38,6 @@ export const addToolTip = (props: Required<CreateToolTipProps>) => {
         .style("stroke", props.fontColor)
         .attr("r", 4);
 
-    if (LineChartConfig.DEFAULT_TOOLTIP_CROSSHAIRS) {
-        focus.append("line")
-            .attr("id", "tooltip-y-line")
-            .style("stroke", props.fontColor)
-            .style("stroke-dasharray", "3,3")
-            .style("opacity", 0.5)
-            .attr("x1", LineChartConfig.DEFAULT_MARGIN_LEFT)
-            .attr("x2", LineChartConfig.DEFAULT_WIDTH - LineChartConfig.DEFAULT_MARGIN_RIGHT);
-    }
-
     focus.append("line")
         .attr("id", "tooltip-x-line")
         .style("stroke", props.fontColor)
@@ -89,12 +79,6 @@ export const addToolTip = (props: Required<CreateToolTipProps>) => {
 
             focus.select("#tooltip-x-line")
                 .attr("transform", `translate(${props.x(props.dataX[i])}, 0)`);
-
-            if (LineChartConfig.DEFAULT_TOOLTIP_CROSSHAIRS) {
-                focus.select("#tooltip-y-line")
-                    .attr("transform", `translate(0, ${props.y(props.dataY[i])})`)
-                    .attr("x2", LineChartConfig.DEFAULT_WIDTH);
-            }
         }
     }
 
