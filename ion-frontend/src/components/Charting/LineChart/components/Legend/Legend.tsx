@@ -49,7 +49,7 @@ export default function Legend(props: { data: LegendProps }) {
         <TableContainer style={{ width: '100%' }}>
             <Table size="small">
                 <TableHead>
-                    <TableRow>
+                    <TableRow key={'chartlegend_header_row'}>
                         {tableHeaders.map((tableSpecification: LegendHeaderType) => {
                             return (
                                 <StyledTableCell
@@ -67,10 +67,8 @@ export default function Legend(props: { data: LegendProps }) {
                 <TableBody>
                     {props.data.map((legendData: LegendDataType, index: number) => {
                         return (
-                            <>
-                                <TableRow
-                                    key={`${legendData.name}_${legendData.color}_header_${index}`}
-                                >
+                            <React.Fragment key={`legendFragment_${index}`}>
+                                <TableRow key={`${legendData.name}_${legendData.color}_header_${index}`}>
                                     <StyledTableCell key={`${legendData.name}_${index}_removeIcon`} width="5%">
                                         <IconButton disableRipple sx={{ padding: 0 }} onClick={legendData.f}>
                                             <RemoveRedEyeIcon sx={{ fontSize: "12px" }} />
@@ -103,7 +101,7 @@ export default function Legend(props: { data: LegendProps }) {
                                         </TableRow>
                                     )
                                 })}
-                            </>
+                            </React.Fragment>
                         )
                     })}
                 </TableBody>

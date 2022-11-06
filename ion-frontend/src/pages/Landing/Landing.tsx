@@ -25,7 +25,7 @@ export default function Landing() {
         <>
             <CssBaseline />
             <Header />
-            <Grid container style={{ height: "90vh" }} spacing={1}>
+            <Grid container style={{ height: "90vh" }} spacing={2}>
                 <Grid item xl={9} lg={9} xs={8}>
                     {
                         data ?

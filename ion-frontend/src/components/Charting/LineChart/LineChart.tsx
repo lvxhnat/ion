@@ -142,7 +142,7 @@ export default function LineChart({
 
 
     return (
-        <Grid container>
+        <Grid container spacing={2}>
             <Grid item xs={3}>
                 <Legend data={legend} />
             </Grid>
@@ -152,7 +152,7 @@ export default function LineChart({
                     <IndicatorPopup />
                 </S.HeaderWrapper>
                 <div id="linechart-svg-container">
-                    <div id="linechart-tooltip" style={{ height: 20 }}></div>
+                    <div id="linechart-tooltip" style={{ height: 20, backgroundColor: ColorsEnum.darkGrey }}></div>
                     <svg
                         ref={ref}
                         id="linechart"

@@ -24,9 +24,11 @@ export const addToolTip = (props: Required<CreateToolTipProps>) => {
         .append('div')
         .attr('id', 'tooltip')
         .style("opacity", 0)
+        .attr("transform", `translate(0, -${LineChartConfig.DEFAULT_MARGIN_BOTTOM})`)
         .style("font-size", LineChartConfig.DEFAULT_TOOLTIP_FONTSIZE)
         .style("color", props.fontColor)
-        .style("text-align", "center")
+        .style("padding", '0 10px')
+        .style("text-align", "left")
         .attr("alignment-baseline", "middle")
 
     // append the circle at the intersection               
