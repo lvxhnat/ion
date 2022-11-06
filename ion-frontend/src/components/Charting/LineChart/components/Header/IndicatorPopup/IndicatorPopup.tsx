@@ -40,6 +40,7 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
             {children}
             {onClose ? (
                 <IconButton
+                    disableRipple
                     aria-label="close"
                     onClick={onClose}
                     sx={{
@@ -81,13 +82,13 @@ export default function IndicatorPopup() {
                     </Typography>
                 </BootstrapDialogTitle>
 
-                <DialogContent dividers style={{ padding: 0 }}>
+                <DialogContent style={{ padding: 0 }}>
                     <S.SearchWrapper>
                         <Search placeholder={'Search'} fullWidth />
                     </S.SearchWrapper>
                 </DialogContent>
 
-                <DialogContent dividers style={{ padding: 0, width: 600, height: 400 }}>
+                <DialogContent style={{ padding: 0, width: 600, height: 400 }}>
                     <Grid container style={{ height: "100%" }}>
                         <Grid item xs={4}>
                             <SidebarPrompt />

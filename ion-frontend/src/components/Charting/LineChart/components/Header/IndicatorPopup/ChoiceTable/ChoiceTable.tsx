@@ -24,12 +24,17 @@ const rows = [
     createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
+enum INDICATOR_TYPES {
+    MOMENTUM = 'Momentum Indicators'
+}
 
 export default function ChoiceTable() {
+    const [selection, setSelection] = React.useState(INDICATOR_TYPES.MOMENTUM)
+
     return (
         <>
             <S.ChipWrapper>
-                <S.StyledChip label="Momentum Indicators" variant="outlined" onClick={() => console.log("E")} />
+                <S.StyledChip clickable size="small" label={INDICATOR_TYPES.MOMENTUM} variant={selection === INDICATOR_TYPES.MOMENTUM ? 'filled' : 'outlined'} onClick={() => console.log("E")} />
             </S.ChipWrapper>
             <TableContainer>
                 <Table size="small">

@@ -13,14 +13,23 @@ import { ColorsEnum } from 'common/theme';
 import { IconButton } from '@mui/material';
 import { useThemeStore } from 'store/theme';
 
-export function StyledTableCell({ children, isHeader, width, colSpan }: StyledTableCellProps) {
-    return (
-        <S.TableCellWrapper width={width} colSpan={colSpan ? colSpan : 1}>
-            <S.TableCellLabel isHeader={isHeader}>
+export function StyledTableCell({ children, isHeader, width, colSpan, isText }: StyledTableCellProps) {
+    if (isText) {
+        return (
+            <S.TableCellWrapper width={width} colSpan={colSpan ? colSpan : 1}>
+                <S.TableCellLabel isHeader={isHeader}>
+                    {children}
+                </S.TableCellLabel>
+            </S.TableCellWrapper>
+        )
+    } else {
+        return (
+            <S.TableCellWrapper width={width} colSpan={colSpan ? colSpan : 1}>
                 {children}
-            </S.TableCellLabel>
-        </S.TableCellWrapper>
-    )
+            </S.TableCellWrapper>
+        )
+    }
+
 }
 
 const tableHeaders: Array<LegendHeaderType> = [
@@ -44,6 +53,7 @@ export default function Legend(props: { data: LegendProps }) {
                         {tableHeaders.map((tableSpecification: LegendHeaderType) => {
                             return (
                                 <StyledTableCell
+                                    isText
                                     isHeader
                                     width={tableSpecification.width + "%"}
                                     key={`chartlegend_${tableSpecification.index}_header`}
@@ -55,47 +65,39 @@ export default function Legend(props: { data: LegendProps }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.data.map((legendData: LegendDataType) => {
+                    {props.data.map((legendData: LegendDataType, index: number) => {
                         return (
                             <>
                                 <TableRow
-                                    key={`${legendData.name}_${legendData.color}`}
+                                    key={`${legendData.name}_${legendData.color}_header_${index}`}
                                 >
-                                    <StyledTableCell width="5%">
-                                        <S.TableCellLabelWrapper>
-                                            <IconButton disableRipple sx={{ padding: 0 }} onClick={legendData.f}>
-                                                <RemoveRedEyeIcon sx={{ fontSize: "12px" }} />
-                                            </IconButton>
-                                        </S.TableCellLabelWrapper>
+                                    <StyledTableCell key={`${legendData.name}_${index}_removeIcon`} width="5%">
+                                        <IconButton disableRipple sx={{ padding: 0 }} onClick={legendData.f}>
+                                            <RemoveRedEyeIcon sx={{ fontSize: "12px" }} />
+                                        </IconButton>
                                     </StyledTableCell>
-                                    <StyledTableCell width="10%">
-                                        <S.TableCellLabelWrapper>
-                                            <ColorBox color={legendData.color} />
-                                        </S.TableCellLabelWrapper>
+                                    <StyledTableCell key={`${legendData.name}_${index}_color`} width="10%" isText={false}>
+                                        <ColorBox color={legendData.color} />
                                     </StyledTableCell>
-                                    <StyledTableCell width="85%">
+                                    <StyledTableCell isText key={`${legendData.name}_${index}_legendName`} width="85%">
                                         {legendData.name}
                                     </StyledTableCell>
                                 </TableRow>
-                                {legendData.indicators.map((subLegendData) => {
+                                {legendData.indicators.map((subLegendData, index: number) => {
                                     return (
                                         <TableRow
-                                            key={`${subLegendData.name}_${subLegendData.color}`}
+                                            key={`${subLegendData.name}_${subLegendData.color}_body_${index}`}
                                             sx={{ backgroundColor: mode === "dark" ? ColorsEnum.darkGrey : ColorsEnum.bone }}
                                         >
-                                            <StyledTableCell width="5%">
-                                                <S.TableCellLabelWrapper>
-                                                    <IconButton disableRipple sx={{ padding: 0 }} onClick={subLegendData.f}>
-                                                        <RemoveRedEyeIcon sx={{ fontSize: "12px" }} />
-                                                    </IconButton>
-                                                </S.TableCellLabelWrapper>
+                                            <StyledTableCell width="5%" key={`${legendData.name}_${index}_sub_removeIcon`}>
+                                                <IconButton disableRipple sx={{ padding: 0 }} onClick={subLegendData.f}>
+                                                    <RemoveRedEyeIcon sx={{ fontSize: "12px" }} />
+                                                </IconButton>
                                             </StyledTableCell>
-                                            <StyledTableCell width="10%">
-                                                <S.TableCellLabelWrapper>
-                                                    <ColorBox color={subLegendData.color} />
-                                                </S.TableCellLabelWrapper>
+                                            <StyledTableCell width="10%" key={`${legendData.name}_${index}_sub_color`}>
+                                                <ColorBox color={subLegendData.color} />
                                             </StyledTableCell>
-                                            <StyledTableCell width="85%">
+                                            <StyledTableCell isText width="85%" key={`${legendData.name}_${index}_sub_legendName`}>
                                                 {subLegendData.name}
                                             </StyledTableCell>
                                         </TableRow>

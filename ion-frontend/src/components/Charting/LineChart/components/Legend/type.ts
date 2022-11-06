@@ -11,6 +11,7 @@ export type StyledTableCellProps = {
     isHeader?: boolean,
     colSpan?: number,
     width?: string,
+    isText?: boolean
 }
 
 export type LegendProps = Array<LegendDataType>

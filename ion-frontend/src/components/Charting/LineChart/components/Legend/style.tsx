@@ -10,12 +10,6 @@ export const TableCellWrapper = styled(TableCell)(({ theme }) => ({
     padding: `${theme.spacing(0.2)} ${theme.spacing(1.5)}`
 }))
 
-export const TableCellLabelWrapper = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-}))
-
 export const TableCellLabel = styled(Typography, {
     shouldForwardProp: prop => prop !== 'isHeader',
 })<{
