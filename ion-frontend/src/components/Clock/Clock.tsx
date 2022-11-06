@@ -4,7 +4,7 @@ import moment from 'moment-timezone'
 
 import { Grid } from '@mui/material';
 
-export default function MarketStatus() {
+export default function Clock() {
 
     const [date, setDate] = useState<string>("");
     const [marketStatus, setMarketStatus] = useState<string | undefined>();
@@ -19,7 +19,7 @@ export default function MarketStatus() {
     }, []);
 
     return (
-        <Grid container alignItems='center'>
+        <Grid container alignItems='center' sx={{ fontSize: '14px' }}>
             <span> {marketStatus} </span>
             <span><b> NYT: </b> {date} </span>
         </Grid >
