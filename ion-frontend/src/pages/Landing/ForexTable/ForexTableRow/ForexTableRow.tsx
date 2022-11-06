@@ -1,7 +1,3 @@
-/**
- * Streams Forex Data into table rows using a plugin architecture
- */
-
 import * as React from 'react'
 import * as S from './style'
 

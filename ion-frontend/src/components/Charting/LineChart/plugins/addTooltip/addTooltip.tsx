@@ -1,21 +1,13 @@
 import * as d3 from 'd3';
-import { LineChartProps } from '../../type';
+import { LineChartConfig } from '../../config';
 
 type CreateToolTipProps = {
     x: any,
     y: any,
+    fontColor: string,
     svg: d3.Selection<SVGElement, {}, HTMLElement, any>,
     dataX: Array<Date>,
     dataY: Array<number>,
-    margin: {
-        top: number
-        bottom: number
-        left: number
-        right: number
-    },
-    width: number,
-    height: number,
-    tooltipCrosshairs: boolean,
 }
 
 export const addToolTip = (props: Required<CreateToolTipProps>) => {
@@ -23,17 +15,17 @@ export const addToolTip = (props: Required<CreateToolTipProps>) => {
     const svg = props.svg;
     const bisect = d3.bisector((d: any) => d).left;
 
-    const focus = svg.append("g").style("opacity", 0);
-
-    const fontColor = "white"
+    const focus = svg.append("g")
+        .attr("id", "tooltip-focus")
+        .style("opacity", 0);
 
     // Create the text that travels along the curve of chart
     const tooltip = d3.selectAll("#linechart-tooltip")
         .append('div')
         .attr('id', 'tooltip')
         .style("opacity", 0)
-        .style("font-size", "10px")
-        .style("color", fontColor)
+        .style("font-size", LineChartConfig.DEFAULT_TOOLTIP_FONTSIZE)
+        .style("color", props.fontColor)
         .style("text-align", "center")
         .attr("alignment-baseline", "middle")
 
@@ -41,33 +33,34 @@ export const addToolTip = (props: Required<CreateToolTipProps>) => {
     focus.append("circle")
         .attr("id", "tooltip-point-tracker")
         .style("fill", "none")
-        .style("stroke", fontColor)
+        .style("stroke", props.fontColor)
         .attr("r", 4);
 
-    if (props.tooltipCrosshairs) {
+    if (LineChartConfig.DEFAULT_TOOLTIP_CROSSHAIRS) {
         focus.append("line")
             .attr("id", "tooltip-y-line")
-            .style("stroke", fontColor)
+            .style("stroke", props.fontColor)
             .style("stroke-dasharray", "3,3")
             .style("opacity", 0.5)
-            .attr("x1", props.margin.left)
-            .attr("x2", props.width - props.margin.right);
+            .attr("x1", LineChartConfig.DEFAULT_MARGIN_LEFT)
+            .attr("x2", LineChartConfig.DEFAULT_WIDTH - LineChartConfig.DEFAULT_MARGIN_RIGHT);
     }
 
     focus.append("line")
         .attr("id", "tooltip-x-line")
-        .style("stroke", fontColor)
+        .style("stroke", props.fontColor)
         .style("stroke-dasharray", "3,3")
         .style("opacity", 0.5)
-        .attr("y1", props.margin.bottom)
-        .attr("y2", props.height - props.margin.top);
+        .attr("y1", LineChartConfig.DEFAULT_MARGIN_BOTTOM)
+        .attr("y2", LineChartConfig.DEFAULT_HEIGHT - LineChartConfig.DEFAULT_MARGIN_TOP);
 
     // Create a rect on top of the svg area: this rectangle recovers mouse position
     svg.append('rect')
+        .attr("id", "tooltip-rect")
         .style("fill", "none")
         .style("pointer-events", "all")
-        .attr('width', props.width - props.margin.left)
-        .attr('height', props.height)
+        .attr('width', LineChartConfig.DEFAULT_WIDTH - LineChartConfig.DEFAULT_MARGIN_LEFT)
+        .attr('height', LineChartConfig.DEFAULT_HEIGHT)
         .on('mouseover', mouseover)
         .on('mousemove', mousemove)
         .on('mouseout', mouseout);
@@ -95,10 +88,10 @@ export const addToolTip = (props: Required<CreateToolTipProps>) => {
             focus.select("#tooltip-x-line")
                 .attr("transform", `translate(${props.x(props.dataX[i])}, 0)`);
 
-            if (props.tooltipCrosshairs) {
+            if (LineChartConfig.DEFAULT_TOOLTIP_CROSSHAIRS) {
                 focus.select("#tooltip-y-line")
                     .attr("transform", `translate(0, ${props.y(props.dataY[i])})`)
-                    .attr("x2", props.width);
+                    .attr("x2", LineChartConfig.DEFAULT_WIDTH);
             }
         }
     }

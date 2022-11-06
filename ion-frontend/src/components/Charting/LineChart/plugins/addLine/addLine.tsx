@@ -18,7 +18,7 @@ export const addLine = (props: {
         .y((_, i: number) => props.y(props.dataY[i]));
 
     svg.append("path")
-        .attr("id", "next")
+        .attr("id", props.id)
         .attr("fill", "none")
         .attr("stroke", "yellow")
         .attr("stroke-width", 1)

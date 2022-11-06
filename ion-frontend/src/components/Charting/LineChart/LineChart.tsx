@@ -1,7 +1,8 @@
 
 import * as d3 from 'd3';
 import * as React from 'react';
-import * as C from './plugins'
+import * as S from './style';
+import * as C from './plugins';
 import { LineChartProps } from './type';
 
 import { useD3 } from 'common/hooks/useD3';
@@ -10,8 +11,9 @@ import { ColorsEnum } from 'common/theme';
 import { calculateSMA } from './helpers/movingAverage';
 import { Grid } from '@mui/material';
 
-import LineChartHeader from './components/Header/Header';
 import Legend from './components/Legend';
+import { LineChartConfig } from './config';
+import { IndicatorPopup, Drawline } from './components/Header';
 
 /**
  * A generalised line chart object, taking date as its x-axis and numerical value on its y-axis. Supports currently the following:
@@ -22,15 +24,20 @@ import Legend from './components/Legend';
 export default function LineChart({
     dataX,
     dataY,
-    width = 960,
-    height = 500,
-    margin = { top: 10, right: 30, bottom: 20, left: 30 },
-    timeParseFormat = "%Y-%m-%d",
-    normaliseY = false,
-    tooltipCrosshairs = false,
+    width = LineChartConfig.DEFAULT_WIDTH,
+    height = LineChartConfig.DEFAULT_HEIGHT,
+    margin = { top: LineChartConfig.DEFAULT_MARGIN_TOP, right: LineChartConfig.DEFAULT_MARGIN_RIGHT, bottom: LineChartConfig.DEFAULT_MARGIN_BOTTOM, left: LineChartConfig.DEFAULT_MARGIN_LEFT },
+    timeParseFormat = LineChartConfig.DEFAULT_TIME_PARSE_FORMAT,
+    normaliseY = LineChartConfig.DEFAULT_NORMALISE_Y,
+    tooltipCrosshairs = LineChartConfig.DEFAULT_TOOLTIP_CROSSHAIRS,
 }: LineChartProps) {
 
     const { mode } = useThemeStore();
+    const [legend, setLegend] = React.useState([{
+        name: "test", color: "white", f: () => console.log("s"), indicators: [{
+            name: "sma", color: "yellow", f: () => d3.selectAll("#sma14").remove()
+        }]
+    }]);
 
     const ref = useD3(
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
@@ -38,9 +45,9 @@ export default function LineChart({
             const formattedWidth = width - margin.left - margin.right;
             const formattedHeight = height;
             // Configure the color palette of the charts
-            const lineColor = mode === "light" ? ColorsEnum.black : ColorsEnum.white
-            const fillColor = "steelblue"
-            const fillOpacity = 0.6
+            const lineColor = mode === "dark" ? LineChartConfig.DEFAULT_DARKMODE_LINE_COLOR : LineChartConfig.DEFAULT_LIGHTMODE_LINE_COLOR;
+            const fillColor = LineChartConfig.DEFAULT_LINE_AREA_COLOR;
+            const fillOpacity = LineChartConfig.DEFAULT_LINE_AREA_OPACITY;
 
             const defined = d3.map(dataY, (_, i) => !isNaN(dataY[i]));
             const indexes = d3.map(dataX, (_, i) => i); // Denotes simply an array containing index values
@@ -121,10 +128,7 @@ export default function LineChart({
                 svg: svg,
                 dataX: dates,
                 dataY: dataY,
-                margin: margin,
-                width: width,
-                height: height,
-                tooltipCrosshairs: tooltipCrosshairs,
+                fontColor: mode === "dark" ? LineChartConfig.DEFAULT_DARKMODE_TOOLTIP_FONTCOLOR : LineChartConfig.DEFAULT_LIGHTMODE_TOOLTIP_FONTCOLOR,
             })
 
             // C.addDrag({
@@ -136,17 +140,22 @@ export default function LineChart({
         []
     );
 
+
     return (
         <Grid container>
             <Grid item xs={3}>
-                <Legend />
+                <Legend data={legend} />
             </Grid>
             <Grid item xs={9}>
-                <LineChartHeader />
+                <S.HeaderWrapper>
+                    <Drawline />
+                    <IndicatorPopup />
+                </S.HeaderWrapper>
                 <div id="linechart-svg-container">
                     <div id="linechart-tooltip" style={{ height: 20 }}></div>
                     <svg
                         ref={ref}
+                        id="linechart"
                         style={{
                             height: "100%",
                             width: "100%",

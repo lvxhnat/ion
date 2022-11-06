@@ -1,3 +1,7 @@
-import Header from "./Header";
+import Drawline from "./Drawline";
+import IndicatorPopup from "./IndicatorPopup"
 
-export default Header
+export {
+    Drawline, 
+    IndicatorPopup
+}

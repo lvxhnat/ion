@@ -9,5 +9,16 @@ export interface LegendHeaderType {
 export type StyledTableCellProps = {
     children?: React.ReactNode,
     isHeader?: boolean,
+    colSpan?: number,
     width?: string,
+    isText?: boolean
+}
+
+export type LegendProps = Array<LegendDataType>
+
+export interface LegendDataType {
+    name: string 
+    color: string
+    f: React.MouseEventHandler<HTMLButtonElement>
+    indicators: Array<{ name: string, color: string, f: React.MouseEventHandler<HTMLButtonElement> }>
 }
