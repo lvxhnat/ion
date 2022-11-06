@@ -19,25 +19,28 @@ export const addDraw = () => {
         .on('mouseup', mouseup)
 
     function mousedown(e: any) {
+        e.preventDefault();
         let m = d3.pointer(e);
         line = svg.append("line")
+            .attr("class", "drawLine")
             .attr("x1", m[0])
             .attr("y1", m[1])
             .attr("x2", m[0])
             .attr("y2", m[1])
-            .attr("stroke-width", 1)
+            .attr("stroke-width", 2)
             .attr("stroke", "green");
         drawContainer.on('mousemove', mousemove);
     }
 
     function mousemove(e: any) {
+        e.preventDefault();
         let m = d3.pointer(e);
         line.attr("x2", m[0])
             .attr("y2", m[1]);
     }
 
     function mouseup() {
-        drawContainer.on("mousemove", null);
+        drawContainer.on("mousemove", () => null);
     }
 }
 

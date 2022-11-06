@@ -4,7 +4,7 @@ import * as S from './style';
 import GestureIcon from '@mui/icons-material/Gesture';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 
-import { addDraw, removeDraw } from 'components/Charting/LineChart/plugins/addDraw/addDraw';
+import { addDraw, removeDraw } from 'components/Charting/BaseLineChart/plugins';
 
 export default function Drawline() {
 
