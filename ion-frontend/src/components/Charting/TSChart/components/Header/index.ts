@@ -1,7 +1,7 @@
-import Drawline from "./Drawline";
-import IndicatorPopup from "./IndicatorPopup"
+import Drawline from './Drawline';
+import IndicatorPopup from './IndicatorPopup';
 
 export {
-    Drawline, 
-    IndicatorPopup
-}
+	Drawline, 
+	IndicatorPopup
+};

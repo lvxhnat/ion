@@ -9,19 +9,19 @@ export const addLine = (props: {
     dataY: Array<number>,
     svg: d3.Selection<SVGElement, {}, HTMLElement, any>,
 }) => {
-    const svg = props.svg;
-    const defined = d3.map(props.dataY, (_, i) => !isNaN(props.dataY[i]));
+	const svg = props.svg;
+	const defined = d3.map(props.dataY, (_, i) => !isNaN(props.dataY[i]));
 
-    var valueLine: any = d3.line()
-        .defined((_, i: number) => defined[i])
-        .x((_, i: number) => props.x(props.dataX[i]))
-        .y((_, i: number) => props.y(props.dataY[i]));
+	const valueLine: any = d3.line()
+		.defined((_, i: number) => defined[i])
+		.x((_, i: number) => props.x(props.dataX[i]))
+		.y((_, i: number) => props.y(props.dataY[i]));
 
-    svg.append("path")
-        .attr("id", props.id)
-        .attr("fill", "none")
-        .attr("stroke", "yellow")
-        .attr("stroke-width", 1)
-        .attr("d", valueLine(props.indexes.filter(i => defined[i])));
+	svg.append('path')
+		.attr('id', props.id)
+		.attr('fill', 'none')
+		.attr('stroke', 'yellow')
+		.attr('stroke-width', 1)
+		.attr('d', valueLine(props.indexes.filter(i => defined[i])));
 
-}
+};

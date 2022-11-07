@@ -1,3 +1,3 @@
-import IndicatorPopup from "./IndicatorPopup";
+import IndicatorPopup from './IndicatorPopup';
 
-export default IndicatorPopup 
+export default IndicatorPopup; 

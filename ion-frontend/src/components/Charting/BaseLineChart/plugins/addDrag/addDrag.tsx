@@ -6,5 +6,5 @@ export const addDrag = (props: {
     svg: d3.Selection<SVGElement, {}, HTMLElement, any>,
 }) => {
 
-    const svg = props.svg;
-}
+	const svg = props.svg;
+};
