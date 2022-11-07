@@ -1,3 +1,3 @@
-import BaseLineChart from "./BaseLineChart";
+import BaseLineChart from './BaseLineChart';
 
-export default BaseLineChart
+export default BaseLineChart;

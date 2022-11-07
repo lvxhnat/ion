@@ -1,3 +1,3 @@
-import SidebarPrompt from "./SidebarPrompt";
+import SidebarPrompt from './SidebarPrompt';
 
-export default SidebarPrompt
+export default SidebarPrompt;

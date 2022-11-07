@@ -1,3 +1,3 @@
-import Legend from "./Legend";
+import Legend from './Legend';
 
-export default Legend
+export default Legend;

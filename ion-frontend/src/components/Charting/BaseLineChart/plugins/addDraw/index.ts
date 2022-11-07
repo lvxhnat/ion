@@ -1,5 +1,5 @@
-import { addDraw, removeDraw } from "./addDraw"
+import { addDraw, removeDraw } from './addDraw';
 export {
-    addDraw,
-    removeDraw
-}
+	addDraw,
+	removeDraw
+};

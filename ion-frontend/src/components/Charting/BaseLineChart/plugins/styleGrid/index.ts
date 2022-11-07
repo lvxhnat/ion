@@ -1,3 +1,3 @@
-import { styleGrid } from "./styleGrid";
+import { styleGrid } from './styleGrid';
 
-export default styleGrid
+export default styleGrid;

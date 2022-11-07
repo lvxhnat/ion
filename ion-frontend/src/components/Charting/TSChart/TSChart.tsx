@@ -13,37 +13,37 @@ export interface TSChartProps {
 }
 
 export default function TSChart({
-    dataX,
-    dataY,
+	dataX,
+	dataY,
 }: TSChartProps) {
 
-    const [legend, setLegend] = React.useState([{
-        name: "test", color: "white", f: () => console.log("s"),
-        indicators: [{
-            name: "sma", color: "yellow", f: () => console.log("removed")
-        }]
-    }]);
+	const [legend, setLegend] = React.useState([{
+		name: 'test', color: 'white', f: () => console.log('s'),
+		indicators: [{
+			name: 'sma', color: 'yellow', f: () => console.log('removed')
+		}]
+	}]);
 
-    return (
-        <Grid container spacing={2}>
-            <Grid item xs={3}>
-                <Legend data={legend} />
-            </Grid>
-            <Grid item xs={9}>
-                <S.HeaderWrapper>
-                    <Drawline />
-                    <IndicatorPopup />
-                </S.HeaderWrapper>
-                <BaseLineChart
-                    dataX={dataX}
-                    dataY={dataY}
-                    showGrid
-                    showAxis
-                    showArea
-                    showNormalised
-                    showTooltip
-                />
-            </Grid>
-        </Grid>
-    )
+	return (
+		<Grid container spacing={2}>
+			<Grid item xs={3}>
+				<Legend data={legend} />
+			</Grid>
+			<Grid item xs={9}>
+				<S.HeaderWrapper>
+					<Drawline />
+					<IndicatorPopup />
+				</S.HeaderWrapper>
+				<BaseLineChart
+					dataX={dataX}
+					dataY={dataY}
+					showGrid
+					showAxis
+					showArea
+					showNormalised
+					showTooltip
+				/>
+			</Grid>
+		</Grid>
+	);
 }

@@ -7,37 +7,37 @@ declare module '@mui/material/Button' {
 }
 
 export const buttonTheme = {
-  MuiButton: {
-    variants: [
-      {
-        props: { variant: 'outlined2' as const },
-        style: {
-          textTransform: 'none' as const,
-          border: `1px solid ${ColorsEnum.coolgray2}`,
-        },
-      },
-    ],
-    styleOverrides: {
-      root: {
-        textTransform: 'none' as const,
-        boxShadow: 'none',
-        '&:hover': {
-          boxShadow: 'none',
-        },
-        '&.MuiButton-containedPrimary': {
-          '&:hover': {
-            backgroundColor: ColorsEnum.tangerine1,
-            boxShadow: 'none',
-          },
-        },
-      },
-    },
-  },
-  MuiIconButton: {
-    styleOverrides: {
-      root: {
-        borderRadius: '4px',
-      },
-    },
-  },
+	MuiButton: {
+		variants: [
+			{
+				props: { variant: 'outlined2' as const },
+				style: {
+					textTransform: 'none' as const,
+					border: `1px solid ${ColorsEnum.coolgray2}`,
+				},
+			},
+		],
+		styleOverrides: {
+			root: {
+				textTransform: 'none' as const,
+				boxShadow: 'none',
+				'&:hover': {
+					boxShadow: 'none',
+				},
+				'&.MuiButton-containedPrimary': {
+					'&:hover': {
+						backgroundColor: ColorsEnum.tangerine1,
+						boxShadow: 'none',
+					},
+				},
+			},
+		},
+	},
+	MuiIconButton: {
+		styleOverrides: {
+			root: {
+				borderRadius: '4px',
+			},
+		},
+	},
 };

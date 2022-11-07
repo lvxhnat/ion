@@ -11,15 +11,15 @@ const root = ReactDOM.createRoot(
 
 function ThemedApp() {
 
-  const modeTheme = getCookie(THEME_MODE_KEY)
+	const modeTheme = getCookie(THEME_MODE_KEY);
 
-  return (
-    <ThemeProvider modeTheme={modeTheme}>
-      <App />
-    </ThemeProvider>
-  )
+	return (
+		<ThemeProvider modeTheme={modeTheme}>
+			<App />
+		</ThemeProvider>
+	);
 }
 
 root.render(
-  <ThemedApp />
+	<ThemedApp />
 );

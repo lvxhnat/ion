@@ -12,45 +12,45 @@
  * @param period 
  */
 export function calculateSMA(
-    array: Array<number>,
-    period: number,
-    decimalPlaces = 2
+	array: Array<number>,
+	period: number,
+	decimalPlaces = 2
 ) {
-    let sma = new Array(array.length);
+	const sma = new Array(array.length);
 
-    // Initialise the first values
-    for (let i = 0; i < period - 1; i++) {
-        sma[i] = NaN;
-        sma[period - 1] = sma[period - 1] ? sma[period - 1] + array[i] : array[i];
-    }
-    sma[period - 1] = (sma[period - 1] + array[period - 1]) / period;
+	// Initialise the first values
+	for (let i = 0; i < period - 1; i++) {
+		sma[i] = NaN;
+		sma[period - 1] = sma[period - 1] ? sma[period - 1] + array[i] : array[i];
+	}
+	sma[period - 1] = (sma[period - 1] + array[period - 1]) / period;
 
-    for (let i = period; i < array.length; i++) {
-        sma[i] = sma[i - 1] + (array[i] - array[i - period]) / period;
-    }
+	for (let i = period; i < array.length; i++) {
+		sma[i] = sma[i - 1] + (array[i] - array[i - period]) / period;
+	}
 
-    return sma;
+	return sma;
 }
 
 export function calculateEMA(
-    array: Array<number>,
-    period: number,
-    smoothing = 2,
-    decimalPlaces = 2,
+	array: Array<number>,
+	period: number,
+	smoothing = 2,
+	decimalPlaces = 2,
 ) {
-    const multiplier = smoothing / (period + 1);
-    let ema = new Array(array.length);
+	const multiplier = smoothing / (period + 1);
+	const ema = new Array(array.length);
 
-    // Calculate SMA First 
-    for (let i = 0; i < period - 1; i++) {
-        ema[i] = NaN;
-        ema[period - 1] = ema[period - 1] ? ema[period - 1] + array[i] : array[i];
-    }
-    ema[period - 1] = (ema[period - 1] + array[period - 1]) / period;
+	// Calculate SMA First 
+	for (let i = 0; i < period - 1; i++) {
+		ema[i] = NaN;
+		ema[period - 1] = ema[period - 1] ? ema[period - 1] + array[i] : array[i];
+	}
+	ema[period - 1] = (ema[period - 1] + array[period - 1]) / period;
 
-    for (let i = period; i < array.length; i++) {
-        ema[i] = array[i] * multiplier + ema[i - 1] * (1 - multiplier)
-    }
+	for (let i = period; i < array.length; i++) {
+		ema[i] = array[i] * multiplier + ema[i - 1] * (1 - multiplier);
+	}
 
-    return ema;
+	return ema;
 }

@@ -1,3 +1,3 @@
-import Drawline from "./Drawline";
+import Drawline from './Drawline';
 
-export default Drawline
+export default Drawline;

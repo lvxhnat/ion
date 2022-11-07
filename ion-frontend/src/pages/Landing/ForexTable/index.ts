@@ -1,3 +1,3 @@
-import ForexTable from "./ForexTable";
+import ForexTable from './ForexTable';
 
-export default ForexTable
+export default ForexTable;

@@ -1,3 +1,3 @@
-import ForexTableRow from "./ForexTableRow";
+import ForexTableRow from './ForexTableRow';
 
-export default ForexTableRow
+export default ForexTableRow;

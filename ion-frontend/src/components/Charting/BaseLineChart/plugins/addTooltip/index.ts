@@ -1,3 +1,3 @@
-import { addToolTip } from "./addTooltip";
+import { addToolTip } from './addTooltip';
 
-export default addToolTip
+export default addToolTip;

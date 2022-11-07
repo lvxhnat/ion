@@ -1,3 +1,3 @@
-import { addDrag } from "./addDrag";
+import { addDrag } from './addDrag';
 
-export default addDrag
+export default addDrag;
