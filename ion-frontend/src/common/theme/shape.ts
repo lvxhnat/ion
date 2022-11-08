@@ -1,3 +1,3 @@
 export const shapeTheme = {
-  borderRadius: 4,
+	borderRadius: 4,
 };

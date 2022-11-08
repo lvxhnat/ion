@@ -1,3 +1,3 @@
-import StreamHint from "./StreamHint";
+import StreamHint from './StreamHint';
 
-export default StreamHint
+export default StreamHint;

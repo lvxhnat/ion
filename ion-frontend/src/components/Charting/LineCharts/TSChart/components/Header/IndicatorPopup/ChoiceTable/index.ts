@@ -1,3 +1,3 @@
-import ChoiceTable from "./ChoiceTable";
+import ChoiceTable from './ChoiceTable';
 
-export default ChoiceTable
+export default ChoiceTable;

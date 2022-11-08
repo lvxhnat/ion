@@ -1,3 +1,3 @@
-import TSChart from "./TSChart";
+import TSChart from './TSChart';
 
-export default TSChart
+export default TSChart;

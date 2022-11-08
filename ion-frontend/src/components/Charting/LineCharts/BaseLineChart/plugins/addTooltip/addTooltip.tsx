@@ -20,19 +20,19 @@ export const addToolTip = (props: Required<CreateToolTipProps>) => {
     const svg = d3.selectAll(`#${LINECHARTIDS.BASE_SVG_ID} `);
     const bisect = d3.bisector((d: any) => d).left;
 
-    const focus = svg.append("g")
-        .attr("id", "tooltip-focus")
-        .style("opacity", 0);
+    const focus = svg.append('g')
+        .attr('id', 'tooltip-focus')
+        .style('opacity', 0);
 
     // Create the text that travels along the curve of chart
     const tooltip = d3.selectAll("#eur_usd_spot")
 
     // append the circle at the intersection               
-    focus.append("circle")
-        .attr("id", "tooltip-point-tracker")
-        .style("fill", "none")
-        .style("stroke", props.fontColor)
-        .attr("r", 4);
+    focus.append('circle')
+        .attr('id', 'tooltip-point-tracker')
+        .style('fill', 'none')
+        .style('stroke', props.fontColor)
+        .attr('r', 4);
 
     focus.append("rect")
         .attr("id", "tooltip-x-tracker")
@@ -72,18 +72,18 @@ export const addToolTip = (props: Required<CreateToolTipProps>) => {
 
     function mousemove(e: any) {
         // https://stackoverflow.com/questions/68156231/d3-x-invert-returning-invalid-date-from-d3-pointer-d3-v6
-        var x0 = props.x.invert(d3.pointer(e, svg.node())[0]);
+        const x0 = props.x.invert(d3.pointer(e, svg.node())[0]);
         const i = bisect(props.dataX, x0, 1);
-        const d0: any = props.dataX[i - 1]
-        const d1: any = props.dataX[i]
+        const d0: any = props.dataX[i - 1];
+        const d1: any = props.dataX[i];
 
         if (d0 && d1) {
             const d = x0 - d0 > d1 - x0 ? d1 : d0;
 
             tooltip.text(`$ ${props.dataY[i]} `)
 
-            focus.select("#tooltip-point-tracker")
-                .attr("transform", `translate(${props.x(props.dataX[i])}, ${props.y(props.dataY[i])})`);
+            focus.select('#tooltip-point-tracker')
+                .attr('transform', `translate(${props.x(props.dataX[i])}, ${props.y(props.dataY[i])})`);
 
             focus.select("#tooltip-x-line")
                 .attr("transform", `translate(${props.x(props.dataX[i])}, 0)`);
@@ -102,4 +102,4 @@ export const addToolTip = (props: Required<CreateToolTipProps>) => {
         focus.style("opacity", 0);
     }
 
-}
+};

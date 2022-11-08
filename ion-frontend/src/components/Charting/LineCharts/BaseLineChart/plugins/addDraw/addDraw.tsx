@@ -34,15 +34,15 @@ export const addDraw = () => {
 
     function mousemove(e: any) {
         e.preventDefault();
-        let m = d3.pointer(e);
-        line.attr("x2", m[0])
-            .attr("y2", m[1]);
+        const m = d3.pointer(e);
+        line.attr('x2', m[0])
+            .attr('y2', m[1]);
     }
 
     function mouseup() {
-        drawContainer.on("mousemove", () => null);
+        drawContainer.on('mousemove', () => null);
     }
-}
+};
 
 export const removeDraw = (): void => {
     d3.selectAll(`#${LINECHARTIDS.BASE_CONTAINER_ID} #${LINECHARTIDS.BASE_SVG_ID} #${LINECHARTIDS.DRAW_CONTAINER}`).remove();

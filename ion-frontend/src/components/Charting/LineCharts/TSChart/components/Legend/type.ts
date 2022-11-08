@@ -1,4 +1,4 @@
-import { IntRange } from "common/types";
+import { IntRange } from 'common/types';
 
 export interface LegendHeaderType {
     name: string, 

@@ -1,3 +1,3 @@
-import { addLine } from "./addLine";
+import { addLine } from './addLine';
 
-export default addLine
+export default addLine;

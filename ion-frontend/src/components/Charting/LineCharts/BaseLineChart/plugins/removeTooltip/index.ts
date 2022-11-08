@@ -1,3 +1,3 @@
-import { removeToolTip } from "./removeTooltip";
+import { removeToolTip } from './removeTooltip';
 
-export default removeToolTip
+export default removeToolTip;

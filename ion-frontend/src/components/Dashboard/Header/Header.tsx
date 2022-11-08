@@ -1,14 +1,14 @@
-import React from 'react'
-import * as S from './style'
+import React from 'react';
+import * as S from './style';
 
-import ToggleThemeMode from 'components/ToggleThemeMode'
-import Clock from 'components/Clock'
+import ToggleThemeMode from 'components/ToggleThemeMode';
+import Clock from 'components/Clock';
 
 export default function Header() {
-    return (
-        <S.HeaderPanel>
-            <ToggleThemeMode />
-            <Clock />
-        </S.HeaderPanel>
-    )
+	return (
+		<S.HeaderPanel>
+			<ToggleThemeMode />
+			<Clock />
+		</S.HeaderPanel>
+	);
 }

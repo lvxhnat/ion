@@ -54,13 +54,13 @@ export default function BaseLineChart({
                 .classed("svg-content-responsive", true);
 
             // Parse the time in data
-            var parseTime = d3.timeParse(timeParseFormat);
+            const parseTime = d3.timeParse(timeParseFormat);
             const dates: Array<Date> = dataX.map((value: string) => parseTime(value)!); // Parse time should not return null
             const dateTime: Array<number> = dates.map((date: Date) => date.getTime());
 
             // Prep and plot the axis
-            var x = d3.scaleTime().range([margin.left, width - margin.right]);
-            var y = d3.scaleLinear().range([height - margin.top, margin.bottom]);
+            const x = d3.scaleTime().range([margin.left, width - margin.right]);
+            const y = d3.scaleLinear().range([height - margin.top, margin.bottom]);
 
             x.domain([Math.min(...dateTime), Math.max(...dateTime)]);
             y.domain([0, Math.max(...dataY)]);
@@ -102,7 +102,7 @@ export default function BaseLineChart({
             }
 
             // Calculate the Line for plotting
-            var valueLine: any = d3.line()
+            const valueLine: any = d3.line()
                 .defined((_, i: number) => defined[i])
                 .x((_, i: number) => x(dates[i]))
                 .y((_, i: number) => y(dataY[i]));
@@ -131,18 +131,18 @@ export default function BaseLineChart({
 
             // Calculate Area to fill the line chart
             if (showArea) {
-                let area: any = d3.area()
+                const area: any = d3.area()
                     .defined((_, i: number) => defined[i])
                     .curve(d3.curveLinear)
                     .x((_, i: number) => x(dates[i]))
                     .y0(height - margin.top)
                     .y1((_, i: number) => y(dataY[i]));
 
-                svg.append("path")
-                    .attr("id", "base-line-area")
-                    .attr("fill", fillColor)
-                    .attr("opacity", fillOpacity)
-                    .attr("d", area(indexes.filter(i => defined[i])));
+                svg.append('path')
+                    .attr('id', 'base-line-area')
+                    .attr('fill', fillColor)
+                    .attr('opacity', fillOpacity)
+                    .attr('d', area(indexes.filter(i => defined[i])));
             }
 
             C.addLegend({
