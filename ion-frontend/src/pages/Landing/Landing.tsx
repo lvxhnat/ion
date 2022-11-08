@@ -26,8 +26,8 @@ export default function Landing() {
             <CssBaseline />
             <Header />
             <Grid container style={{ height: "90vh" }} spacing={2}>
-                <Grid item xl={2} lg={2} xs={2}></Grid>
-                <Grid item xl={7} lg={7} xs={7}>
+                <Grid item xl={1} lg={1} xs={2}></Grid>
+                <Grid item xl={8} lg={8} xs={7}>
                     {
                         data ?
                             <TSChart dataX={data.X} dataY={data.Y.map((d: string) => parseFloat(d))} /> :

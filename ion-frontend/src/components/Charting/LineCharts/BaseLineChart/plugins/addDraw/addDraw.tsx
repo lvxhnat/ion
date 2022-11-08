@@ -1,20 +1,20 @@
 import * as React from 'react';
 import * as d3 from 'd3';
-import { LineChartConfig } from '../../config';
+import { LINECHARTCONFIGS, LINECHARTIDS } from '../../config';
 
 export const addDraw = () => {
 
     let line: any;
 
-    const svg = d3.selectAll("#linechart-svg-container #linechart")
+    const svg = d3.selectAll(`#${LINECHARTIDS.BASE_SVG_ID}`);
 
     const drawContainer = svg
         .append("rect")
-        .attr("id", "draw-rect")
+        .attr("id", LINECHARTIDS.DRAW_CONTAINER)
         .style("fill", "none")
         .style("pointer-events", "all")
-        .attr('width', LineChartConfig.DEFAULT_WIDTH - LineChartConfig.DEFAULT_MARGIN_LEFT)
-        .attr('height', LineChartConfig.DEFAULT_HEIGHT)
+        .attr('width', LINECHARTCONFIGS.DEFAULT_WIDTH - LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT)
+        .attr('height', LINECHARTCONFIGS.DEFAULT_HEIGHT)
         .on('mousedown', mousedown)
         .on('mouseup', mouseup)
 
@@ -22,7 +22,7 @@ export const addDraw = () => {
         e.preventDefault();
         let m = d3.pointer(e);
         line = svg.append("line")
-            .attr("class", "drawLine")
+            .attr("class", LINECHARTIDS.DRAW_LINE_CLASS)
             .attr("x1", m[0])
             .attr("y1", m[1])
             .attr("x2", m[0])
@@ -45,13 +45,13 @@ export const addDraw = () => {
 }
 
 export const removeDraw = (): void => {
-    d3.selectAll("#linechart-svg-container #linechart #draw-rect").remove();
+    d3.selectAll(`#${LINECHARTIDS.BASE_CONTAINER_ID} #${LINECHARTIDS.BASE_SVG_ID} #${LINECHARTIDS.DRAW_CONTAINER}`).remove();
 }
 
 export const existDrawnLines = (): boolean => {
-    return !d3.selectAll("#linechart-svg-container #linechart .drawLine").empty()
+    return !d3.selectAll(`#${LINECHARTIDS.BASE_CONTAINER_ID} #${LINECHARTIDS.BASE_SVG_ID} .${LINECHARTIDS.DRAW_LINE_CLASS}`).empty()
 }
 
 export const removeDrawnLines = (): void => {
-    d3.selectAll("#linechart-svg-container #linechart .drawLine").remove();
+    d3.selectAll(`#${LINECHARTIDS.BASE_CONTAINER_ID} #${LINECHARTIDS.BASE_SVG_ID} .${LINECHARTIDS.DRAW_LINE_CLASS}`).remove();
 }

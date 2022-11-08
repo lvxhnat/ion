@@ -1,26 +1,17 @@
 import { ColorsEnum } from "common/theme";
 
-/**
- * Contains the ID and Class of SVG encapsulated elements
- */
-const SVGIDs = {
-    BASE_SVG_ID: "linechart-svg"
-}
-
-/**
- * Contains ID and Classes of Non-SVG encapsulated elements
- */
-enum WrapperIDs {
-    BASE_CONTAINER_ID = "linechart-svg-container",
-}
-
 // Nested Enums https://topherpedersen.blog/2021/06/07/nested-enums-in-typescript/
-export const LineChartIDs = {
-    SVGIDs,
-    WrapperIDs
+export const LINECHARTIDS = {
+    BASE_CONTAINER_ID: "linechart-svg-container",
+    BASE_SVG_ID: "linechart-svg",
+    XAXIS_ID: "xAxis",
+    YAXIS_ID: "yAxis",
+
+    DRAW_CONTAINER: "draw-rect",
+    DRAW_LINE_CLASS: "drawLine",
 }
 
-export const LineChartConfig = {
+export const LINECHARTCONFIGS = {
     DEFAULT_WIDTH: 960,
     DEFAULT_HEIGHT: 500,
     DEFAULT_MARGIN_TOP: 10,
@@ -41,4 +32,8 @@ export const LineChartConfig = {
     DEFAULT_TOOLTIP_FONTSIZE: "12px",
     DEFAULT_DARKMODE_TOOLTIP_FONTCOLOR: ColorsEnum.white,
     DEFAULT_LIGHTMODE_TOOLTIP_FONTCOLOR: ColorsEnum.black,
+
+    DEFAULT_LEGEND_BOX_SIZE: 10,
+    DEFAULT_LEGEND_OPACITY: 0.7,
+    DEFAULT_LEGEND_WIDTH: 200,
 }

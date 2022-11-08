@@ -9,10 +9,10 @@ import { useThemeStore } from 'store/theme';
 import { ColorsEnum } from 'common/theme';
 import { calculateSMA } from './helpers/movingAverage';
 
-import { LineChartConfig, LineChartIDs } from './config';
+import { LINECHARTCONFIGS, LINECHARTIDS } from './config';
 
 /**
- * A generalised line chart object, taking date as its x-axis and numerical value on its y-axis. Supports currently the following:
+ * A generalised line chart, taking date as its x-axis and numerical value on its y-axis. Supports currently the following:
  * 1. Normalisation of y-axis
  * 2. Multiple line charts on the same axis
  * @returns 
@@ -20,34 +20,36 @@ import { LineChartConfig, LineChartIDs } from './config';
 export default function BaseLineChart({
     dataX,
     dataY,
-    width = LineChartConfig.DEFAULT_WIDTH,
-    height = LineChartConfig.DEFAULT_HEIGHT,
-    margin = { top: LineChartConfig.DEFAULT_MARGIN_TOP, right: LineChartConfig.DEFAULT_MARGIN_RIGHT, bottom: LineChartConfig.DEFAULT_MARGIN_BOTTOM, left: LineChartConfig.DEFAULT_MARGIN_LEFT },
-    timeParseFormat = LineChartConfig.DEFAULT_TIME_PARSE_FORMAT,
-    showAverage = LineChartConfig.DEFAULT_SHOW_AVERAGE,
-    showGrid = LineChartConfig.DEFAULT_SHOW_GRID,
-    showAxis = LineChartConfig.DEFAULT_SHOW_AXIS,
-    showArea = LineChartConfig.DEFAULT_SHOW_LINE_AREA,
-    showNormalised = LineChartConfig.DEFAULT_SHOW_NORMALISED,
-    showTooltip = LineChartConfig.DEFAULT_SHOW_TOOLTIP,
+    width = LINECHARTCONFIGS.DEFAULT_WIDTH,
+    height = LINECHARTCONFIGS.DEFAULT_HEIGHT,
+    margin = { top: LINECHARTCONFIGS.DEFAULT_MARGIN_TOP, right: LINECHARTCONFIGS.DEFAULT_MARGIN_RIGHT, bottom: LINECHARTCONFIGS.DEFAULT_MARGIN_BOTTOM, left: LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT },
+    timeParseFormat = LINECHARTCONFIGS.DEFAULT_TIME_PARSE_FORMAT,
+    showAverage = LINECHARTCONFIGS.DEFAULT_SHOW_AVERAGE,
+    showGrid = LINECHARTCONFIGS.DEFAULT_SHOW_GRID,
+    showAxis = LINECHARTCONFIGS.DEFAULT_SHOW_AXIS,
+    showArea = LINECHARTCONFIGS.DEFAULT_SHOW_LINE_AREA,
+    showNormalised = LINECHARTCONFIGS.DEFAULT_SHOW_NORMALISED,
+    showTooltip = LINECHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
 }: LineChartProps) {
 
     const { mode } = useThemeStore();
 
     const ref = useD3(
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
+            // Ensure rerender does not duplicate chart
+            if (!svg.selectAll('*').empty()) svg.selectAll('*').remove();
             // set the dimensions and margins of the graph
             const formattedWidth = width - margin.left - margin.right;
             const formattedHeight = height;
             // Configure the color palette of the charts
-            const lineColor = mode === "dark" ? LineChartConfig.DEFAULT_DARKMODE_LINE_COLOR : LineChartConfig.DEFAULT_LIGHTMODE_LINE_COLOR;
-            const fillColor = LineChartConfig.DEFAULT_LINE_AREA_COLOR;
-            const fillOpacity = LineChartConfig.DEFAULT_LINE_AREA_OPACITY;
+            const lineColor = mode === "dark" ? LINECHARTCONFIGS.DEFAULT_DARKMODE_LINE_COLOR : LINECHARTCONFIGS.DEFAULT_LIGHTMODE_LINE_COLOR;
+            const fillColor = LINECHARTCONFIGS.DEFAULT_LINE_AREA_COLOR;
+            const fillOpacity = LINECHARTCONFIGS.DEFAULT_LINE_AREA_OPACITY;
 
             const defined = d3.map(dataY, (_, i) => !isNaN(dataY[i]));
             const indexes = d3.map(dataX, (_, i) => i); // Denotes simply an array containing index values
 
-            svg.attr("viewBox", [0, 0, formattedWidth, formattedHeight])
+            svg.attr("viewBox", [0, 0, formattedWidth + 75, formattedHeight + 15])
                 .attr("preserveAspectRatio", "xMidYMid meet")
                 .classed("svg-content-responsive", true);
 
@@ -71,22 +73,22 @@ export default function BaseLineChart({
                 .tickSize(margin.bottom + margin.top - height)
                 .ticks(0);
 
-            if (showAxis) {
-                xAxis.ticks(10);
+            if (showAxis) { // Set the number of ticks if we want to show the axis
+                xAxis.ticks(20);
                 yAxis.ticks(10);
             }
 
             svg.append("g")
                 .attr("transform", "translate(0," + (height - margin.top) + ")")
-                .attr("class", "xAxis") // Sets a class name for our x axis
+                .attr("id", "xAxis") // Sets a class name for our x axis
                 .call(xAxis)
 
             svg.append("g")
                 .attr("transform", "translate(" + (margin.left) + ",0)")
-                .attr("class", "yAxis") // Set a class name for our y axis
+                .attr("id", "yAxis") // Set a class name for our y axis
                 .call(yAxis)
 
-            if (showAverage) {
+            if (showAverage) { // A horizontal line that shows the average
                 const mean = dataY.reduce((a: number, b: number) => a + b) / dataY.length;
                 svg.append("line")
                     .attr("class", "drawLine")
@@ -112,6 +114,8 @@ export default function BaseLineChart({
                 .attr("stroke-width", 1)
                 .attr("d", valueLine(indexes.filter(i => defined[i])));
 
+
+
             // svg.append("div")
             //     .attr("class", "tag")
             //     .attr("id", "base-line-tag")
@@ -124,11 +128,7 @@ export default function BaseLineChart({
 
 
             if (showGrid) {
-                C.styleGrid({
-                    svg,
-                    xAxis: ".xAxis",
-                    yAxis: ".yAxis"
-                })
+                C.styleGrid()
             }
 
             // Calculate Area to fill the line chart
@@ -147,6 +147,17 @@ export default function BaseLineChart({
                     .attr("d", area(indexes.filter(i => defined[i])));
             }
 
+            C.addLegend({ legend: [{ name: "EUR-USD Spot Price is cool stuff", id: "eur_usd_spot", color: "red", parent: false }, { name: "b", id: "b", color: "yellow", parent: false }] })
+
+            // svg.append("rect")
+            //     .attr("width", "25px")
+            //     .attr("height", "12px")
+            //     .attr("fill", "red")
+            //     .attr("transform", `translate(${formattedWidth - margin.left},${y(dataY[dataY.length - 1] + margin.bottom)})`)
+            //     .append("path")
+            //     .attr("d", function (d) { return d3.symbol().type(d3.symbolTriangle).size(200)(); })
+            //     .attr("transform", `translate(${formattedWidth - margin.left},${y(dataY[dataY.length - 1] + margin.bottom)})`)
+
             // const smas = calculateSMA(dataY, 14)
             // C.addLine({ svg: svg, id: "sma14", x: x, y: y, indexes: indexes, dataX: dates, dataY: smas })
 
@@ -154,10 +165,9 @@ export default function BaseLineChart({
                 C.addToolTip({
                     x: x,
                     y: y,
-                    svg: svg,
                     dataX: dates,
                     dataY: dataY,
-                    fontColor: mode === "dark" ? LineChartConfig.DEFAULT_DARKMODE_TOOLTIP_FONTCOLOR : LineChartConfig.DEFAULT_LIGHTMODE_TOOLTIP_FONTCOLOR,
+                    fontColor: mode === "dark" ? LINECHARTCONFIGS.DEFAULT_DARKMODE_TOOLTIP_FONTCOLOR : LINECHARTCONFIGS.DEFAULT_LIGHTMODE_TOOLTIP_FONTCOLOR,
                 })
             }
 
@@ -167,8 +177,8 @@ export default function BaseLineChart({
 
 
     return (
-        <div id={LineChartIDs.WrapperIDs.BASE_CONTAINER_ID}>
-            <svg ref={ref} id={LineChartIDs.SVGIDs.BASE_SVG_ID}>
+        <div id={LINECHARTIDS.BASE_CONTAINER_ID}>
+            <svg ref={ref} id={LINECHARTIDS.BASE_SVG_ID}>
             </svg>
         </div>
     );

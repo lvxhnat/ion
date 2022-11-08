@@ -16,13 +16,6 @@ export default function TSChart({
     dataY,
 }: TSChartProps) {
 
-    const [legend, setLegend] = React.useState([{
-        name: "test", color: "white", f: () => console.log("s"),
-        indicators: [{
-            name: "sma", color: "yellow", f: () => console.log("removed")
-        }]
-    }]);
-
     return (
         <>
             <Header />

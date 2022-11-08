@@ -1,3 +1,5 @@
+import * as d3 from 'd3'
+import { LINECHARTIDS } from '../../config';
 /**
  * 
  * @param svg 
@@ -5,13 +7,9 @@
  * @param yAxis yAxis className
  * @returns 
  */
-export const styleGrid = (props: {
-    svg: d3.Selection<SVGElement, {}, HTMLElement, any>,
-    xAxis: string,
-    yAxis: string
-}) => {
+export const styleGrid = () => {
 
-    const svg = props.svg;
+    const svg = d3.selectAll(`#${LINECHARTIDS.BASE_SVG_ID}`);
 
     const setGridLineAttributes = (isFirst: boolean) => {
         /** Styles the grid line to specified opacities
@@ -23,12 +21,12 @@ export const styleGrid = (props: {
                 .attr("stroke-dasharray", "2,2"))
     }
 
-    svg.selectAll(props.xAxis)
+    svg.selectAll(`#${LINECHARTIDS.XAXIS_ID}`)
         .call((g: any) => g.select(".domain").remove())
         .call(setGridLineAttributes(true))
         .call(setGridLineAttributes(false));
 
-    svg.selectAll(props.yAxis)
+    svg.selectAll(`#${LINECHARTIDS.YAXIS_ID}`)
         .call((g: any) => g.select(".domain").remove())
         .call(setGridLineAttributes(true))
         .call(setGridLineAttributes(false));

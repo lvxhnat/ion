@@ -1,18 +1,23 @@
+import { ColorsEnum } from 'common/theme';
 import * as d3 from 'd3';
-import { LineChartConfig } from '../../config';
+import { LINECHARTCONFIGS, LINECHARTIDS } from '../../config';
 
 type CreateToolTipProps = {
     x: any,
     y: any,
     fontColor: string,
-    svg: d3.Selection<SVGElement, {}, HTMLElement, any>,
     dataX: Array<Date>,
     dataY: Array<number>,
 }
 
+function formatDateString(d: Date) {
+    const zeroPad = (n: number) => `${`0${(n + 1)}`.slice(-2)}`
+    return `${zeroPad(d.getDate())}/${zeroPad(d.getMonth())}/${d.getFullYear()} ${zeroPad(d.getHours())}:${zeroPad(d.getMinutes())}`
+}
+
 export const addToolTip = (props: Required<CreateToolTipProps>) => {
 
-    const svg = props.svg;
+    const svg = d3.selectAll(`#${LINECHARTIDS.BASE_SVG_ID} `);
     const bisect = d3.bisector((d: any) => d).left;
 
     const focus = svg.append("g")
@@ -20,16 +25,7 @@ export const addToolTip = (props: Required<CreateToolTipProps>) => {
         .style("opacity", 0);
 
     // Create the text that travels along the curve of chart
-    const tooltip = d3.selectAll("#linechart-tooltip")
-        .append('div')
-        .attr('id', 'tooltip')
-        .style("opacity", 0)
-        .attr("transform", `translate(0, -${LineChartConfig.DEFAULT_MARGIN_BOTTOM})`)
-        .style("font-size", LineChartConfig.DEFAULT_TOOLTIP_FONTSIZE)
-        .style("color", props.fontColor)
-        .style("padding", '0 10px')
-        .style("text-align", "left")
-        .attr("alignment-baseline", "middle")
+    const tooltip = d3.selectAll("#eur_usd_spot")
 
     // append the circle at the intersection               
     focus.append("circle")
@@ -38,27 +34,39 @@ export const addToolTip = (props: Required<CreateToolTipProps>) => {
         .style("stroke", props.fontColor)
         .attr("r", 4);
 
+    focus.append("rect")
+        .attr("id", "tooltip-x-tracker")
+        .style("fill", ColorsEnum.white)
+        .attr("width", 80)
+        .attr("height", 20)
+        .attr("transform", `translate(${LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT}, 0)`)
+
+    focus.append("text")
+        .attr("id", "tooltip-x-tracker-text")
+        .attr("font-size", "10px")
+        .attr("transform", `translate(${LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT}, 0)`)
+
     focus.append("line")
         .attr("id", "tooltip-x-line")
         .style("stroke", props.fontColor)
         .style("stroke-dasharray", "3,3")
         .style("opacity", 0.5)
-        .attr("y1", LineChartConfig.DEFAULT_MARGIN_BOTTOM)
-        .attr("y2", LineChartConfig.DEFAULT_HEIGHT - LineChartConfig.DEFAULT_MARGIN_TOP);
+        .attr("y1", LINECHARTCONFIGS.DEFAULT_MARGIN_BOTTOM)
+        .attr("y2", LINECHARTCONFIGS.DEFAULT_HEIGHT - LINECHARTCONFIGS.DEFAULT_MARGIN_TOP);
 
     // Create a rect on top of the svg area: this rectangle recovers mouse position
     svg.append('rect')
         .attr("id", "tooltip-rect")
         .style("fill", "none")
         .style("pointer-events", "all")
-        .attr('width', LineChartConfig.DEFAULT_WIDTH - LineChartConfig.DEFAULT_MARGIN_LEFT)
-        .attr('height', LineChartConfig.DEFAULT_HEIGHT)
+        .attr('width', LINECHARTCONFIGS.DEFAULT_WIDTH - LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT)
+        .attr('height', LINECHARTCONFIGS.DEFAULT_HEIGHT)
         .on('mouseover', mouseover)
         .on('mousemove', mousemove)
         .on('mouseout', mouseout);
 
     function mouseover() {
-        tooltip.style("opacity", 1);
+        tooltip.text(`$ ${props.dataY[props.dataY.length - 1]} `)
         focus.style("opacity", 1);
     }
 
@@ -72,18 +80,25 @@ export const addToolTip = (props: Required<CreateToolTipProps>) => {
         if (d0 && d1) {
             const d = x0 - d0 > d1 - x0 ? d1 : d0;
 
-            tooltip.html(`<b>Date:</b> ${props.dataX[i]} <b>Price:</b> $ ${props.dataY[i]}`)
+            tooltip.text(`$ ${props.dataY[i]} `)
 
             focus.select("#tooltip-point-tracker")
                 .attr("transform", `translate(${props.x(props.dataX[i])}, ${props.y(props.dataY[i])})`);
 
             focus.select("#tooltip-x-line")
                 .attr("transform", `translate(${props.x(props.dataX[i])}, 0)`);
+
+            focus.select("#tooltip-x-tracker")
+                .attr("transform", `translate(${props.x(props.dataX[i])}, ${LINECHARTCONFIGS.DEFAULT_HEIGHT + 5})`)
+
+            focus.select("#tooltip-x-tracker-text")
+                .text(formatDateString(props.dataX[i]))
+                .attr("transform", `translate(${props.x(props.dataX[i])}, ${LINECHARTCONFIGS.DEFAULT_HEIGHT + 14})`)
         }
     }
 
     function mouseout() {
-        tooltip.style("opacity", 0);
+        tooltip.text(`$ ${props.dataY[props.dataY.length - 1]} `)
         focus.style("opacity", 0);
     }
 
