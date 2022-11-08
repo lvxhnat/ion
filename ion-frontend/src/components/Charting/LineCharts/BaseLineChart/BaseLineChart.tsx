@@ -49,7 +49,7 @@ export default function BaseLineChart({
             const defined = d3.map(dataY, (_, i) => !isNaN(dataY[i]));
             const indexes = d3.map(dataX, (_, i) => i); // Denotes simply an array containing index values
 
-            svg.attr("viewBox", [0, 0, formattedWidth + 75, formattedHeight + 15])
+            svg.attr("viewBox", [0, 0, formattedWidth + 110, formattedHeight + 15])
                 .attr("preserveAspectRatio", "xMidYMid meet")
                 .classed("svg-content-responsive", true);
 
@@ -114,8 +114,6 @@ export default function BaseLineChart({
                 .attr("stroke-width", 1)
                 .attr("d", valueLine(indexes.filter(i => defined[i])));
 
-
-
             // svg.append("div")
             //     .attr("class", "tag")
             //     .attr("id", "base-line-tag")
@@ -148,7 +146,7 @@ export default function BaseLineChart({
             }
 
             C.addLegend({ legend: [{ name: "EUR-USD Spot Price is cool stuff", id: "eur_usd_spot", color: "red", parent: false }, { name: "b", id: "b", color: "yellow", parent: false }] })
-
+            C.addEndTags({ y: y, dataY: [dataY[dataY.length - 1]] })
             // svg.append("rect")
             //     .attr("width", "25px")
             //     .attr("height", "12px")
