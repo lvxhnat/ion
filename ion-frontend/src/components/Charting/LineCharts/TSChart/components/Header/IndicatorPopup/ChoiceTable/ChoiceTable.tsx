@@ -5,6 +5,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
+import { INDICATOR_TYPES } from 'components/Charting/LineCharts/TSChart/config';
 
 function createData(
     name: string,
@@ -23,10 +24,6 @@ const rows = [
     createData('Cupcake', 305, 3.7, 67, 4.3),
     createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
-
-enum INDICATOR_TYPES {
-    MOMENTUM = 'Momentum Indicators'
-}
 
 export default function ChoiceTable() {
     const [selection, setSelection] = React.useState(INDICATOR_TYPES.MOMENTUM)

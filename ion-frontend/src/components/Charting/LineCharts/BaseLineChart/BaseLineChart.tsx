@@ -9,7 +9,7 @@ import { useThemeStore } from 'store/theme';
 import { ColorsEnum } from 'common/theme';
 import { calculateSMA } from './helpers/movingAverage';
 
-import { LineChartConfig } from './config';
+import { LineChartConfig, LineChartIDs } from './config';
 
 /**
  * A generalised line chart object, taking date as its x-axis and numerical value on its y-axis. Supports currently the following:
@@ -112,6 +112,16 @@ export default function BaseLineChart({
                 .attr("stroke-width", 1)
                 .attr("d", valueLine(indexes.filter(i => defined[i])));
 
+            // svg.append("div")
+            //     .attr("class", "tag")
+            //     .attr("id", "base-line-tag")
+            //     .attr("width", 0)
+            //     .attr("height", 0)
+            //     .attr("border-top", "60px transparent")
+            //     .attr("border-bottom", "60px transparent")
+            //     .attr("border-left", "60px transparent")
+            //     .attr("transform", "translate(" + (width) + ",0)")
+
 
             if (showGrid) {
                 C.styleGrid({
@@ -151,31 +161,14 @@ export default function BaseLineChart({
                 })
             }
 
-            // C.addDrag({
-            //     x: x,
-            //     y: y,
-            //     svg: svg,
-            // })
         },
         []
     );
 
 
     return (
-        <div id="linechart-svg-container">
-            <div id="linechart-tooltip" style={{ height: 20, backgroundColor: ColorsEnum.darkGrey }}></div>
-            <svg
-                ref={ref}
-                id="linechart"
-                style={{
-                    height: "100%",
-                    width: "100%",
-                    margin: "0px",
-                }}
-            >
-                <g className="plot-area" />
-                <g className="x-axis" />
-                <g className="y-axis" />
+        <div id={LineChartIDs.WrapperIDs.BASE_CONTAINER_ID}>
+            <svg ref={ref} id={LineChartIDs.SVGIDs.BASE_SVG_ID}>
             </svg>
         </div>
     );

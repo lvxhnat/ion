@@ -44,6 +44,14 @@ export const addDraw = () => {
     }
 }
 
-export const removeDraw = () => {
-    d3.selectAll("#linechart-svg-container #linechart #draw-rect").remove()
+export const removeDraw = (): void => {
+    d3.selectAll("#linechart-svg-container #linechart #draw-rect").remove();
+}
+
+export const existDrawnLines = (): boolean => {
+    return !d3.selectAll("#linechart-svg-container #linechart .drawLine").empty()
+}
+
+export const removeDrawnLines = (): void => {
+    d3.selectAll("#linechart-svg-container #linechart .drawLine").remove();
 }
