@@ -145,7 +145,16 @@ export default function BaseLineChart({
                     .attr("d", area(indexes.filter(i => defined[i])));
             }
 
-            C.addLegend({ legend: [{ name: "EUR-USD Spot Price is cool stuff", id: "eur_usd_spot", color: "red", parent: false }, { name: "b", id: "b", color: "yellow", parent: false }] })
+            C.addLegend({
+                legend: [
+                    { name: "EUR-USD Spot Price is cool stuff", id: "eur_usd_spot", color: "red", parent: true },
+                    { name: "b", id: "b", color: "yellow", parent: false },
+                    { name: "c", id: "c", color: "green", parent: false },
+                    { name: "d", id: "d", color: "blue", parent: false },
+                    { name: "e", id: "e", color: "pink", parent: false },
+                    { name: "USD-SGD Spot Price is cool stuff", id: "usd_sgd_spot", color: "red", parent: true },
+                ]
+            })
             C.addEndTags({ y: y, dataY: [dataY[dataY.length - 1]] })
             // svg.append("rect")
             //     .attr("width", "25px")

@@ -23,21 +23,60 @@ export const addLegend = (props: { legend: LegendDataProps }) => {
 
     const svg = d3.selectAll(`#${LINECHARTIDS.BASE_SVG_ID}`);
 
-    const boxXPosition = LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT + 10;
-    const labelXPosition = boxXPosition + LINECHARTCONFIGS.DEFAULT_LEGEND_BOX_SIZE + 10;
-    const valueXPosition = LINECHARTCONFIGS.DEFAULT_LEGEND_WIDTH - 20;
+    const treePosition = LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT + 10;
+    const boxXPosition = treePosition + 10;
+    const labelXPosition = boxXPosition + LINECHARTCONFIGS.DEFAULT_LEGEND_BOX_SIZE + 3;
+    const valueXPosition = LINECHARTCONFIGS.DEFAULT_LEGEND_WIDTH - 15;
+
+    const parentBoxSize = LINECHARTCONFIGS.DEFAULT_LEGEND_PARENT_TREE_BOX_SIZE;
 
     svg.append("g")
         .attr("id", "legend")
         .append("rect")
         .attr("class", "legend-box")
-        .attr("x", LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT + 5)
+        .attr("x", LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT + 2)
         .attr("y", (d, i) => LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15)
         .attr("rx", 5)
-        .attr("height", props.legend.length * LINECHARTCONFIGS.DEFAULT_LEGEND_BOX_SIZE + 20)
+        .attr("height", props.legend.length * (LINECHARTCONFIGS.DEFAULT_LEGEND_BOX_SIZE + 6))
         .attr("width", LINECHARTCONFIGS.DEFAULT_LEGEND_WIDTH)
         .attr("fill", ColorsEnum.darkGrey)
         .attr("opacity", LINECHARTCONFIGS.DEFAULT_LEGEND_OPACITY)
+
+    // Create the tree
+    const legendTree = svg.selectAll("#legend");
+    for (let i = 0; i < props.legend.length; i++) {
+        if (props.legend[i].parent) {
+            legendTree.append("rect")
+                .attr('class', 'parent-indicator')
+                .attr('x', treePosition)
+                .attr('y', LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + (parentBoxSize * 1.5) + i * 15)
+                .attr('width', 5)
+                .attr('height', 5)
+                .attr('stroke', 'white')
+                .attr('fill', 'transparent');
+        } else {
+            const xOffset = treePosition + (5 * 0.5)
+            const y2Offset = LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + (parentBoxSize * 1.5) + i * 15 + 5;
+
+            svg.selectAll("#legend") // Plot the vertical line
+                .append('line')
+                .attr("class", "parent-indicator-line")
+                .attr('x1', xOffset)
+                .attr('x2', xOffset)
+                .attr('y1', LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15 - (parentBoxSize * 0.5))
+                .attr('y2', y2Offset)
+                .attr('stroke', 'white')
+            svg.selectAll("#legend") // Plot the horizontal line
+                .append('line')
+                .attr("class", "parent-indicator-line")
+                .attr('x1', xOffset)
+                .attr('x2', treePosition + parentBoxSize)
+                .attr('y1', y2Offset)
+                .attr('y2', y2Offset)
+                .attr('stroke', 'white')
+
+        }
+    }
 
     // Append the legend squares
     d3.selectAll("#legend")
