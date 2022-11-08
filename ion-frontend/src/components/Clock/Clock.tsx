@@ -23,5 +23,5 @@ export default function Clock() {
 			<span> {marketStatus} </span>
 			<span><b> NYT: </b> {date} </span>
 		</Grid >
-	);
+	)
 }

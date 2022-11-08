@@ -16,12 +16,12 @@ function ToggleThemeMode() {
 	return (
 		<IconButton aria-label="delete" onClick={handleClick} disableRipple>
 			{mode === 'dark' ? (
-				<Brightness7Icon data-testid="theme-mode-light-id" />
+				<Brightness7Icon fontSize="small" data-testid="theme-mode-light-id" />
 			) : (
-				<Brightness4Icon data-testid="theme-mode-dark-id" />
+				<Brightness4Icon fontSize="small" data-testid="theme-mode-dark-id" />
 			)}
 		</IconButton>
 	);
-}
+};
 
 export default ToggleThemeMode;
