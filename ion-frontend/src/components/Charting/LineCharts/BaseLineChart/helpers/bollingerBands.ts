@@ -1,4 +1,1 @@
-
-export function calculateBollinger() {
-
-}
+export function calculateBollinger() {}

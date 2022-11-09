@@ -7,15 +7,11 @@ import Header from './components/Header';
 import BaseLineChart from '../BaseLineChart';
 
 export interface TSChartProps {
-    dataX: Array<string>,
-    dataY: Array<number>,
+    dataX: Array<string>;
+    dataY: Array<number>;
 }
 
-export default function TSChart({
-    dataX,
-    dataY,
-}: TSChartProps) {
-
+export default function TSChart({ dataX, dataY }: TSChartProps) {
     return (
         <>
             <Header />
@@ -29,5 +25,5 @@ export default function TSChart({
                 showTooltip
             />
         </>
-    )
+    );
 }

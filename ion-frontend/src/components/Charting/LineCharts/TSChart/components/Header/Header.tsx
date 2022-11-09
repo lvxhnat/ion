@@ -1,8 +1,8 @@
-import * as React from 'react'
-import * as S from './style'
-import Drawline from './Drawline'
-import IndicatorPopup from './IndicatorPopup'
-import { Clearlines } from './Drawline/Drawline'
+import * as React from 'react';
+import * as S from './style';
+import Drawline from './Drawline';
+import IndicatorPopup from './IndicatorPopup';
+import { Clearlines } from './Drawline/Drawline';
 
 export default function Header() {
     return (
@@ -16,6 +16,6 @@ export default function Header() {
                     <Clearlines />
                 </div>
             </S.EndWrapper>
-        </S.HeaderWrapper >
-    )
+        </S.HeaderWrapper>
+    );
 }

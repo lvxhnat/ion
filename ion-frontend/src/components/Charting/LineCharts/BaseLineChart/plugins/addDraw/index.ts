@@ -1,6 +1,2 @@
-import { addDraw, removeDraw, removeDrawnLines } from "./addDraw"
-export {
-    addDraw,
-    removeDraw,
-    removeDrawnLines,
-}
+import { addDraw, removeDraw, removeDrawnLines } from './addDraw';
+export { addDraw, removeDraw, removeDrawnLines };

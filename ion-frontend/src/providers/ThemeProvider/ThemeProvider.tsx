@@ -8,19 +8,19 @@ import { useThemeStore } from '../../store/theme';
 
 interface ThemeProviderProps {
     modeTheme?: ThemeMode;
-    children?: React.ReactNode
+    children?: React.ReactNode;
 }
 
 const ThemeProvider: FC<ThemeProviderProps> = ({ children, modeTheme }) => {
-	const { mode, setMode } = useThemeStore();
-	const themeMode = modeTheme || 'light';
-	const theme = createTheme(mode || themeMode);
+    const { mode, setMode } = useThemeStore();
+    const themeMode = modeTheme || 'light';
+    const theme = createTheme(mode || themeMode);
 
-	useEffect(() => {
-		setMode(themeMode);
-	}, [setMode, themeMode]);
+    useEffect(() => {
+        setMode(themeMode);
+    }, [setMode, themeMode]);
 
-	return <ThemeMUIProvider theme={theme}>{children}</ThemeMUIProvider>;
+    return <ThemeMUIProvider theme={theme}>{children}</ThemeMUIProvider>;
 };
 
 export default ThemeProvider;

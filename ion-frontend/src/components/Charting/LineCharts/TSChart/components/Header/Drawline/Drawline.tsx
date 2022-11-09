@@ -11,35 +11,35 @@ import { removeDrawnLines } from 'components/Charting/LineCharts/BaseLineChart/p
 import Tooltip from '@mui/material/Tooltip';
 
 export default function Drawline() {
+    const [isDraw, setIsDraw] = React.useState<boolean>(false);
 
-	const [isDraw, setIsDraw] = React.useState<boolean>(false);
+    function handleClick() {
+        if (!isDraw) {
+            addDraw();
+        } else {
+            removeDraw();
+        }
+        setIsDraw(!isDraw);
+    }
 
-	function handleClick() {
-		if (!isDraw) {
-			addDraw();
-		} else {
-			removeDraw();
-		}
-		setIsDraw(!isDraw);
-	}
-
-	return (
-		<S.ButtonWrapper
-			onClick={handleClick}
-			startIcon={isDraw ? <GestureIcon fontSize="small" /> : <QueryStatsIcon fontSize="small" />}
-		>
-			{isDraw ? 'Draw Mode' : 'Tooltip Mode'}
-		</S.ButtonWrapper>
-	);
+    return (
+        <S.ButtonWrapper
+            onClick={handleClick}
+            startIcon={
+                isDraw ? <GestureIcon fontSize="small" /> : <QueryStatsIcon fontSize="small" />
+            }
+        >
+            {isDraw ? 'Draw Mode' : 'Tooltip Mode'}
+        </S.ButtonWrapper>
+    );
 }
 
 export function Clearlines() {
-
     return (
         <Tooltip title="Remove lines drawn on the current chart" sx={{ padding: 0 }}>
-            <IconButton disableRipple onClick={() => removeDrawnLines()} >
+            <IconButton disableRipple onClick={() => removeDrawnLines()}>
                 <DeleteSweepIcon fontSize="small" />
             </IconButton>
         </Tooltip>
-    )
+    );
 }

@@ -1,7 +1,5 @@
-import React from 'react'
+import React from 'react';
 
 export default function SubHeader() {
-    return (
-        <div>SubHeader</div>
-    )
+    return <div>SubHeader</div>;
 }

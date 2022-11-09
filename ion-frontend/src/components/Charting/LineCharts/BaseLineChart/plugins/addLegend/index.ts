@@ -1,3 +1,3 @@
-import { addLegend } from "./addLegend";
+import { addLegend } from './addLegend';
 
-export default addLegend
+export default addLegend;

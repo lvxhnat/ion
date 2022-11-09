@@ -8,16 +8,16 @@ import { shapeTheme } from './shape';
 import { typographyTheme } from './typography';
 
 const defaultTheme = {
-	components: componentsTheme,
-	typography: typographyTheme,
-	shape: shapeTheme,
+    components: componentsTheme,
+    typography: typographyTheme,
+    shape: shapeTheme,
 };
 
 const createTheme = (modeTheme: ThemeMode) => {
-	return createMuiTheme({
-		...defaultTheme,
-		palette: modeTheme === 'light' ? lightPalette : darkPalette,
-	});
+    return createMuiTheme({
+        ...defaultTheme,
+        palette: modeTheme === 'light' ? lightPalette : darkPalette,
+    });
 };
 
 createTheme.components = componentsTheme;
