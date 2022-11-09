@@ -9,9 +9,9 @@ interface LegendObject {
     parent: boolean;
 }
 
-type LegendDataProps = Array<LegendObject>;
+type LegendDataProps = LegendObject[];
 
-function truncateString(s: string) {
+function truncateString(s: string): string {
     if (s.length > 20) return s.slice(0, 20) + '...';
     else return s;
 }
@@ -19,13 +19,13 @@ function truncateString(s: string) {
 /**
  * Accomodates multiple lines for legend plotting
  */
-export const addLegend = (props: { legend: LegendDataProps }) => {
+export const addLegend = (props: { legend: LegendDataProps }): void => {
     const svg = d3.selectAll(`#${LINECHARTIDS.BASE_SVG_ID}`);
 
     const treePosition = LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT + 10;
     const boxXPosition = treePosition + 10;
     const labelXPosition = boxXPosition + LINECHARTCONFIGS.DEFAULT_LEGEND_BOX_SIZE + 3;
-    const valueXPosition = LINECHARTCONFIGS.DEFAULT_LEGEND_WIDTH - 15;
+    const valueXPosition = LINECHARTCONFIGS.DEFAULT_LEGEND_WIDTH - 20;
 
     const parentBoxSize = LINECHARTCONFIGS.DEFAULT_LEGEND_PARENT_TREE_BOX_SIZE;
 
@@ -118,4 +118,5 @@ export const addLegend = (props: { legend: LegendDataProps }) => {
         .style('alignment-baseline', 'middle')
         .style('font-size', '10px')
         .attr('text-anchor', 'left');
+
 };

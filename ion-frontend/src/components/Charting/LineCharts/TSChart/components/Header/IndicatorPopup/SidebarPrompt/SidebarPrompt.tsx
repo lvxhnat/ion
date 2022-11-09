@@ -3,8 +3,6 @@ import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import SsidChartIcon from '@mui/icons-material/SsidChart';
 import ScatterPlotIcon from '@mui/icons-material/ScatterPlot';
@@ -14,7 +12,7 @@ import { ColorsEnum } from 'common/theme';
 
 const drawerWidth = '100%';
 
-export default function SidebarPrompt() {
+export default function SidebarPrompt(): React.ReactElement {
     const { mode } = useThemeStore();
     const mapping = [
         { icon: <SsidChartIcon fontSize="small" />, text: 'Indicators' },
@@ -38,16 +36,11 @@ export default function SidebarPrompt() {
             <List>
                 {mapping.map((item: { icon: React.ReactNode; text: string }, index: number) => (
                     <ListItem key={item.text} disablePadding>
-                        <ListItemButton style={{ padding: '3px 15px', fontSize: '20px' }}>
-                            <ListItemIcon> {item.icon} </ListItemIcon>
-                            <ListItemText
-                                disableTypography
-                                primary={
-                                    <Typography style={{ fontSize: '12px' }}>
-                                        {item.text}
-                                    </Typography>
-                                }
-                            />
+                        <ListItemButton style={{ padding: '5px 10px' }}>
+                            {item.icon}
+                            <Typography style={{ fontSize: '12px', paddingLeft: '10px' }}>
+                                {item.text}
+                            </Typography>
                         </ListItemButton>
                     </ListItem>
                 ))}

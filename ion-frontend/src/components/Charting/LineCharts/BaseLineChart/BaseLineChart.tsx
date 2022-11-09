@@ -6,7 +6,6 @@ import { LineChartProps } from './type';
 import { useD3 } from 'common/hooks/useD3';
 import { useThemeStore } from 'store/theme';
 import { ColorsEnum } from 'common/theme';
-import { calculateSMA } from './helpers/movingAverage';
 
 import { LINECHARTCONFIGS, LINECHARTIDS } from './config';
 
@@ -104,7 +103,7 @@ export default function BaseLineChart({
             // A horizontal line that shows the average
             const mean = dataY.reduce((a: number, b: number) => a + b) / dataY.length;
             svg.append('line')
-                .attr('class', 'drawLine')
+                .attr('class', LINECHARTIDS.DRAW_LINE_CLASS)
                 .attr('x1', margin.left)
                 .attr('y1', y(mean))
                 .attr('x2', width - margin.right)
@@ -115,6 +114,10 @@ export default function BaseLineChart({
                     'stroke',
                     dataY[dataY.length - 1] > mean ? ColorsEnum.upHint : ColorsEnum.downHint
                 );
+        }
+
+        if (showGrid) {
+            C.styleGrid();
         }
 
         // Calculate the Line for plotting
@@ -128,12 +131,8 @@ export default function BaseLineChart({
             .attr('id', 'base-line')
             .attr('fill', 'none')
             .attr('stroke', lineColor)
-            .attr('stroke-width', 1)
+            .attr('stroke-width', LINECHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
             .attr('d', valueLine(indexes.filter(i => defined[i])));
-
-        if (showGrid) {
-            C.styleGrid();
-        }
 
         // Calculate Area to fill the line chart
         if (showArea) {
@@ -152,6 +151,8 @@ export default function BaseLineChart({
                 .attr('d', area(indexes.filter(i => defined[i])));
         }
 
+        C.addEndTags({ y: y, id: 'base', dataY: [dataY[dataY.length - 1]], color: "steelblue" });
+
         C.addLegend({
             legend: [
                 {
@@ -166,16 +167,16 @@ export default function BaseLineChart({
                 { name: 'e', id: 'e', color: 'pink', parent: false },
             ],
         });
-        C.addEndTags({ y: y, dataY: [dataY[dataY.length - 1]] });
 
-        const smas = calculateSMA(dataY, 14);
-        C.addLine({
-            id: 'sma14',
-            x: x,
-            y: y,
-            dataX: dates,
-            dataY: smas,
-        });
+        // const smas = calculateSMA(dataY, 14);
+        // C.addLine({
+        //     id: 'sma14',
+        //     x: x,
+        //     y: y,
+        //     dataX: dates,
+        //     dataY: smas,
+        // });
+        // C.addEndTags({ y: y, id: 'sma14', dataY: [smas[smas.length - 1]], color: "#FFFF00" });
 
         if (showTooltip) {
             C.addToolTip({

@@ -87,10 +87,10 @@ export default function IndicatorPopup() {
 
                 <DialogContent style={{ padding: 0, width: 600, height: 400 }}>
                     <Grid container style={{ height: '100%' }}>
-                        <Grid item xs={4}>
+                        <Grid item xs={3}>
                             <SidebarPrompt />
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={9}>
                             <ChoiceTable />
                         </Grid>
                     </Grid>

@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { LINECHARTIDS } from '../../config';
+import { LINECHARTCONFIGS, LINECHARTIDS } from '../../config';
 
 export const addLine = (props: {
 	x: any;
@@ -23,6 +23,6 @@ export const addLine = (props: {
 		.attr('id', props.id)
 		.attr('fill', 'none')
 		.attr('stroke', 'yellow')
-		.attr('stroke-width', 1)
+		.attr('stroke-width', LINECHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
 		.attr('d', valueLine(d3.range(dataX.length)));
 };
