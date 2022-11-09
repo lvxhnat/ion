@@ -34,7 +34,8 @@ export default function BaseLineChart({
     showArea = LINECHARTCONFIGS.DEFAULT_SHOW_LINE_AREA,
     showNormalised = LINECHARTCONFIGS.DEFAULT_SHOW_NORMALISED,
     showTooltip = LINECHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
-}: LineChartProps) {
+}: LineChartProps): React.ReactElement {
+
     const { mode } = useThemeStore();
 
     const ref = useD3((svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
@@ -59,8 +60,12 @@ export default function BaseLineChart({
 
         // Parse the time in data
         const parseTime = d3.timeParse(timeParseFormat);
-        const dates: Array<Date> = dataX.map((value: string) => parseTime(value)!); // Parse time should not return null
-        const dateTime: Array<number> = dates.map((date: Date) => date.getTime());
+        const dates: Date[] = dataX.map((value: string) => {
+            const val = parseTime(value);
+            if (val !== null) return val;
+            else throw new Error("Value returned cannot be parsed to date in parseTime function")
+        }); // Parse time should not return null
+        const dateTime: number[] = dates.map((date: Date) => date.getTime());
 
         // Prep and plot the axis
         const x = d3.scaleTime().range([margin.left, width - margin.right]);
@@ -165,11 +170,9 @@ export default function BaseLineChart({
 
         const smas = calculateSMA(dataY, 14);
         C.addLine({
-            svg: svg,
             id: 'sma14',
             x: x,
             y: y,
-            indexes: indexes,
             dataX: dates,
             dataY: smas,
         });
