@@ -4,11 +4,13 @@
       "es6": true,
       "node": true,
       "browser": true,
-        "es2021": true
+      "es2021": true
     },
     "parserOptions": {
       "project": "./tsconfig.json",
-      "createDefaultProgram": true
+      "createDefaultProgram": true,
+      "sourceType": "module",
+      "allowImportExportEverywhere": true
     },
     "plugins": ["@typescript-eslint", "testing-library"],
     "rules": {
@@ -27,7 +29,7 @@
     "extends": [
       "plugin:testing-library/react",
       "prettier",
-      "plugin:prettier/recommended",
+      "plugin:prettier/recommended"
     ],
     "overrides": [
       // Only uses Testing Library lint rules in test files

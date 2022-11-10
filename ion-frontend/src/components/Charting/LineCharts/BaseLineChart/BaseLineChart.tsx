@@ -34,7 +34,6 @@ export default function BaseLineChart({
     showNormalised = LINECHARTCONFIGS.DEFAULT_SHOW_NORMALISED,
     showTooltip = LINECHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
 }: LineChartProps): React.ReactElement {
-
     const { mode } = useThemeStore();
 
     const ref = useD3((svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
@@ -62,7 +61,7 @@ export default function BaseLineChart({
         const dates: Date[] = dataX.map((value: string) => {
             const val = parseTime(value);
             if (val !== null) return val;
-            else throw new Error("Value returned cannot be parsed to date in parseTime function")
+            else throw new Error('Value returned cannot be parsed to date in parseTime function');
         }); // Parse time should not return null
         const dateTime: number[] = dates.map((date: Date) => date.getTime());
 
@@ -151,13 +150,13 @@ export default function BaseLineChart({
                 .attr('d', area(indexes.filter(i => defined[i])));
         }
 
-        C.addEndTags({ y, id: 'base', dataY: [dataY[dataY.length - 1]], color: "steelblue" });
+        C.addEndTags({ y, id: 'base', dataY: [dataY[dataY.length - 1]], color: 'steelblue' });
 
         C.addLegend({
             legend: [
                 {
                     name: 'EUR-USD Spot Price is cool stuff',
-                    id: 'eur_usd_spot',
+                    id: 'base',
                     color: 'red',
                     parent: true,
                 },
@@ -176,12 +175,13 @@ export default function BaseLineChart({
         //     dataX: dates,
         //     dataY: smas,
         // });
-        // C.addEndTags({ y: y, id: 'sma14', dataY: [smas[smas.length - 1]], color: "#FFFF00" });
+        // C.addEndTags({ y: y, id: 'sma14', dataY: [smas[smas.length - 1]], color: '#FFFF00' });
 
         if (showTooltip) {
             C.addToolTip({
                 x,
                 y,
+                id: 'base',
                 dataX: dates,
                 dataY,
                 fontColor:

@@ -2,14 +2,25 @@ import { ColorsEnum } from 'common/theme';
 
 // Nested Enums https://topherpedersen.blog/2021/06/07/nested-enums-in-typescript/
 export const LINECHARTIDS = {
-    BASE_CONTAINER_ID: 'linechart-svg-container',
+    BASE_CONTAINER_ID: 'linechart',
     BASE_SVG_ID: 'linechart-svg',
     XAXIS_ID: 'xAxis',
     YAXIS_ID: 'yAxis',
-
     DRAW_CONTAINER: 'draw-rect',
     DRAW_LINE_CLASS: 'drawLine',
-
+    ENDTAG_GROUP_ID: 'end-tags',
+    LEGEND_GROUP_ID: 'legend',
+    LEGEND_BOX_CLASS: 'legend-box',
+    LEGEND_HINT_CLASS: 'parent-indicator',
+    LEGEND_SQUARE_CLASS: 'legend-square',
+    LEGEND_TEXT_CLASS: 'legend-text',
+    LEGEND_VALUE_CLASS: 'legend-value',
+    TOOLTIP_FOCUS_CLASS: 'tooltip-focus',
+    TOOLTIP_CIRCLE_TRACKER_CLASS: 'tooltip-point-tracker',
+    TOOLTIP_RECT_TRACKER_CLASS: 'tooltip-x-tracker',
+    TOOLTIP_RECT_TEXT_CLASS: 'tooltip-x-tracker-text',
+    TOOLTIP_LINE_CLASS: 'tooltip-x-line',
+    TOOLTIP_ENCOMPASSING_RECT_CLASS: 'tooltip-rect',
 };
 
 export const LINECHARTCONFIGS = {
@@ -19,6 +30,7 @@ export const LINECHARTCONFIGS = {
     DEFAULT_MARGIN_RIGHT: 30,
     DEFAULT_MARGIN_BOTTOM: 20,
     DEFAULT_MARGIN_LEFT: 35,
+    DEFAULT_CHART_FONTSIZE: '10px',
     DEFAULT_TIME_PARSE_FORMAT: '%Y-%m-%d',
     DEFAULT_SHOW_AVERAGE: false,
     DEFAULT_SHOW_GRID: false,
