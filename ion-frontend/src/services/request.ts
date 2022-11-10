@@ -3,7 +3,7 @@ import axios from 'axios';
 const baseURL = process.env.REACT_APP_BASE_URL;
 
 const request = axios.create({
-    baseURL: baseURL,
+    baseURL,
     timeout: 10000,
     headers: {
         Authorization: 'null',
@@ -23,12 +23,12 @@ request.interceptors.response.use(
 
         if (typeof error.response === 'undefined') {
             window.location.href = '/error404/';
-            return Promise.reject(error);
+            return await Promise.reject(error);
         }
 
         if (error.response.status === 401 && originalRequest.url === baseURL + 'token/refresh/') {
             window.location.href = '/login/';
-            return Promise.reject(error);
+            return await Promise.reject(error);
         }
 
         if (
@@ -39,7 +39,7 @@ request.interceptors.response.use(
         }
         console.error(error.response);
         // specific error handling done elsewhere
-        return Promise.reject(error);
+        return await Promise.reject(error);
     }
 );
 

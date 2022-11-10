@@ -12,11 +12,11 @@ export interface FormattedForexDataType extends ForexTableDataType {
     ask_change?: -1 | 0 | 1;
 }
 
-export type StyledTableCellProps = {
+export interface StyledTableCellProps {
     children?: React.ReactNode;
     isHeader?: boolean;
     width?: string;
-};
+}
 
 export interface ForexTableHeaderType {
     name: keyof ForexTableDataType;

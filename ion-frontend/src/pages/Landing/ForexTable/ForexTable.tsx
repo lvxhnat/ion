@@ -40,7 +40,7 @@ export default function ForexTable() {
         }
     });
 
-    const tableHeaders: Array<ForexTableHeaderType> = [
+    const tableHeaders: ForexTableHeaderType[] = [
         { name: 'instrument', index: 'instrument', width: 25 },
         { name: 'closeoutBid', index: 'closeoutBid', width: 25 },
         { name: 'closeoutAsk', index: 'closeoutAsk', width: 25 },

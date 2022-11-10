@@ -11,7 +11,7 @@
  * @param array Containing the values we wish to calculate SMA for
  * @param period
  */
-export function calculateSMA(array: Array<number>, period: number, decimalPlaces = 2) {
+export function calculateSMA(array: number[], period: number, decimalPlaces = 2) {
     const sma = new Array(array.length);
 
     // Initialise the first values
@@ -29,7 +29,7 @@ export function calculateSMA(array: Array<number>, period: number, decimalPlaces
 }
 
 export function calculateEMA(
-    array: Array<number>,
+    array: number[],
     period: number,
     smoothing = 2,
     decimalPlaces = 2

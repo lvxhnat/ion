@@ -19,7 +19,7 @@ export const addDraw = () => {
 
     function mousedown(e: any) {
         e.preventDefault();
-        let m = d3.pointer(e);
+        const m = d3.pointer(e);
         line = svg
             .append('line')
             .attr('class', LINECHARTIDS.DRAW_LINE_CLASS)

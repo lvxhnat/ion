@@ -151,7 +151,7 @@ export default function BaseLineChart({
                 .attr('d', area(indexes.filter(i => defined[i])));
         }
 
-        C.addEndTags({ y: y, id: 'base', dataY: [dataY[dataY.length - 1]], color: "steelblue" });
+        C.addEndTags({ y, id: 'base', dataY: [dataY[dataY.length - 1]], color: "steelblue" });
 
         C.addLegend({
             legend: [
@@ -180,10 +180,10 @@ export default function BaseLineChart({
 
         if (showTooltip) {
             C.addToolTip({
-                x: x,
-                y: y,
+                x,
+                y,
                 dataX: dates,
-                dataY: dataY,
+                dataY,
                 fontColor:
                     mode === 'dark'
                         ? LINECHARTCONFIGS.DEFAULT_DARKMODE_TOOLTIP_FONTCOLOR

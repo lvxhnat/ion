@@ -7,7 +7,7 @@ import { StyledTableCell } from '../ForexTable';
 import { ColorsEnum } from 'common/theme';
 
 export default function ForexTableRow(props: {
-    tableHeaders: Array<ForexTableHeaderType>;
+    tableHeaders: ForexTableHeaderType[];
     forexPair: string;
 }) {
     const forexStream: FormattedForexDataType = forexStreamStore(

@@ -10,8 +10,8 @@ export function unpackOandaFXStream(oandaStreamObject: string): ForexTableDataTy
         const closeoutAsk: number = parseFloat(priceStream.closeoutAsk);
         return {
             instrument: priceStream.instrument,
-            closeoutBid: closeoutBid,
-            closeoutAsk: closeoutAsk,
+            closeoutBid,
+            closeoutAsk,
             spread: parseFloat(Math.abs(closeoutBid - closeoutAsk).toFixed(5)),
         };
     }

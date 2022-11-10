@@ -2,13 +2,13 @@ import { ColorsEnum } from 'common/theme';
 import * as d3 from 'd3';
 import { LINECHARTCONFIGS, LINECHARTIDS } from '../../config';
 
-type CreateToolTipProps = {
+interface CreateToolTipProps {
     x: any;
     y: any;
     fontColor: string;
-    dataX: Array<Date>;
-    dataY: Array<number>;
-};
+    dataX: Date[];
+    dataY: number[];
+}
 
 function formatDateString(d: Date) {
     const zeroPad = (n: number) => `${`0${n + 1}`.slice(-2)}`;

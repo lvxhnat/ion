@@ -1,4 +1,4 @@
-export type IndicatorProps = Array<IndicatorProp>;
+export type IndicatorProps = IndicatorProp[];
 
 interface IndicatorTableDataType {
     date: string;

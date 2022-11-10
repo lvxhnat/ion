@@ -6,6 +6,7 @@ export default class BaseSocket {
         2: 'CLOSING',
         3: 'CLOSED',
     };
+
     _socketName: string;
 
     constructor({
@@ -17,16 +18,16 @@ export default class BaseSocket {
         socket?: WebSocket;
         name?: string;
     }) {
-        if (!socketURL && !socket)
+        if (!socketURL && (socket == null))
             throw new Error(
                 'Ensure that socket is initialised with either a url or an existing socket.'
             );
-        if (socketURL && socket)
+        if (socketURL && (socket != null))
             console.warn(
                 'Socket URL and Socket initialised. Prioritising initialised Socket connection.'
             );
-        this._socket = socket ? socket : new WebSocket(socketURL!);
-        this._socketName = name ? name : this.#generateUUID();
+        this._socket = (socket != null) ? socket : new WebSocket(socketURL!);
+        this._socketName = name || this.#generateUUID();
     }
 
     /**
@@ -51,7 +52,7 @@ export default class BaseSocket {
         let d = new Date().getTime();
         let d2 =
             (typeof performance !== 'undefined' && performance.now && performance.now() * 1000) ||
-            0; //Time in microseconds since page-load or 0 if unsupported
+            0; // Time in microseconds since page-load or 0 if unsupported
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
             let r = Math.random() * 16;
             if (d > 0) {

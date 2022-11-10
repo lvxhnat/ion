@@ -1,6 +1,6 @@
-export type LineChartProps = {
-    dataX: Array<string>;
-    dataY: Array<number>;
+export interface LineChartProps {
+    dataX: string[];
+    dataY: number[];
     width?: number;
     height?: number;
     margin?: {
@@ -16,4 +16,4 @@ export type LineChartProps = {
     showArea?: boolean;
     showNormalised?: boolean;
     showTooltip?: boolean;
-};
+}
