@@ -4,93 +4,51 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
+
+import { INDICATOR_ENGINE } from 'components/Charting/LineCharts/TSChart/helpers/indicators';
+import { GeneralTableTypeProp } from './configs';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import { INDICATOR_TYPES } from 'components/Charting/LineCharts/TSChart/config';
-import { MOMENTUM_INDICATORS } from './configs';
-
-function createData(
-    name: string,
-    calories: number,
-    fat: number,
-    carbs: number,
-    protein: number
-): any {
-    return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 
 export default function ChoiceTable(): React.ReactElement {
-    const [indicatorSelection, setIndicatorSelection] = React.useState<string>(
-        MOMENTUM_INDICATORS[0].id
+    const [indicatorGroupSelection, setIndicatorGroupSelection] = React.useState<string>(
+        Object.keys(INDICATOR_ENGINE)[0]
     );
-    const [assetSelection, setAssetSelection] = React.useState<string>(rows[0].name);
-    const [typeSelection, setTypeSelection] = React.useState<string>(INDICATOR_TYPES.MOMENTUM);
-
+    const [indicatorSelection, setIndicatorSelection] = React.useState<string | null>(null);
     return (
         <>
             <S.ChipWrapper>
-                <S.StyledChip
-                    clickable
-                    size="small"
-                    label={INDICATOR_TYPES.MOMENTUM}
-                    variant={typeSelection === INDICATOR_TYPES.MOMENTUM ? 'filled' : 'outlined'}
-                    onClick={() => setTypeSelection(INDICATOR_TYPES.MOMENTUM)}
-                />
+                {Object.keys(INDICATOR_ENGINE).map((key: string) => (
+                    <S.StyledChip
+                        clickable
+                        size="small"
+                        key={key}
+                        label={
+                            <Typography variant="body1">{INDICATOR_ENGINE[key].name}</Typography>
+                        }
+                        variant={indicatorGroupSelection === key ? 'filled' : 'outlined'}
+                        onClick={() => setIndicatorGroupSelection(key)}
+                    />
+                ))}
             </S.ChipWrapper>
-            <Grid container>
-                <Grid item xs={4}>
-                    <Table size="small">
-                        <TableBody>
-                            {rows.map(row => (
-                                <TableRow
-                                    hover
-                                    key={row.name}
-                                    selected={assetSelection === row.name}
-                                    onClick={() => setAssetSelection(row.name)}
-                                    sx={{
-                                        '&:last-child td, &:last-child th': { border: 0 },
-                                        '&:hover': { cursor: 'pointer' },
-                                    }}
-                                >
-                                    <TableCell component="td" scope="row" style={{ border: 0 }}>
-                                        <Typography variant="body1">{row.name}</Typography>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </Grid>
-                <Grid item xs={8}>
-                    <Table size="small">
-                        <TableBody>
-                            {MOMENTUM_INDICATORS.map(row => (
-                                <TableRow
-                                    hover
-                                    key={row.id}
-                                    selected={indicatorSelection === row.id}
-                                    onClick={() => setIndicatorSelection(row.id)}
-                                    sx={{
-                                        '&:last-child td, &:last-child th': { border: 0 },
-                                        '&:hover': { cursor: 'pointer' },
-                                    }}
-                                >
-                                    <TableCell component="th" scope="row" style={{ border: 0 }}>
-                                        <Typography variant="body1">{row.name}</Typography>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </Grid>
-            </Grid>
+            <Table size="small">
+                <TableBody>
+                    {INDICATOR_ENGINE[indicatorGroupSelection].types.map(
+                        (engines: GeneralTableTypeProp<number[]>) => (
+                            <TableRow
+                                hover
+                                key={engines.id}
+                                selected={indicatorSelection === engines.id}
+                                onClick={() => setIndicatorSelection(engines.id)}
+                                sx={{ '&:hover': { cursor: 'pointer' } }}
+                            >
+                                <TableCell component="th" scope="row" style={{ border: 0 }}>
+                                    <Typography variant="body1">{engines.name}</Typography>
+                                </TableCell>
+                            </TableRow>
+                        )
+                    )}
+                </TableBody>
+            </Table>
         </>
     );
 }

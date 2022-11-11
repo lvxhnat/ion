@@ -1,10 +1,16 @@
-interface IndicatorConfigs {
-    name: string;
+import * as React from 'react';
+import { INDICATOR_ENGINE } from 'components/Charting/LineCharts/TSChart/helpers/indicators';
+
+export interface GeneralTableProps<T> {
     id: string;
-    configs: {};
+    name: string;
+    types: GeneralTableTypeProp<T>[];
 }
 
-export const MOMENTUM_INDICATORS: IndicatorConfigs[] = [
-    { name: 'Simple Moving Average', id: 'sma', configs: {} },
-    { name: 'Exponential Moving Average', id: 'ema', configs: {} },
-];
+export interface GeneralTableTypeProp<T> {
+    id: string;
+    name: string;
+    callback: ((arr: T, ...params: any) => T) | ((params: T) => T);
+}
+
+export type GeneralTableActionType = GeneralTableProps<any>[];
