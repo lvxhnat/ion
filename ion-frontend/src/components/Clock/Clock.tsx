@@ -18,7 +18,7 @@ export default function Clock() {
     }, []);
 
     return (
-        <Grid container alignItems="center" sx={{ fontSize: '14px' }}>
+        <Grid container alignItems="center" sx={{ fontSize: '0.9rem' }}>
             <span> {marketStatus} </span>
             <span>
                 <b> NYT: </b> {date}{' '}

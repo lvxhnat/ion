@@ -74,7 +74,7 @@ export default function IndicatorPopup() {
             </S.ButtonWrapper>
             <BootstrapDialog onClose={handleClose} open={open}>
                 <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-                    <Typography style={{ fontSize: '14px' }}>
+                    <Typography style={{ fontSize: '0.9rem' }}>
                         Indicators, Metrics, Strategies
                     </Typography>
                 </BootstrapDialogTitle>

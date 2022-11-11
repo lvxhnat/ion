@@ -62,7 +62,7 @@ export default function ChoiceTable(): React.ReactElement {
                                     <TableCell
                                         component="td"
                                         scope="row"
-                                        style={{ fontSize: '12px', border: 0 }}
+                                        style={{ fontSize: '0.75rem', border: 0 }}
                                     >
                                         {row.name}
                                     </TableCell>
@@ -88,7 +88,7 @@ export default function ChoiceTable(): React.ReactElement {
                                     <TableCell
                                         component="th"
                                         scope="row"
-                                        style={{ fontSize: '12px', border: 0 }}
+                                        style={{ fontSize: '0.75rem', border: 0 }}
                                     >
                                         {row.name}
                                     </TableCell>
