@@ -36,7 +36,7 @@ const Search: FC<SearchProps> = ({ callback, placeholder, fullWidth }) => {
                     },
                     startAdornment: (
                         <InputAdornment position="start">
-                            <SearchIcon style={{ fontSize: '18px' }} />
+                            <SearchIcon fontSize="medium" />
                         </InputAdornment>
                     ),
                     ...(search && {
@@ -48,7 +48,7 @@ const Search: FC<SearchProps> = ({ callback, placeholder, fullWidth }) => {
                                     onClick={() => setSearch('')}
                                     edge="end"
                                 >
-                                    <CloseIcon style={{ fontSize: '18px' }} />
+                                    <CloseIcon fontSize="medium" />
                                 </IconButton>
                             </InputAdornment>
                         ),

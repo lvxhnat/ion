@@ -4,8 +4,9 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 import { INDICATOR_TYPES } from 'components/Charting/LineCharts/TSChart/config';
-import { Grid } from '@mui/material';
 import { MOMENTUM_INDICATORS } from './configs';
 
 function createData(
@@ -59,12 +60,8 @@ export default function ChoiceTable(): React.ReactElement {
                                         '&:hover': { cursor: 'pointer' },
                                     }}
                                 >
-                                    <TableCell
-                                        component="td"
-                                        scope="row"
-                                        style={{ fontSize: '0.8rem', border: 0 }}
-                                    >
-                                        {row.name}
+                                    <TableCell component="td" scope="row" style={{ border: 0 }}>
+                                        <Typography variant="body1">{row.name}</Typography>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -85,12 +82,8 @@ export default function ChoiceTable(): React.ReactElement {
                                         '&:hover': { cursor: 'pointer' },
                                     }}
                                 >
-                                    <TableCell
-                                        component="th"
-                                        scope="row"
-                                        style={{ fontSize: '0.8rem', border: 0 }}
-                                    >
-                                        {row.name}
+                                    <TableCell component="th" scope="row" style={{ border: 0 }}>
+                                        <Typography variant="body1">{row.name}</Typography>
                                     </TableCell>
                                 </TableRow>
                             ))}
