@@ -1,6 +1,7 @@
 export interface LineChartProps {
     dataX: string[];
     dataY: number[];
+    data?: number[] | null;
     width?: number;
     height?: number;
     margin?: {

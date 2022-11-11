@@ -7,7 +7,7 @@ REACT_APP_BASE_URL="http://localhost:1236/api"
 REACT_APP_WEBSOCKET_URL="ws://localhost:1236/"
 ```
 
-### Using ```npm```
+### Using `npm`
 
 #### `npm start`
 
@@ -32,6 +32,6 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### Using ```yarn```
+### Using `yarn`
 
 #### `yarn start`

@@ -18,7 +18,9 @@ import { useThemeStore } from 'store/theme';
 export function StyledTableCell({ children, isHeader, width }: StyledTableCellProps) {
     return (
         <S.TableCellWrapper width={width}>
-            <S.TableCellLabel isHeader={isHeader}>{children}</S.TableCellLabel>
+            <S.TableCellLabel align="center" isHeader={isHeader}>
+                {children}
+            </S.TableCellLabel>
         </S.TableCellWrapper>
     );
 }
@@ -48,8 +50,8 @@ export default function ForexTable() {
     ];
 
     return (
-        <TableContainer>
-            <Table sx={{ minWidth: 150 }} size="small" aria-label="a dense table">
+        <TableContainer style={{ width: '100%' }}>
+            <Table style={{ minWidth: 150 }} size="small" aria-label="a dense table">
                 <TableHead>
                     <TableRow
                         sx={{

@@ -1,5 +1,3 @@
-import * as Plugins from 'components/Charting/LineCharts/BaseLineChart/plugins'
+import * as Plugins from 'components/Charting/LineCharts/BaseLineChart/plugins';
 
-export function addLine() {
-
-}
+export function addLine() {}

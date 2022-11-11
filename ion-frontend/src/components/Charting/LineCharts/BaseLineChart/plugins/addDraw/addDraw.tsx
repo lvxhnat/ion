@@ -9,7 +9,7 @@ export const addDraw = () => {
 
     const drawContainer = svg
         .append('rect')
-        .attr('id', LINECHARTIDS.DRAW_CONTAINER)
+        .attr('id', LINECHARTIDS.DRAW_CONTAINER_ID)
         .style('fill', 'none')
         .style('pointer-events', 'all')
         .attr('width', LINECHARTCONFIGS.DEFAULT_WIDTH - LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT)
@@ -17,8 +17,11 @@ export const addDraw = () => {
         .on('mousedown', mousedown)
         .on('mouseup', mouseup);
 
-    function mousedown(e: any) {
+    function mousedown(e: MouseEvent) {
+        e.stopPropagation();
+        e.stopImmediatePropagation();
         e.preventDefault();
+
         const m = d3.pointer(e);
         line = svg
             .append('line')
@@ -32,20 +35,23 @@ export const addDraw = () => {
         drawContainer.on('mousemove', mousemove);
     }
 
-    function mousemove(e: any) {
-        e.preventDefault();
+    function mousemove(e: MouseEvent) {
         const m = d3.pointer(e);
         line.attr('x2', m[0]).attr('y2', m[1]);
     }
 
-    function mouseup() {
+    function mouseup(e: MouseEvent) {
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        e.preventDefault();
+
         drawContainer.on('mousemove', () => null);
     }
 };
 
 export const removeDraw = (): void => {
     d3.selectAll(
-        `#${LINECHARTIDS.BASE_CONTAINER_ID} #${LINECHARTIDS.BASE_SVG_ID} #${LINECHARTIDS.DRAW_CONTAINER}`
+        `#${LINECHARTIDS.BASE_CONTAINER_ID} #${LINECHARTIDS.BASE_SVG_ID} #${LINECHARTIDS.DRAW_CONTAINER_ID}`
     ).remove();
 };
 

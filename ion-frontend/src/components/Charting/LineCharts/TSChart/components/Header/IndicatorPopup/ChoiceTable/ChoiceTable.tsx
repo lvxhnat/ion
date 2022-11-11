@@ -8,7 +8,13 @@ import { INDICATOR_TYPES } from 'components/Charting/LineCharts/TSChart/config';
 import { Grid } from '@mui/material';
 import { MOMENTUM_INDICATORS } from './configs';
 
-function createData(name: string, calories: number, fat: number, carbs: number, protein: number): any {
+function createData(
+    name: string,
+    calories: number,
+    fat: number,
+    carbs: number,
+    protein: number
+): any {
     return { name, calories, fat, carbs, protein };
 }
 
@@ -21,7 +27,9 @@ const rows = [
 ];
 
 export default function ChoiceTable(): React.ReactElement {
-    const [indicatorSelection, setIndicatorSelection] = React.useState<string>(MOMENTUM_INDICATORS[0].id);
+    const [indicatorSelection, setIndicatorSelection] = React.useState<string>(
+        MOMENTUM_INDICATORS[0].id
+    );
     const [assetSelection, setAssetSelection] = React.useState<string>(rows[0].name);
     const [typeSelection, setTypeSelection] = React.useState<string>(INDICATOR_TYPES.MOMENTUM);
 
@@ -51,7 +59,11 @@ export default function ChoiceTable(): React.ReactElement {
                                         '&:hover': { cursor: 'pointer' },
                                     }}
                                 >
-                                    <TableCell component="td" scope="row" style={{ fontSize: '12px', border: 0 }}>
+                                    <TableCell
+                                        component="td"
+                                        scope="row"
+                                        style={{ fontSize: '12px', border: 0 }}
+                                    >
                                         {row.name}
                                     </TableCell>
                                 </TableRow>
@@ -73,11 +85,15 @@ export default function ChoiceTable(): React.ReactElement {
                                         '&:hover': { cursor: 'pointer' },
                                     }}
                                 >
-                                    <TableCell component="th" scope="row" style={{ fontSize: '12px', border: 0 }}>
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        style={{ fontSize: '12px', border: 0 }}
+                                    >
                                         {row.name}
                                     </TableCell>
-                                </TableRow>)
-                            )}
+                                </TableRow>
+                            ))}
                         </TableBody>
                     </Table>
                 </Grid>

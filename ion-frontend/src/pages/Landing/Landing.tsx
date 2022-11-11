@@ -13,14 +13,15 @@ export default function Landing(): React.ReactElement {
     React.useEffect(() => {
         d3.csv(
             'https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered_comma.csv'
-        ).catch()
+        )
+            .catch()
             .then((d: any) => {
                 setData({
                     X: d.map((d_: any) => d_.date).slice(0, 500),
                     Y: d.map((d_: any) => d_.value).slice(0, 500),
                 });
             })
-            .catch(() => null)
+            .catch(() => null);
     }, []);
 
     return (

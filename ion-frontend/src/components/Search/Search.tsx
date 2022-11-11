@@ -19,7 +19,7 @@ const Search: FC<SearchProps> = ({ callback, placeholder, fullWidth }) => {
 
     const searchDebounce = useDebounce(search);
     useEffect(() => {
-        (callback != null) && callback(searchDebounce.trim());
+        callback != null && callback(searchDebounce.trim());
     }, [callback, searchDebounce]);
 
     return (

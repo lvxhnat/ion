@@ -18,15 +18,15 @@ export default class BaseSocket {
         socket?: WebSocket;
         name?: string;
     }) {
-        if (!socketURL && (socket == null))
+        if (!socketURL && socket == null)
             throw new Error(
                 'Ensure that socket is initialised with either a url or an existing socket.'
             );
-        if (socketURL && (socket != null))
+        if (socketURL && socket != null)
             console.warn(
                 'Socket URL and Socket initialised. Prioritising initialised Socket connection.'
             );
-        this._socket = (socket != null) ? socket : new WebSocket(socketURL!);
+        this._socket = socket != null ? socket : new WebSocket(socketURL!);
         this._socketName = name || this.#generateUUID();
     }
 

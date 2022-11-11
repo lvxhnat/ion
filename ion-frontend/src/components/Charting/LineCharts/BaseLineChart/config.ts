@@ -2,12 +2,12 @@ import { ColorsEnum } from 'common/theme';
 
 // Nested Enums https://topherpedersen.blog/2021/06/07/nested-enums-in-typescript/
 export const LINECHARTIDS = {
-    BASE_CONTAINER_ID: 'linechart',
-    BASE_SVG_ID: 'linechart-svg',
-    XAXIS_ID: 'xAxis',
-    YAXIS_ID: 'yAxis',
-    DRAW_CONTAINER: 'draw-rect',
-    DRAW_LINE_CLASS: 'drawLine',
+    BASE_CONTAINER_ID: 'linechart', // ID for div container
+    BASE_SVG_ID: 'linechart-svg', // ID for SVG
+    XAXIS_ID: 'x-axis',
+    YAXIS_ID: 'y-axis',
+    DRAW_CONTAINER_ID: 'draw-rect', // rect class for containing all drawn lines
+    DRAW_LINE_CLASS: 'drawLine', // class for lines drawn by "draw mode"
     ENDTAG_GROUP_ID: 'end-tags',
     LEGEND_GROUP_ID: 'legend',
     LEGEND_BOX_CLASS: 'legend-box',
@@ -30,6 +30,7 @@ export const LINECHARTCONFIGS = {
     DEFAULT_MARGIN_RIGHT: 30,
     DEFAULT_MARGIN_BOTTOM: 20,
     DEFAULT_MARGIN_LEFT: 35,
+    DEFAULT_DATA: null, // No additional data, plot only one line
     DEFAULT_CHART_FONTSIZE: '10px',
     DEFAULT_TIME_PARSE_FORMAT: '%Y-%m-%d',
     DEFAULT_SHOW_AVERAGE: false,
