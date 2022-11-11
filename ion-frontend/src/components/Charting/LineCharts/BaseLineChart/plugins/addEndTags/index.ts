@@ -1,3 +1,3 @@
-import { addEndTags } from "./addEndTags";
+import { addEndTags } from './addEndTags';
 
-export default addEndTags
+export default addEndTags;

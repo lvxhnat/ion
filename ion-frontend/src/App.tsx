@@ -5,13 +5,13 @@ import Landing from './pages/Landing/Landing';
 import { ROUTES } from './common/constant/routes';
 
 function App() {
-	return (
-		<Router>
-			<Routes>
-				<Route path={ROUTES.PUBLIC.LANDING} element={<Landing />} />
-			</Routes>
-		</Router >
-	);
+    return (
+        <Router>
+            <Routes>
+                <Route path={ROUTES.PUBLIC.LANDING} element={<Landing />} />
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;

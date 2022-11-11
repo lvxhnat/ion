@@ -1,3 +1,3 @@
 export const typographyTheme = {
-	fontFamily: 'Public Sans, sans-serif',
+    fontFamily: 'Public Sans, sans-serif',
 };

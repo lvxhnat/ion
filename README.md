@@ -4,12 +4,14 @@ Ion is a web application designed to leverage OSINT and common financial applica
 
 ![Alt Text](./assets/demo.gif)
 
-## Setup and Usage 
+## Setup and Usage
 
 docker-compose to be updated.
 
 ## Contributing
+
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
+
 [MIT](https://choosealicense.com/licenses/mit/)

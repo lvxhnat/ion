@@ -1,33 +1,18 @@
 import * as React from 'react';
 
-import { Grid } from '@mui/material';
-
-import Legend from './components/Legend';
 import Header from './components/Header';
 import BaseLineChart from '../BaseLineChart';
+import { DefaultDataProps } from '../BaseLineChart/type';
 
 export interface TSChartProps {
-    dataX: Array<string>,
-    dataY: Array<number>,
+    defaultData: DefaultDataProps;
 }
 
-export default function TSChart({
-    dataX,
-    dataY,
-}: TSChartProps) {
-
+export default function TSChart({ defaultData }: TSChartProps): React.ReactElement {
     return (
         <>
             <Header />
-            <BaseLineChart
-                dataX={dataX}
-                dataY={dataY}
-                showGrid
-                showAxis
-                showArea
-                showNormalised
-                showTooltip
-            />
+            <BaseLineChart defaultData={defaultData} showGrid showAxis showNormalised showTooltip />
         </>
-    )
+    );
 }

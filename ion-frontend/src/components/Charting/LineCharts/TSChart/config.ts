@@ -1,10 +1,7 @@
 export enum INDICATOR_TYPES {
-    MOMENTUM = 'Momentum Indicators'
+    MOMENTUM = 'Momentum Indicators',
 }
 
 export const INDICATORS = {
-    "momentum_indicators": [
-        "Simple Moving Average",
-        "Exponential Moving Average",
-    ]
-}
+    momentum_indicators: ['Simple Moving Average', 'Exponential Moving Average'],
+};

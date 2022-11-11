@@ -7,40 +7,46 @@ import { StyledTableCell } from '../ForexTable';
 import { ColorsEnum } from 'common/theme';
 
 export default function ForexTableRow(props: {
-    tableHeaders: Array<ForexTableHeaderType>,
-    forexPair: string
+    tableHeaders: ForexTableHeaderType[];
+    forexPair: string;
 }) {
+    const forexStream: FormattedForexDataType = forexStreamStore(
+        (store: any) => store.forexStream[props.forexPair]
+    );
 
-	const forexStream: FormattedForexDataType = forexStreamStore((store: any) => store.forexStream[props.forexPair]);
+    return (
+        <S.StyledTableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            {props.tableHeaders.map((key: ForexTableHeaderType, index: number) => {
+                const streamKey: keyof FormattedForexDataType = key.name;
+                let data: string | number | null = null;
+                let fontColor: string = ColorsEnum.beer;
 
-	return (
-		<S.StyledTableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-			{props.tableHeaders.map((key: ForexTableHeaderType, index: number) => {
+                if (forexStream !== undefined) {
+                    data = streamKey === 'instrument' ? props.forexPair : forexStream[streamKey];
+                    if (streamKey === 'closeoutBid' && forexStream.bid_change) {
+                        fontColor =
+                            forexStream.bid_change > 0
+                                ? ColorsEnum.upHint
+                                : forexStream.bid_change < 0
+                                ? ColorsEnum.downHint
+                                : fontColor;
+                    }
+                    if (streamKey === 'closeoutAsk' && forexStream.ask_change) {
+                        fontColor =
+                            forexStream.ask_change > 0
+                                ? ColorsEnum.upHint
+                                : forexStream.ask_change < 0
+                                ? ColorsEnum.downHint
+                                : fontColor;
+                    }
+                }
 
-				const streamKey: keyof FormattedForexDataType = key.name;
-				let data: string | number | null = null;
-				let fontColor: string = ColorsEnum.beer;
-
-				if (forexStream !== undefined) {
-					data = (streamKey === 'instrument') ? props.forexPair : forexStream[streamKey];
-					if (streamKey === 'closeoutBid' && forexStream.bid_change) {
-						fontColor = forexStream.bid_change > 0 ? ColorsEnum.upHint : forexStream.bid_change < 0 ? ColorsEnum.downHint : fontColor;
-					}
-					if (streamKey === 'closeoutAsk' && forexStream.ask_change) {
-						fontColor = forexStream.ask_change > 0 ? ColorsEnum.upHint : forexStream.ask_change < 0 ? ColorsEnum.downHint : fontColor;
-					}
-				}
-
-				return (
-					<StyledTableCell width={key.width + '%'} key={`${key.index}_${index}`}>
-						<label style={{ color: fontColor }}>
-							{data}
-						</label>
-					</StyledTableCell>
-				);
-			}
-			)}
-		</S.StyledTableRow>
-	);
-
+                return (
+                    <StyledTableCell width={key.width + '%'} key={`${key.index}_${index}`}>
+                        <label style={{ color: fontColor }}>{data}</label>
+                    </StyledTableCell>
+                );
+            })}
+        </S.StyledTableRow>
+    );
 }
