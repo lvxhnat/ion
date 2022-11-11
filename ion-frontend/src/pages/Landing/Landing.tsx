@@ -6,9 +6,10 @@ import TSChart from 'components/Charting/LineCharts/TSChart';
 import Header from 'components/Dashboard/Header';
 import Footer from 'components/Footer';
 import ForexTable from './ForexTable';
+import { DefaultDataProps } from 'components/Charting/LineCharts/BaseLineChart/type';
 
 export default function Landing(): React.ReactElement {
-    const [data, setData] = React.useState<{ X: string[]; Y: string[] }>();
+    const [data, setData] = React.useState<DefaultDataProps>();
 
     React.useEffect(() => {
         d3.csv(
@@ -17,8 +18,12 @@ export default function Landing(): React.ReactElement {
             .catch()
             .then((d: any) => {
                 setData({
-                    X: d.map((d_: any) => d_.date).slice(0, 500),
-                    Y: d.map((d_: any) => d_.value).slice(0, 500),
+                    id: 'base-line',
+                    name: 'Base Line Chart',
+                    dataX: d.map((d_: any) => d_.date).slice(0, 500),
+                    dataY: d.map((d_: any) => parseFloat(d_.value)).slice(0, 500),
+                    color: 'red',
+                    type: 'areaLine',
                 });
             })
             .catch(() => null);
@@ -30,9 +35,7 @@ export default function Landing(): React.ReactElement {
             <Header />
             <Grid container style={{ height: '90vh', padding: 5 }} spacing={2}>
                 <Grid item xl={9} lg={9} xs={9}>
-                    {data !== undefined && data !== null ? (
-                        <TSChart dataX={data.X} dataY={data.Y.map((d: string) => parseFloat(d))} />
-                    ) : null}
+                    {data !== undefined && data !== null ? <TSChart defaultData={data} /> : null}
                 </Grid>
                 <Grid item xl={3} lg={3} xs={3}>
                     <ForexTable />

@@ -2,25 +2,17 @@ import * as React from 'react';
 
 import Header from './components/Header';
 import BaseLineChart from '../BaseLineChart';
+import { DefaultDataProps } from '../BaseLineChart/type';
 
 export interface TSChartProps {
-    dataX: string[];
-    dataY: number[];
+    defaultData: DefaultDataProps;
 }
 
-export default function TSChart({ dataX, dataY }: TSChartProps): React.ReactElement {
+export default function TSChart({ defaultData }: TSChartProps): React.ReactElement {
     return (
         <>
             <Header />
-            <BaseLineChart
-                dataX={dataX}
-                dataY={dataY}
-                showGrid
-                showAxis
-                showArea
-                showNormalised
-                showTooltip
-            />
+            <BaseLineChart defaultData={defaultData} showGrid showAxis showNormalised showTooltip />
         </>
     );
 }

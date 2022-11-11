@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import * as React from 'react';
 import * as C from './plugins';
+import * as A from './actions';
 import { LineChartProps } from './type';
 
 import { useD3 } from 'common/hooks/useD3';
@@ -17,8 +18,7 @@ import { LINECHARTCONFIGS, LINECHARTIDS } from './config';
  * @returns
  */
 export default function BaseLineChart({
-    dataX,
-    dataY,
+    defaultData,
     data = LINECHARTCONFIGS.DEFAULT_DATA,
     width = LINECHARTCONFIGS.DEFAULT_WIDTH,
     height = LINECHARTCONFIGS.DEFAULT_HEIGHT,
@@ -32,7 +32,6 @@ export default function BaseLineChart({
     showAverage = LINECHARTCONFIGS.DEFAULT_SHOW_AVERAGE,
     showGrid = LINECHARTCONFIGS.DEFAULT_SHOW_GRID,
     showAxis = LINECHARTCONFIGS.DEFAULT_SHOW_AXIS,
-    showArea = LINECHARTCONFIGS.DEFAULT_SHOW_LINE_AREA,
     showNormalised = LINECHARTCONFIGS.DEFAULT_SHOW_NORMALISED,
     showTooltip = LINECHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
 }: LineChartProps): React.ReactElement {
@@ -42,20 +41,10 @@ export default function BaseLineChart({
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
             // Ensure rerender does not duplicate chart
             if (!svg.selectAll('*').empty()) svg.selectAll('*').remove(); // set the dimensions and margins of the graph
-            const formattedWidth = width - margin.left - margin.right;
-            const formattedHeight = height;
-            // Configure the color palette of the charts
-            const lineColor =
-                mode === 'dark'
-                    ? LINECHARTCONFIGS.DEFAULT_DARKMODE_LINE_COLOR
-                    : LINECHARTCONFIGS.DEFAULT_LIGHTMODE_LINE_COLOR;
-            const fillColor = LINECHARTCONFIGS.DEFAULT_LINE_AREA_COLOR;
-            const fillOpacity = LINECHARTCONFIGS.DEFAULT_LINE_AREA_OPACITY;
+            const dataX = defaultData.dataX;
+            const dataY = defaultData.dataY;
 
-            const defined = d3.map(dataY, (_, i) => !isNaN(dataY[i]));
-            const indexes = d3.map(dataX, (_, i) => i); // Denotes simply an array containing index values
-
-            svg.attr('viewBox', [0, 0, formattedWidth + 110, formattedHeight + 15])
+            svg.attr('viewBox', [0, 0, width - margin.left - margin.right + 110, height + 15])
                 .attr('preserveAspectRatio', 'xMidYMid meet')
                 .classed('svg-content-responsive', true);
 
@@ -87,6 +76,16 @@ export default function BaseLineChart({
                 .axisBottom(x)
                 .tickSize(margin.bottom + margin.top - height)
                 .ticks(0);
+
+            A.addChart({
+                x: x,
+                y: y,
+                type: defaultData.type,
+                color: defaultData.color,
+                id: defaultData.id,
+                dataX: dates,
+                dataY: dataY,
+            });
 
             if (showAxis) {
                 // Set the number of ticks if we want to show the axis
@@ -125,39 +124,12 @@ export default function BaseLineChart({
                 C.styleGrid();
             }
 
-            C.addLine({
-                id: 'base-line',
-                x: x,
-                y: y,
-                dataX: dates,
-                dataY: dataY,
-            });
-
-            // Calculate Area to fill the line chart
-            if (showArea) {
-                const area: any = d3
-                    .area()
-                    .defined((_, i: number) => defined[i])
-                    .curve(d3.curveLinear)
-                    .x((_, i: number) => x(dates[i]))
-                    .y0(height - margin.top)
-                    .y1((_, i: number) => y(dataY[i]));
-
-                svg.append('path')
-                    .attr('id', 'base-line-area')
-                    .attr('fill', fillColor)
-                    .attr('opacity', fillOpacity)
-                    .attr('d', area(indexes.filter(i => defined[i])));
-            }
-
-            C.addEndTags({ y, id: 'base', dataY: [dataY[dataY.length - 1]], color: 'steelblue' });
-
             C.addLegend({
                 legend: [
                     {
-                        name: 'EUR-USD Spot Price is cool stuff',
-                        id: 'base',
-                        color: 'red',
+                        name: defaultData.name,
+                        id: defaultData.id,
+                        color: defaultData.color,
                         parent: true,
                     },
                     { name: 'SMA 14D', id: 'b', color: 'yellow', parent: false },

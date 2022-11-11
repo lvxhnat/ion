@@ -2,9 +2,10 @@ import * as d3 from 'd3';
 import { LINECHARTCONFIGS, LINECHARTIDS } from '../../config';
 
 export const addLine = (props: {
-    x: any;
-    y: any;
+    x: d3.ScaleTime<number, number, never>;
+    y: d3.ScaleLinear<number, number, never>;
     id: string;
+    color: string;
     dataX: Date[];
     dataY: number[];
 }): void => {
@@ -21,7 +22,7 @@ export const addLine = (props: {
     svg.append('path')
         .attr('id', props.id)
         .attr('fill', 'none')
-        .attr('stroke', 'yellow')
+        .attr('stroke', props.color)
         .attr('stroke-width', LINECHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
         .attr('d', valueLine(d3.range(dataX.length)));
 };
