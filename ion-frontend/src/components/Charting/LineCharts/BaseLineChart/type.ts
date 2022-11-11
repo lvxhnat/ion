@@ -9,7 +9,6 @@ export interface LineChartProps {
         left: number;
         right: number;
     };
-    timeParseFormat?: string;
     showAverage?: boolean;
     showGrid?: boolean;
     showAxis?: boolean;
@@ -20,7 +19,7 @@ export interface LineChartProps {
 export interface DefaultDataProps {
     id: string;
     name: string;
-    dataX: string[];
+    dataX: Date[];
     dataY: number[];
     color: string;
     type: AllowedLineTypes;
@@ -28,4 +27,4 @@ export interface DefaultDataProps {
 
 export type AllowedLineTypes = 'line' | 'areaLine';
 
-type DataProps = DefaultDataProps[];
+export type DataProps = DefaultDataProps[];

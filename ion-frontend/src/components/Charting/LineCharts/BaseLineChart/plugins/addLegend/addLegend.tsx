@@ -103,11 +103,10 @@ export const addLegend = (props: { legend: LegendDataProps }): void => {
         .enter()
         .append('text')
         .attr('class', LINECHARTIDS.LEGEND_TEXT_CLASS)
-
         .attr('x', labelXPosition)
         .attr('y', (d, i) => LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15 + 11)
         .attr('width', valueXPosition - labelXPosition - 10)
-        .style('fill', d => ColorsEnum.white)
+        .style('fill', ColorsEnum.white)
         .style('alignment-baseline', 'middle')
         .style('font-size', LINECHARTCONFIGS.DEFAULT_CHART_FONTSIZE)
         .attr('text-anchor', 'left')
