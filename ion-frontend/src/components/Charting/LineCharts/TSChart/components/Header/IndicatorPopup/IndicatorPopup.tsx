@@ -72,7 +72,7 @@ export default function IndicatorPopup() {
             <S.ButtonWrapper startIcon={<CandlestickChartIcon />} onClick={handleClickOpen}>
                 Indicators
             </S.ButtonWrapper>
-            <BootstrapDialog onClose={handleClose} open={open}>
+            <BootstrapDialog onClose={handleClose} open={open} maxWidth="md" fullWidth>
                 <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
                     <Typography variant="h1"> Indicators, Metrics, Strategies </Typography>
                 </BootstrapDialogTitle>
@@ -83,7 +83,7 @@ export default function IndicatorPopup() {
                     </S.SearchWrapper>
                 </DialogContent>
 
-                <DialogContent style={{ padding: 0, width: 600, height: 400 }}>
+                <DialogContent style={{ padding: 0, width: '100%', height: 600 }}>
                     <Grid container style={{ height: '100%' }}>
                         <Grid item xs={3}>
                             <SidebarPrompt />
@@ -93,12 +93,6 @@ export default function IndicatorPopup() {
                         </Grid>
                     </Grid>
                 </DialogContent>
-
-                <DialogActions>
-                    <Button autoFocus onClick={handleClose}>
-                        Save changes
-                    </Button>
-                </DialogActions>
             </BootstrapDialog>
         </div>
     );
