@@ -48,7 +48,7 @@ export default function ForexTable() {
 
     return (
         <TableContainer style={{ width: '100%' }}>
-            <Table style={{ minWidth: 150 }} size="small" aria-label="a dense table">
+            <Table style={{ minWidth: 150 }} aria-label="a dense table">
                 <TableHead>
                     <TableRow
                         sx={{

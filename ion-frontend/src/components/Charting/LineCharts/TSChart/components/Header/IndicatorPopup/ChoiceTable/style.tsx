@@ -8,6 +8,6 @@ export const ChipWrapper = styled('div')(({ theme }) => ({
 }));
 
 export const StyledChip = styled(Chip)(({ theme }) => ({
-    fontSize: '12px',
+    fontSize: '0.8rem',
     padding: 0,
 }));

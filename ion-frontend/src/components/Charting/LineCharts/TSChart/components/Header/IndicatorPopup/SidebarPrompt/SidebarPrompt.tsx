@@ -38,7 +38,7 @@ export default function SidebarPrompt(): React.ReactElement {
                     <ListItem key={item.text} disablePadding>
                         <ListItemButton style={{ padding: '5px 10px' }}>
                             {item.icon}
-                            <Typography style={{ fontSize: '12px', paddingLeft: '10px' }}>
+                            <Typography style={{ fontSize: '0.8rem', paddingLeft: '0.7rem' }}>
                                 {item.text}
                             </Typography>
                         </ListItemButton>
