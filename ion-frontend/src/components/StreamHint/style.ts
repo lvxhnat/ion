@@ -5,7 +5,7 @@ import { ColorsEnum } from 'common/theme';
 import React from 'react';
 
 export const Pill = styled('div')(({ theme }) => ({
-    fontSize: '10px',
+    fontSize: '0.7rem',
     width: '110px',
 }));
 

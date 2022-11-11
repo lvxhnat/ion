@@ -24,7 +24,6 @@ export const TableCellLabel = styled(Typography, {
             : ColorsEnum.beer,
         1
     ),
-    fontSize: '0.75rem',
 }));
 
 export const StyledTableRow = styled(TableRow)(({ theme }) => ({

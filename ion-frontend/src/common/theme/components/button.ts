@@ -20,6 +20,7 @@ export const buttonTheme = {
         styleOverrides: {
             root: {
                 textTransform: 'none' as const,
+                fontSize: 'calc(0.8rem + 0.15vw)',
                 boxShadow: 'none',
                 '&:hover': {
                     boxShadow: 'none',
