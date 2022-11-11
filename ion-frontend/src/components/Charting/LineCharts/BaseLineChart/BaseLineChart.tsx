@@ -28,7 +28,6 @@ export default function BaseLineChart({
         bottom: LINECHARTCONFIGS.DEFAULT_MARGIN_BOTTOM,
         left: LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT,
     },
-    timeParseFormat = LINECHARTCONFIGS.DEFAULT_TIME_PARSE_FORMAT,
     showAverage = LINECHARTCONFIGS.DEFAULT_SHOW_AVERAGE,
     showGrid = LINECHARTCONFIGS.DEFAULT_SHOW_GRID,
     showAxis = LINECHARTCONFIGS.DEFAULT_SHOW_AXIS,
@@ -48,17 +47,7 @@ export default function BaseLineChart({
                 .attr('preserveAspectRatio', 'xMidYMid meet')
                 .classed('svg-content-responsive', true);
 
-            // Parse the time in data
-            const parseTime = d3.timeParse(timeParseFormat);
-            const dates: Date[] = dataX.map((value: string) => {
-                const val = parseTime(value);
-                if (val !== null) return val;
-                else
-                    throw new Error(
-                        'Value returned cannot be parsed to date in parseTime function'
-                    );
-            }); // Parse time should not return null
-            const dateTime: number[] = dates.map((date: Date) => date.getTime());
+            const dateTime: number[] = dataX.map((date: Date) => date.getTime());
 
             // Prep and plot the axis
             const x = d3.scaleTime().range([margin.left, width - margin.right]);
@@ -83,7 +72,7 @@ export default function BaseLineChart({
                 type: defaultData.type,
                 color: defaultData.color,
                 id: defaultData.id,
-                dataX: dates,
+                dataX: dataX,
                 dataY: dataY,
             });
 
@@ -141,15 +130,9 @@ export default function BaseLineChart({
 
             if (showTooltip) {
                 C.addToolTip({
-                    x,
-                    y,
-                    id: 'base',
-                    dataX: dates,
-                    dataY,
-                    fontColor:
-                        mode === 'dark'
-                            ? LINECHARTCONFIGS.DEFAULT_DARKMODE_TOOLTIP_FONTCOLOR
-                            : LINECHARTCONFIGS.DEFAULT_LIGHTMODE_TOOLTIP_FONTCOLOR,
+                    x: x,
+                    y: y,
+                    data: [defaultData],
                 });
             }
         },
