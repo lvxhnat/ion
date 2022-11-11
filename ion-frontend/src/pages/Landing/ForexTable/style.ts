@@ -17,10 +17,10 @@ export const TableCellLabel = styled(Typography, {
     isHeader?: boolean;
 }>(({ theme, isHeader }) => ({
     color: alpha(
-        theme.palette.mode === 'light'
-            ? ColorsEnum.black
-            : isHeader
+        isHeader
             ? ColorsEnum.white
+            : theme.palette.mode === 'light'
+            ? ColorsEnum.black
             : ColorsEnum.beer,
         1
     ),

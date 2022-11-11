@@ -13,7 +13,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { ColorsEnum } from 'common/theme';
-import { useThemeStore } from 'store/theme';
 
 export function StyledTableCell({ children, isHeader, width }: StyledTableCellProps) {
     return (
@@ -28,19 +27,17 @@ export function StyledTableCell({ children, isHeader, width }: StyledTableCellPr
 export default function ForexTable() {
     const setForexStream = forexStreamStore((store: any) => store.setForexStream);
     const subscribedForexPairs = ['EUR_USD', 'USD_SGD', 'USD_INR', 'USD_JPY'];
-    const { mode } = useThemeStore();
 
     React.useEffect(() => {
-        const url = process.env.REACT_APP_WEBSOCKET_URL;
-        if (url) {
-            const oandaWS = new OandaFXSocketConnection({
-                socketURL: url + ENDPOINTS.PRIVATE.OANDA_FX_STREAMING_ENDPOINT,
-                name: 'OandaFXSocketConnection',
-            });
-            // Subscribe to the forex stream and store in global zustand state store
-            oandaWS.listen((x: any) => setForexStream(unpackOandaFXStream(x)));
-        }
-    });
+        const oandaWS = new OandaFXSocketConnection({
+            socketURL:
+                process.env.REACT_APP_WEBSOCKET_URL + ENDPOINTS.PRIVATE.OANDA_FX_STREAMING_ENDPOINT,
+            name: 'OandaFXSocketConnection',
+        });
+        // Subscribe to the forex stream and store in global zustand state store
+        oandaWS.listen((x: any) => setForexStream(unpackOandaFXStream(x)));
+        return () => oandaWS.close();
+    }, []);
 
     const tableHeaders: ForexTableHeaderType[] = [
         { name: 'instrument', index: 'instrument', width: 25 },
@@ -55,8 +52,7 @@ export default function ForexTable() {
                 <TableHead>
                     <TableRow
                         sx={{
-                            backgroundColor:
-                                mode === 'dark' ? ColorsEnum.coolgray8 : ColorsEnum.white,
+                            backgroundColor: ColorsEnum.coolgray8,
                         }}
                     >
                         {tableHeaders.map(headerSpecification => {

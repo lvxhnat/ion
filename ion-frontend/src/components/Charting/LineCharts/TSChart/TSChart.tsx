@@ -1,18 +1,37 @@
+import * as d3 from 'd3';
 import * as React from 'react';
 
 import Header from './components/Header';
 import BaseLineChart from '../BaseLineChart';
 import { DefaultDataProps } from '../BaseLineChart/type';
 
-export interface TSChartProps {
-    defaultData: DefaultDataProps;
-}
+export default function TSChart(): React.ReactElement {
+    const [data, setData] = React.useState<DefaultDataProps>();
 
-export default function TSChart({ defaultData }: TSChartProps): React.ReactElement {
+    React.useEffect(() => {
+        d3.csv(
+            'https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered_comma.csv'
+        )
+            .catch()
+            .then((d: any) => {
+                setData({
+                    id: 'base-line',
+                    name: 'Base Line Chart',
+                    dataX: d.map((d_: any) => d_.date).slice(0, 500),
+                    dataY: d.map((d_: any) => parseFloat(d_.value)).slice(0, 500),
+                    color: 'red',
+                    type: 'areaLine',
+                });
+            })
+            .catch(() => null);
+    }, []);
+
     return (
         <>
             <Header />
-            <BaseLineChart defaultData={defaultData} showGrid showAxis showNormalised showTooltip />
+            {data ? (
+                <BaseLineChart defaultData={data} showGrid showAxis showNormalised showTooltip />
+            ) : null}
         </>
     );
 }
