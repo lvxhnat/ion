@@ -20,6 +20,7 @@ export default function TSChart(): React.ReactElement {
                 setData({
                     id: 'base-line',
                     name: 'Base Line Chart',
+                    parent: true,
                     dataX: d.map((d_: any) => parseTime(d_.date)).slice(0, 500),
                     dataY: d.map((d_: any) => parseFloat(d_.value)).slice(0, 500),
                     color: 'red',

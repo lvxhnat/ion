@@ -1,15 +1,7 @@
-import { ColorsEnum } from 'common/theme';
 import * as d3 from 'd3';
+import { ColorsEnum } from 'common/theme';
 import { LINECHARTCONFIGS, LINECHARTIDS } from '../../config';
-
-interface LegendObject {
-    name: string;
-    id: string;
-    color: string;
-    parent: boolean;
-}
-
-type LegendDataProps = LegendObject[];
+import { DataProps } from '../../type';
 
 function truncateString(s: string): string {
     if (s.length > 20) return s.slice(0, 20) + '...';
@@ -19,7 +11,7 @@ function truncateString(s: string): string {
 /**
  * Accomodates multiple lines for legend plotting
  */
-export const addLegend = (props: { legend: LegendDataProps }): void => {
+export const addLegend = (props: { legend: DataProps }): void => {
     const svg = d3.selectAll(`#${LINECHARTIDS.BASE_SVG_ID}`);
 
     const treePosition = LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT + 10;
@@ -35,9 +27,9 @@ export const addLegend = (props: { legend: LegendDataProps }): void => {
         .append('rect')
         .attr('class', LINECHARTIDS.LEGEND_BOX_CLASS)
         .attr('x', LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT + 2)
-        .attr('y', (d, i) => LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15)
+        .attr('y', (_, i) => LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15)
         .attr('rx', 5)
-        .attr('height', props.legend.length * (LINECHARTCONFIGS.DEFAULT_LEGEND_BOX_SIZE + 6))
+        .attr('height', props.legend.length * (LINECHARTCONFIGS.DEFAULT_LEGEND_BOX_SIZE + 6) + 5)
         .attr('width', LINECHARTCONFIGS.DEFAULT_LEGEND_WIDTH)
         .attr('fill', ColorsEnum.darkGrey)
         .attr('opacity', LINECHARTCONFIGS.DEFAULT_LEGEND_OPACITY);
@@ -92,7 +84,7 @@ export const addLegend = (props: { legend: LegendDataProps }): void => {
         .attr('class', LINECHARTIDS.LEGEND_SQUARE_CLASS)
         .attr('id', d => d.id)
         .attr('x', boxXPosition)
-        .attr('y', (d, i) => LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15 + 5) // 5 denotes padding from the top box
+        .attr('y', (_, i) => LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15 + 5) // 5 denotes padding from the top box
         .attr('height', LINECHARTCONFIGS.DEFAULT_LEGEND_BOX_SIZE)
         .attr('width', LINECHARTCONFIGS.DEFAULT_LEGEND_BOX_SIZE)
         .attr('fill', d => d.color);
@@ -104,7 +96,7 @@ export const addLegend = (props: { legend: LegendDataProps }): void => {
         .append('text')
         .attr('class', LINECHARTIDS.LEGEND_TEXT_CLASS)
         .attr('x', labelXPosition)
-        .attr('y', (d, i) => LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15 + 11)
+        .attr('y', (_, i) => LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15 + 11)
         .attr('width', valueXPosition - labelXPosition - 10)
         .style('fill', ColorsEnum.white)
         .style('alignment-baseline', 'middle')
@@ -120,8 +112,8 @@ export const addLegend = (props: { legend: LegendDataProps }): void => {
         .attr('class', LINECHARTIDS.LEGEND_VALUE_CLASS)
         .attr('id', d => d.id)
         .attr('x', valueXPosition) // 20 pixels from the right
-        .attr('y', (d, i) => LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15 + 11)
-        .style('fill', d => ColorsEnum.white)
+        .attr('y', (_, i) => LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15 + 11)
+        .style('fill', ColorsEnum.white)
         .style('alignment-baseline', 'middle')
         .style('font-size', LINECHARTCONFIGS.DEFAULT_CHART_FONTSIZE)
         .attr('text-anchor', 'left');

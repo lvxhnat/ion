@@ -5,7 +5,6 @@ import * as A from './actions';
 import { LineChartProps } from './type';
 
 import { useD3 } from 'common/hooks/useD3';
-import { useThemeStore } from 'store/theme';
 import { ColorsEnum } from 'common/theme';
 
 import { LINECHARTCONFIGS, LINECHARTIDS } from './config';
@@ -34,8 +33,6 @@ export default function BaseLineChart({
     showNormalised = LINECHARTCONFIGS.DEFAULT_SHOW_NORMALISED,
     showTooltip = LINECHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
 }: LineChartProps): React.ReactElement {
-    const { mode } = useThemeStore();
-
     const ref = useD3(
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
             // Ensure rerender does not duplicate chart
@@ -65,16 +62,6 @@ export default function BaseLineChart({
                 .axisBottom(x)
                 .tickSize(margin.bottom + margin.top - height)
                 .ticks(0);
-
-            A.addChart({
-                x: x,
-                y: y,
-                type: defaultData.type,
-                color: defaultData.color,
-                id: defaultData.id,
-                dataX: dataX,
-                dataY: dataY,
-            });
 
             if (showAxis) {
                 // Set the number of ticks if we want to show the axis
@@ -113,19 +100,18 @@ export default function BaseLineChart({
                 C.styleGrid();
             }
 
+            A.addChart({
+                x: x,
+                y: y,
+                type: defaultData.type,
+                color: defaultData.color,
+                id: defaultData.id,
+                dataX: dataX,
+                dataY: dataY,
+            });
+
             C.addLegend({
-                legend: [
-                    {
-                        name: defaultData.name,
-                        id: defaultData.id,
-                        color: defaultData.color,
-                        parent: true,
-                    },
-                    { name: 'SMA 14D', id: 'b', color: 'yellow', parent: false },
-                    { name: 'EMA 21D', id: 'c', color: 'green', parent: false },
-                    { name: 'Bollinger Bands', id: 'd', color: 'blue', parent: false },
-                    { name: 'e', id: 'e', color: 'pink', parent: false },
-                ],
+                legend: [defaultData],
             });
 
             if (showTooltip) {
