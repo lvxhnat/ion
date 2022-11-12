@@ -1,13 +1,18 @@
 import { IntRange } from 'common/types';
 
-export interface ForexTableDataType {
+export interface ForexStreamType {
     instrument: string;
     closeoutBid: number;
     closeoutAsk: number;
     spread: number;
 }
 
-export interface FormattedForexDataType extends ForexTableDataType {
+export interface ForexHistoricalType {
+    date: Date;
+    value: number;
+}
+
+export interface FormattedForexStreamType extends ForexStreamType {
     bid_change?: -1 | 0 | 1;
     ask_change?: -1 | 0 | 1;
 }
@@ -19,7 +24,7 @@ export interface StyledTableCellProps {
 }
 
 export interface ForexTableHeaderType {
-    name: keyof ForexTableDataType;
-    index: string;
+    name: string;
+    id: keyof ForexStreamType;
     width?: IntRange<0, 100>;
 }

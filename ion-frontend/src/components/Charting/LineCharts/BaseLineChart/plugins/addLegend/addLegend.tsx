@@ -26,7 +26,7 @@ export const addLegend = (props: { legend: DataProps }): void => {
         .attr('id', LINECHARTIDS.LEGEND_GROUP_ID)
         .append('rect')
         .attr('class', LINECHARTIDS.LEGEND_BOX_CLASS)
-        .attr('x', LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT + 2)
+        .attr('x', LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT)
         .attr('y', (_, i) => LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15)
         .attr('rx', 5)
         .attr('height', props.legend.length * (LINECHARTCONFIGS.DEFAULT_LEGEND_BOX_SIZE + 6) + 5)

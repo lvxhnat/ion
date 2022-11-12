@@ -1,4 +1,4 @@
-import { ForexTableDataType, FormattedForexDataType } from 'pages/Landing/ForexTable/type';
+import { ForexStreamType, FormattedForexStreamType } from 'pages/Landing/ForexTable/type';
 import create from 'zustand';
 
 function omit(obj: any, key: string) {
@@ -7,11 +7,11 @@ function omit(obj: any, key: string) {
 }
 export const forexStreamStore = create(set => ({
     forexStream: {},
-    setForexStream: (streamObject: ForexTableDataType) =>
+    setForexStream: (streamObject: ForexStreamType) =>
         // If streamObject is empty (heartbeat message or market closed), then we do not perform any actions
         set((state: any) => {
             // Check if the stream object is null or not
-            const prev: FormattedForexDataType = streamObject
+            const prev: FormattedForexStreamType = streamObject
                 ? state.forexStream[streamObject.instrument]
                 : null;
             return streamObject

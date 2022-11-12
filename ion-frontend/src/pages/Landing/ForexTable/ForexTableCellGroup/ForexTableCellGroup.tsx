@@ -1,23 +1,21 @@
 import * as React from 'react';
-import * as S from './style';
-
 import { forexStreamStore } from 'store/prices/prices';
-import { FormattedForexDataType, ForexTableHeaderType } from '../type';
+import { FormattedForexStreamType, ForexTableHeaderType } from '../type';
 import { StyledTableCell } from '../ForexTable';
 import { ColorsEnum } from 'common/theme';
 
-export default function ForexTableRow(props: {
+export default function ForexTableCellGroup(props: {
     tableHeaders: ForexTableHeaderType[];
     forexPair: string;
 }) {
-    const forexStream: FormattedForexDataType = forexStreamStore(
+    const forexStream: FormattedForexStreamType = forexStreamStore(
         (store: any) => store.forexStream[props.forexPair]
     );
 
     return (
-        <S.StyledTableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+        <>
             {props.tableHeaders.map((key: ForexTableHeaderType, index: number) => {
-                const streamKey: keyof FormattedForexDataType = key.name;
+                const streamKey: keyof FormattedForexStreamType = key.id;
                 let data: string | number | null = null;
                 let fontColor: string = ColorsEnum.beer;
 
@@ -42,11 +40,11 @@ export default function ForexTableRow(props: {
                 }
 
                 return (
-                    <StyledTableCell width={key.width + '%'} key={`${key.index}_${index}`}>
+                    <StyledTableCell width={key.width + '%'} key={`${key.id}_${index}`}>
                         <label style={{ color: fontColor }}>{data}</label>
                     </StyledTableCell>
                 );
             })}
-        </S.StyledTableRow>
+        </>
     );
 }
