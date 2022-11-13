@@ -73,7 +73,7 @@ export default function ForexTable() {
                 </TableHead>
                 <TableBody>
                     {subscribedForexPairs.map((forexPair: string, index: number) => (
-                        <S.StyledTableRow>
+                        <S.StyledTableRow key={`${forexPair}_row`}>
                             <ForexTableCellGroup
                                 key={`${forexPair}_${index}`}
                                 forexPair={forexPair}
