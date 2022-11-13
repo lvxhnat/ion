@@ -6,10 +6,10 @@ import { inputTheme } from './input';
 import { linkTheme } from './link';
 
 export const componentsTheme = {
-	...buttonTheme,
-	...cardTheme,
-	...cssBaselineTheme,
-	...formHelperTextTheme,
-	...inputTheme,
-	...linkTheme,
+    ...buttonTheme,
+    ...cardTheme,
+    ...cssBaselineTheme,
+    ...formHelperTextTheme,
+    ...inputTheme,
+    ...linkTheme,
 };

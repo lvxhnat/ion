@@ -38,8 +38,8 @@ const shortFadeInUp = `
 `;
 
 export const cssBaselineTheme = {
-	MuiCssBaseline: {
-		styleOverrides: `
+    MuiCssBaseline: {
+        styleOverrides: `
       ${fadeInUp}
       ${fadeInUp2}
       ${shortFadeInUp}
@@ -48,5 +48,5 @@ export const cssBaselineTheme = {
         z-index: 4000 !important;
       }
     `,
-	},
+    },
 };

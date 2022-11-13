@@ -1,25 +1,30 @@
 import { IntRange } from 'common/types';
 
-export interface ForexTableDataType {
-    instrument: string
-    closeoutBid: number
-    closeoutAsk: number
-    spread: number
+export interface ForexStreamType {
+    instrument: string;
+    closeoutBid: number;
+    closeoutAsk: number;
+    spread: number;
 }
 
-export interface FormattedForexDataType extends ForexTableDataType {
-    bid_change?: -1 | 0 | 1
-    ask_change?: -1 | 0 | 1
+export interface ForexHistoricalType {
+    date: Date;
+    value: number;
 }
 
-export type StyledTableCellProps = {
-    children?: React.ReactNode,
-    isHeader?: boolean,
-    width?: string
+export interface FormattedForexStreamType extends ForexStreamType {
+    bid_change?: -1 | 0 | 1;
+    ask_change?: -1 | 0 | 1;
+}
+
+export interface StyledTableCellProps {
+    children?: React.ReactNode;
+    isHeader?: boolean;
+    width?: string;
 }
 
 export interface ForexTableHeaderType {
-    name: keyof ForexTableDataType
-    index: string 
-    width?: IntRange<0,100> 
+    name: string;
+    id: keyof ForexStreamType;
+    width?: IntRange<0, 100>;
 }

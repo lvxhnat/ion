@@ -5,23 +5,23 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 function ToggleThemeMode() {
-	const { mode, setMode } = useThemeStore();
+    const { mode, setMode } = useThemeStore();
 
-	const handleClick = () => {
-		setMode();
-	};
+    const handleClick = () => {
+        setMode();
+    };
 
-	if (!mode) return null;
+    if (!mode) return null;
 
-	return (
-		<IconButton aria-label="delete" onClick={handleClick} disableRipple>
-			{mode === 'dark' ? (
-				<Brightness7Icon data-testid="theme-mode-light-id" />
-			) : (
-				<Brightness4Icon data-testid="theme-mode-dark-id" />
-			)}
-		</IconButton>
-	);
+    return (
+        <IconButton aria-label="delete" onClick={handleClick} disableRipple>
+            {mode === 'dark' ? (
+                <Brightness7Icon fontSize="small" data-testid="theme-mode-light-id" />
+            ) : (
+                <Brightness4Icon fontSize="small" data-testid="theme-mode-dark-id" />
+            )}
+        </IconButton>
+    );
 }
 
 export default ToggleThemeMode;

@@ -1,27 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import * as React from 'react';
 
 import moment from 'moment-timezone';
 
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 export default function Clock() {
+    const [date, setDate] = React.useState<string>('');
+    const [marketStatus, setMarketStatus] = React.useState<string | undefined>();
 
-	const [date, setDate] = useState<string>('');
-	const [marketStatus, setMarketStatus] = useState<string | undefined>();
+    React.useEffect(() => {
+        const interval = setInterval(() => {
+            moment.tz.setDefault('America/New_York');
+            const newYorkTime = moment();
+            setDate(newYorkTime.format('DD MMM YY, HH:mm:ss ddd'));
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
 
-	useEffect(() => {
-		const interval = setInterval(() => {
-			moment.tz.setDefault('America/New_York');
-			const newYorkTime = moment();
-			setDate(newYorkTime.format('DD MMM YY, HH:mm:ss ddd'));
-		}, 1000);
-		return () => clearInterval(interval);
-	}, []);
-
-	return (
-		<Grid container alignItems='center' sx={{ fontSize: '14px' }}>
-			<span> {marketStatus} </span>
-			<span><b> NYT: </b> {date} </span>
-		</Grid >
-	);
+    return (
+        <Grid container alignItems="center">
+            <Typography component="span" variant="body1">
+                {' '}
+                {marketStatus}{' '}
+            </Typography>
+            <span>
+                <b> NYT: </b> {date}{' '}
+            </span>
+        </Grid>
+    );
 }
