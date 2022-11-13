@@ -50,29 +50,49 @@ export default function ForexTable() {
 		{ name: 'spread', index: 'spread', width: 25 },
 	];
 
-	return (
-		<TableContainer>
-			<Table sx={{ minWidth: 150 }} size="small" aria-label="a dense table">
-				<TableHead>
-					<TableRow sx={{ backgroundColor: mode === 'dark' ? ColorsEnum.coolgray8 : ColorsEnum.white }}>
-						{tableHeaders.map((headerSpecification) => {
-							return (
-								<StyledTableCell isHeader width={headerSpecification.width + '%'} key={headerSpecification.index}>
-									{headerSpecification.name}
-								</StyledTableCell>
-							);
-						})}
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{subscribedForexPairs.map((forexPair: string, index: number) => {
-						return (
-							<ForexTableRow key={`${forexPair}_${index}`} forexPair={forexPair} tableHeaders={tableHeaders} />
-						);
-					})}
-				</TableBody>
-			</Table>
-		</TableContainer>
-	);
+    return (
+        <TableContainer style={{ width: '100%' }}>
+            <Table style={{ minWidth: 150 }} aria-label="a dense table">
+                <TableHead>
+                    <TableRow
+                        sx={{
+                            backgroundColor: ColorsEnum.coolgray8,
+                        }}
+                    >
+                        {tableHeaders.map(headerSpecification => {
+                            return (
+                                <StyledTableCell
+                                    isHeader
+                                    width={headerSpecification.width + '%'}
+                                    key={headerSpecification.id}
+                                >
+                                    {headerSpecification.name}
+                                </StyledTableCell>
+                            );
+                        })}
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {subscribedForexPairs.map((forexPair: string, index: number) => (
+                        <S.StyledTableRow key={`${forexPair}_row`}>
+                            <ForexTableCellGroup
+                                key={`${forexPair}_${index}`}
+                                forexPair={forexPair}
+                                tableHeaders={
+                                    tableHeaders.filter(
+                                        key => key.name !== ''
+                                    ) as ForexTableHeaderType[]
+                                }
+                            />
+                            <ForexHistoricalCell
+                                key={`${forexPair}_hist_${index}`}
+                                forexPair={forexPair}
+                            />
+                        </S.StyledTableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
 }
 
