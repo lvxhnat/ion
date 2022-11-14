@@ -7,8 +7,8 @@ import { LINECHARTIDS } from '../../config';
  * @param yAxis yAxis className
  * @returns
  */
-export const styleGrid = () => {
-    const svg = d3.selectAll(`#${LINECHARTIDS.BASE_SVG_ID}`);
+export const styleGrid = (props: { baseId: string }) => {
+    const svg = d3.selectAll(`#${props.baseId}`);
 
     const setGridLineAttributes = (isFirst: boolean) => {
         /** Styles the grid line to specified opacities
@@ -16,17 +16,21 @@ export const styleGrid = () => {
          */
         return (g: any) =>
             g
-                .selectAll(`.tick:${isFirst ? 'first-of-type' : 'not(:first-of-type)'} line`)
+                .selectAll(
+                    `#${props.baseId} .tick:${
+                        isFirst ? 'first-of-type' : 'not(:first-of-type)'
+                    } line`
+                )
                 .attr('stroke-opacity', 0.2)
                 .attr('stroke-dasharray', '2,2');
     };
 
-    svg.selectAll(`#${LINECHARTIDS.XAXIS_ID}`)
+    svg.selectAll(`#${props.baseId}_${LINECHARTIDS.XAXIS_ID}`)
         .call((g: any) => g.select('.domain').remove())
         .call(setGridLineAttributes(true))
         .call(setGridLineAttributes(false));
 
-    svg.selectAll(`#${LINECHARTIDS.YAXIS_ID}`)
+    svg.selectAll(`#${props.baseId}_${LINECHARTIDS.YAXIS_ID}`)
         .call((g: any) => g.select('.domain').remove())
         .call(setGridLineAttributes(true))
         .call(setGridLineAttributes(false));

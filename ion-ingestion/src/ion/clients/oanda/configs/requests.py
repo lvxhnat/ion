@@ -127,14 +127,22 @@ class Granularities(enum.Enum):
             return True
 
 
+HISTORICAL_GRANULARITY = {
+    "5Y": "W",
+    "1Y": "D",
+    "6M": "H12",
+    "3M": "H1",
+    "1M": "M5",
+    "1M_S": "D",
+    "1W": "M1",
+}
+
 ENDPOINTS = {
     "BASE_URL": "https://api-fxtrade.oanda.com",
     "ENDPOINTS": {
         "INSTRUMENTS": {
-            "PRICESTREAM": lambda symbol: f'https://stream-fxtrade.oanda.com/v3/accounts/\
-                {os.environ["OANDA_ACCOUNT_ID"]}/pricing/stream\
-                    ?instruments={"%2C".join(symbol)}',
-            "CANDLES": lambda symbol: "/v3/instruments/" + symbol + "/candles",
+            "PRICESTREAM": lambda symbol: f'https://stream-fxtrade.oanda.com/v3/accounts/{os.environ["OANDA_ACCOUNT_ID"]}/pricing/stream?instruments={"%2C".join(symbol)}',
+            "CANDLES": lambda symbol: f"/v3/instruments/{symbol}/candles",
         }
     },
 }

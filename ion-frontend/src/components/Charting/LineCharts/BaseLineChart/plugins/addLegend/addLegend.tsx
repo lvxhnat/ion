@@ -11,8 +11,8 @@ function truncateString(s: string): string {
 /**
  * Accomodates multiple lines for legend plotting
  */
-export const addLegend = (props: { legend: DataProps }): void => {
-    const svg = d3.selectAll(`#${LINECHARTIDS.BASE_SVG_ID}`);
+export const addLegend = (props: { legend: DataProps; baseId: string }): void => {
+    const svg = d3.selectAll(`#${props.baseId}`);
 
     const treePosition = LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT + 10;
     const boxXPosition = treePosition + 10;
@@ -23,9 +23,9 @@ export const addLegend = (props: { legend: DataProps }): void => {
 
     // Add the large box background, and the group that will contain all of the legend items
     svg.append('g')
-        .attr('id', LINECHARTIDS.LEGEND_GROUP_ID)
+        .attr('id', `${props.baseId}_${LINECHARTIDS.LEGEND_GROUP_ID}`)
         .append('rect')
-        .attr('class', LINECHARTIDS.LEGEND_BOX_CLASS)
+        .attr('class', `${props.baseId}_${LINECHARTIDS.LEGEND_BOX_CLASS}`)
         .attr('x', LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT)
         .attr('y', (_, i) => LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15)
         .attr('rx', 5)
@@ -35,13 +35,13 @@ export const addLegend = (props: { legend: DataProps }): void => {
         .attr('opacity', LINECHARTCONFIGS.DEFAULT_LEGEND_OPACITY);
 
     // Create the tree
-    const legendTree = svg.selectAll(`#${LINECHARTIDS.LEGEND_GROUP_ID}`);
+    const legendTree = svg.selectAll(`#${props.baseId}_${LINECHARTIDS.LEGEND_GROUP_ID}`);
     for (let i = 0; i < props.legend.length; i++) {
         if (props.legend[i].parent) {
             legendTree
                 .append('rect')
-                .attr('class', LINECHARTIDS.LEGEND_HINT_CLASS)
-                .attr('id', props.legend[i].id)
+                .attr('class', `${props.baseId}_${LINECHARTIDS.LEGEND_HINT_CLASS}`)
+                .attr('id', `${props.baseId}_${props.legend[i].id}`)
                 .attr('x', treePosition)
                 .attr('y', LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + parentBoxSize * 1.5 + i * 15)
                 .attr('width', 5)
@@ -55,8 +55,8 @@ export const addLegend = (props: { legend: DataProps }): void => {
             // Plot the vertical line
             legendTree
                 .append('line')
-                .attr('class', LINECHARTIDS.LEGEND_HINT_CLASS)
-                .attr('id', props.legend[i].id)
+                .attr('class', `${props.baseId}_${LINECHARTIDS.LEGEND_HINT_CLASS}`)
+                .attr('id', `${props.baseId}_${props.legend[i].id}`)
                 .attr('x1', xOffset)
                 .attr('x2', xOffset)
                 .attr('y1', LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15 - parentBoxSize * 0.5)
@@ -65,8 +65,8 @@ export const addLegend = (props: { legend: DataProps }): void => {
             // Plot the horizontal line
             legendTree
                 .append('line')
-                .attr('class', LINECHARTIDS.LEGEND_HINT_CLASS)
-                .attr('id', props.legend[i].id)
+                .attr('class', `${props.baseId}_${LINECHARTIDS.LEGEND_HINT_CLASS}`)
+                .attr('id', `${props.baseId}_${props.legend[i].id}`)
                 .attr('x1', xOffset)
                 .attr('x2', treePosition + parentBoxSize)
                 .attr('y1', y2Offset)
@@ -76,12 +76,12 @@ export const addLegend = (props: { legend: DataProps }): void => {
     }
 
     // CREATE the legend squares
-    d3.selectAll(`#${LINECHARTIDS.LEGEND_GROUP_ID}`)
-        .selectAll(`rect ${LINECHARTIDS.LEGEND_SQUARE_CLASS}`)
+    d3.selectAll(`#${props.baseId}_${LINECHARTIDS.LEGEND_GROUP_ID}`)
+        .selectAll(`rect #${props.baseId}_${LINECHARTIDS.LEGEND_SQUARE_CLASS}`)
         .data(props.legend)
         .enter()
         .append('rect')
-        .attr('class', LINECHARTIDS.LEGEND_SQUARE_CLASS)
+        .attr('class', `${props.baseId}_${LINECHARTIDS.LEGEND_SQUARE_CLASS}`)
         .attr('id', d => d.id)
         .attr('x', boxXPosition)
         .attr('y', (_, i) => LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15 + 5) // 5 denotes padding from the top box
@@ -89,12 +89,12 @@ export const addLegend = (props: { legend: DataProps }): void => {
         .attr('width', LINECHARTCONFIGS.DEFAULT_LEGEND_BOX_SIZE)
         .attr('fill', d => d.color);
 
-    d3.selectAll(`#${LINECHARTIDS.LEGEND_GROUP_ID}`)
+    d3.selectAll(`#${props.baseId}_${LINECHARTIDS.LEGEND_GROUP_ID}`)
         .selectAll('text')
         .data(props.legend)
         .enter()
         .append('text')
-        .attr('class', LINECHARTIDS.LEGEND_TEXT_CLASS)
+        .attr('class', `${props.baseId}_${LINECHARTIDS.LEGEND_TEXT_CLASS}`)
         .attr('x', labelXPosition)
         .attr('y', (_, i) => LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15 + 11)
         .attr('width', valueXPosition - labelXPosition - 10)
@@ -104,13 +104,13 @@ export const addLegend = (props: { legend: DataProps }): void => {
         .attr('text-anchor', 'left')
         .text(d => truncateString(d.name));
 
-    d3.selectAll(`#${LINECHARTIDS.LEGEND_GROUP_ID}`)
-        .selectAll(`text .${LINECHARTIDS.LEGEND_VALUE_CLASS}`)
+    d3.selectAll(`#${props.baseId}_${LINECHARTIDS.LEGEND_GROUP_ID}`)
+        .selectAll(`text .${props.baseId}_${LINECHARTIDS.LEGEND_VALUE_CLASS}`)
         .data(props.legend)
         .enter()
         .append('text')
-        .attr('class', LINECHARTIDS.LEGEND_VALUE_CLASS)
-        .attr('id', d => d.id)
+        .attr('class', `${props.baseId}_${LINECHARTIDS.LEGEND_VALUE_CLASS}`)
+        .attr('id', d => `${props.baseId}_${d.id}`)
         .attr('x', valueXPosition) // 20 pixels from the right
         .attr('y', (_, i) => LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15 + 11)
         .style('fill', ColorsEnum.white)

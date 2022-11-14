@@ -5,11 +5,12 @@ export const addLine = (props: {
     x: d3.ScaleTime<number, number, never>;
     y: d3.ScaleLinear<number, number, never>;
     id: string;
+    baseId: string;
     color: string;
     dataX: Date[];
     dataY: number[];
 }): void => {
-    const svg = d3.selectAll(`#${LINECHARTIDS.BASE_SVG_ID}`);
+    const svg = d3.selectAll(`#${props.baseId}`);
 
     const dataX = props.dataX.filter((_, i) => props.dataY[i]);
     const dataY = props.dataY.filter(d => d);
@@ -20,7 +21,7 @@ export const addLine = (props: {
         .y((_, i: number) => props.y(dataY[i]));
 
     svg.append('path')
-        .attr('id', props.id)
+        .attr('id', `#${props.baseId}_${props.id}`)
         .attr('fill', 'none')
         .attr('stroke', props.color)
         .attr('stroke-width', LINECHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)

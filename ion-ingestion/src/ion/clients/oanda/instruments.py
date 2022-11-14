@@ -14,6 +14,7 @@ from ion.clients.oanda.configs.responses import (
 from ion.clients.oanda.configs.requests import (
     ENDPOINTS,
     HEADERS,
+    HISTORICAL_GRANULARITY,
     Granularities,
     CurrencyPairs,
 )
@@ -36,6 +37,7 @@ async def stream_oanda_live_data(symbols: List[str], callback: Callable):
         _type_: _description_
     """
     async with aiohttp.ClientSession(raise_for_status=True) as session:
+        print(ENDPOINTS["ENDPOINTS"]["INSTRUMENTS"]["PRICESTREAM"](symbols))
         async with session.get(
             ENDPOINTS["ENDPOINTS"]["INSTRUMENTS"]["PRICESTREAM"](symbols),
             headers=HEADERS,
@@ -49,6 +51,12 @@ async def stream_oanda_live_data(symbols: List[str], callback: Callable):
                     warnings.warn(
                         f"Websocket connection terminated by user: {str(wse)}"
                     )
+
+
+def historical(symbol: str, period: str):
+    return __get_oanda_base_data(
+        symbol=symbol, granularity=HISTORICAL_GRANULARITY[period], count=50
+    )
 
 
 def get_oanda_historical_data(

@@ -22,7 +22,7 @@ request.interceptors.response.use(
         console.error(error);
 
         if (typeof error.response === 'undefined') {
-            window.location.href = '/error404/';
+            // window.location.href = '/error404/';
             return await Promise.reject(error);
         }
 

@@ -2,8 +2,6 @@ import { ColorsEnum } from 'common/theme';
 
 // Nested Enums https://topherpedersen.blog/2021/06/07/nested-enums-in-typescript/
 export const LINECHARTIDS = {
-    BASE_CONTAINER_ID: 'linechart', // ID for div container
-    BASE_SVG_ID: 'linechart-svg', // ID for SVG
     XAXIS_ID: 'x-axis',
     YAXIS_ID: 'y-axis',
     DRAW_CONTAINER_ID: 'draw-rect', // rect class for containing all drawn lines
@@ -36,7 +34,9 @@ export const LINECHARTCONFIGS = {
     DEFAULT_SHOW_GRID: false,
     DEFAULT_SHOW_AXIS: false,
     DEFAULT_SHOW_NORMALISED: false,
+    DEFAULT_SHOW_LEGEND: false,
     DEFAULT_SHOW_TOOLTIP: false,
+    DEFAULT_ZERO_AXIS: false,
     DEFAULT_DARKMODE_LINE_COLOR: ColorsEnum.white,
     DEFAULT_LIGHTMODE_LINE_COLOR: ColorsEnum.black,
     DEFAULT_LINE_AREA_COLOR: 'steelblue',

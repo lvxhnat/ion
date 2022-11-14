@@ -8,3 +8,4 @@ REACT_APP_WEBSOCKET_URL="ws://localhost:1236/"
 ``
 
 yarn install
+```
