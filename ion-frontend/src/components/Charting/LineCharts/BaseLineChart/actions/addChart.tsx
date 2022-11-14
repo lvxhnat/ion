@@ -23,7 +23,7 @@ export default function addChart(props: {
         dataY: props.dataY,
     });
 
-    if (props.type === 'line') {
+    if (props.type !== 'pureLine') {
         C.addEndTags({
             y: props.y,
             id: props.id,

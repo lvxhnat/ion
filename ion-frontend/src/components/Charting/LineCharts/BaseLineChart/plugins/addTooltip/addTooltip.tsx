@@ -34,6 +34,7 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: DataPr
         .attr('id', d => `${props.baseId}_${d.id}`)
         .style('fill', 'none')
         .style('stroke', d => ColorsEnum.white)
+        .style('stroke-width', 1)
         .attr('r', 4);
 
     if (d3.selectAll(`.${props.baseId}_${LINECHARTIDS.TOOLTIP_RECT_TRACKER_CLASS}`).empty()) {
@@ -57,6 +58,7 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: DataPr
             .attr('class', `${props.baseId}_${LINECHARTIDS.TOOLTIP_LINE_CLASS}`)
             .style('stroke', ColorsEnum.white)
             .style('stroke-dasharray', '3,3')
+            .style('stroke-width', 1)
             .style('opacity', 0.5)
             .attr('y1', LINECHARTCONFIGS.DEFAULT_MARGIN_BOTTOM)
             .attr('y2', LINECHARTCONFIGS.DEFAULT_HEIGHT - LINECHARTCONFIGS.DEFAULT_MARGIN_TOP);

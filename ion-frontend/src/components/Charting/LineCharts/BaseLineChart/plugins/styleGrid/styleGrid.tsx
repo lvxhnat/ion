@@ -21,7 +21,8 @@ export const styleGrid = (props: { baseId: string }) => {
                         isFirst ? 'first-of-type' : 'not(:first-of-type)'
                     } line`
                 )
-                .attr('stroke-opacity', 0.2)
+                .attr('stroke-opacity', 0.1)
+                .attr('stroke-width', 1)
                 .attr('stroke-dasharray', '2,2');
     };
 

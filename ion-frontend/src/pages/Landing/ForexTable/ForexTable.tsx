@@ -73,12 +73,15 @@ export default function ForexTable() {
                 <TableBody>
                     {subscribedForexPairs.map((forexPair: string, index: number) => (
                         <S.StyledTableRow key={`${forexPair}_row`}>
+                            <StyledTableCell key={`${forexPair}_label_${index}`}>
+                                <label>{forexPair}</label>
+                            </StyledTableCell>
                             <ForexTableCellGroup
                                 key={`${forexPair}_${index}`}
                                 forexPair={forexPair}
                                 tableHeaders={
                                     tableHeaders.filter(
-                                        key => key.name !== ''
+                                        key => !['', 'pair'].includes(key.name)
                                     ) as ForexTableHeaderType[]
                                 }
                             />

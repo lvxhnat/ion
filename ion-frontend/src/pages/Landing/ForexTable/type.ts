@@ -4,7 +4,7 @@ export interface ForexStreamType {
     instrument: string;
     closeoutBid: number;
     closeoutAsk: number;
-    spread: number;
+    spread: string;
 }
 
 export interface ForexHistoricalType {

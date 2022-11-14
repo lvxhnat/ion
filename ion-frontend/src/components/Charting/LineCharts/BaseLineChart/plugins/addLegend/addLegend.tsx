@@ -47,6 +47,7 @@ export const addLegend = (props: { legend: DataProps; baseId: string }): void =>
                 .attr('width', 5)
                 .attr('height', 5)
                 .attr('stroke', 'white')
+                .attr('stroke-width', 1)
                 .attr('fill', 'transparent');
         } else {
             const xOffset = treePosition + 5 * 0.5;
@@ -61,6 +62,7 @@ export const addLegend = (props: { legend: DataProps; baseId: string }): void =>
                 .attr('x2', xOffset)
                 .attr('y1', LINECHARTCONFIGS.DEFAULT_MARGIN_TOP + i * 15 - parentBoxSize * 0.5)
                 .attr('y2', y2Offset)
+                .attr('stroke-width', 1)
                 .attr('stroke', 'white');
             // Plot the horizontal line
             legendTree
@@ -71,6 +73,7 @@ export const addLegend = (props: { legend: DataProps; baseId: string }): void =>
                 .attr('x2', treePosition + parentBoxSize)
                 .attr('y1', y2Offset)
                 .attr('y2', y2Offset)
+                .attr('stroke-width', 1)
                 .attr('stroke', 'white');
         }
     }
