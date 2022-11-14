@@ -57,7 +57,7 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
     );
 }
 
-export default function IndicatorPopup() {
+export default function IndicatorPopup(props: { setData: Function }) {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -89,7 +89,7 @@ export default function IndicatorPopup() {
                             <SidebarPrompt />
                         </Grid>
                         <Grid item xs={9}>
-                            <ChoiceTable />
+                            <ChoiceTable setData={props.setData} />
                         </Grid>
                     </Grid>
                 </DialogContent>

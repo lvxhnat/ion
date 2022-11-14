@@ -17,8 +17,8 @@ export const INDICATOR_ENGINE: { [key: string]: IndicatorEngineProps } = {
         id: 'momentumIndicators',
         name: 'Momentum',
         types: [
-            { id: 'sma', name: 'Simple Moving Average', callback: Momentum.calculateSMA },
-            { id: 'ema', name: 'Exponential Moving Average', callback: Momentum.calculateEMA },
+            { id: 'sma', name: 'SMA', callback: Momentum.calculateSMA },
+            { id: 'ema', name: 'EMA', callback: Momentum.calculateEMA },
         ],
     },
     volatilityIndicators: {

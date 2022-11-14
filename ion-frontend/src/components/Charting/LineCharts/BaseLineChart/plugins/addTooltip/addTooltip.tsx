@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { ColorsEnum } from 'common/theme';
 import { LINECHARTCONFIGS, LINECHARTIDS } from '../../config';
-import { DataProps } from '../../type';
+import { DefaultDataProps } from '../../type';
 
 function formatDateString(d: Date) {
     const zeroPad = (n: number) => `${`0${n + 1}`.slice(-2)}`;
@@ -10,7 +10,7 @@ function formatDateString(d: Date) {
     )}:${zeroPad(d.getMinutes())}`;
 }
 
-export const addToolTip = (props: { x: any; y: any; baseId: string; data: DataProps }) => {
+export const addToolTip = (props: { x: any; y: any; baseId: string; data: DefaultDataProps[] }) => {
     const svg = d3.selectAll(`#${props.baseId} `);
     const dates = props.data[0].dataX;
     const bisect = d3.bisector((d: any) => d).left;
@@ -85,7 +85,6 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: DataPr
 
         if (dates[i]) {
             const xTranslate = props.x(dates[i]);
-
             tooltips.text((d: any) => {
                 const selection = props.data.filter(item => item.id === d.id)[0];
                 return selection ? `$${selection.dataY[i].toFixed(2)}` : null;
