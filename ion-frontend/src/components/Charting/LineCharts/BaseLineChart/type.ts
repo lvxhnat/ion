@@ -1,5 +1,6 @@
 export interface LineChartProps {
     defaultData: DefaultDataProps;
+    baseId: string;
     data?: DataProps | null;
     width?: number;
     height?: number;
@@ -9,7 +10,9 @@ export interface LineChartProps {
         left: number;
         right: number;
     };
+    zeroAxis?: boolean;
     showAverage?: boolean;
+    showLegend?: boolean;
     showGrid?: boolean;
     showAxis?: boolean;
     showNormalised?: boolean;
@@ -26,6 +29,6 @@ export interface DefaultDataProps {
     type: AllowedLineTypes;
 }
 
-export type AllowedLineTypes = 'line' | 'areaLine';
+export type AllowedLineTypes = 'line' | 'pureLine' | 'areaLine';
 
 export type DataProps = DefaultDataProps[];

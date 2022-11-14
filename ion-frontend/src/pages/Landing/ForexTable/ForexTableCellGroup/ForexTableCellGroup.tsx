@@ -40,7 +40,7 @@ export default function ForexTableCellGroup(props: {
                 }
 
                 return (
-                    <StyledTableCell width={key.width + '%'} key={`${key.id}_${index}`}>
+                    <StyledTableCell key={`${key.id}_${index}`}>
                         <label style={{ color: fontColor }}>{data}</label>
                     </StyledTableCell>
                 );

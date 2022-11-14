@@ -32,9 +32,18 @@ export default function TSChart(): React.ReactElement {
 
     return (
         <>
-            <Header />
+            <Header baseId={`svg-container`} />
             {data ? (
-                <BaseLineChart defaultData={data} showGrid showAxis showNormalised showTooltip />
+                <BaseLineChart
+                    baseId={`svg-container`}
+                    defaultData={data}
+                    zeroAxis
+                    showGrid
+                    showAxis
+                    showLegend
+                    showNormalised
+                    showTooltip
+                />
             ) : null}
         </>
     );

@@ -21,16 +21,8 @@ export const forexStreamStore = create(set => ({
                           [streamObject.instrument]: {
                               ...omit(streamObject, 'instrument'),
                               // Compare the previous value with the current value, and return -1, 0 or 1
-                              bid_change: prev
-                                  ? streamObject.closeoutBid - prev.closeoutBid > 0
-                                      ? 1
-                                      : -1
-                                  : 0,
-                              ask_change: prev
-                                  ? streamObject.closeoutAsk - prev.closeoutAsk > 0
-                                      ? 1
-                                      : -1
-                                  : 0,
+                              bid_change: prev ? streamObject.closeoutBid - prev.closeoutBid : 0,
+                              ask_change: prev ? streamObject.closeoutAsk - prev.closeoutAsk : 0,
                           },
                       },
                   }

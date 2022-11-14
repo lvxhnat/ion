@@ -5,11 +5,12 @@ export const addArea = (props: {
     x: d3.ScaleTime<number, number, never>;
     y: d3.ScaleLinear<number, number, never>;
     id: string;
+    baseId: string;
     color: string;
     dataX: Date[];
     dataY: number[];
 }): void => {
-    const svg = d3.selectAll(`#${LINECHARTIDS.BASE_SVG_ID}`);
+    const svg = d3.selectAll(`#${props.baseId}`);
     const defined = d3.map(props.dataY, (_, i) => !isNaN(props.dataY[i]));
     const indexes = d3.map(props.dataX, (_, i) => i); // Denotes simply an array containing index values
 
@@ -23,7 +24,7 @@ export const addArea = (props: {
         .y1((_, i: number) => props.y(props.dataY[i]));
 
     svg.append('path')
-        .attr('id', props.id)
+        .attr('id', `${props.baseId}_${props.id}`)
         .attr('fill', props.color)
         .attr('opacity', LINECHARTCONFIGS.DEFAULT_LINE_AREA_OPACITY)
         .attr('d', area(indexes.filter(i => defined[i])));

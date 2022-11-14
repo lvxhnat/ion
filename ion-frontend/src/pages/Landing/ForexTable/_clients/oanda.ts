@@ -12,7 +12,7 @@ export function unpackOandaFXStream(oandaStreamObject: string): ForexStreamType 
             instrument: priceStream.instrument,
             closeoutBid,
             closeoutAsk,
-            spread: parseFloat(Math.abs(closeoutBid - closeoutAsk).toFixed(5)),
+            spread: Math.abs(closeoutBid - closeoutAsk).toFixed(5),
         };
     }
 }

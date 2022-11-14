@@ -5,15 +5,16 @@ import { getFontColor } from '../../../TSChart/helpers/style';
 export const addEndTags = (props: {
     y: d3.ScaleLinear<number, number, never>;
     id: string;
+    baseId: string;
     dataY: number[];
     color: string;
 }): void => {
-    const svg = d3.selectAll(`#${LINECHARTIDS.BASE_SVG_ID}`);
+    const svg = d3.selectAll(`#${props.baseId}`);
 
-    svg.append('g').attr('id', LINECHARTIDS.ENDTAG_GROUP_ID);
+    svg.append('g').attr('id', `${props.baseId}_${LINECHARTIDS.ENDTAG_GROUP_ID}`);
 
-    d3.selectAll(`#${LINECHARTIDS.ENDTAG_GROUP_ID}`)
-        .selectAll(`path ${props.id}`)
+    d3.selectAll(`#${props.baseId}_${LINECHARTIDS.ENDTAG_GROUP_ID}`)
+        .selectAll(`path #${props.baseId}_${props.id}`)
         .data(props.dataY)
         .join('path')
         .attr('d', d => `M ${1} ${props.y(d)} l 6,-6 h 42 v 12 h -16 l -26,0`)
@@ -23,8 +24,8 @@ export const addEndTags = (props: {
         )
         .attr('fill', props.color);
 
-    d3.selectAll(`#${LINECHARTIDS.ENDTAG_GROUP_ID}`)
-        .selectAll(`.label #${props.id}`)
+    d3.selectAll(`#${props.baseId}_${LINECHARTIDS.ENDTAG_GROUP_ID}`)
+        .selectAll(`.label #${props.baseId}_${props.id}`)
         .data(props.dataY)
         .join('text')
         .text(d => d.toFixed(2))
@@ -32,6 +33,6 @@ export const addEndTags = (props: {
         .attr('y', d => +props.y(d) + 3)
         .attr('text-anchor', 'start')
         .attr('font-size', '9px')
-        .attr('id', props.id)
+        .attr('id', `${props.baseId}_${props.id}`)
         .attr('fill', getFontColor(props.color));
 };

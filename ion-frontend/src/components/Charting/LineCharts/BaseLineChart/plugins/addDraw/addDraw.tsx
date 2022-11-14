@@ -2,14 +2,14 @@ import * as React from 'react';
 import * as d3 from 'd3';
 import { LINECHARTCONFIGS, LINECHARTIDS } from '../../config';
 
-export const addDraw = () => {
+export const addDraw = (props: { baseId: string }) => {
     let line: any;
 
-    const svg = d3.selectAll(`#${LINECHARTIDS.BASE_SVG_ID}`);
+    const svg = d3.selectAll(`#${props.baseId}`);
 
     const drawContainer = svg
         .append('rect')
-        .attr('id', LINECHARTIDS.DRAW_CONTAINER_ID)
+        .attr('id', `${props.baseId}_${LINECHARTIDS.DRAW_CONTAINER_ID}`)
         .style('fill', 'none')
         .style('pointer-events', 'all')
         .attr('width', LINECHARTCONFIGS.DEFAULT_WIDTH - LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT)
@@ -25,7 +25,7 @@ export const addDraw = () => {
         const m = d3.pointer(e);
         line = svg
             .append('line')
-            .attr('class', LINECHARTIDS.DRAW_LINE_CLASS)
+            .attr('class', `${props.baseId}_${LINECHARTIDS.DRAW_LINE_CLASS}`)
             .attr('x1', m[0])
             .attr('y1', m[1])
             .attr('x2', m[0])
@@ -49,22 +49,22 @@ export const addDraw = () => {
     }
 };
 
-export const removeDraw = (): void => {
+export const removeDraw = (props: { baseId: string }): void => {
     d3.selectAll(
-        `#${LINECHARTIDS.BASE_CONTAINER_ID} #${LINECHARTIDS.BASE_SVG_ID} #${LINECHARTIDS.DRAW_CONTAINER_ID}`
+        `#${props.baseId}-container #${props.baseId} #${props.baseId}_${LINECHARTIDS.DRAW_CONTAINER_ID}`
     ).remove();
 };
 
-export const existDrawnLines = (): boolean => {
+export const existDrawnLines = (props: { baseId: string }): boolean => {
     return !d3
         .selectAll(
-            `#${LINECHARTIDS.BASE_CONTAINER_ID} #${LINECHARTIDS.BASE_SVG_ID} .${LINECHARTIDS.DRAW_LINE_CLASS}`
+            `#${props.baseId}-container #${props.baseId} .${props.baseId}_${LINECHARTIDS.DRAW_LINE_CLASS}`
         )
         .empty();
 };
 
-export const removeDrawnLines = (): void => {
+export const removeDrawnLines = (props: { baseId: string }): void => {
     d3.selectAll(
-        `#${LINECHARTIDS.BASE_CONTAINER_ID} #${LINECHARTIDS.BASE_SVG_ID} .${LINECHARTIDS.DRAW_LINE_CLASS}`
+        `#${props.baseId}-container #${props.baseId} .${props.baseId}_${LINECHARTIDS.DRAW_LINE_CLASS}`
     ).remove();
 };

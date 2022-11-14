@@ -18,6 +18,7 @@ import { LINECHARTCONFIGS, LINECHARTIDS } from './config';
  */
 export default function BaseLineChart({
     defaultData,
+    baseId,
     data = LINECHARTCONFIGS.DEFAULT_DATA,
     width = LINECHARTCONFIGS.DEFAULT_WIDTH,
     height = LINECHARTCONFIGS.DEFAULT_HEIGHT,
@@ -27,6 +28,8 @@ export default function BaseLineChart({
         bottom: LINECHARTCONFIGS.DEFAULT_MARGIN_BOTTOM,
         left: LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT,
     },
+    zeroAxis = LINECHARTCONFIGS.DEFAULT_ZERO_AXIS,
+    showLegend = LINECHARTCONFIGS.DEFAULT_SHOW_LEGEND,
     showAverage = LINECHARTCONFIGS.DEFAULT_SHOW_AVERAGE,
     showGrid = LINECHARTCONFIGS.DEFAULT_SHOW_GRID,
     showAxis = LINECHARTCONFIGS.DEFAULT_SHOW_AXIS,
@@ -36,13 +39,20 @@ export default function BaseLineChart({
     const ref = useD3(
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
             // Ensure rerender does not duplicate chart
-            if (!svg.selectAll('*').empty()) svg.selectAll('*').remove(); // set the dimensions and margins of the graph
+            if (!svg.selectAll('*').empty()) svg.selectAll('*').remove(); // removes any overlapping versions of the svgs
+
             const dataX = defaultData.dataX;
             const dataY = defaultData.dataY;
 
-            svg.attr('viewBox', [0, 0, width - margin.left - margin.right + 110, height + 15])
+            svg.attr('viewBox', [
+                0,
+                0,
+                width + margin.right + margin.left,
+                height + margin.top * 1.5,
+            ])
                 .attr('preserveAspectRatio', 'xMidYMid meet')
-                .classed('svg-content-responsive', true);
+                .classed('svg-content-responsive', true)
+                .attr('stroke-width', 0);
 
             const dateTime: number[] = dataX.map((date: Date) => date.getTime());
 
@@ -51,7 +61,7 @@ export default function BaseLineChart({
             const y = d3.scaleLinear().range([height - margin.top, margin.bottom]);
 
             x.domain([Math.min(...dateTime), Math.max(...dateTime)]);
-            y.domain([0, Math.max(...dataY)]);
+            y.domain([zeroAxis ? 0 : Math.min(...dataY), Math.max(...dataY)]);
 
             const yAxis = d3
                 .axisLeft(y)
@@ -71,19 +81,19 @@ export default function BaseLineChart({
 
             svg.append('g')
                 .attr('transform', `translate(0,${height - margin.top})`)
-                .attr('id', LINECHARTIDS.XAXIS_ID) // Sets a class name for our x axis
+                .attr('id', `${baseId}_${LINECHARTIDS.XAXIS_ID}`) // Sets a class name for our x axis
                 .call(xAxis);
 
             svg.append('g')
                 .attr('transform', `translate(${margin.left},0)`)
-                .attr('id', LINECHARTIDS.YAXIS_ID) // Set a class name for our y axis
+                .attr('id', `${baseId}_${LINECHARTIDS.YAXIS_ID}`) // Set a class name for our y axis
                 .call(yAxis);
 
             if (showAverage) {
                 // A horizontal line that shows the average
                 const mean = dataY.reduce((a: number, b: number) => a + b) / dataY.length;
                 svg.append('line')
-                    .attr('class', LINECHARTIDS.DRAW_LINE_CLASS)
+                    .attr('class', `${baseId}_${LINECHARTIDS.DRAW_LINE_CLASS}`)
                     .attr('x1', margin.left)
                     .attr('y1', y(mean))
                     .attr('x2', width - margin.right)
@@ -97,12 +107,15 @@ export default function BaseLineChart({
             }
 
             if (showGrid) {
-                C.styleGrid();
+                C.styleGrid({
+                    baseId: baseId,
+                });
             }
 
             A.addChart({
                 x: x,
                 y: y,
+                baseId: baseId,
                 type: defaultData.type,
                 color: defaultData.color,
                 id: defaultData.id,
@@ -110,14 +123,18 @@ export default function BaseLineChart({
                 dataY: dataY,
             });
 
-            C.addLegend({
-                legend: [defaultData],
-            });
+            if (showLegend) {
+                C.addLegend({
+                    baseId: baseId,
+                    legend: [defaultData],
+                });
+            }
 
             if (showTooltip) {
                 C.addToolTip({
                     x: x,
                     y: y,
+                    baseId: baseId,
                     data: [defaultData],
                 });
             }
@@ -126,8 +143,8 @@ export default function BaseLineChart({
     );
 
     return (
-        <div id={LINECHARTIDS.BASE_CONTAINER_ID}>
-            <svg ref={ref} id={LINECHARTIDS.BASE_SVG_ID}></svg>
+        <div id={`${baseId}-container`}>
+            <svg ref={ref} id={baseId} />
         </div>
     );
 }

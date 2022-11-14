@@ -1,6 +1,6 @@
-from pydantic import BaseModel 
+from pydantic import BaseModel
 
 
 class LiveCandles(BaseModel):
-    symbol: str 
-    granularity: str
+    symbol: str
+    period: str

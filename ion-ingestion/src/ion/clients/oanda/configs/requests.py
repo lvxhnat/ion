@@ -80,6 +80,16 @@ class CurrencyPairs(enum.Enum):
     USD_ZAR = "USD_ZAR"
     ZAR_JPY = "ZAR_JPY"
 
+    @classmethod
+    def is_supported(cls, symbol: str) -> bool:
+        """Checks if the granularity is supported by Oanda"""
+        if isinstance(symbol, cls):
+            symbol = symbol.value
+        if symbol not in cls.__members__:
+            return False
+        else:
+            return True
+
 
 class Granularities(enum.Enum):
     """Supported Granularities by Oanda Instruments Candles Endpoint"""
@@ -111,18 +121,28 @@ class Granularities(enum.Enum):
         """Checks if the granularity is supported by Oanda"""
         if isinstance(granularity, cls):
             granularity = granularity.value
-        if not granularity in cls.__members__:
+        if granularity not in cls.__members__:
             return False
         else:
             return True
 
 
+HISTORICAL_GRANULARITY = {
+    "5Y": "W",
+    "1Y": "D",
+    "6M": "H12",
+    "3M": "H1",
+    "1M": "M5",
+    "1M_S": "D",
+    "1W": "M1",
+}
+
 ENDPOINTS = {
     "BASE_URL": "https://api-fxtrade.oanda.com",
     "ENDPOINTS": {
         "INSTRUMENTS": {
-            "PRICESTREAM": lambda symbol: f"""https://stream-fxtrade.oanda.com/v3/accounts/{os.environ['OANDA_ACCOUNT_ID']}/pricing/stream?instruments={"%2C".join(symbol)}""",
-            "CANDLES": lambda symbol: "/v3/instruments/" + symbol + "/candles",
+            "PRICESTREAM": lambda symbol: f'https://stream-fxtrade.oanda.com/v3/accounts/{os.environ["OANDA_ACCOUNT_ID"]}/pricing/stream?instruments={"%2C".join(symbol)}',
+            "CANDLES": lambda symbol: f"/v3/instruments/{symbol}/candles",
         }
     },
 }
