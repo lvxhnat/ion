@@ -1,7 +1,7 @@
 export interface LineChartProps {
     defaultData: DefaultDataProps;
     baseId: string;
-    data?: DataProps | null;
+    data?: DefaultDataProps[];
     width?: number;
     height?: number;
     margin?: {
@@ -30,5 +30,3 @@ export interface DefaultDataProps {
 }
 
 export type AllowedLineTypes = 'line' | 'pureLine' | 'areaLine';
-
-export type DataProps = DefaultDataProps[];

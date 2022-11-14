@@ -4,12 +4,12 @@ import Drawline from './Drawline';
 import IndicatorPopup from './IndicatorPopup';
 import { Clearlines } from './Drawline/Drawline';
 
-export default function Header(props: { baseId: string }) {
+export default function Header(props: { baseId: string; setData: Function }) {
     return (
         <S.HeaderWrapper>
             <S.StartWrapper>
                 <Drawline baseId={props.baseId} />
-                <IndicatorPopup />
+                <IndicatorPopup setData={props.setData} />
             </S.StartWrapper>
             <S.EndWrapper>
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>

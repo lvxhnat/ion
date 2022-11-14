@@ -4,9 +4,26 @@ import * as React from 'react';
 import Header from './components/Header';
 import BaseLineChart from '../BaseLineChart';
 import { DefaultDataProps } from '../BaseLineChart/type';
+import { GeneralTableTypeProp } from './components/Header/IndicatorPopup/ChoiceTable/configs';
 
 export default function TSChart(): React.ReactElement {
     const [data, setData] = React.useState<DefaultDataProps>();
+    const [indicatorData, setIndicatorData] = React.useState<DefaultDataProps[]>([]);
+
+    function setDataHook(item: GeneralTableTypeProp<number[]>) {
+        setIndicatorData([
+            ...indicatorData,
+            {
+                id: item.id,
+                name: item.name,
+                parent: false,
+                dataX: data!.dataX,
+                dataY: item.callback(data!.dataY),
+                color: '#FFEDDE',
+                type: 'line',
+            },
+        ]);
+    }
 
     // Parse the time in data
     const parseTime = d3.timeParse('%Y-%m-%d');
@@ -32,11 +49,12 @@ export default function TSChart(): React.ReactElement {
 
     return (
         <>
-            <Header baseId={`svg-container`} />
+            <Header setData={setDataHook} baseId={`svg-container`} />
             {data ? (
                 <BaseLineChart
                     baseId={`svg-container`}
                     defaultData={data}
+                    data={indicatorData}
                     zeroAxis
                     showGrid
                     showAxis

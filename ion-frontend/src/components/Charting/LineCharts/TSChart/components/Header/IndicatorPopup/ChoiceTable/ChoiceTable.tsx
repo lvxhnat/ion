@@ -9,7 +9,7 @@ import { INDICATOR_ENGINE } from 'components/Charting/LineCharts/TSChart/helpers
 import { GeneralTableTypeProp } from './configs';
 import Typography from '@mui/material/Typography';
 
-export default function ChoiceTable(): React.ReactElement {
+export default function ChoiceTable(props: { setData: Function }): React.ReactElement {
     const [indicatorGroupSelection, setIndicatorGroupSelection] = React.useState<string>(
         Object.keys(INDICATOR_ENGINE)[0]
     );
@@ -33,19 +33,24 @@ export default function ChoiceTable(): React.ReactElement {
             <Table size="small">
                 <TableBody>
                     {INDICATOR_ENGINE[indicatorGroupSelection].types.map(
-                        (engines: GeneralTableTypeProp<number[]>) => (
-                            <TableRow
-                                hover
-                                key={engines.id}
-                                selected={indicatorSelection === engines.id}
-                                onClick={() => setIndicatorSelection(engines.id)}
-                                sx={{ '&:hover': { cursor: 'pointer' } }}
-                            >
-                                <TableCell component="th" scope="row" style={{ border: 0 }}>
-                                    <Typography variant="body1">{engines.name}</Typography>
-                                </TableCell>
-                            </TableRow>
-                        )
+                        (engines: GeneralTableTypeProp<number[]>) => {
+                            return (
+                                <TableRow
+                                    hover
+                                    key={engines.id}
+                                    selected={indicatorSelection === engines.id}
+                                    onClick={() => {
+                                        setIndicatorSelection(engines.id);
+                                        props.setData(engines);
+                                    }}
+                                    sx={{ '&:hover': { cursor: 'pointer' } }}
+                                >
+                                    <TableCell component="th" scope="row" style={{ border: 0 }}>
+                                        <Typography variant="body1">{engines.name}</Typography>
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        }
                     )}
                 </TableBody>
             </Table>

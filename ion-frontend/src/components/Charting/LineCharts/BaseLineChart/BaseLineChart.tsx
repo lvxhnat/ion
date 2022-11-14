@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import * as React from 'react';
 import * as C from './plugins';
 import * as A from './actions';
-import { LineChartProps } from './type';
+import { DefaultDataProps, LineChartProps } from './type';
 
 import { useD3 } from 'common/hooks/useD3';
 import { ColorsEnum } from 'common/theme';
@@ -123,10 +123,23 @@ export default function BaseLineChart({
                 dataY: dataY,
             });
 
+            data.map((d: DefaultDataProps) => {
+                A.addChart({
+                    x: x,
+                    y: y,
+                    baseId: baseId,
+                    type: d.type,
+                    color: d.color,
+                    id: d.id,
+                    dataX: d.dataX,
+                    dataY: d.dataY,
+                });
+            });
+
             if (showLegend) {
                 C.addLegend({
                     baseId: baseId,
-                    legend: [defaultData],
+                    legend: [defaultData, ...data],
                 });
             }
 
@@ -135,11 +148,11 @@ export default function BaseLineChart({
                     x: x,
                     y: y,
                     baseId: baseId,
-                    data: [defaultData],
+                    data: [defaultData, ...data],
                 });
             }
         },
-        [data]
+        [data.length]
     );
 
     return (

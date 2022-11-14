@@ -28,7 +28,7 @@ export const LINECHARTCONFIGS = {
     DEFAULT_MARGIN_RIGHT: 30,
     DEFAULT_MARGIN_BOTTOM: 20,
     DEFAULT_MARGIN_LEFT: 35,
-    DEFAULT_DATA: null, // No additional data, plot only one line
+    DEFAULT_DATA: [], // No additional data, plot only one line
     DEFAULT_CHART_FONTSIZE: '0.6rem',
     DEFAULT_SHOW_AVERAGE: false,
     DEFAULT_SHOW_GRID: false,
