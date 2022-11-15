@@ -10,7 +10,7 @@ here = pathlib.Path.absolute(pathlib.Path(__file__).resolve().parent)
 
 # get package version
 with open(
-    pathlib.Path(here, "src/ion-ingestion/__init__.py"), encoding="utf-8"
+    pathlib.Path(here, "src/ion_ingestion/__init__.py"), encoding="utf-8"
 ) as f:
     result = re.search(r'__version__ = ["\']([^"\']+)', f.read())
 

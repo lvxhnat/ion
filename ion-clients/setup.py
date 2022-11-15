@@ -15,7 +15,9 @@ with open(
     result = re.search(r'__version__ = ["\']([^"\']+)', f.read())
 
     if not result:
-        raise ValueError("Can't find the version in ion_clients/__init__.py")
+        raise ValueError(
+            f"Can't find the version in {pathlib.Path(here, 'src/ion_clients/__init__.py')}"
+        )
 
     version = result.group(1)
 
