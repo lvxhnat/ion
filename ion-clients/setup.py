@@ -4,18 +4,20 @@ import pathlib
 import pkg_resources
 from setuptools import setup, find_packages
 
-name = "ion_ingestion"
+name = "ion_clients"
 req_file = "requirements.dev.txt"
 here = pathlib.Path.absolute(pathlib.Path(__file__).resolve().parent)
 
 # get package version
 with open(
-    pathlib.Path(here, "src/ion_ingestion/__init__.py"), encoding="utf-8"
+    pathlib.Path(here, "src/ion_clients/__init__.py"), encoding="utf-8"
 ) as f:
     result = re.search(r'__version__ = ["\']([^"\']+)', f.read())
 
     if not result:
-        raise ValueError("Can't find the version in ion/__init__.py")
+        raise ValueError(
+            f"Can't find the version in {pathlib.Path(here, 'src/ion_clients/__init__.py')}"
+        )
 
     version = result.group(1)
 
@@ -28,7 +30,7 @@ with pathlib.Path(os.path.abspath("."), req_file).open() as requirements:
         for requirement in pkg_resources.parse_requirements(requirements)
     ]
 
-package_data = {"ion": ["*.txt", "*.json", "*.preamble", "*.sql"]}
+package_data = {"ion_clients": ["*.txt", "*.json", "*.preamble", "*.sql"]}
 
 setup(
     name=name,
@@ -42,7 +44,7 @@ setup(
     package_data=package_data,
     install_requires=install_requires,
     entry_points={
-        "console_scripts": ["ion_ingestion = ion_ingestion.launchers.cli:cli"],
+        "console_scripts": ["ion = ion.launchers.cli:cli"],
     },
     python_requires=">=3.9",
 )

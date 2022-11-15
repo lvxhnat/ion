@@ -4,11 +4,9 @@ from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 
-from ion_provider.app.core.config import settings
-from ion_provider.app.api.api_v1 import api
-from ion.clients.oanda.instruments import (
-    stream_oanda_live_data,
-)
+from ion_ingestion.app.core.config import settings
+from ion_ingestion.app.api.api_v1 import api
+from ion_clients.clients.oanda.instruments import stream_oanda_live_data
 
 app = FastAPI(
     title="ion-ingestion",
