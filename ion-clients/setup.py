@@ -4,7 +4,7 @@ import pathlib
 import pkg_resources
 from setuptools import setup, find_packages
 
-name = "ion"
+name = "ion_clients"
 req_file = "requirements.dev.txt"
 here = pathlib.Path.absolute(pathlib.Path(__file__).resolve().parent)
 
@@ -30,7 +30,7 @@ with pathlib.Path(os.path.abspath("."), req_file).open() as requirements:
         for requirement in pkg_resources.parse_requirements(requirements)
     ]
 
-package_data = {"ion": ["*.txt", "*.json", "*.preamble", "*.sql"]}
+package_data = {"ion_clients": ["*.txt", "*.json", "*.preamble", "*.sql"]}
 
 setup(
     name=name,
