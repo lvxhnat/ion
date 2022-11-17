@@ -10,6 +10,8 @@ export default function TSChart(): React.ReactElement {
     const [data, setData] = React.useState<DefaultDataProps>();
     const [indicatorData, setIndicatorData] = React.useState<DefaultDataProps[]>([]);
 
+    const intervalsAvailable = ['1D', '1W', '1M', '3M', '6M', '1Y', '3Y', '5Y'];
+
     function setDataHook(item: GeneralTableTypeProp<number[]>) {
         setIndicatorData([
             ...indicatorData,

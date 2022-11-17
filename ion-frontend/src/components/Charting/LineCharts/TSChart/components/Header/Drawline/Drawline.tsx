@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as S from './style';
+import * as RS from '../style';
 
 import GestureIcon from '@mui/icons-material/Gesture';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import { addDraw, removeDraw } from 'components/Charting/LineCharts/BaseLineChart/plugins';
 import { removeDrawnLines } from 'components/Charting/LineCharts/BaseLineChart/plugins/addDraw/addDraw';
 import Tooltip from '@mui/material/Tooltip';
+import { ColorsEnum } from 'common/theme';
 
 export default function Drawline(props: { baseId: string }) {
     const [isDraw, setIsDraw] = React.useState<boolean>(false);
@@ -23,14 +24,18 @@ export default function Drawline(props: { baseId: string }) {
     }
 
     return (
-        <S.ButtonWrapper
-            onClick={handleClick}
-            startIcon={
-                isDraw ? <GestureIcon fontSize="small" /> : <QueryStatsIcon fontSize="small" />
-            }
-        >
-            {isDraw ? 'Draw Mode' : 'Tooltip Mode'}
-        </S.ButtonWrapper>
+        <div>
+            <RS.ButtonWrapper
+                onClick={handleClick}
+                startIcon={
+                    isDraw ? <GestureIcon fontSize="small" /> : <QueryStatsIcon fontSize="small" />
+                }
+                style={{ backgroundColor: ColorsEnum.darkGrey }}
+                variant="contained"
+            >
+                {isDraw ? 'Draw Mode' : 'Tooltip Mode'}
+            </RS.ButtonWrapper>
+        </div>
     );
 }
 

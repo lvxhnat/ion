@@ -1,21 +1,20 @@
 import * as React from 'react';
 import * as S from './style';
+import * as RS from '../style';
 
-import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import CandlestickChartIcon from '@mui/icons-material/CandlestickChart';
-import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 
 import Search from 'components/Search';
 import SidebarPrompt from './SidebarPrompt';
 import ChoiceTable from './ChoiceTable';
+import { ColorsEnum } from 'common/theme';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -69,9 +68,9 @@ export default function IndicatorPopup(props: { setData: Function }) {
 
     return (
         <div>
-            <S.ButtonWrapper startIcon={<CandlestickChartIcon />} onClick={handleClickOpen}>
-                Indicators
-            </S.ButtonWrapper>
+            <S.StyledIconButton onClick={handleClickOpen}>
+                <CandlestickChartIcon />
+            </S.StyledIconButton>
             <BootstrapDialog onClose={handleClose} open={open} maxWidth="md" fullWidth>
                 <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
                     Indicators, Metrics, Strategies

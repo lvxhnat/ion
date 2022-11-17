@@ -1,9 +1,6 @@
-import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/system';
-
-export const ButtonWrapper = styled(Button)(({ theme }) => ({
-    padding: `${theme.spacing(0.5)} ${theme.spacing(2)}`,
-}));
+import { ColorsEnum } from 'common/theme';
 
 export const SearchWrapper = styled('div')(({ theme }) => ({
     minWidth: '100px',
@@ -11,4 +8,9 @@ export const SearchWrapper = styled('div')(({ theme }) => ({
         minWidth: '100%',
         marginBottom: theme.spacing(2),
     },
+}));
+
+export const StyledIconButton = styled(IconButton)(({ theme }) => ({
+    backgroundColor: ColorsEnum.darkGrey,
+    padding: `calc(${theme.spacing(0.5)} + 0.1vw)`,
 }));
