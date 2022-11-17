@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { ColorsEnum } from 'common/theme';
 import { LINECHARTCONFIGS, LINECHARTIDS } from '../../config';
-import { DataProps } from '../../type';
+import { DefaultDataProps } from '../../type';
 
 function truncateString(s: string): string {
     if (s.length > 20) return s.slice(0, 20) + '...';
@@ -11,7 +11,7 @@ function truncateString(s: string): string {
 /**
  * Accomodates multiple lines for legend plotting
  */
-export const addLegend = (props: { legend: DataProps; baseId: string }): void => {
+export const addLegend = (props: { legend: DefaultDataProps[]; baseId: string }): void => {
     const svg = d3.selectAll(`#${props.baseId}`);
 
     const treePosition = LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT + 10;

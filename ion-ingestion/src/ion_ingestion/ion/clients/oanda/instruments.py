@@ -37,7 +37,6 @@ async def stream_oanda_live_data(symbols: List[str], callback: Callable):
         _type_: _description_
     """
     async with aiohttp.ClientSession(raise_for_status=True) as session:
-        print(ENDPOINTS["ENDPOINTS"]["INSTRUMENTS"]["PRICESTREAM"](symbols))
         async with session.get(
             ENDPOINTS["ENDPOINTS"]["INSTRUMENTS"]["PRICESTREAM"](symbols),
             headers=HEADERS,

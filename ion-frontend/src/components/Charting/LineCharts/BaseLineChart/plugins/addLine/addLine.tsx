@@ -21,7 +21,7 @@ export const addLine = (props: {
         .y((_, i: number) => props.y(dataY[i]));
 
     svg.append('path')
-        .attr('id', `#${props.baseId}_${props.id}`)
+        .attr('id', `${props.baseId}_${props.id}`)
         .attr('fill', 'none')
         .attr('stroke', props.color)
         .attr('stroke-width', LINECHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
