@@ -82,7 +82,7 @@ export default function IndicatorPopup(props: { setData: Function }) {
                     </S.SearchWrapper>
                 </DialogContent>
 
-                <DialogContent style={{ padding: 0, width: '100%', height: 600 }}>
+                <DialogContent style={{ padding: 0, width: '100%', height: 450 }}>
                     <Grid container style={{ height: '100%' }}>
                         <Grid item xs={3}>
                             <SidebarPrompt />
