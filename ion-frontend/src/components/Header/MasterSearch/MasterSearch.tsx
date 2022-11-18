@@ -26,7 +26,6 @@ export default function MasterSearch(props: {}) {
                 })
                 .then((d: any) => {
                     searchResults.functions = d.data;
-                    console.log(searchResults);
                     setSearchResults({ ...searchResults });
                 });
         } else {
@@ -54,7 +53,10 @@ export default function MasterSearch(props: {}) {
                         </TableRow>
                         {searchResults.functions.map((d: FunctionSuggestion) => (
                             <S.TableRowWrapper hover key={d.name}>
-                                <S.TableCellWrapper sx={{ paddingLeft: 8 }} width="50%">
+                                <S.TableCellWrapper
+                                    sx={{ paddingLeft: 'calc(1rem + 2vw)' }}
+                                    width="50%"
+                                >
                                     {d.name}
                                 </S.TableCellWrapper>
                                 <S.TableCellWrapper sx={{ color: ColorsEnum.beer }} width="50%">

@@ -25,8 +25,8 @@ export const SearchWrapper = styled('div')(({ theme }) => ({
 }));
 
 export const TableHeaderWrapper = styled(Typography)(({ theme }) => ({
-    paddingTop: theme.spacing(1),
-    paddingLeft: theme.spacing(2),
+    paddingTop: `calc(0.1rem + 0.3vh)`,
+    paddingLeft: `calc(0.1rem + 0.5vw)`,
 }));
 
 export const TableRowWrapper = styled(TableRow)(({ theme }) => ({
@@ -38,7 +38,7 @@ export const TableRowWrapper = styled(TableRow)(({ theme }) => ({
 
 export const TableWrapper = styled(Table)(({ theme }) => ({
     zIndex: 999,
-    width: 700,
+    width: `calc(500px + 5vw)`,
     position: 'absolute',
     border: `1px solid ${ColorsEnum.warmgray1}`,
     backgroundColor: theme.palette.mode === 'dark' ? ColorsEnum.darkGrey : ColorsEnum.black,

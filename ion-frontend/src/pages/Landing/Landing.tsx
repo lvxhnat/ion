@@ -8,7 +8,7 @@ import ForexTable from './ForexTable';
 
 export default function Landing(): React.ReactElement {
     return (
-        <>
+        <Grid sx={{ overflow: 'hidden' }}>
             <CssBaseline />
             <Header />
             <Grid container style={{ height: '90vh', padding: 5, minWidth: '1000px' }} spacing={2}>
@@ -28,6 +28,6 @@ export default function Landing(): React.ReactElement {
                 </Box>
             </Grid>
             <Footer dataStreamProvider={'oanda'} />
-        </>
+        </Grid>
     );
 }
