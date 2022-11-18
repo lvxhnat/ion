@@ -11,6 +11,10 @@ export const typographyTheme = {
         fontSize: `calc(0.7rem + 0.2vw)`,
         fontWeight: 500,
     },
+    body2: {
+        fontSize: `calc(0.6rem + 0.2vw)`,
+        fontWeight: 500,
+    },
     button: {
         fontSize: '0.8rem + 0.2vw',
     },

@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 
 export const TableCellWrapper = styled(TableCell)(({ theme }) => ({
-    padding: `${theme.spacing(0.5)} ${theme.spacing(0)}`,
+    padding: `${theme.spacing(0.5)} ${theme.spacing(0.5)}`,
     border: 0,
 }));
 

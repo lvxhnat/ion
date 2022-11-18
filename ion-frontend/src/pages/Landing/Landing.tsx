@@ -5,6 +5,7 @@ import TSChart from 'components/Charting/LineCharts/TSChart';
 import Header from 'components/Dashboard/Header';
 import Footer from 'components/Footer';
 import ForexTable from './ForexTable';
+import MasterSearch from 'components/MasterSearch';
 
 export default function Landing(): React.ReactElement {
     return (

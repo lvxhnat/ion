@@ -18,7 +18,7 @@ export default function Clock() {
     }, []);
 
     return (
-        <Grid container alignItems="center">
+        <Grid container justifyContent="flex-end" alignItems="center">
             <Typography component="span" variant="body1">
                 {' '}
                 {marketStatus}{' '}
