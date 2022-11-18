@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as S from './style';
 
-import ToggleThemeMode from 'components/ToggleThemeMode';
-import Clock from 'components/Clock';
-import MasterSearch from 'components/MasterSearch';
+import ToggleThemeMode from './ToggleThemeMode';
+import Clock from './Clock';
+import MasterSearch from './MasterSearch';
 
 export default function Header() {
     return (

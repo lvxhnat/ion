@@ -2,10 +2,9 @@ import * as React from 'react';
 
 import { Box, CssBaseline, Grid } from '@mui/material';
 import TSChart from 'components/Charting/LineCharts/TSChart';
-import Header from 'components/Dashboard/Header';
+import Header from 'components/Header';
 import Footer from 'components/Footer';
 import ForexTable from './ForexTable';
-import MasterSearch from 'components/MasterSearch';
 
 export default function Landing(): React.ReactElement {
     return (
