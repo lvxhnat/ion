@@ -68,8 +68,8 @@ export default function IndicatorPopup(props: { setData: Function }) {
 
     return (
         <div>
-            <S.StyledIconButton onClick={handleClickOpen}>
-                <CandlestickChartIcon />
+            <S.StyledIconButton onClick={handleClickOpen} sx={{ height: 30, width: 30 }}>
+                <CandlestickChartIcon fontSize="small" />
             </S.StyledIconButton>
             <BootstrapDialog onClose={handleClose} open={open} maxWidth="md" fullWidth>
                 <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>

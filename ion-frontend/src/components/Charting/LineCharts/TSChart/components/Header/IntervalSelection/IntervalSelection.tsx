@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as S from './style';
 import { IntervalSelectionProps } from './type';
-import { ColorsEnum } from 'common/theme';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ToggleButton from '@mui/material/ToggleButton';
+import Typography from '@mui/material/Typography';
 
 export default function IntervalSelection(props: IntervalSelectionProps) {
     const [intervalSelection, setIntervalSelection] = React.useState<string>('1D');
@@ -19,10 +19,16 @@ export default function IntervalSelection(props: IntervalSelectionProps) {
                 value={intervalSelection}
                 exclusive
                 onChange={handleChange}
+                sx={{ height: 30 }}
             >
                 {props.intervals.map((interval: string) => (
-                    <ToggleButton disableRipple value={interval} key={interval}>
-                        {interval}
+                    <ToggleButton
+                        sx={{ padding: 0.5 }}
+                        disableRipple
+                        value={interval}
+                        key={interval}
+                    >
+                        <Typography variant="body2">{interval}</Typography>
                     </ToggleButton>
                 ))}
             </ToggleButtonGroup>
