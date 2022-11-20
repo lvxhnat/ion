@@ -11,13 +11,31 @@ export const TableCellWrapper = styled(TableCell)(({ theme }) => ({
     border: 0,
 }));
 
+export const StyledSearchWrapper = styled('div')(({ theme }) => ({
+    display: 'inline-block',
+    position: 'relative',
+    borderRadius: '4px',
+}));
+
 export const StyledSearch = styled('input')(({ theme }) => ({
     fontSize: `calc(0.7rem + 0.2vw)`,
     backgroundColor: 'transparent',
     padding: theme.spacing(0.5),
-    border: `0.5px solid ${theme.palette.mode === 'dark' ? ColorsEnum.white : ColorsEnum.black}`,
+    paddingLeft: theme.spacing(2.5),
+    border: '1px solid ' + ColorsEnum.geekBlue,
     color: theme.palette.mode === 'dark' ? ColorsEnum.white : ColorsEnum.black,
     outline: 'none',
+    minWidth: `calc(500px + 5vw)`,
+}));
+
+export const StyledSearchTag = styled('div')(({ theme }) => ({
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: '100%',
+    width: '20px',
+    backgroundColor: '#01509D',
+    clipPath: 'polygon(0 0, 20% 0, 60% 50%, 20% 100%, 0 100%)',
 }));
 
 export const SearchWrapper = styled('div')(({ theme }) => ({

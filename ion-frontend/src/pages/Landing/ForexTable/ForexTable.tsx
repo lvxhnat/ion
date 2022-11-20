@@ -28,7 +28,17 @@ export function StyledTableCell({ children, isHeader, width }: StyledTableCellPr
 
 export default function ForexTable() {
     const setForexStream = forexStreamStore((store: any) => store.setForexStream);
-    const subscribedForexPairs = ['EUR_USD', 'USD_SGD', 'USD_INR', 'USD_JPY'];
+    const subscribedForexPairs = [
+        'EUR_USD',
+        'EUR_AUD',
+        'EUR_JPY',
+        'EUR_NOK',
+        'USD_SGD',
+        'USD_INR',
+        'USD_THB',
+        'USD_CAD',
+        'USD_JPY',
+    ];
 
     React.useEffect(() => {
         const oandaWS = new OandaFXSocketConnection({

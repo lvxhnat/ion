@@ -9,8 +9,10 @@ import { dataIngestionRequest } from 'services/request';
 import { ENDPOINTS } from 'common/constant/endpoints';
 import { FunctionSuggestion, SearchSuggestions } from './type';
 import { ColorsEnum } from 'common/theme';
+import { useNavigate } from 'react-router-dom';
 
 export default function MasterSearch(props: {}) {
+    const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = React.useState<string>();
     const [searchResults, setSearchResults] = React.useState<SearchSuggestions>({
         securities: [],
@@ -36,11 +38,14 @@ export default function MasterSearch(props: {}) {
 
     return (
         <S.SearchWrapper>
-            <S.StyledSearch
-                type="text"
-                placeholder="Search"
-                onChange={event => setSearchQuery(event.target.value)}
-            />
+            <S.StyledSearchWrapper>
+                <S.StyledSearch
+                    type="text"
+                    placeholder="Search"
+                    onChange={event => setSearchQuery(event.target.value)}
+                />
+                <S.StyledSearchTag />
+            </S.StyledSearchWrapper>
             <S.TableWrapper sx={searchQuery ? { display: 'block' } : { display: 'none' }}>
                 <TableBody sx={{ display: 'block' }}>
                     <>
@@ -52,7 +57,12 @@ export default function MasterSearch(props: {}) {
                             </S.TableCellWrapper>
                         </TableRow>
                         {searchResults.functions.map((d: FunctionSuggestion) => (
-                            <S.TableRowWrapper hover key={d.name}>
+                            <S.TableRowWrapper
+                                hover
+                                key={d.name}
+                                sx={{ cursor: 'pointer' }}
+                                onClick={() => navigate(d.redirect)}
+                            >
                                 <S.TableCellWrapper
                                     sx={{ paddingLeft: 'calc(1rem + 2vw)' }}
                                     width="50%"
