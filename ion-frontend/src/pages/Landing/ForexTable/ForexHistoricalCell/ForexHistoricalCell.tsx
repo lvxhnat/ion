@@ -5,7 +5,7 @@ import * as S from '../style';
 import BaseLineChart from 'components/Charting/LineCharts/BaseLineChart';
 import { DefaultDataProps } from 'components/Charting/LineCharts/BaseLineChart/type';
 
-import request from 'services/request';
+import { ionIngestionRequest } from 'services/request';
 import { REQUEST_ENDPOINTS } from '../configs';
 
 export default function ForexHistoricalCell(props: { forexPair: string }) {
@@ -14,7 +14,7 @@ export default function ForexHistoricalCell(props: { forexPair: string }) {
     React.useEffect(() => {
         const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
 
-        request
+        ionIngestionRequest
             .post(REQUEST_ENDPOINTS.OANDA_HISTORICAL.ENDPOINT, {
                 symbol: props.forexPair,
                 period: '1M_S',

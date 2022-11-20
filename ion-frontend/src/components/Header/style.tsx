@@ -1,3 +1,4 @@
+import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/system';
 
 export const HeaderPanel = styled('div')(({ theme }) => ({
@@ -7,6 +8,18 @@ export const HeaderPanel = styled('div')(({ theme }) => ({
     height: '100%',
     width: '100%',
     gap: theme.spacing(1),
+}));
+
+export const NavigationPanel = styled('div')(({ theme }) => ({
+    display: 'flex',
+    paddingTop: 2,
+}));
+
+export const IconButtonWrapper = styled(IconButton)(({ theme }) => ({
+    padding: 0,
+    paddingLeft: 5,
+    paddingRight: 5,
+    borderRadius: 0,
 }));
 
 export const RightPanel = styled('div')(({ theme }) => ({
