@@ -20,8 +20,7 @@ export default function Clock() {
     return (
         <Grid container justifyContent="flex-end" alignItems="center">
             <Typography component="span" variant="body1">
-                {' '}
-                {marketStatus}{' '}
+                {marketStatus}
             </Typography>
             <span>
                 <b> NYT: </b> {date}{' '}

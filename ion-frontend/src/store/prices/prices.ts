@@ -1,4 +1,4 @@
-import { ForexStreamType, FormattedForexStreamType } from 'pages/Landing/ForexTable/type';
+import { ForexStreamType, FormattedForexStreamType } from 'pages/Forex/ForexTable/type';
 import create from 'zustand';
 
 function omit(obj: any, key: string) {
