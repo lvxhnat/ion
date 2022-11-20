@@ -1,33 +1,22 @@
-import * as React from 'react';
+import React from 'react';
+import * as S from './style';
 
-import { Box, CssBaseline, Grid } from '@mui/material';
-import TSChart from 'components/Charting/LineCharts/TSChart';
+import CssBaseline from '@mui/material/CssBaseline';
 import Header from 'components/Header';
-import Footer from 'components/Footer';
-import ForexTable from './ForexTable';
+import InternationalClock from './InternationalClock/InternationalClock';
+import { Typography } from '@mui/material';
 
-export default function Landing(): React.ReactElement {
+export default function Landing() {
     return (
-        <Grid sx={{ overflow: 'hidden' }}>
+        <>
             <CssBaseline />
             <Header />
-            <Grid container style={{ height: '90vh', padding: 5, minWidth: '1000px' }} spacing={2}>
-                <Grid item xl={9} lg={9} xs={12}>
-                    <TSChart />
-                </Grid>
-                <Box
-                    component={Grid}
-                    item
-                    xl={3}
-                    lg={3}
-                    xs={0}
-                    style={{ height: '100vh' }}
-                    display={{ md: 'none', xs: 'none', lg: 'block' }}
-                >
-                    <ForexTable />
-                </Box>
-            </Grid>
-            <Footer dataStreamProvider={'oanda'} />
-        </Grid>
+            <S.InternationalClockWrapper>
+                <InternationalClock timeZone={'America/New_York'} timeZoneName={'New York'} />
+                <InternationalClock timeZone={'Europe/London'} timeZoneName={'London'} />
+                <InternationalClock timeZone={'Asia/Singapore'} timeZoneName={'Singapore'} />
+                <InternationalClock timeZone={'Asia/Tokyo'} timeZoneName={'Tokyo'} />
+            </S.InternationalClockWrapper>
+        </>
     );
 }

@@ -1,8 +1,15 @@
 export const typographyTheme = {
     fontFamily: 'Public Sans, sans-serif',
     h1: {
-        fontSize: `calc(1rem + 0.2vw)`,
+        fontSize: `calc(2rem + 1vw)`,
+        fontWeight: 300,
+    },
+    h2: {
+        fontSize: `calc(0.8rem + 0.5vw)`,
         fontWeight: 500,
+    },
+    h3: {
+        fontSize: `calc(0.5rem + 0.5vw)`,
     },
     subtitle1: {
         fontSize: 14,
