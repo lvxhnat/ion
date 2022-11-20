@@ -27,7 +27,7 @@ export enum ColorsEnum {
     beer20 = '#252525',
     beer21 = '#1f1f1f',
     beer22 = '#191919',
-    beer23 = '#2b2b2b',
+    beer23 = '#171717',
     upHint = 'green',
     downHint = 'red',
     error = '#F5734D',

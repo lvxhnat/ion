@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { ColorsEnum } from 'common/theme';
 
 // https://colordesigner.io/gradient-generator
-
+// https://momentjs.com/timezone/
 export default function InternationalClock(props: { timeZoneName: string; timeZone: string }) {
     const [date, setDate] = React.useState<string>('');
     const [time, setTime] = React.useState<string>('');

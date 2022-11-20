@@ -13,6 +13,7 @@ export const TimeIndicator = styled('div')(({ theme }) => ({
 }));
 
 export const TimeWrapper = styled('div')(({ theme }) => ({
+    minHeight: 120,
     paddingTop: 10,
     paddingBottom: 10,
 }));
