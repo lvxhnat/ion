@@ -1,3 +1,3 @@
-import InternationalClock from "./InternationalClock";
+import InternationalClock from './InternationalClock';
 
-export default InternationalClock
+export default InternationalClock;

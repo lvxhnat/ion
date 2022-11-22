@@ -5,12 +5,12 @@ import Header from './components/Header';
 import BaseLineChart from '../BaseLineChart';
 import { DefaultDataProps } from '../BaseLineChart/type';
 import { GeneralTableTypeProp } from './components/Header/IndicatorPopup/ChoiceTable/configs';
+import { ionIngestionRequest } from 'services/request';
+import { ENDPOINTS } from 'common/constant/endpoints';
 
 export default function TSChart(): React.ReactElement {
     const [data, setData] = React.useState<DefaultDataProps>();
     const [indicatorData, setIndicatorData] = React.useState<DefaultDataProps[]>([]);
-
-    const intervalsAvailable = ['1D', '1W', '1M', '3M', '6M', '1Y', '3Y', '5Y'];
 
     function setDataHook(item: GeneralTableTypeProp<number[]>) {
         setIndicatorData([
@@ -28,25 +28,26 @@ export default function TSChart(): React.ReactElement {
     }
 
     // Parse the time in data
-    const parseTime = d3.timeParse('%Y-%m-%d');
+    const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
 
     React.useEffect(() => {
-        d3.csv(
-            'https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered_comma.csv'
-        )
-            .catch()
+        ionIngestionRequest
+            .post(ENDPOINTS.PRIVATE.OANDA_FX_HISTORICAL_ENDPOINT, {
+                symbol: 'EUR_USD',
+                period: '1D',
+            })
             .then((d: any) => {
+                console.log(d.data.data);
                 setData({
                     id: 'base-line',
                     name: 'Base Line Chart',
                     parent: true,
-                    dataX: d.map((d_: any) => parseTime(d_.date)).slice(0, 500),
-                    dataY: d.map((d_: any) => parseFloat(d_.value)).slice(0, 500),
+                    dataX: d.data.data.map((d_: any) => parseTime(d_.date)),
+                    dataY: d.data.data.map((d_: any) => parseFloat(d_.mid_close)),
                     color: 'red',
                     type: 'areaLine',
                 });
-            })
-            .catch(() => null);
+            });
     }, []);
 
     return (

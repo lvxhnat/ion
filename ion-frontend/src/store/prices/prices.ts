@@ -1,19 +1,26 @@
 import { ForexStreamType, FormattedForexStreamType } from 'pages/Forex/ForexTable/type';
 import create from 'zustand';
 
+export interface ForexStreamStoreTypes {
+    forexStream: { [ticker: string]: FormattedForexStreamType };
+    setForexStream: (config: ForexStreamType) => void;
+}
+
 function omit(obj: any, key: string) {
     delete obj[key];
     return obj;
 }
-export const forexStreamStore = create(set => ({
+
+export const forexStreamStore = create<ForexStreamStoreTypes>(set => ({
     forexStream: {},
     setForexStream: (streamObject: ForexStreamType) =>
         // If streamObject is empty (heartbeat message or market closed), then we do not perform any actions
-        set((state: any) => {
+        set((state: ForexStreamStoreTypes) => {
             // Check if the stream object is null or not
-            const prev: FormattedForexStreamType = streamObject
+            const prev: FormattedForexStreamType | null = streamObject
                 ? state.forexStream[streamObject.instrument]
                 : null;
+
             return streamObject
                 ? {
                       forexStream: {
@@ -26,6 +33,6 @@ export const forexStreamStore = create(set => ({
                           },
                       },
                   }
-                : null;
+                : {};
         }),
 }));

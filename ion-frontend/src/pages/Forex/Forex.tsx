@@ -5,8 +5,17 @@ import TSChart from 'components/Charting/LineCharts/TSChart';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import ForexTable from './ForexTable';
+import { useHeaderStore } from 'store/header/header';
+
+interface ForexConfigProps {
+    symbol: string;
+    interval: string;
+}
 
 export default function Forex(): React.ReactElement {
+    const [config, setConfig] = React.useState<ForexConfigProps>({} as ForexConfigProps);
+    const setHeader = useHeaderStore(store => store.setHeader);
+    setHeader({ data: 'EUR_USD' });
     return (
         <Grid sx={{ overflow: 'hidden' }}>
             <CssBaseline />

@@ -2,6 +2,7 @@
 
 import os
 import enum
+from typing import Literal
 from datetime import timedelta
 from dotenv import load_dotenv
 
@@ -127,14 +128,35 @@ class Granularities(enum.Enum):
             return True
 
 
+class Intervals(enum.Enum):
+    FIVE_YEARS = timedelta(days=365 * 5)
+    ONE_YEAR = timedelta(days=365)
+    SIX_MONTH = timedelta(weeks=4 * 6)
+    THREE_MONTH = timedelta(weeks=4 * 3)
+    ONE_MONTH = timedelta(weeks=4)
+    ONE_WEEK = timedelta(weeks=1)
+    ONE_DAY = timedelta(days=1)
+
+
+INTERVAL_NAMING = {
+    "5Y": "FIVE_YEARS",
+    "1Y": "ONE_YEAR",
+    "6M": "SIX_MONTH",
+    "3M": "THREE_MONTH",
+    "1M": "ONE_MONTH",
+    "1W": "ONE_WEEK",
+    "1D": "ONE_DAY",
+}
+
 HISTORICAL_GRANULARITY = {
     "5Y": "W",
     "1Y": "D",
     "6M": "H12",
-    "3M": "H1",
-    "1M": "M5",
+    "3M": "H6",
+    "1M": "M15",
     "1M_S": "D",
-    "1W": "M1",
+    "1W": "M10",
+    "1D": "M1",
 }
 
 ENDPOINTS = {

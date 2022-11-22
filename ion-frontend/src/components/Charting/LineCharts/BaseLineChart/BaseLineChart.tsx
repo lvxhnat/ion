@@ -9,6 +9,16 @@ import { ColorsEnum } from 'common/theme';
 
 import { LINECHARTCONFIGS, LINECHARTIDS } from './config';
 
+function determineStartY(zeroAxis: boolean, minValue: number, maxValue: number) {
+    const minBoundary = (maxValue - minValue) * 0.3;
+    return zeroAxis && minBoundary > 3 ? 0 : minValue - minBoundary;
+}
+
+function determineEndY(minValue: number, maxValue: number) {
+    const minBoundary = (maxValue - minValue) * 0.1;
+    return maxValue + minBoundary;
+}
+
 /**
  * A generalised line chart, taking date as its x-axis and numerical value on its y-axis. Supports currently the following:
  * 1. Normalisation of y-axis
@@ -60,8 +70,16 @@ export default function BaseLineChart({
             const x = d3.scaleTime().range([margin.left, width - margin.right]);
             const y = d3.scaleLinear().range([height - margin.top, margin.bottom]);
 
-            x.domain([Math.min(...dateTime), Math.max(...dateTime)]);
-            y.domain([zeroAxis ? 0 : Math.min(...dataY), Math.max(...dataY)]);
+            const minDate = Math.min(...dateTime);
+            const maxDate = Math.max(...dateTime);
+            const minValue = Math.min(...dataY);
+            const maxValue = Math.max(...dataY);
+
+            x.domain([minDate, maxDate]);
+            y.domain([
+                determineStartY(zeroAxis, minValue, maxValue),
+                determineEndY(minValue, maxValue),
+            ]);
 
             const yAxis = d3
                 .axisLeft(y)
@@ -70,12 +88,21 @@ export default function BaseLineChart({
 
             const xAxis = d3
                 .axisBottom(x)
+                .tickFormat((_: Date | d3.NumberValue, index: number) => {
+                    const date = new Date(dataX[index]);
+                    if (maxDate - minDate <= 86400000) {
+                        // Check if the time period is less than a day
+                        return `${date.getHours()}:${date.getMinutes()}`;
+                    } else {
+                        return `${date.getMonth()}/${date.getDay()}`;
+                    }
+                })
                 .tickSize(margin.bottom + margin.top - height)
                 .ticks(0);
 
             if (showAxis) {
                 // Set the number of ticks if we want to show the axis
-                xAxis.ticks(20);
+                xAxis.ticks(5);
                 yAxis.ticks(10);
             }
 
