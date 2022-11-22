@@ -88,14 +88,14 @@ export default function BaseLineChart({
 
             const xAxis = d3
                 .axisBottom(x)
-                .tickFormat((_: Date | d3.NumberValue, index: number) => {
-                    const date = new Date(dataX[index]);
-                    if (maxDate - minDate <= 86400000) {
-                        // Check if the time period is less than a day
-                        return `${date.getHours()}:${date.getMinutes()}`;
+                .tickFormat((date: Date | d3.NumberValue) => {
+                    let dateItem: Date;
+                    if (!(date instanceof Date)) {
+                        dateItem = new Date(date as number);
                     } else {
-                        return `${date.getMonth()}/${date.getDay()}`;
+                        dateItem = date;
                     }
+                    return d3.timeFormat('%m %b %H:%M')(dateItem);
                 })
                 .tickSize(margin.bottom + margin.top - height)
                 .ticks(0);
