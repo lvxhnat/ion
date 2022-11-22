@@ -1,3 +1,3 @@
-import Portfolio from './Portfolio';
+import Portfolio from './portfolio';
 
 export default Portfolio;

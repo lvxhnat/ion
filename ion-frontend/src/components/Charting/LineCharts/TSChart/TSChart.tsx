@@ -37,7 +37,6 @@ export default function TSChart(): React.ReactElement {
                 period: '1D',
             })
             .then((d: any) => {
-                console.log(d.data.data);
                 setData({
                     id: 'base-line',
                     name: 'Base Line Chart',
