@@ -11,4 +11,5 @@ router = APIRouter()
 
 @router.post("/securityFunctions")
 def get_asset_autocomplete_info(params: SecurityFunctions):
+    print(params.query)
     return mongodb.autocomplete_ticker(params.query)

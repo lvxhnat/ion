@@ -10,6 +10,4 @@ export interface DefaultDataProps {
 
 export type AllowedLineTypes = 'line' | 'pureLine' | 'areaLine';
 
-export interface ChartDataSchema {
-
-}
+export interface ChartDataSchema {}

@@ -25,7 +25,7 @@ export default function MasterSearch(props: {}) {
         if (debounceSearchQuery) {
             dataIngestionRequest
                 .post(ENDPOINTS.PRIVATE.SEARCH_FUNCTIONS, {
-                    query: 'P',
+                    query: searchQuery,
                 })
                 .then((d: any) => {
                     searchResults.functions = d.data;

@@ -1,4 +1,4 @@
-import { DefaultDataProps } from "./schema/schema";
+import { DefaultDataProps } from './schema/schema';
 
 export interface LineChartProps {
     defaultData: DefaultDataProps;

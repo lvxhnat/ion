@@ -1,7 +1,4 @@
-import {
-    ForexStreamType,
-    FormattedForexStreamType,
-} from 'pages/securities/[forex]/ForexTable/type';
+import { ForexStreamType, FormattedForexStreamType } from 'components/Tables/ForexTable/type';
 import create from 'zustand';
 
 export interface ForexStreamStoreTypes {
