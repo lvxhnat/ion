@@ -2,12 +2,13 @@ import * as d3 from 'd3';
 import * as React from 'react';
 import * as C from './plugins';
 import * as A from './actions';
-import { DefaultDataProps, LineChartProps } from './type';
+import { LineChartProps } from './type';
+import { DefaultDataProps } from './schema/schema';
 
 import { useD3 } from 'common/hooks/useD3';
 import { ColorsEnum } from 'common/theme';
 
-import { CHARTCONFIGS, LINECHARTIDS } from './config';
+import { CHARTCONFIGS, CHARTIDS } from './config';
 
 function determineStartY(zeroAxis: boolean, minValue: number, maxValue: number) {
     const minBoundary = (maxValue - minValue) * 0.3;
@@ -108,19 +109,19 @@ export default function BaseChart({
 
             svg.append('g')
                 .attr('transform', `translate(0,${height - margin.top})`)
-                .attr('id', `${baseId}_${LINECHARTIDS.XAXIS_ID}`) // Sets a class name for our x axis
+                .attr('id', `${baseId}_${CHARTIDS.XAXIS_ID}`) // Sets a class name for our x axis
                 .call(xAxis);
 
             svg.append('g')
                 .attr('transform', `translate(${margin.left},0)`)
-                .attr('id', `${baseId}_${LINECHARTIDS.YAXIS_ID}`) // Set a class name for our y axis
+                .attr('id', `${baseId}_${CHARTIDS.YAXIS_ID}`) // Set a class name for our y axis
                 .call(yAxis);
 
             if (showAverage) {
                 // A horizontal line that shows the average
                 const mean = dataY.reduce((a: number, b: number) => a + b) / dataY.length;
                 svg.append('line')
-                    .attr('class', `${baseId}_${LINECHARTIDS.DRAW_LINE_CLASS}`)
+                    .attr('class', `${baseId}_${CHARTIDS.DRAW_LINE_CLASS}`)
                     .attr('x1', margin.left)
                     .attr('y1', y(mean))
                     .attr('x2', width - margin.right)

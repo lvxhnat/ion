@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { CHARTCONFIGS, LINECHARTIDS } from '../../config';
+import { CHARTCONFIGS, CHARTIDS } from '../../config';
 
 export const addLine = (props: {
     x: d3.ScaleTime<number, number, never>;

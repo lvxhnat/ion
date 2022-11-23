@@ -1,7 +1,7 @@
 import { ColorsEnum } from 'common/theme';
 
 // Nested Enums https://topherpedersen.blog/2021/06/07/nested-enums-in-typescript/
-export const LINECHARTIDS = {
+export const CHARTIDS = {
     XAXIS_ID: 'x-axis',
     YAXIS_ID: 'y-axis',
     DRAW_CONTAINER_ID: 'draw-rect', // rect class for containing all drawn lines

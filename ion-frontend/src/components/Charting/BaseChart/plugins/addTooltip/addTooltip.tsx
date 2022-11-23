@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { ColorsEnum } from 'common/theme';
-import { CHARTCONFIGS, LINECHARTIDS } from '../../config';
-import { DefaultDataProps } from '../../type';
+import { CHARTCONFIGS, CHARTIDS } from '../../config';
+import { DefaultDataProps } from '../../schema/schema';
 
 function formatDateString(d: Date) {
     const zeroPad = (n: number) => `${`0${n + 1}`.slice(-2)}`;
@@ -17,19 +17,19 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
 
     const focus = svg
         .append('g')
-        .attr('class', `${props.baseId}_${LINECHARTIDS.TOOLTIP_FOCUS_CLASS}`)
+        .attr('class', `${props.baseId}_${CHARTIDS.TOOLTIP_FOCUS_CLASS}`)
         .style('opacity', 0);
 
     // Create the text that travels along the curve of chart
-    const tooltips = d3.selectAll(`.${props.baseId}_${LINECHARTIDS.LEGEND_VALUE_CLASS}`);
+    const tooltips = d3.selectAll(`.${props.baseId}_${CHARTIDS.LEGEND_VALUE_CLASS}`);
 
     // append the circle at the intersection
     focus
-        .selectAll(`.${props.baseId}_${LINECHARTIDS.TOOLTIP_CIRCLE_TRACKER_CLASS}`)
+        .selectAll(`.${props.baseId}_${CHARTIDS.TOOLTIP_CIRCLE_TRACKER_CLASS}`)
         .data(props.data)
         .enter()
         .append('g')
-        .attr('class', `${props.baseId}_${LINECHARTIDS.TOOLTIP_CIRCLE_TRACKER_CLASS}`)
+        .attr('class', `${props.baseId}_${CHARTIDS.TOOLTIP_CIRCLE_TRACKER_CLASS}`)
         .append('circle')
         .attr('id', d => `${props.baseId}_${d.id}`)
         .style('fill', 'none')
@@ -37,11 +37,11 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
         .style('stroke-width', 1)
         .attr('r', 4);
 
-    if (d3.selectAll(`.${props.baseId}_${LINECHARTIDS.TOOLTIP_RECT_TRACKER_CLASS}`).empty()) {
+    if (d3.selectAll(`.${props.baseId}_${CHARTIDS.TOOLTIP_RECT_TRACKER_CLASS}`).empty()) {
         // Append the rectangle that will contain the text at the bottom of the chart
         focus
             .append('rect')
-            .attr('class', `${props.baseId}_${LINECHARTIDS.TOOLTIP_RECT_TRACKER_CLASS}`)
+            .attr('class', `${props.baseId}_${CHARTIDS.TOOLTIP_RECT_TRACKER_CLASS}`)
             .style('fill', ColorsEnum.white)
             .attr('width', 80)
             .attr('height', 20)
@@ -49,13 +49,13 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
         // Append text to the bottom of the chart
         focus
             .append('text')
-            .attr('class', `${props.baseId}_${LINECHARTIDS.TOOLTIP_RECT_TEXT_CLASS}`)
+            .attr('class', `${props.baseId}_${CHARTIDS.TOOLTIP_RECT_TEXT_CLASS}`)
             .attr('font-size', '10px')
             .attr('transform', `translate(${CHARTCONFIGS.DEFAULT_MARGIN_LEFT}, 0)`);
         // Add the vertical line that tracks all the data points
         focus
             .append('line')
-            .attr('class', `${props.baseId}_${LINECHARTIDS.TOOLTIP_LINE_CLASS}`)
+            .attr('class', `${props.baseId}_${CHARTIDS.TOOLTIP_LINE_CLASS}`)
             .style('stroke', ColorsEnum.white)
             .style('stroke-dasharray', '3,3')
             .style('stroke-width', 1)
@@ -64,7 +64,7 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
             .attr('y2', CHARTCONFIGS.DEFAULT_HEIGHT - CHARTCONFIGS.DEFAULT_MARGIN_TOP);
         // Create a rect on top of the svg area: this rectangle recovers mouse position
         svg.append('rect')
-            .attr('class', `${props.baseId}_${LINECHARTIDS.TOOLTIP_ENCOMPASSING_RECT_CLASS}`)
+            .attr('class', `${props.baseId}_${CHARTIDS.TOOLTIP_ENCOMPASSING_RECT_CLASS}`)
             .style('fill', 'none')
             .style('pointer-events', 'all')
             .attr('width', CHARTCONFIGS.DEFAULT_WIDTH - CHARTCONFIGS.DEFAULT_MARGIN_LEFT)
@@ -91,21 +91,21 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
             });
 
             focus
-                .selectAll(`.${props.baseId}_${LINECHARTIDS.TOOLTIP_CIRCLE_TRACKER_CLASS}`)
+                .selectAll(`.${props.baseId}_${CHARTIDS.TOOLTIP_CIRCLE_TRACKER_CLASS}`)
                 .attr('transform', (d: any) => {
                     return `translate(${xTranslate}, ${props.y(d.dataY[i])})`;
                 });
 
             focus
-                .selectAll(`.${props.baseId}_${LINECHARTIDS.TOOLTIP_LINE_CLASS}`)
+                .selectAll(`.${props.baseId}_${CHARTIDS.TOOLTIP_LINE_CLASS}`)
                 .attr('transform', `translate(${xTranslate}, 0)`);
 
             focus
-                .selectAll(`.${props.baseId}_${LINECHARTIDS.TOOLTIP_RECT_TRACKER_CLASS}`)
+                .selectAll(`.${props.baseId}_${CHARTIDS.TOOLTIP_RECT_TRACKER_CLASS}`)
                 .attr('transform', `translate(${xTranslate}, ${CHARTCONFIGS.DEFAULT_HEIGHT + 5})`);
 
             focus
-                .selectAll(`.${props.baseId}_${LINECHARTIDS.TOOLTIP_RECT_TEXT_CLASS}`)
+                .selectAll(`.${props.baseId}_${CHARTIDS.TOOLTIP_RECT_TEXT_CLASS}`)
                 .text(formatDateString(dates[i]))
                 .attr('transform', `translate(${xTranslate}, ${CHARTCONFIGS.DEFAULT_HEIGHT + 14})`);
         }

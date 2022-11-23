@@ -1,3 +1,5 @@
+import { DefaultDataProps } from "./schema/schema";
+
 export interface LineChartProps {
     defaultData: DefaultDataProps;
     baseId: string;
@@ -18,15 +20,3 @@ export interface LineChartProps {
     showNormalised?: boolean;
     showTooltip?: boolean;
 }
-
-export interface DefaultDataProps {
-    id: string;
-    name: string;
-    parent: boolean;
-    dataX: Date[];
-    dataY: number[];
-    color: string;
-    type: AllowedLineTypes;
-}
-
-export type AllowedLineTypes = 'line' | 'pureLine' | 'areaLine';

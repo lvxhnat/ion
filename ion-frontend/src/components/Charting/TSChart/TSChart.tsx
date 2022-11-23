@@ -3,10 +3,10 @@ import * as React from 'react';
 
 import Header from './components/Header';
 import BaseLineChart from '../BaseChart';
-import { DefaultDataProps } from '../BaseChart/type';
 import { GeneralTableTypeProp } from './components/Header/IndicatorPopup/ChoiceTable/configs';
 import { ionIngestionRequest } from 'services/request';
 import { ENDPOINTS } from 'common/constant/endpoints';
+import { DefaultDataProps } from '../BaseChart/schema/schema';
 
 export default function TSChart(): React.ReactElement {
     const [data, setData] = React.useState<DefaultDataProps>();

@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { CHARTCONFIGS, LINECHARTIDS } from '../../config';
+import { CHARTCONFIGS, CHARTIDS } from '../../config';
 import { getFontColor } from '../../../TSChart/helpers/style';
 
 export const addEndTags = (props: {
@@ -11,9 +11,9 @@ export const addEndTags = (props: {
 }): void => {
     const svg = d3.selectAll(`#${props.baseId}`);
 
-    svg.append('g').attr('id', `${props.baseId}_${LINECHARTIDS.ENDTAG_GROUP_ID}`);
+    svg.append('g').attr('id', `${props.baseId}_${CHARTIDS.ENDTAG_GROUP_ID}`);
 
-    d3.selectAll(`#${props.baseId}_${LINECHARTIDS.ENDTAG_GROUP_ID}`)
+    d3.selectAll(`#${props.baseId}_${CHARTIDS.ENDTAG_GROUP_ID}`)
         .selectAll(`path #${props.baseId}_${props.id}`)
         .data(props.dataY)
         .join('path')
@@ -24,7 +24,7 @@ export const addEndTags = (props: {
         )
         .attr('fill', props.color);
 
-    d3.selectAll(`#${props.baseId}_${LINECHARTIDS.ENDTAG_GROUP_ID}`)
+    d3.selectAll(`#${props.baseId}_${CHARTIDS.ENDTAG_GROUP_ID}`)
         .selectAll(`.label #${props.baseId}_${props.id}`)
         .data(props.dataY)
         .join('text')

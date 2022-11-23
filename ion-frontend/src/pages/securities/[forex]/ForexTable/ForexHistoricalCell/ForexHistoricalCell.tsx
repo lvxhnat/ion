@@ -3,10 +3,10 @@ import * as d3 from 'd3';
 import * as S from '../style';
 
 import BaseLineChart from 'components/Charting/BaseChart';
-import { DefaultDataProps } from 'components/Charting/BaseChart/type';
 
 import { ionIngestionRequest } from 'services/request';
 import { REQUEST_ENDPOINTS } from '../configs';
+import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 
 export default function ForexHistoricalCell(props: { forexPair: string }) {
     const [data, setData] = React.useState<DefaultDataProps>();

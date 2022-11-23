@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { LINECHARTIDS } from '../../config';
+import { CHARTIDS } from '../../config';
 /**
  *
  * @param svg
@@ -26,12 +26,12 @@ export const styleGrid = (props: { baseId: string }) => {
                 .attr('stroke-dasharray', '2,2');
     };
 
-    svg.selectAll(`#${props.baseId}_${LINECHARTIDS.XAXIS_ID}`)
+    svg.selectAll(`#${props.baseId}_${CHARTIDS.XAXIS_ID}`)
         .call((g: any) => g.select('.domain').remove())
         .call(setGridLineAttributes(true))
         .call(setGridLineAttributes(false));
 
-    svg.selectAll(`#${props.baseId}_${LINECHARTIDS.YAXIS_ID}`)
+    svg.selectAll(`#${props.baseId}_${CHARTIDS.YAXIS_ID}`)
         .call((g: any) => g.select('.domain').remove())
         .call(setGridLineAttributes(true))
         .call(setGridLineAttributes(false));

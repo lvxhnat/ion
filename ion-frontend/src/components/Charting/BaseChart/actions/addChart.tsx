@@ -1,7 +1,6 @@
 import * as d3 from 'd3';
-import { CHARTCONFIGS, LINECHARTIDS } from '../config';
 import * as C from '../plugins';
-import { AllowedLineTypes } from '../type';
+import { AllowedLineTypes } from '../schema/schema';
 
 export default function addChart(props: {
     x: d3.ScaleTime<number, number, never>;
