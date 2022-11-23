@@ -24,10 +24,19 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
   frontend:
     container_name: ion-frontend
     build: ./ion-frontend
     stdin_open: true
     ports:
       - "3000:3000"
-    command: npm start
+    command: yarn start
+
+  data_ingestion:
+    container_name: data-ingestion
+    build: ./data-ingestion
+    stdin_open: true
+    ports:
+      - "1237:1237"
+    command: uvicorn data_ingestion.app.main:app --reload --port 1237

@@ -15,9 +15,17 @@ from ion_clients.clients.oanda.configs.requests import (
     ENDPOINTS,
     HEADERS,
     HISTORICAL_GRANULARITY,
+    INTERVAL_NAMING,
+    Intervals,
     Granularities,
     CurrencyPairs,
 )
+from ion_clients.types.oanda import (
+    OandaReqCurrencies,
+    OandaReqGranularities,
+    OandaReqIntervals,
+)
+
 from ion_clients.clients.oanda.helpers.time import clean_time
 
 import requests
@@ -26,7 +34,9 @@ import asyncio
 import warnings
 
 
-async def stream_oanda_live_data(symbols: List[str], callback: Callable):
+async def stream_oanda_live_data(
+    symbols: List[OandaReqCurrencies], callback: Callable
+):
     """Get oanda live data, limited to 5 data points per call to reduce latency.
 
     Args:
@@ -52,17 +62,30 @@ async def stream_oanda_live_data(symbols: List[str], callback: Callable):
                     )
 
 
-def historical(symbol: str, period: str):
-    return __get_oanda_base_data(
-        symbol=symbol, granularity=HISTORICAL_GRANULARITY[period], count=50
-    )
+def historical(symbol: OandaReqCurrencies, period: OandaReqIntervals):
+
+    if period == "1M_S":
+        return __get_oanda_base_data(
+            symbol=symbol,
+            granularity=HISTORICAL_GRANULARITY[period],
+            count=50,
+        )
+
+    else:
+        return __get_oanda_base_data(
+            symbol=symbol,
+            granularity=HISTORICAL_GRANULARITY[period],
+            from_date=datetime.utcnow()
+            - Intervals[INTERVAL_NAMING[period]].value,
+            to_date=datetime.utcnow(),
+        )
 
 
 def get_oanda_historical_data(
-    symbol: str,
+    symbol: OandaReqCurrencies,
     from_date: str,
     to_date: str,
-    granularity: str,
+    granularity: OandaReqGranularities,
     parallelize: bool = False,
 ):
     """_summary_
@@ -152,11 +175,11 @@ def get_oanda_historical_data(
 
 
 def __get_oanda_base_data(
-    symbol: str,
+    symbol: OandaReqCurrencies,
     count: int = 5000,
     from_date: datetime = None,
     to_date: datetime = None,
-    granularity: str = "S5",
+    granularity: OandaReqGranularities = "S5",
     price_type: str = "M",
 ) -> OandaBaseDataResponse:
 

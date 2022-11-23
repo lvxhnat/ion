@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as S from './style';
 
+import Typography from '@mui/material/Typography';
 import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
 
@@ -24,7 +25,7 @@ export default function MasterSearch(props: {}) {
         if (debounceSearchQuery) {
             dataIngestionRequest
                 .post(ENDPOINTS.PRIVATE.SEARCH_FUNCTIONS, {
-                    query: 'P',
+                    query: searchQuery,
                 })
                 .then((d: any) => {
                     searchResults.functions = d.data;
@@ -64,14 +65,17 @@ export default function MasterSearch(props: {}) {
                                 onClick={() => navigate(d.redirect)}
                             >
                                 <S.TableCellWrapper
-                                    sx={{ paddingLeft: 'calc(1rem + 2vw)' }}
+                                    sx={{ paddingLeft: 'calc(1rem + 2vw)', minWidth: 200 }}
                                     width="50%"
                                 >
-                                    {d.name}
+                                    <Typography variant="body1" align="left">
+                                        {d.name}
+                                    </Typography>
                                 </S.TableCellWrapper>
                                 <S.TableCellWrapper sx={{ color: ColorsEnum.beer }} width="50%">
-                                    {' '}
-                                    {d.long_name}{' '}
+                                    <Typography variant="body1" align="left">
+                                        {d.long_name}
+                                    </Typography>
                                 </S.TableCellWrapper>
                             </S.TableRowWrapper>
                         ))}

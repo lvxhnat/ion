@@ -14,7 +14,6 @@ def autocomplete_ticker(query: str):
                                     "query": query,
                                     "path": settings.MONGODB_FUNCTIONS_COLLECTION_QUERY_FIELD,
                                     "fuzzy": {
-                                        "maxEdits": 2,
                                         "prefixLength": 1,
                                     },
                                 },
@@ -26,9 +25,9 @@ def autocomplete_ticker(query: str):
             {"$limit": 10},
             {
                 "$project": {
-                    "_id": 0, # Exclude _id from the query
+                    "_id": 0,  # Exclude _id from the query
                 }
-            }
+            },
         ]
         return list(
             mongodb_client[settings.MONGODB_ASSET_INFO_TABLE][
@@ -47,4 +46,4 @@ def autocomplete_ticker(query: str):
 
 
 if __name__ == "__main__":
-    print(autocomplete_ticker("P"))
+    print(autocomplete_ticker("F"))

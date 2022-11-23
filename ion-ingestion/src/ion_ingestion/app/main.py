@@ -47,7 +47,6 @@ async def stream_oanda_live_prices(websocket: WebSocket):
         "EUR_JPY",
         "EUR_NOK",
         "USD_SGD",
-        "USD_INR",
         "USD_THB",
         "USD_CAD",
         "USD_JPY",
