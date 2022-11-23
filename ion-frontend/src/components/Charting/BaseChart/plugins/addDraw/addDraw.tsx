@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as d3 from 'd3';
-import { LINECHARTCONFIGS, LINECHARTIDS } from '../../config';
+import { CHARTCONFIGS, LINECHARTIDS } from '../../config';
 
 export const addDraw = (props: { baseId: string }) => {
     let line: any;
@@ -12,8 +12,8 @@ export const addDraw = (props: { baseId: string }) => {
         .attr('id', `${props.baseId}_${LINECHARTIDS.DRAW_CONTAINER_ID}`)
         .style('fill', 'none')
         .style('pointer-events', 'all')
-        .attr('width', LINECHARTCONFIGS.DEFAULT_WIDTH - LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT)
-        .attr('height', LINECHARTCONFIGS.DEFAULT_HEIGHT)
+        .attr('width', CHARTCONFIGS.DEFAULT_WIDTH - CHARTCONFIGS.DEFAULT_MARGIN_LEFT)
+        .attr('height', CHARTCONFIGS.DEFAULT_HEIGHT)
         .on('mousedown', mousedown)
         .on('mouseup', mouseup);
 

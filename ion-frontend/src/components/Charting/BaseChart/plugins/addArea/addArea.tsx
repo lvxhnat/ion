@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { LINECHARTCONFIGS, LINECHARTIDS } from '../../config';
+import { CHARTCONFIGS, LINECHARTIDS } from '../../config';
 
 export const addArea = (props: {
     x: d3.ScaleTime<number, number, never>;
@@ -20,12 +20,12 @@ export const addArea = (props: {
         .defined((_, i: number) => defined[i])
         .curve(d3.curveLinear)
         .x((_, i: number) => props.x(props.dataX[i]))
-        .y0(LINECHARTCONFIGS.DEFAULT_HEIGHT - LINECHARTCONFIGS.DEFAULT_MARGIN_TOP)
+        .y0(CHARTCONFIGS.DEFAULT_HEIGHT - CHARTCONFIGS.DEFAULT_MARGIN_TOP)
         .y1((_, i: number) => props.y(props.dataY[i]));
 
     svg.append('path')
         .attr('id', `${props.baseId}_${props.id}`)
         .attr('fill', props.color)
-        .attr('opacity', LINECHARTCONFIGS.DEFAULT_LINE_AREA_OPACITY)
+        .attr('opacity', CHARTCONFIGS.DEFAULT_LINE_AREA_OPACITY)
         .attr('d', area(indexes.filter(i => defined[i])));
 };

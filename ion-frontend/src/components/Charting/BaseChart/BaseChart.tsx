@@ -7,7 +7,7 @@ import { DefaultDataProps, LineChartProps } from './type';
 import { useD3 } from 'common/hooks/useD3';
 import { ColorsEnum } from 'common/theme';
 
-import { LINECHARTCONFIGS, LINECHARTIDS } from './config';
+import { CHARTCONFIGS, LINECHARTIDS } from './config';
 
 function determineStartY(zeroAxis: boolean, minValue: number, maxValue: number) {
     const minBoundary = (maxValue - minValue) * 0.3;
@@ -26,25 +26,25 @@ function determineEndY(minValue: number, maxValue: number) {
  * TAKE NOTE: dataX and dataY determines the boundaries of the x and y axis
  * @returns
  */
-export default function BaseLineChart({
+export default function BaseChart({
     defaultData,
     baseId,
-    data = LINECHARTCONFIGS.DEFAULT_DATA,
-    width = LINECHARTCONFIGS.DEFAULT_WIDTH,
-    height = LINECHARTCONFIGS.DEFAULT_HEIGHT,
+    data = CHARTCONFIGS.DEFAULT_DATA,
+    width = CHARTCONFIGS.DEFAULT_WIDTH,
+    height = CHARTCONFIGS.DEFAULT_HEIGHT,
     margin = {
-        top: LINECHARTCONFIGS.DEFAULT_MARGIN_TOP,
-        right: LINECHARTCONFIGS.DEFAULT_MARGIN_RIGHT,
-        bottom: LINECHARTCONFIGS.DEFAULT_MARGIN_BOTTOM,
-        left: LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT,
+        top: CHARTCONFIGS.DEFAULT_MARGIN_TOP,
+        right: CHARTCONFIGS.DEFAULT_MARGIN_RIGHT,
+        bottom: CHARTCONFIGS.DEFAULT_MARGIN_BOTTOM,
+        left: CHARTCONFIGS.DEFAULT_MARGIN_LEFT,
     },
-    zeroAxis = LINECHARTCONFIGS.DEFAULT_ZERO_AXIS,
-    showLegend = LINECHARTCONFIGS.DEFAULT_SHOW_LEGEND,
-    showAverage = LINECHARTCONFIGS.DEFAULT_SHOW_AVERAGE,
-    showGrid = LINECHARTCONFIGS.DEFAULT_SHOW_GRID,
-    showAxis = LINECHARTCONFIGS.DEFAULT_SHOW_AXIS,
-    showNormalised = LINECHARTCONFIGS.DEFAULT_SHOW_NORMALISED,
-    showTooltip = LINECHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
+    zeroAxis = CHARTCONFIGS.DEFAULT_ZERO_AXIS,
+    showLegend = CHARTCONFIGS.DEFAULT_SHOW_LEGEND,
+    showAverage = CHARTCONFIGS.DEFAULT_SHOW_AVERAGE,
+    showGrid = CHARTCONFIGS.DEFAULT_SHOW_GRID,
+    showAxis = CHARTCONFIGS.DEFAULT_SHOW_AXIS,
+    showNormalised = CHARTCONFIGS.DEFAULT_SHOW_NORMALISED,
+    showTooltip = CHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
 }: LineChartProps): React.ReactElement {
     const ref = useD3(
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {

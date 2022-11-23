@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { LINECHARTCONFIGS, LINECHARTIDS } from '../../config';
+import { CHARTCONFIGS, LINECHARTIDS } from '../../config';
 
 export const addLine = (props: {
     x: d3.ScaleTime<number, number, never>;
@@ -24,6 +24,6 @@ export const addLine = (props: {
         .attr('id', `${props.baseId}_${props.id}`)
         .attr('fill', 'none')
         .attr('stroke', props.color)
-        .attr('stroke-width', LINECHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
+        .attr('stroke-width', CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
         .attr('d', valueLine(d3.range(dataX.length)));
 };

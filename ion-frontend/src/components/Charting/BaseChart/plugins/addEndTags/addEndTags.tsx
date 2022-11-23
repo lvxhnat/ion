@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { LINECHARTCONFIGS, LINECHARTIDS } from '../../config';
+import { CHARTCONFIGS, LINECHARTIDS } from '../../config';
 import { getFontColor } from '../../../TSChart/helpers/style';
 
 export const addEndTags = (props: {
@@ -20,7 +20,7 @@ export const addEndTags = (props: {
         .attr('d', d => `M ${1} ${props.y(d)} l 6,-6 h 42 v 12 h -16 l -26,0`)
         .attr(
             'transform',
-            `translate(${LINECHARTCONFIGS.DEFAULT_WIDTH - LINECHARTCONFIGS.DEFAULT_MARGIN_RIGHT},0)`
+            `translate(${CHARTCONFIGS.DEFAULT_WIDTH - CHARTCONFIGS.DEFAULT_MARGIN_RIGHT},0)`
         )
         .attr('fill', props.color);
 
@@ -29,7 +29,7 @@ export const addEndTags = (props: {
         .data(props.dataY)
         .join('text')
         .text(d => d.toFixed(2))
-        .attr('x', LINECHARTCONFIGS.DEFAULT_WIDTH - LINECHARTCONFIGS.DEFAULT_MARGIN_RIGHT + 10)
+        .attr('x', CHARTCONFIGS.DEFAULT_WIDTH - CHARTCONFIGS.DEFAULT_MARGIN_RIGHT + 10)
         .attr('y', d => +props.y(d) + 3)
         .attr('text-anchor', 'start')
         .attr('font-size', '9px')

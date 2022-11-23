@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { LINECHARTCONFIGS, LINECHARTIDS } from '../config';
+import { CHARTCONFIGS, LINECHARTIDS } from '../config';
 import * as C from '../plugins';
 import { AllowedLineTypes } from '../type';
 

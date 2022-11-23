@@ -21,7 +21,7 @@ export const LINECHARTIDS = {
     TOOLTIP_ENCOMPASSING_RECT_CLASS: 'tooltip-rect',
 };
 
-export const LINECHARTCONFIGS = {
+export const CHARTCONFIGS = {
     DEFAULT_WIDTH: 960,
     DEFAULT_HEIGHT: 500,
     DEFAULT_MARGIN_TOP: 10,

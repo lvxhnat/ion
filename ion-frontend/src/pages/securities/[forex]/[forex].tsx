@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Box, CssBaseline, Grid } from '@mui/material';
-import TSChart from 'components/Charting/LineCharts/TSChart';
+import TSChart from 'components/Charting/TSChart';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import ForexTable from './ForexTable';
@@ -18,9 +18,14 @@ export default function Forex(): React.ReactElement {
     const setHeader = useHeaderStore(store => store.setHeader);
     const params = useParams();
 
-    if (params.symbolId) {
-        setHeader({ data: params.symbolId });
+    React.useEffect(() => {
+        if (params.symbolId) {
+            setHeader({ data: params.symbolId });
+        }
+        return () => setHeader({ data: '' });
+    }, []);
 
+    if (params.symbolId) {
         return (
             <Grid sx={{ overflow: 'hidden' }}>
                 <CssBaseline />

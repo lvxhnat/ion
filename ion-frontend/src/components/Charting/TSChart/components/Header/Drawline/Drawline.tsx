@@ -8,8 +8,8 @@ import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 
-import { addDraw, removeDraw } from 'components/Charting/LineCharts/BaseLineChart/plugins';
-import { removeDrawnLines } from 'components/Charting/LineCharts/BaseLineChart/plugins/addDraw/addDraw';
+import { addDraw, removeDraw } from 'components/Charting/BaseChart/plugins';
+import { removeDrawnLines } from 'components/Charting/BaseChart/plugins/addDraw/addDraw';
 import { ColorsEnum } from 'common/theme';
 
 export default function Drawline(props: { baseId: string }) {

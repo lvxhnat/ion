@@ -5,7 +5,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 
-import { INDICATOR_ENGINE } from 'components/Charting/LineCharts/TSChart/helpers/indicators';
+import { INDICATOR_ENGINE } from 'components/Charting/TSChart/helpers/indicators';
 import { GeneralTableTypeProp } from './configs';
 import Typography from '@mui/material/Typography';
 

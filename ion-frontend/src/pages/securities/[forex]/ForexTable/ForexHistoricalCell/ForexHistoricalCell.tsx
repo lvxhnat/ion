@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as d3 from 'd3';
 import * as S from '../style';
 
-import BaseLineChart from 'components/Charting/LineCharts/BaseLineChart';
-import { DefaultDataProps } from 'components/Charting/LineCharts/BaseLineChart/type';
+import BaseLineChart from 'components/Charting/BaseChart';
+import { DefaultDataProps } from 'components/Charting/BaseChart/type';
 
 import { ionIngestionRequest } from 'services/request';
 import { REQUEST_ENDPOINTS } from '../configs';

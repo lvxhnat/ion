@@ -3,15 +3,12 @@ import * as React from 'react';
 
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import Typography from '@mui/material/Typography';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 
 import { useNavigate } from 'react-router-dom';
 import { useHeaderStore } from 'store/header/header';
-import { ColorsEnum } from 'common/theme';
 
 export default function Navigation() {
     const navigate = useNavigate();
@@ -25,26 +22,26 @@ export default function Navigation() {
             <S.IconButtonWrapper disableRipple disabled>
                 <ChevronRightIcon fontSize="small" />
             </S.IconButtonWrapper>
-            <FormControl sx={{ minWidth: 120, padding: 0 }} size="small">
-                <Select
-                    value={headerValue.data}
-                    defaultValue={headerValue.data}
-                    onChange={() => null}
-                    sx={{
-                        '&:hover': {
-                            '&& fieldset': {
-                                border: `1px solid ${ColorsEnum.coolgray1}`,
-                            },
-                        },
-                    }}
-                    SelectDisplayProps={{ style: { padding: 3 } }}
-                >
-                    <MenuItem value={headerValue.data}>{headerValue.data}</MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-            </FormControl>
+            {headerValue.data ? (
+                <FormControl sx={{ minWidth: 120 }} size="small">
+                    <Select
+                        value={headerValue.data}
+                        defaultValue={headerValue.data}
+                        onChange={() => null}
+                        sx={{
+                            boxShadow: 'none',
+                            '.MuiOutlinedInput-notchedOutline': { border: 0 },
+                            '&:hover': { border: 0 },
+                            '&:focus': { border: 0 },
+                            '&:before': { border: 0 },
+                            '&:after': { border: 0 },
+                        }}
+                        SelectDisplayProps={{ style: { padding: 3 } }}
+                    >
+                        <MenuItem value={headerValue.data}>{headerValue.data}</MenuItem>
+                    </Select>
+                </FormControl>
+            ) : null}
         </S.NavigationPanel>
     );
 }

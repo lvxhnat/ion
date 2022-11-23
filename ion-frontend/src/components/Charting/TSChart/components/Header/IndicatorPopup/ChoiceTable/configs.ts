@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { INDICATOR_ENGINE } from 'components/Charting/LineCharts/TSChart/helpers/indicators';
+import { INDICATOR_ENGINE } from 'components/Charting/TSChart/helpers/indicators';
 
 export interface GeneralTableProps<T> {
     id: string;

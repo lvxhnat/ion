@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { ColorsEnum } from 'common/theme';
-import { LINECHARTCONFIGS, LINECHARTIDS } from '../../config';
+import { CHARTCONFIGS, LINECHARTIDS } from '../../config';
 import { DefaultDataProps } from '../../type';
 
 function formatDateString(d: Date) {
@@ -45,13 +45,13 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
             .style('fill', ColorsEnum.white)
             .attr('width', 80)
             .attr('height', 20)
-            .attr('transform', `translate(${LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT}, 0)`);
+            .attr('transform', `translate(${CHARTCONFIGS.DEFAULT_MARGIN_LEFT}, 0)`);
         // Append text to the bottom of the chart
         focus
             .append('text')
             .attr('class', `${props.baseId}_${LINECHARTIDS.TOOLTIP_RECT_TEXT_CLASS}`)
             .attr('font-size', '10px')
-            .attr('transform', `translate(${LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT}, 0)`);
+            .attr('transform', `translate(${CHARTCONFIGS.DEFAULT_MARGIN_LEFT}, 0)`);
         // Add the vertical line that tracks all the data points
         focus
             .append('line')
@@ -60,15 +60,15 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
             .style('stroke-dasharray', '3,3')
             .style('stroke-width', 1)
             .style('opacity', 0.5)
-            .attr('y1', LINECHARTCONFIGS.DEFAULT_MARGIN_BOTTOM)
-            .attr('y2', LINECHARTCONFIGS.DEFAULT_HEIGHT - LINECHARTCONFIGS.DEFAULT_MARGIN_TOP);
+            .attr('y1', CHARTCONFIGS.DEFAULT_MARGIN_BOTTOM)
+            .attr('y2', CHARTCONFIGS.DEFAULT_HEIGHT - CHARTCONFIGS.DEFAULT_MARGIN_TOP);
         // Create a rect on top of the svg area: this rectangle recovers mouse position
         svg.append('rect')
             .attr('class', `${props.baseId}_${LINECHARTIDS.TOOLTIP_ENCOMPASSING_RECT_CLASS}`)
             .style('fill', 'none')
             .style('pointer-events', 'all')
-            .attr('width', LINECHARTCONFIGS.DEFAULT_WIDTH - LINECHARTCONFIGS.DEFAULT_MARGIN_LEFT)
-            .attr('height', LINECHARTCONFIGS.DEFAULT_HEIGHT)
+            .attr('width', CHARTCONFIGS.DEFAULT_WIDTH - CHARTCONFIGS.DEFAULT_MARGIN_LEFT)
+            .attr('height', CHARTCONFIGS.DEFAULT_HEIGHT)
             .on('mouseover', mouseover)
             .on('mousemove', mousemove)
             .on('mouseout', mouseout);
@@ -102,18 +102,12 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
 
             focus
                 .selectAll(`.${props.baseId}_${LINECHARTIDS.TOOLTIP_RECT_TRACKER_CLASS}`)
-                .attr(
-                    'transform',
-                    `translate(${xTranslate}, ${LINECHARTCONFIGS.DEFAULT_HEIGHT + 5})`
-                );
+                .attr('transform', `translate(${xTranslate}, ${CHARTCONFIGS.DEFAULT_HEIGHT + 5})`);
 
             focus
                 .selectAll(`.${props.baseId}_${LINECHARTIDS.TOOLTIP_RECT_TEXT_CLASS}`)
                 .text(formatDateString(dates[i]))
-                .attr(
-                    'transform',
-                    `translate(${xTranslate}, ${LINECHARTCONFIGS.DEFAULT_HEIGHT + 14})`
-                );
+                .attr('transform', `translate(${xTranslate}, ${CHARTCONFIGS.DEFAULT_HEIGHT + 14})`);
         }
     }
 

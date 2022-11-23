@@ -2,8 +2,8 @@ import * as d3 from 'd3';
 import * as React from 'react';
 
 import Header from './components/Header';
-import BaseLineChart from '../BaseLineChart';
-import { DefaultDataProps } from '../BaseLineChart/type';
+import BaseLineChart from '../BaseChart';
+import { DefaultDataProps } from '../BaseChart/type';
 import { GeneralTableTypeProp } from './components/Header/IndicatorPopup/ChoiceTable/configs';
 import { ionIngestionRequest } from 'services/request';
 import { ENDPOINTS } from 'common/constant/endpoints';
