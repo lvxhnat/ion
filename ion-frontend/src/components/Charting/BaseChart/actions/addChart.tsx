@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { precisionPrefix } from 'd3';
 import * as C from '../plugins';
 import { DefaultDataProps, OHLCDataSchema } from '../schema/schema';
 
@@ -30,7 +31,6 @@ export default function addChart(props: addChartProps) {
             dataY: data,
         });
     };
-
     // Add End Tags to the end of charts on Y-Axis
     if (props.type === 'line') {
         const data: number[] = props.dataY as number[];
@@ -40,9 +40,15 @@ export default function addChart(props: addChartProps) {
         // Use End Tags
         const data: OHLCDataSchema[] = props.dataY as OHLCDataSchema[];
         addEndTags(data[data.length - 1].close);
+        C.addCandleStick({
+            baseId: props.baseId,
+            x: props.x,
+            y: props.y,
+            dataX: props.dataX,
+            dataY: data,
+        });
     } else if (props.type === 'areaLine') {
         const data: number[] = props.dataY as number[];
-        console.log('adding areaLine');
         addLine(data);
         C.addArea({
             id: props.id,

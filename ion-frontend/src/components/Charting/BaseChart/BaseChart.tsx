@@ -125,10 +125,10 @@ export default function BaseChart({
                 .attr('id', `${baseId}_${CHARTIDS.YAXIS_ID}`) // Set a class name for our y axis
                 .call(yAxis);
 
-            if (showAverage && typeof dataY[0] === 'number') {
+            if (showAverage) {
                 // A horizontal line that shows the average
                 const mean =
-                    (dataY as number[]).reduce((a: number, b: number) => a + b) / dataY.length;
+                    (dataYc as number[]).reduce((a: number, b: number) => a + b) / dataYc.length;
                 svg.append('line')
                     .attr('class', `${baseId}_${CHARTIDS.DRAW_LINE_CLASS}`)
                     .attr('x1', margin.left)
@@ -139,7 +139,7 @@ export default function BaseChart({
                     .attr('stroke-dasharray', '2,2')
                     .attr(
                         'stroke',
-                        dataY[dataY.length - 1] > mean ? ColorsEnum.upHint : ColorsEnum.downHint
+                        dataYc[dataYc.length - 1] > mean ? ColorsEnum.upHint : ColorsEnum.downHint
                     );
             }
 
@@ -193,7 +193,7 @@ export default function BaseChart({
     );
 
     return (
-        <div id={`${baseId}-container`} style={{ width: '80%' }}>
+        <div id={`${baseId}-container`} style={{ width: '90%' }}>
             <svg ref={ref} id={baseId} />
         </div>
     );

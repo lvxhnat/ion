@@ -34,17 +34,25 @@ export default function TSChart(): React.ReactElement {
         ionIngestionRequest
             .post(ENDPOINTS.PRIVATE.OANDA_FX_HISTORICAL_ENDPOINT, {
                 symbol: 'EUR_USD',
-                period: '1D',
+                period: '1W',
             })
             .then((d: any) => {
+                console.log(d);
                 setData({
                     id: 'base-line',
                     name: 'Base Line Chart',
                     parent: true,
                     dataX: d.data.data.map((d_: any) => parseTime(d_.date)),
-                    dataY: d.data.data.map((d_: any) => parseFloat(d_.mid_close)),
+                    dataY: d.data.data.map((d_: any) => {
+                        return {
+                            high: parseFloat(d_.mid_high),
+                            low: parseFloat(d_.mid_low),
+                            open: parseFloat(d_.mid_open),
+                            close: parseFloat(d_.mid_close),
+                        };
+                    }),
                     color: 'red',
-                    type: 'areaLine',
+                    type: 'candleStick',
                 });
             });
     }, []);

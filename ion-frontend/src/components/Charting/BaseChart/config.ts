@@ -19,6 +19,9 @@ export const CHARTIDS = {
     TOOLTIP_RECT_TEXT_CLASS: 'tooltip-x-tracker-text',
     TOOLTIP_LINE_CLASS: 'tooltip-x-line',
     TOOLTIP_ENCOMPASSING_RECT_CLASS: 'tooltip-rect',
+    CANDLESTICK_GROUP_CLASS: 'candlestick-group',
+    CANDLESTICK_CANDLE_CLASS: 'candle-body',
+    CANDLESTICK_WICK_CLASS: 'candle-wick',
 };
 
 export const CHARTCONFIGS = {
