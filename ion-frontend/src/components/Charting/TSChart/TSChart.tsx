@@ -42,8 +42,8 @@ export default function TSChart(): React.ReactElement {
                     id: 'base-line',
                     name: 'Base Line Chart',
                     parent: true,
-                    dataX: d.data.data.map((d_: any) => parseTime(d_.date)),
-                    dataY: d.data.data.map((d_: any) => {
+                    dataX: d.data.data.slice(200, 400).map((d_: any) => parseTime(d_.date)),
+                    dataY: d.data.data.slice(200, 400).map((d_: any) => {
                         return {
                             high: parseFloat(d_.mid_high),
                             low: parseFloat(d_.mid_low),
@@ -52,7 +52,7 @@ export default function TSChart(): React.ReactElement {
                         };
                     }),
                     color: 'red',
-                    type: 'candleStick',
+                    type: 'barStick',
                 });
             });
     }, []);

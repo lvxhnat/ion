@@ -1,6 +1,6 @@
 import addLine from './addLine';
 import addArea from './addArea';
-import addCandleStick from './addCandlestick';
+import addOHLC from './addOHLC';
 import styleGrid from './styleGrid';
 import addToolTip from './addTooltip';
 import addDrag from './addDrag';
@@ -11,7 +11,7 @@ import addEndTags from './addEndTags';
 export {
     addLine,
     addArea,
-    addCandleStick,
+    addOHLC,
     addToolTip,
     addDrag,
     addDraw,

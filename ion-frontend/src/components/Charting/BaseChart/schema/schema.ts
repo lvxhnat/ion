@@ -8,7 +8,7 @@ export interface DefaultDataProps {
     type: AllowedLineTypes;
 }
 
-export type AllowedLineTypes = 'line' | 'pureLine' | 'areaLine' | 'candleStick';
+export type AllowedLineTypes = 'line' | 'pureLine' | 'areaLine' | 'candleStick' | 'barStick';
 
 export interface OHLCDataSchema {
     date: Date;
