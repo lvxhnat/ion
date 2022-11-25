@@ -3,11 +3,17 @@ export interface DefaultDataProps {
     name: string;
     parent: boolean;
     dataX: Date[];
-    dataY: number[];
+    dataY: number[] | OHLCDataSchema[];
     color: string;
     type: AllowedLineTypes;
 }
 
-export type AllowedLineTypes = 'line' | 'pureLine' | 'areaLine';
+export type AllowedLineTypes = 'line' | 'pureLine' | 'areaLine' | 'candleStick' | 'barStick';
 
-export interface ChartDataSchema {}
+export interface OHLCDataSchema {
+    date: Date;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+}

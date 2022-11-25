@@ -19,11 +19,14 @@ export const CHARTIDS = {
     TOOLTIP_RECT_TEXT_CLASS: 'tooltip-x-tracker-text',
     TOOLTIP_LINE_CLASS: 'tooltip-x-line',
     TOOLTIP_ENCOMPASSING_RECT_CLASS: 'tooltip-rect',
+    CANDLESTICK_GROUP_CLASS: 'candlestick-group',
+    CANDLESTICK_CANDLE_CLASS: 'candle-body',
+    CANDLESTICK_WICK_CLASS: 'candle-wick',
 };
 
 export const CHARTCONFIGS = {
-    DEFAULT_WIDTH: 960,
-    DEFAULT_HEIGHT: 500,
+    DEFAULT_WIDTH: 1400,
+    DEFAULT_HEIGHT: 700,
     DEFAULT_MARGIN_TOP: 10,
     DEFAULT_MARGIN_RIGHT: 30,
     DEFAULT_MARGIN_BOTTOM: 20,

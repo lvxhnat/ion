@@ -6,13 +6,13 @@ import BaseLineChart from '../BaseChart';
 import { GeneralTableTypeProp } from './components/Header/IndicatorPopup/ChoiceTable/configs';
 import { ionIngestionRequest } from 'services/request';
 import { ENDPOINTS } from 'common/constant/endpoints';
-import { DefaultDataProps } from '../BaseChart/schema/schema';
+import { DefaultDataProps, OHLCDataSchema } from '../BaseChart/schema/schema';
 
 export default function TSChart(): React.ReactElement {
     const [data, setData] = React.useState<DefaultDataProps>();
     const [indicatorData, setIndicatorData] = React.useState<DefaultDataProps[]>([]);
 
-    function setDataHook(item: GeneralTableTypeProp<number[]>) {
+    function setDataHook(item: GeneralTableTypeProp<number[] | OHLCDataSchema[]>) {
         setIndicatorData([
             ...indicatorData,
             {
@@ -34,23 +34,31 @@ export default function TSChart(): React.ReactElement {
         ionIngestionRequest
             .post(ENDPOINTS.PRIVATE.OANDA_FX_HISTORICAL_ENDPOINT, {
                 symbol: 'EUR_USD',
-                period: '1D',
+                period: '1W',
             })
             .then((d: any) => {
+                console.log(d);
                 setData({
                     id: 'base-line',
                     name: 'Base Line Chart',
                     parent: true,
-                    dataX: d.data.data.map((d_: any) => parseTime(d_.date)),
-                    dataY: d.data.data.map((d_: any) => parseFloat(d_.mid_close)),
+                    dataX: d.data.data.slice(200, 400).map((d_: any) => parseTime(d_.date)),
+                    dataY: d.data.data.slice(200, 400).map((d_: any) => {
+                        return {
+                            high: parseFloat(d_.mid_high),
+                            low: parseFloat(d_.mid_low),
+                            open: parseFloat(d_.mid_open),
+                            close: parseFloat(d_.mid_close),
+                        };
+                    }),
                     color: 'red',
-                    type: 'areaLine',
+                    type: 'barStick',
                 });
             });
     }, []);
 
     return (
-        <>
+        <div>
             <Header setData={setDataHook} baseId={`svg-container`} />
             {data ? (
                 <BaseLineChart
@@ -65,6 +73,6 @@ export default function TSChart(): React.ReactElement {
                     showTooltip
                 />
             ) : null}
-        </>
+        </div>
     );
 }

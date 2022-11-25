@@ -3,7 +3,6 @@ import * as React from 'react';
 import { CssBaseline, Grid } from '@mui/material';
 import TSChart from 'components/Charting/TSChart';
 import Header from 'components/Header';
-import Footer from 'components/Footer';
 import { useHeaderStore } from 'store/header/header';
 import { useParams } from 'react-router-dom';
 
@@ -30,7 +29,6 @@ export default function Forex(): React.ReactElement {
                 <CssBaseline />
                 <Header />
                 <TSChart />
-                <Footer dataStreamProvider={'oanda'} />
             </Grid>
         );
     } else {

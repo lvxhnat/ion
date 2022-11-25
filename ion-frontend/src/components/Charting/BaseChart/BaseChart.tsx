@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as C from './plugins';
 import * as A from './actions';
 import { LineChartProps } from './type';
-import { DefaultDataProps } from './schema/schema';
+import { DefaultDataProps, OHLCDataSchema } from './schema/schema';
 
 import { useD3 } from 'common/hooks/useD3';
 import { ColorsEnum } from 'common/theme';
@@ -44,7 +44,6 @@ export default function BaseChart({
     showAverage = CHARTCONFIGS.DEFAULT_SHOW_AVERAGE,
     showGrid = CHARTCONFIGS.DEFAULT_SHOW_GRID,
     showAxis = CHARTCONFIGS.DEFAULT_SHOW_AXIS,
-    showNormalised = CHARTCONFIGS.DEFAULT_SHOW_NORMALISED,
     showTooltip = CHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
 }: LineChartProps): React.ReactElement {
     const ref = useD3(
@@ -73,8 +72,17 @@ export default function BaseChart({
 
             const minDate = Math.min(...dateTime);
             const maxDate = Math.max(...dateTime);
-            const minValue = Math.min(...dataY);
-            const maxValue = Math.max(...dataY);
+
+            let dataYc: number[] = [];
+            if (typeof dataY[0] === 'number') {
+                // We check if OHLC data is provided
+                dataYc = dataY as number[];
+            } else {
+                // We map to standardize OHLC data
+                dataYc = (dataY as OHLCDataSchema[]).map((d: OHLCDataSchema) => d.high);
+            }
+            const minValue = Math.min(...dataYc);
+            const maxValue = Math.max(...dataYc);
 
             x.domain([minDate, maxDate]);
             y.domain([
@@ -119,7 +127,8 @@ export default function BaseChart({
 
             if (showAverage) {
                 // A horizontal line that shows the average
-                const mean = dataY.reduce((a: number, b: number) => a + b) / dataY.length;
+                const mean =
+                    (dataYc as number[]).reduce((a: number, b: number) => a + b) / dataYc.length;
                 svg.append('line')
                     .attr('class', `${baseId}_${CHARTIDS.DRAW_LINE_CLASS}`)
                     .attr('x1', margin.left)
@@ -130,7 +139,7 @@ export default function BaseChart({
                     .attr('stroke-dasharray', '2,2')
                     .attr(
                         'stroke',
-                        dataY[dataY.length - 1] > mean ? ColorsEnum.upHint : ColorsEnum.downHint
+                        dataYc[dataYc.length - 1] > mean ? ColorsEnum.upHint : ColorsEnum.downHint
                     );
             }
 
