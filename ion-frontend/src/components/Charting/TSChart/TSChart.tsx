@@ -6,13 +6,13 @@ import BaseLineChart from '../BaseChart';
 import { GeneralTableTypeProp } from './components/Header/IndicatorPopup/ChoiceTable/configs';
 import { ionIngestionRequest } from 'services/request';
 import { ENDPOINTS } from 'common/constant/endpoints';
-import { DefaultDataProps } from '../BaseChart/schema/schema';
+import { DefaultDataProps, OHLCDataSchema } from '../BaseChart/schema/schema';
 
 export default function TSChart(): React.ReactElement {
     const [data, setData] = React.useState<DefaultDataProps>();
     const [indicatorData, setIndicatorData] = React.useState<DefaultDataProps[]>([]);
 
-    function setDataHook(item: GeneralTableTypeProp<number[]>) {
+    function setDataHook(item: GeneralTableTypeProp<number[] | OHLCDataSchema[]>) {
         setIndicatorData([
             ...indicatorData,
             {
@@ -50,7 +50,7 @@ export default function TSChart(): React.ReactElement {
     }, []);
 
     return (
-        <>
+        <div>
             <Header setData={setDataHook} baseId={`svg-container`} />
             {data ? (
                 <BaseLineChart
@@ -65,6 +65,6 @@ export default function TSChart(): React.ReactElement {
                     showTooltip
                 />
             ) : null}
-        </>
+        </div>
     );
 }

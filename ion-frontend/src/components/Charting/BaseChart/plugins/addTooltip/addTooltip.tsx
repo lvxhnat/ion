@@ -87,7 +87,11 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
             const xTranslate = props.x(dates[i]);
             tooltips.text((d: any) => {
                 const selection = props.data.filter(item => item.id === d.id)[0];
-                return selection ? `$${selection.dataY[i].toFixed(2)}` : null;
+                let selectionText = selection.dataY[i];
+                if (typeof selectionText !== 'number') {
+                    selectionText = selectionText.close;
+                }
+                return selection ? `$${selectionText.toFixed(2)}` : null;
             });
 
             focus

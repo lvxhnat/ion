@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as C from './plugins';
 import * as A from './actions';
 import { LineChartProps } from './type';
-import { DefaultDataProps } from './schema/schema';
+import { DefaultDataProps, OHLCDataSchema } from './schema/schema';
 
 import { useD3 } from 'common/hooks/useD3';
 import { ColorsEnum } from 'common/theme';
@@ -44,7 +44,6 @@ export default function BaseChart({
     showAverage = CHARTCONFIGS.DEFAULT_SHOW_AVERAGE,
     showGrid = CHARTCONFIGS.DEFAULT_SHOW_GRID,
     showAxis = CHARTCONFIGS.DEFAULT_SHOW_AXIS,
-    showNormalised = CHARTCONFIGS.DEFAULT_SHOW_NORMALISED,
     showTooltip = CHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
 }: LineChartProps): React.ReactElement {
     const ref = useD3(
@@ -73,8 +72,17 @@ export default function BaseChart({
 
             const minDate = Math.min(...dateTime);
             const maxDate = Math.max(...dateTime);
-            const minValue = Math.min(...dataY);
-            const maxValue = Math.max(...dataY);
+
+            let dataYc: number[] = [];
+            if (typeof dataY[0] === 'number') {
+                // We check if OHLC data is provided
+                dataYc = dataY as number[];
+            } else {
+                // We map to standardize OHLC data
+                dataYc = (dataY as OHLCDataSchema[]).map((d: OHLCDataSchema) => d.high);
+            }
+            const minValue = Math.min(...dataYc);
+            const maxValue = Math.max(...dataYc);
 
             x.domain([minDate, maxDate]);
             y.domain([
@@ -117,9 +125,10 @@ export default function BaseChart({
                 .attr('id', `${baseId}_${CHARTIDS.YAXIS_ID}`) // Set a class name for our y axis
                 .call(yAxis);
 
-            if (showAverage) {
+            if (showAverage && typeof dataY[0] === 'number') {
                 // A horizontal line that shows the average
-                const mean = dataY.reduce((a: number, b: number) => a + b) / dataY.length;
+                const mean =
+                    (dataY as number[]).reduce((a: number, b: number) => a + b) / dataY.length;
                 svg.append('line')
                     .attr('class', `${baseId}_${CHARTIDS.DRAW_LINE_CLASS}`)
                     .attr('x1', margin.left)
@@ -184,7 +193,7 @@ export default function BaseChart({
     );
 
     return (
-        <div id={`${baseId}-container`}>
+        <div id={`${baseId}-container`} style={{ width: '80%' }}>
             <svg ref={ref} id={baseId} />
         </div>
     );
