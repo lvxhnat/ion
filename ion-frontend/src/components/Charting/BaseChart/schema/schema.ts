@@ -1,3 +1,5 @@
+import { OHLCDataSchema } from 'data/schema/forex';
+
 export interface DefaultDataProps {
     id: string;
     name: string;
@@ -9,11 +11,3 @@ export interface DefaultDataProps {
 }
 
 export type AllowedLineTypes = 'line' | 'pureLine' | 'areaLine' | 'candleStick' | 'barStick';
-
-export interface OHLCDataSchema {
-    date: Date;
-    open: number;
-    high: number;
-    low: number;
-    close: number;
-}

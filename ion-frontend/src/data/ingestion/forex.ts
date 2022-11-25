@@ -5,10 +5,10 @@ import { ENDPOINTS } from 'common/constant/endpoints';
 import { REQUEST_ENDPOINTS } from 'data/endpoints/oanda';
 import { OandaFXSocketConnection } from 'data/clients/oanda';
 
-export const getHistoricalForex = () => {
+export const getHistoricalForex = (symbol: string, period: string) => {
     return ionIngestionRequest.post(ENDPOINTS.PRIVATE.OANDA_FX_HISTORICAL_ENDPOINT, {
-        symbol: 'EUR_USD',
-        period: '1W',
+        symbol: symbol,
+        period: period,
     });
 };
 

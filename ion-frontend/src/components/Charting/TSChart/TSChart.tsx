@@ -4,8 +4,9 @@ import * as React from 'react';
 import Header from './components/Header';
 import BaseLineChart from '../BaseChart';
 import { GeneralTableTypeProp } from './components/Header/IndicatorPopup/ChoiceTable/configs';
-import { DefaultDataProps, OHLCDataSchema } from '../BaseChart/schema/schema';
+import { DefaultDataProps } from '../BaseChart/schema/schema';
 import { getHistoricalForex } from 'data/ingestion/forex';
+import { OHLCDataSchema } from 'data/schema/common';
 
 export default function TSChart(): React.ReactElement {
     const [data, setData] = React.useState<DefaultDataProps>();
@@ -29,7 +30,7 @@ export default function TSChart(): React.ReactElement {
     const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
 
     React.useEffect(() => {
-        getHistoricalForex().then((d: any) => {
+        getHistoricalForex('EUR_USD', '1W').then((d: any) => {
             setData({
                 id: 'base-line',
                 name: 'Base Line Chart',

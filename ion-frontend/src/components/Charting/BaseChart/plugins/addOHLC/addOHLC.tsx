@@ -1,7 +1,7 @@
 import { ColorsEnum } from 'common/theme';
 import * as d3 from 'd3';
+import { OHLCDataSchema } from 'data/schema/common';
 import { CHARTIDS } from '../../config';
-import { OHLCDataSchema } from '../../schema/schema';
 
 export const addOHLC = (props: {
     x: d3.ScaleTime<number, number, never>;

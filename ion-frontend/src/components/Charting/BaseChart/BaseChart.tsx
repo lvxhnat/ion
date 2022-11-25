@@ -3,12 +3,13 @@ import * as React from 'react';
 import * as C from './plugins';
 import * as A from './actions';
 import { LineChartProps } from './type';
-import { DefaultDataProps, OHLCDataSchema } from './schema/schema';
+import { DefaultDataProps } from './schema/schema';
 
 import { useD3 } from 'common/hooks/useD3';
 import { ColorsEnum } from 'common/theme';
 
 import { CHARTCONFIGS, CHARTIDS } from './config';
+import { OHLCDataSchema } from 'data/schema/common';
 
 function determineStartY(zeroAxis: boolean, minValue: number, maxValue: number) {
     const minBoundary = (maxValue - minValue) * 0.3;
