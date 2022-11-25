@@ -4,9 +4,8 @@ import * as React from 'react';
 import Header from './components/Header';
 import BaseLineChart from '../BaseChart';
 import { GeneralTableTypeProp } from './components/Header/IndicatorPopup/ChoiceTable/configs';
-import { ionIngestionRequest } from 'services/request';
-import { ENDPOINTS } from 'common/constant/endpoints';
 import { DefaultDataProps, OHLCDataSchema } from '../BaseChart/schema/schema';
+import { getHistoricalForex } from 'data/ingestion/forex';
 
 export default function TSChart(): React.ReactElement {
     const [data, setData] = React.useState<DefaultDataProps>();
@@ -27,34 +26,27 @@ export default function TSChart(): React.ReactElement {
         ]);
     }
 
-    // Parse the time in data
     const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
 
     React.useEffect(() => {
-        ionIngestionRequest
-            .post(ENDPOINTS.PRIVATE.OANDA_FX_HISTORICAL_ENDPOINT, {
-                symbol: 'EUR_USD',
-                period: '1W',
-            })
-            .then((d: any) => {
-                console.log(d);
-                setData({
-                    id: 'base-line',
-                    name: 'Base Line Chart',
-                    parent: true,
-                    dataX: d.data.data.slice(200, 400).map((d_: any) => parseTime(d_.date)),
-                    dataY: d.data.data.slice(200, 400).map((d_: any) => {
-                        return {
-                            high: parseFloat(d_.mid_high),
-                            low: parseFloat(d_.mid_low),
-                            open: parseFloat(d_.mid_open),
-                            close: parseFloat(d_.mid_close),
-                        };
-                    }),
-                    color: 'red',
-                    type: 'barStick',
-                });
+        getHistoricalForex().then((d: any) => {
+            setData({
+                id: 'base-line',
+                name: 'Base Line Chart',
+                parent: true,
+                dataX: d.data.data.slice(200, 400).map((d_: any) => parseTime(d_.date)),
+                dataY: d.data.data.slice(200, 400).map((d_: any) => {
+                    return {
+                        high: parseFloat(d_.mid_high),
+                        low: parseFloat(d_.mid_low),
+                        open: parseFloat(d_.mid_open),
+                        close: parseFloat(d_.mid_close),
+                    };
+                }),
+                color: 'red',
+                type: 'barStick',
             });
+        });
     }, []);
 
     return (

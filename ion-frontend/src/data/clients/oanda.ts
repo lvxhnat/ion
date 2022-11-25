@@ -1,6 +1,6 @@
 import BaseSocket from 'common/sockets/BaseSocket';
 import { OandaPriceStreamObjectTypes } from 'common/types/clients/oanda';
-import { ForexStreamType } from '../type';
+import { ForexStreamType } from '../../components/Tables/ForexTable/type';
 
 export function unpackOandaFXStream(oandaStreamObject: string): ForexStreamType | null {
     const priceStream: OandaPriceStreamObjectTypes = JSON.parse(oandaStreamObject);
@@ -17,4 +17,10 @@ export function unpackOandaFXStream(oandaStreamObject: string): ForexStreamType 
     }
 }
 
-export class OandaFXSocketConnection extends BaseSocket {}
+export class OandaFXSocketConnection extends BaseSocket {
+    listen(callback: (...args: any[]) => void) {
+        this._socket.addEventListener('message', function (event: any) {
+            callback(unpackOandaFXStream(event.data));
+        });
+    }
+}

@@ -5,7 +5,7 @@ import * as S from '../style';
 import BaseLineChart from 'components/Charting/BaseChart';
 
 import { ionIngestionRequest } from 'services/request';
-import { REQUEST_ENDPOINTS } from '../configs';
+import { REQUEST_ENDPOINTS } from '../../../../data/endpoints/oanda';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 
 export default function ForexHistoricalCell(props: { forexPair: string }) {

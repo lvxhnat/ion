@@ -9,12 +9,11 @@ import TableRow from '@mui/material/TableRow';
 
 import { Modify } from 'common/types';
 import { ColorsEnum } from 'common/theme';
-import { OandaFXSocketConnection, unpackOandaFXStream } from './_clients/oanda';
 import { ForexStreamType, ForexTableHeaderType, StyledTableCellProps } from './type';
 import { forexStreamStore } from 'store/prices/prices';
 import ForexTableCellGroup from './ForexTableCellGroup';
 import ForexHistoricalCell from './ForexHistoricalCell/ForexHistoricalCell';
-import { REQUEST_ENDPOINTS } from './configs';
+import { getWebsocketForex } from 'data/ingestion/forex';
 
 export function StyledTableCell({ children, isHeader, width }: StyledTableCellProps) {
     return (
@@ -40,13 +39,10 @@ export default function ForexTable() {
     ];
 
     React.useEffect(() => {
-        const oandaWS = new OandaFXSocketConnection({
-            socketURL: REQUEST_ENDPOINTS.OANDA_WEBSOCKET.ENDPOINT,
-            name: REQUEST_ENDPOINTS.OANDA_WEBSOCKET.NAME,
-        });
         // Subscribe to the forex stream and store in global zustand state store
-        oandaWS.listen((x: any) => setForexStream(unpackOandaFXStream(x)));
-        return () => oandaWS.close();
+        const socket = getWebsocketForex();
+        socket.listen((x: any) => setForexStream(x));
+        return () => socket.close();
     }, []);
 
     const tableHeaders: Modify<ForexTableHeaderType, { id: keyof ForexStreamType | 'chart' }>[] = [
