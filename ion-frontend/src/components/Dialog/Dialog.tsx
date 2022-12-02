@@ -1,21 +1,18 @@
 import * as React from 'react';
-import * as S from './style';
-import * as RS from '../style';
 
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
+import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import CandlestickChartIcon from '@mui/icons-material/CandlestickChart';
-import Grid from '@mui/material/Grid';
-
-import Search from 'components/Search';
-import SidebarPrompt from './SidebarPrompt';
-import ChoiceTable from './ChoiceTable';
 import { ColorsEnum } from 'common/theme';
-import BootstrapDialogFrame from 'components/Dialog';
+import { Typography } from '@mui/material';
+
+export const StyledButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.mode === 'dark' ? ColorsEnum.white : ColorsEnum.coolgray1,
+    padding: `calc(${theme.spacing(0.5)} + 0.1vw) calc(${theme.spacing(1)} + 0.1vw)`,
+}));
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -57,7 +54,12 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
     );
 }
 
-export default function IndicatorPopup(props: { setData: Function }) {
+export default function BootstrapDialogFrame(props: {
+    title: string;
+    openIcon: React.ReactElement;
+    openPrompt?: string;
+    children: any;
+}) {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -68,26 +70,32 @@ export default function IndicatorPopup(props: { setData: Function }) {
     };
 
     return (
-        <BootstrapDialogFrame
-            title="Indicators, Metrics, Strategies"
-            openIcon={<CandlestickChartIcon fontSize="small" />}
-        >
-            <DialogContent style={{ padding: 0 }}>
-                <S.SearchWrapper>
-                    <Search placeholder={'Search'} fullWidth />
-                </S.SearchWrapper>
-            </DialogContent>
-
-            <DialogContent style={{ padding: 0, width: '100%', height: 450 }}>
-                <Grid container style={{ height: '100%' }}>
-                    <Grid item xs={3}>
-                        <SidebarPrompt />
-                    </Grid>
-                    <Grid item xs={9}>
-                        <ChoiceTable setData={props.setData} />
-                    </Grid>
-                </Grid>
-            </DialogContent>
-        </BootstrapDialogFrame>
+        <div>
+            <StyledButton
+                variant="text"
+                onClick={handleClickOpen}
+                startIcon={props.openIcon}
+                disableRipple
+            >
+                <Typography variant="body2">{props.openPrompt}</Typography>
+            </StyledButton>
+            <BootstrapDialog
+                onClose={handleClose}
+                open={open}
+                maxWidth="md"
+                fullWidth
+                PaperProps={{
+                    style: {
+                        backgroundColor: 'transparent',
+                        boxShadow: 'none',
+                    },
+                }}
+            >
+                <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+                    {props.title}
+                </BootstrapDialogTitle>
+                {props.children}
+            </BootstrapDialog>
+        </div>
     );
 }

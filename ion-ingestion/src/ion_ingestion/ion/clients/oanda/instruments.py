@@ -197,6 +197,7 @@ def __get_oanda_base_data(
         headers=HEADERS,
         timeout=30,
     )
+
     if response.status_code == 200:
         data = [
             *map(
