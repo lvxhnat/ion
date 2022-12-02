@@ -86,7 +86,7 @@ export default function BootstrapDialogFrame(props: {
                 fullWidth
                 PaperProps={{
                     style: {
-                        backgroundColor: 'transparent',
+                        backgroundColor: ColorsEnum.darkMode,
                         boxShadow: 'none',
                     },
                 }}

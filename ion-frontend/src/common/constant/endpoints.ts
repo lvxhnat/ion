@@ -1,6 +1,5 @@
 export const ENDPOINTS = {
     BASEURLS: {
-        ION_INGESTION: process.env.REACT_APP_ION_INGESTION_BASE_URL,
         DATA_INGESTION: process.env.REACT_APP_DATA_INGESTION_BASE_URL,
     },
     PRIVATE: {

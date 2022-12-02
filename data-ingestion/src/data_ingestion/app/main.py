@@ -1,10 +1,12 @@
 import uvicorn
-from fastapi import FastAPI
+from typing import List
+from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 
 from data_ingestion.app.core.config import settings
 from data_ingestion.app.api.api_v1 import api
+from data_ingestion.app.clients.oanda.instruments import stream_oanda_live_data
 
 app = FastAPI(
     title="data-ingestion",
@@ -33,6 +35,28 @@ app.add_middleware(
 def home_page():
     response = RedirectResponse(url="/docs")
     return response
+
+
+@app.websocket("/oanda/ws")
+async def stream_oanda_live_prices(websocket: WebSocket):
+
+    await websocket.accept()
+    forex_subscriptions: List[str] = [
+        "EUR_USD",
+        "EUR_AUD",
+        "EUR_JPY",
+        "EUR_NOK",
+        "USD_SGD",
+        "USD_THB",
+        "USD_CAD",
+        "USD_JPY",
+    ]
+
+    async def callback(x):
+        await websocket.send_json(x)
+
+    await stream_oanda_live_data(forex_subscriptions, callback)
+
 
 app.include_router(api.api_router, prefix=settings.API_V1_STR)
 
