@@ -2,7 +2,6 @@ import uvicorn
 from typing import List
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import RedirectResponse
 
 from data_ingestion.app.core.config import settings
 from data_ingestion.app.api.api_v1 import api
@@ -31,10 +30,9 @@ app.add_middleware(
 )
 
 
-@app.get("/", include_in_schema=False)
-def home_page():
-    response = RedirectResponse(url="/docs")
-    return response
+@app.get("/ping", include_in_schema=False)
+def ping():
+    return {"status": "ok"}
 
 
 @app.websocket("/oanda/ws")
