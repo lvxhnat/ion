@@ -2,41 +2,37 @@ version: "3"
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1
-    container_name: ion-zookeeper
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
+    env_file: ./zookeeper/env/docker.env
+    hostname: zookeeper
+    container_name: zookeeper
+    ports: 
+      - ${ION_MAPPED_ZK_PORT:-2181}:2181
 
   broker:
-    image: confluentinc/cp-kafka:7.0.1
-    container_name: ion-broker
-    ports:
-      # To learn about configuring Kafka for access across networks see
-      # https://www.confluent.io/blog/kafka-client-cannot-connect-to-broker-on-aws-on-docker-etc/
-      - "9092:9092"
+    image: confluentinc/cp-kafka:5.4.0
+    env_file: ./broker/env/docker.env
+    hostname: broker
+    container_name: broker
     depends_on:
-      - ion-zookeeper
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-
-  frontend:
-    container_name: ion-frontend
-    build: ./ion-frontend
-    stdin_open: true
+      - zookeeper
     ports:
-      - "3000:3000"
-    command: yarn start
+      - ${ION_MAPPED_KAFKA_BROKER_PORT:-9092}:9092
 
-  data_ingestion:
-    container_name: data-ingestion
-    build: ./data-ingestion
-    stdin_open: true
+  schema-registry:
+    image: confluentinc/cp-schema-registry:5.4.0
+    env_file: ./schema-registry/env/docker.env
+    hostname: schema-registry
+    container_name: schema-registry
+    depends_on:
+      - zookeeper
+      - broker
     ports:
-      - "1237:1237"
-    command: uvicorn data_ingestion.app.main:app --reload --port 1237
+      - ${ION_MAPPED_SCHEMA_REGISTRY_PORT:-8081}:8081
+
+  postgres:
+    image: postgres:12.3
+    env_file: ./postgres/env/docker.env
+    hostname: postgres
+    container_name: postgres
+    ports:
+      - '5432:5432'
