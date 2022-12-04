@@ -253,20 +253,19 @@ def __unpack_oanda_base_data(
     }
 
     keys = data.keys()
+
     for key in ["bid", "ask", "mid"]:
         if key in keys:
             if len(keys) == 1 and key == "mid":
-                cleaned_data[f"open"] = float(data[key]["o"])
-                cleaned_data[f"high"] = float(data[key]["h"])
-                cleaned_data[f"low"] = float(data[key]["l"])
-                cleaned_data[f"close"] = float(data[key]["c"])
+                cleaned_data["open"] = float(data[key]["o"])
+                cleaned_data["high"] = float(data[key]["h"])
+                cleaned_data["low"] = float(data[key]["l"])
+                cleaned_data["close"] = float(data[key]["c"])
             else:
                 cleaned_data[f"{key}_open"] = float(data[key]["o"])
                 cleaned_data[f"{key}_high"] = float(data[key]["h"])
                 cleaned_data[f"{key}_low"] = float(data[key]["l"])
                 cleaned_data[f"{key}_close"] = float(data[key]["c"])
-        else:
-            raise ValueError("No key specified!")
 
     return cleaned_data
 

@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 
 from fastapi import APIRouter
 from ion_clients.clients.oanda import instruments as oanda_instruments
-from ion_ingestion.app.models.candles import LiveCandles
+from data_ingestion.app.api.api_v1.models.candles import LiveCandles
 
 load_dotenv()
 

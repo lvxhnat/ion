@@ -5,20 +5,20 @@ from typing import Callable, List, Iterator
 from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor
 
-from ion.clients.oanda.configs.responses import (
+from ion_clients.clients.oanda.configs.responses import (
     OandaCandlesResponse,
     FormattedOandaCandles,
     OandaBaseDataResponse,
     OandaLiveStreamResponse,
 )
-from ion.clients.oanda.configs.requests import (
+from ion_clients.clients.oanda.configs.requests import (
     ENDPOINTS,
     HEADERS,
     HISTORICAL_GRANULARITY,
     Granularities,
     CurrencyPairs,
 )
-from ion.clients.oanda.helpers.time import clean_time
+from ion_clients.clients.oanda.helpers.time import clean_time
 
 import requests
 import aiohttp
@@ -197,6 +197,7 @@ def __get_oanda_base_data(
         headers=HEADERS,
         timeout=30,
     )
+
     if response.status_code == 200:
         data = [
             *map(

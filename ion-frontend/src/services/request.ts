@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ENDPOINTS } from 'common/constant/endpoints';
 
 const ionIngestionRequest = axios.create({
-    baseURL: ENDPOINTS.BASEURLS.ION_INGESTION,
+    baseURL: ENDPOINTS.BASEURLS.DATA_INGESTION,
     timeout: 10000,
     headers: {
         Authorization: 'null',
