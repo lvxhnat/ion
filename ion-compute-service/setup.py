@@ -4,13 +4,13 @@ import pathlib
 import pkg_resources
 from setuptools import setup, find_packages
 
-name = "ion_ingestion"
+name = "ion_compute"
 req_file = "requirements.dev.txt"
 here = pathlib.Path.absolute(pathlib.Path(__file__).resolve().parent)
 
 # get package version
 with open(
-    pathlib.Path(here, "src/ion_ingestion/__init__.py"), encoding="utf-8"
+    pathlib.Path(here, "src/ion_compute/__init__.py"), encoding="utf-8"
 ) as f:
     result = re.search(r'__version__ = ["\']([^"\']+)', f.read())
 
@@ -34,7 +34,7 @@ setup(
     name=name,
     version=version,
     author="Loh Yi Kuang",
-    description="",
+    description="Compute service for heavy analysis jobs",
     long_description=long_description,
     long_description_content_type="text/markdown",
     package_dir={"": "src"},
@@ -42,7 +42,7 @@ setup(
     package_data=package_data,
     install_requires=install_requires,
     entry_points={
-        "console_scripts": ["ion_ingestion = ion_ingestion.launchers.cli:cli"],
+        "console_scripts": ["ion_compute = ion_compute.launchers.cli:cli"],
     },
     python_requires=">=3.9",
 )
