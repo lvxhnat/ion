@@ -1,7 +1,5 @@
 from typing import Literal
 
-from ion_clients.clients.oanda.configs import requests
-
 OandaReqIntervals = Literal["5Y", "1Y", "6M", "3M", "1M", "1M_S", "1W", "1D"]
 
 OandaReqCurrencies = Literal[

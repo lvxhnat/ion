@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from typing import List
 
-from ion_clients.clients.configuration.candles import (
+from ion_clients.core.configuration.candles import (
     BaseCandlesResponseModel,
     BaseCandlesDataModel,
 )
