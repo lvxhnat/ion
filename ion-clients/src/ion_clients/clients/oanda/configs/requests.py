@@ -2,7 +2,6 @@
 
 import os
 import enum
-from typing import Literal
 from datetime import timedelta
 from dotenv import load_dotenv
 
