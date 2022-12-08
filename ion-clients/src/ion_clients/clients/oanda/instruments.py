@@ -20,7 +20,7 @@ from ion_clients.clients.oanda.configs.requests import (
     Granularities,
     CurrencyPairs,
 )
-from ion_clients.types.oanda import (
+from ion_clients.clients.oanda.types.candles import (
     OandaReqCurrencies,
     OandaReqGranularities,
     OandaReqIntervals,

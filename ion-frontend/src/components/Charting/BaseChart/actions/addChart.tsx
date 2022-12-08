@@ -1,3 +1,4 @@
+import { ColorsEnum } from 'common/theme';
 import * as d3 from 'd3';
 import { OHLCDataSchema } from 'data/schema/common';
 import * as C from '../plugins';
@@ -10,13 +11,13 @@ interface addChartProps extends Omit<DefaultDataProps, 'name' | 'parent'> {
 }
 
 export default function addChart(props: addChartProps) {
-    const addEndTags = (tagPosition: number) => {
+    const addEndTags = (tagPosition: number, color?: string) => {
         return C.addEndTags({
             y: props.y,
             id: props.id,
             baseId: props.baseId,
             dataY: [tagPosition],
-            color: props.color,
+            color: color === undefined ? props.color : color,
         });
     };
 
@@ -31,15 +32,21 @@ export default function addChart(props: addChartProps) {
             dataY: data,
         });
     };
-    // Add End Tags to the end of charts on Y-Axis
+
+    let data: number[];
+    if (props.dataY[0].constructor.name === 'Object') {
+        data = (props.dataY as OHLCDataSchema[]).map((d: OHLCDataSchema) => d.close) as number[];
+    } else {
+        data = props.dataY as number[];
+    }
+
     if (props.type === 'line') {
-        const data: number[] = props.dataY as number[];
         addLine(data);
         addEndTags(data[data.length - 1]);
     } else if (props.type === 'candleStick' || props.type === 'barStick') {
         // Use End Tags
         const data: OHLCDataSchema[] = props.dataY as OHLCDataSchema[];
-        addEndTags(data[data.length - 1].close);
+        addEndTags(data[data.length - 1].close, ColorsEnum.white);
         C.addOHLC({
             baseId: props.baseId,
             x: props.x,
@@ -49,7 +56,6 @@ export default function addChart(props: addChartProps) {
             variation: props.type,
         });
     } else if (props.type === 'areaLine') {
-        const data: number[] = props.dataY as number[];
         addLine(data);
         C.addArea({
             id: props.id,
@@ -62,7 +68,6 @@ export default function addChart(props: addChartProps) {
         });
         addEndTags(data[data.length - 1]);
     } else if (props.type === 'pureLine') {
-        const data: number[] = props.dataY as number[];
         addLine(data);
     }
 }

@@ -28,7 +28,7 @@ export const addEndTags = (props: {
         .selectAll(`.label #${props.baseId}_${props.id}`)
         .data(props.dataY)
         .join('text')
-        .text(d => d.toFixed(2))
+        .text(d => `$${d < 10 ? d.toFixed(4) : d.toFixed(2)}`)
         .attr('x', CHARTCONFIGS.DEFAULT_WIDTH - CHARTCONFIGS.DEFAULT_MARGIN_RIGHT + 10)
         .attr('y', d => +props.y(d) + 3)
         .attr('text-anchor', 'start')

@@ -190,7 +190,7 @@ export default function BaseChart({
                 });
             }
         },
-        [data.length]
+        [data.length, defaultData]
     );
 
     return (
