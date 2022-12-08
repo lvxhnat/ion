@@ -1,3 +1,4 @@
+import { ColorsEnum } from 'common/theme';
 import * as d3 from 'd3';
 import { OHLCDataSchema } from 'data/schema/common';
 import * as C from '../plugins';
@@ -10,13 +11,13 @@ interface addChartProps extends Omit<DefaultDataProps, 'name' | 'parent'> {
 }
 
 export default function addChart(props: addChartProps) {
-    const addEndTags = (tagPosition: number) => {
+    const addEndTags = (tagPosition: number, color?: string) => {
         return C.addEndTags({
             y: props.y,
             id: props.id,
             baseId: props.baseId,
             dataY: [tagPosition],
-            color: props.color,
+            color: color === undefined ? props.color : color,
         });
     };
 
@@ -45,7 +46,7 @@ export default function addChart(props: addChartProps) {
     } else if (props.type === 'candleStick' || props.type === 'barStick') {
         // Use End Tags
         const data: OHLCDataSchema[] = props.dataY as OHLCDataSchema[];
-        addEndTags(data[data.length - 1].close);
+        addEndTags(data[data.length - 1].close, ColorsEnum.white);
         C.addOHLC({
             baseId: props.baseId,
             x: props.x,
