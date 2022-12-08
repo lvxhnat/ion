@@ -2,6 +2,7 @@ import * as d3 from 'd3';
 import { ColorsEnum } from 'common/theme';
 import { CHARTCONFIGS, CHARTIDS } from '../../config';
 import { DefaultDataProps } from '../../schema/schema';
+import { OHLCDataSchema } from 'data/schema/common';
 
 function formatDateString(d: Date) {
     const zeroPad = (n: number) => `${`0${n + 1}`.slice(-2)}`;
@@ -14,6 +15,15 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
     const svg = d3.selectAll(`#${props.baseId} `);
     const dates = props.data[0].dataX;
     const bisect = d3.bisector((d: any) => d).left;
+    // If OHLC Data, we pick close
+    let data: number[];
+    if (props.data[0].dataY[0].constructor.name === 'Object') {
+        data = (props.data[0].dataY as OHLCDataSchema[]).map(
+            (d: OHLCDataSchema) => d.close
+        ) as number[];
+    } else {
+        data = props.data[0].dataY as number[];
+    }
 
     const focus = svg
         .append('g')
@@ -22,20 +32,6 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
 
     // Create the text that travels along the curve of chart
     const tooltips = d3.selectAll(`.${props.baseId}_${CHARTIDS.LEGEND_VALUE_CLASS}`);
-
-    // append the circle at the intersection
-    focus
-        .selectAll(`.${props.baseId}_${CHARTIDS.TOOLTIP_CIRCLE_TRACKER_CLASS}`)
-        .data(props.data)
-        .enter()
-        .append('g')
-        .attr('class', `${props.baseId}_${CHARTIDS.TOOLTIP_CIRCLE_TRACKER_CLASS}`)
-        .append('circle')
-        .attr('id', d => `${props.baseId}_${d.id}`)
-        .style('fill', 'none')
-        .style('stroke', d => ColorsEnum.white)
-        .style('stroke-width', 1)
-        .attr('r', 4);
 
     if (d3.selectAll(`.${props.baseId}_${CHARTIDS.TOOLTIP_RECT_TRACKER_CLASS}`).empty()) {
         // Append the rectangle that will contain the text at the bottom of the chart
@@ -85,20 +81,7 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
 
         if (dates[i]) {
             const xTranslate = props.x(dates[i]);
-            tooltips.text((d: any) => {
-                const selection = props.data.filter(item => item.id === d.id)[0];
-                let selectionText = selection.dataY[i];
-                if (typeof selectionText !== 'number') {
-                    selectionText = selectionText.close;
-                }
-                return selection ? `$${selectionText.toFixed(2)}` : null;
-            });
-
-            focus
-                .selectAll(`.${props.baseId}_${CHARTIDS.TOOLTIP_CIRCLE_TRACKER_CLASS}`)
-                .attr('transform', (d: any) => {
-                    return `translate(${xTranslate}, ${props.y(d.dataY[i])})`;
-                });
+            tooltips.text(data[i]);
 
             focus
                 .selectAll(`.${props.baseId}_${CHARTIDS.TOOLTIP_LINE_CLASS}`)

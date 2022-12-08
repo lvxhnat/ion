@@ -14,7 +14,6 @@ export const CHARTIDS = {
     LEGEND_TEXT_CLASS: 'legend-text',
     LEGEND_VALUE_CLASS: 'legend-value',
     TOOLTIP_FOCUS_CLASS: 'tooltip-focus',
-    TOOLTIP_CIRCLE_TRACKER_CLASS: 'tooltip-point-tracker',
     TOOLTIP_RECT_TRACKER_CLASS: 'tooltip-x-tracker',
     TOOLTIP_RECT_TEXT_CLASS: 'tooltip-x-tracker-text',
     TOOLTIP_LINE_CLASS: 'tooltip-x-line',
