@@ -5,7 +5,7 @@ services:
     env_file: ./zookeeper/env/docker.env
     hostname: zookeeper
     container_name: zookeeper
-    ports: 
+    ports:
       - ${ION_MAPPED_ZK_PORT:-2181}:2181
 
   broker:
@@ -35,4 +35,4 @@ services:
     hostname: postgres
     container_name: postgres
     ports:
-      - '5432:5432'
+      - "5432:5432"

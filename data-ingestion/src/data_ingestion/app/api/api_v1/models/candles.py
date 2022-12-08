@@ -1,5 +1,8 @@
 from pydantic import BaseModel
-from ion_clients.types.oanda import OandaReqCurrencies, OandaReqIntervals
+from ion_clients.clients.oanda.types.candles import (
+    OandaReqCurrencies,
+    OandaReqIntervals,
+)
 
 
 class LiveCandles(BaseModel):

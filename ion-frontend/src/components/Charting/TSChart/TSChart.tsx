@@ -7,10 +7,12 @@ import { GeneralTableTypeProp } from './components/Header/IndicatorPopup/ChoiceT
 import { DefaultDataProps } from '../BaseChart/schema/schema';
 import { getHistoricalForex } from 'data/ingestion/forex';
 import { OHLCDataSchema } from 'data/schema/common';
+import { useChartStore } from 'store/chart/charting';
 
 export default function TSChart(): React.ReactElement {
-    const [data, setData] = React.useState<DefaultDataProps>();
+    const [data, setData] = React.useState<{ dataX: Date[]; dataY: number[] | OHLCDataSchema[] }>();
     const [indicatorData, setIndicatorData] = React.useState<DefaultDataProps[]>([]);
+    const chartType = useChartStore(store => store.chartType);
 
     function setDataHook(item: GeneralTableTypeProp<number[] | OHLCDataSchema[]>) {
         setIndicatorData([
@@ -32,9 +34,6 @@ export default function TSChart(): React.ReactElement {
     React.useEffect(() => {
         getHistoricalForex('EUR_USD', '1W').then((d: any) => {
             setData({
-                id: 'base-line',
-                name: 'Base Line Chart',
-                parent: true,
                 dataX: d.data.data.slice(200, 400).map((d_: any) => parseTime(d_.date)),
                 dataY: d.data.data.slice(200, 400).map((d_: any) => {
                     return {
@@ -44,8 +43,6 @@ export default function TSChart(): React.ReactElement {
                         close: parseFloat(d_.mid_close),
                     };
                 }),
-                color: 'red',
-                type: 'barStick',
             });
         });
     }, []);
@@ -56,7 +53,15 @@ export default function TSChart(): React.ReactElement {
             {data ? (
                 <BaseLineChart
                     baseId={`svg-container`}
-                    defaultData={data}
+                    defaultData={{
+                        id: 'base-line',
+                        name: 'Base Line Chart',
+                        parent: true,
+                        dataX: data.dataX,
+                        dataY: data.dataY,
+                        color: 'red',
+                        type: chartType,
+                    }}
                     data={indicatorData}
                     zeroAxis
                     showGrid

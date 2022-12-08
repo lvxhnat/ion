@@ -9,5 +9,5 @@ export interface DefaultDataProps {
     color: string;
     type: AllowedLineTypes;
 }
-
+export const AllowedLineTypeList = ['line', 'pureLine', 'areaLine', 'candleStick', 'barStick'];
 export type AllowedLineTypes = 'line' | 'pureLine' | 'areaLine' | 'candleStick' | 'barStick';

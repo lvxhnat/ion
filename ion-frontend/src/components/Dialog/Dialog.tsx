@@ -1,27 +1,11 @@
 import * as React from 'react';
+import * as S from './style';
 
-import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { ColorsEnum } from 'common/theme';
 import { Typography } from '@mui/material';
-
-export const StyledButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.mode === 'dark' ? ColorsEnum.white : ColorsEnum.coolgray1,
-    padding: `calc(${theme.spacing(0.5)} + 0.1vw) calc(${theme.spacing(1)} + 0.1vw)`,
-}));
-
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-    '& .MuiDialogContent-root': {
-        padding: theme.spacing(2),
-    },
-    '& .MuiDialogActions-root': {
-        padding: theme.spacing(1),
-    },
-}));
 
 export interface DialogTitleProps {
     id: string;
@@ -71,15 +55,21 @@ export default function BootstrapDialogFrame(props: {
 
     return (
         <div>
-            <StyledButton
-                variant="text"
-                onClick={handleClickOpen}
-                startIcon={props.openIcon}
-                disableRipple
-            >
-                <Typography variant="body2">{props.openPrompt}</Typography>
-            </StyledButton>
-            <BootstrapDialog
+            {props.openPrompt ? (
+                <S.StyledButton
+                    variant="text"
+                    onClick={handleClickOpen}
+                    startIcon={props.openIcon}
+                    disableRipple
+                >
+                    <Typography variant="body2">{props.openPrompt}</Typography>
+                </S.StyledButton>
+            ) : (
+                <S.StyledIconButton onClick={handleClickOpen} disableRipple>
+                    {props.openIcon}
+                </S.StyledIconButton>
+            )}
+            <S.BootstrapDialog
                 onClose={handleClose}
                 open={open}
                 maxWidth="md"
@@ -95,7 +85,7 @@ export default function BootstrapDialogFrame(props: {
                     {props.title}
                 </BootstrapDialogTitle>
                 {props.children}
-            </BootstrapDialog>
+            </S.BootstrapDialog>
         </div>
     );
 }

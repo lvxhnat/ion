@@ -21,12 +21,12 @@ export default function IntervalSelection(props: IntervalSelectionProps) {
                 onChange={handleChange}
                 sx={{ height: 30 }}
             >
-                {props.intervals.map((interval: string) => (
+                {props.intervals.map((interval: string, index: number) => (
                     <ToggleButton
+                        key={`toggle_button_${index}`}
                         sx={{ padding: 0.5 }}
                         disableRipple
                         value={interval}
-                        key={interval}
                     >
                         <Typography variant="body2">{interval}</Typography>
                     </ToggleButton>
