@@ -47,7 +47,3 @@ def treasury_info(year: str, treasury_type: TreasuryTypes) -> TreasuryInfoDTO:
         )
 
     return d
-
-
-if __name__ == "__main__":
-    print(treasury_info(2022, "YIELD_CURVE"))

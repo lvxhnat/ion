@@ -40,16 +40,16 @@ class SQLDatabase:
         try:
             self.session.execute(*args, **kwargs)
             return self.session
-        except Exception as exc:
+        except Exception as err:
             try:
                 self.session.rollback()
-            except Exception as inner_exc:
+            except Exception as inner_err:
                 ex = DatabaseError(
                     f"Execution failed on sql: {args[0]}\n{exc}\nunable to rollback"
                 )
-                raise ex from inner_exc
+                raise ex from inner_err
             ex = DatabaseError(f"Execution failed on sql '{args[0]}': {exc}")
-            raise ex from exc
+            raise ex from err
 
 
 postgres = SQLDatabase(postgres_session_maker)
