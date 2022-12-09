@@ -14,7 +14,6 @@ api_router.include_router(
     tags=["autocomplete"],
 )
 
-api_router = APIRouter()
 api_router.include_router(
     candles_router,
     prefix="/candles",

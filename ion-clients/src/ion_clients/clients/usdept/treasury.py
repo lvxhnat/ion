@@ -1,4 +1,5 @@
 import re
+import certifi
 import requests
 from ion_clients.clients.usdept.types.treasury import (
     TreasuryTypes,
@@ -21,7 +22,7 @@ treasury_types = {
 def treasury_info(year: str, treasury_type: TreasuryTypes) -> TreasuryInfoDTO:
 
     data = requests.get(
-        base_url(year, treasury_types[treasury_type])
+        base_url(year, treasury_types[treasury_type]), verify=certifi.where()
     ).text.split("\n")
 
     cast = (

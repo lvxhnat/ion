@@ -9,8 +9,8 @@ class BaseResponse(BaseModel):
 
 
 class BaseCandlesResponseModel(BaseResponse):
-
     pass
+
 
 class BaseCandlesDataModel(BaseModel):
     date: str
