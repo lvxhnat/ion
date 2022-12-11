@@ -1,6 +1,7 @@
 import re
 import certifi
 import requests
+from datetime import datetime
 from ion_clients.clients.usdept.types.treasury import (
     TreasuryTypes,
     TreasuryInfoDTO,
@@ -26,7 +27,9 @@ def treasury_info(year: str, treasury_type: TreasuryTypes) -> TreasuryInfoDTO:
     ).text.split("\n")
 
     cast = (
-        lambda x, index: x if index == 0 else (float(x) if x != "" else None)
+        lambda x, index: datetime.strptime(x, "%m/%d/%Y")
+        if index == 0
+        else (float(x) if x != "" else None)
     )
     cols = [
         *map(
@@ -47,3 +50,7 @@ def treasury_info(year: str, treasury_type: TreasuryTypes) -> TreasuryInfoDTO:
         )
 
     return d
+
+
+if __name__ == "__main__":
+    print(treasury_info(2000, "LONG_TERM_RATE"))
