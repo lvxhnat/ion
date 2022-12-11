@@ -36,3 +36,14 @@ services:
     container_name: postgres
     ports:
       - "5432:5432"
+
+  prefect-orion:
+    image: prefecthq/prefect:2.7.1-python3.9
+    restart: always
+    hostname: prefect-orion
+    container_name: prefect-orion
+    entrypoint: ["prefect", "orion", "start"]
+    ports:
+      - 4200:4200
+    environment:
+      - PREFECT_ORION_API_HOST=0.0.0.0

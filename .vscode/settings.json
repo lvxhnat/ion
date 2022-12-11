@@ -1,9 +1,0 @@
-{
-  "python.linting.pylintEnabled": true,
-  "python.linting.enabled": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
-  "editor.formatOnSave": true,
-  "eslint.validate": ["javascript"]
-}
