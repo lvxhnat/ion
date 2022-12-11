@@ -1,4 +1,7 @@
 version: "3"
+networks:
+  prefect:
+    name: prefect
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1
@@ -36,3 +39,17 @@ services:
     container_name: postgres
     ports:
       - "5432:5432"
+
+  prefect-server:
+    image: prefecthq/prefect:sha-33f7de5-python3.9
+    command:
+      - prefect
+      - orion
+      - start
+    depends_on:
+      - postgres
+    ports:
+      - 4200:4200
+    networks:
+      - prefect
+    

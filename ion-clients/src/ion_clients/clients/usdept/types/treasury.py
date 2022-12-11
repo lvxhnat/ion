@@ -1,5 +1,6 @@
 from typing import List, Literal, Union
 from pydantic import BaseModel
+from datetime import datetime
 
 TreasuryYears = Literal[
     2000,
@@ -37,7 +38,7 @@ TreasuryTypes = Literal[
 
 
 class YieldCurveObject(BaseModel):
-    _date: str
+    _date: datetime
     _1_mo: float
     _2_mo: float
     _3_mo: float
@@ -54,7 +55,7 @@ class YieldCurveObject(BaseModel):
 
 
 class BillRatesObject(BaseModel):
-    _date: str
+    _date: datetime
     _4_weeks_bank_discount: float
     _4_weeks_coupon_equivalent: float
     _8_weeks_bank_discount: float
@@ -70,13 +71,13 @@ class BillRatesObject(BaseModel):
 
 
 class LongTermRatesObject(BaseModel):
-    _date: str
+    _date: datetime
     _lt_composite_10_yrs: float
     _treasury_20_yr_cmt: float
 
 
 class RealYieldCurveObject(BaseModel):
-    _date: str
+    _date: datetime
     _5_yr: float
     _7_yr: float
     _10_yr: float
@@ -85,7 +86,7 @@ class RealYieldCurveObject(BaseModel):
 
 
 class RealLongTermObject(BaseModel):
-    _date: str
+    _date: datetime
     _lt_real_average_10_yrs: float
 
 
