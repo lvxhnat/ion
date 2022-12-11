@@ -1,7 +1,4 @@
 version: "3"
-networks:
-  prefect:
-    name: prefect
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1
@@ -40,16 +37,13 @@ services:
     ports:
       - "5432:5432"
 
-  prefect-server:
-    image: prefecthq/prefect:sha-33f7de5-python3.9
-    command:
-      - prefect
-      - orion
-      - start
-    depends_on:
-      - postgres
+  prefect-orion:
+    image: prefecthq/prefect:2.7.1-python3.9
+    restart: always
+    hostname: prefect-orion
+    container_name: prefect-orion
+    entrypoint: ["prefect", "orion", "start"]
     ports:
       - 4200:4200
-    networks:
-      - prefect
-    
+    environment:
+      - PREFECT_ORION_API_HOST=0.0.0.0

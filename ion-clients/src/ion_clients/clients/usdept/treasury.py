@@ -53,4 +53,4 @@ def treasury_info(year: str, treasury_type: TreasuryTypes) -> TreasuryInfoDTO:
 
 
 if __name__ == "__main__":
-    print(treasury_info(2022, "LONG_TERM_RATE"))
+    print(treasury_info(2000, "LONG_TERM_RATE"))
