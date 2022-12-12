@@ -6,6 +6,7 @@ export const ENDPOINTS = {
         SEARCH_FUNCTIONS: 'autocomplete/securityFunctions',
         OANDA_FX_STREAMING_ENDPOINT: 'oanda/ws',
         OANDA_FX_HISTORICAL_ENDPOINT: 'candles/oanda/candlesHistorical',
+        DB_QUERY: 'db/query',
     },
     PUBLIC: {
         BASE: '/',
