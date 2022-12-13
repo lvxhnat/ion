@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as S from './style';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,21 +8,13 @@ import TableRow from '@mui/material/TableRow';
 
 import { Modify } from 'common/types';
 import { ColorsEnum } from 'common/theme';
-import { ForexStreamType, ForexTableHeaderType, StyledTableCellProps } from './type';
+import { ForexStreamType, ForexTableHeaderType } from './type';
 import { forexStreamStore } from 'store/prices/prices';
 import ForexTableCellGroup from './ForexTableCellGroup';
 import ForexHistoricalCell from './ForexHistoricalCell/ForexHistoricalCell';
 import { getWebsocketForex } from 'data/ingestion/forex';
-
-export function StyledTableCell({ children, isHeader, width }: StyledTableCellProps) {
-    return (
-        <S.TableCellWrapper width={width}>
-            <S.TableCellLabel variant="body2" align="center" isHeader={isHeader}>
-                {children}
-            </S.TableCellLabel>
-        </S.TableCellWrapper>
-    );
-}
+import { StyledTableCell } from '../BaseTable/StyledTableCell';
+import { StyledTableRow } from '../BaseTable/StyledTableRow';
 
 export default function ForexTable() {
     const setForexStream = forexStreamStore((store: any) => store.setForexStream);
@@ -77,7 +68,7 @@ export default function ForexTable() {
                 </TableHead>
                 <TableBody>
                     {subscribedForexPairs.map((forexPair: string, index: number) => (
-                        <S.StyledTableRow key={`${forexPair}_row`}>
+                        <StyledTableRow key={`${forexPair}_row`}>
                             <StyledTableCell key={`${forexPair}_label_${index}`}>
                                 <label>{forexPair}</label>
                             </StyledTableCell>
@@ -94,7 +85,7 @@ export default function ForexTable() {
                                 key={`${forexPair}_hist_${index}`}
                                 forexPair={forexPair}
                             />
-                        </S.StyledTableRow>
+                        </StyledTableRow>
                     ))}
                 </TableBody>
             </Table>

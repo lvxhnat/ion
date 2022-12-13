@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as d3 from 'd3';
-import * as S from '../style';
 
 import BaseLineChart from 'components/Charting/BaseChart';
 
 import { dataIngestionRequest } from 'services/request';
 import { REQUEST_ENDPOINTS } from '../../../../data/endpoints/oanda';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
+import { TableCellWrapper } from 'components/Tables/BaseTable/style';
 
 export default function ForexHistoricalCell(props: { forexPair: string }) {
     const [data, setData] = React.useState<DefaultDataProps>();
@@ -33,7 +33,7 @@ export default function ForexHistoricalCell(props: { forexPair: string }) {
     }, []);
 
     return (
-        <S.TableCellWrapper>
+        <TableCellWrapper>
             {data ? (
                 <BaseLineChart
                     baseId={`${props.forexPair}_historicalChart`}
@@ -43,6 +43,6 @@ export default function ForexHistoricalCell(props: { forexPair: string }) {
                     margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
                 />
             ) : null}
-        </S.TableCellWrapper>
+        </TableCellWrapper>
     );
 }

@@ -17,12 +17,6 @@ export interface FormattedForexStreamType extends ForexStreamType {
     ask_change?: -1 | 0 | 1;
 }
 
-export interface StyledTableCellProps {
-    children?: React.ReactNode;
-    isHeader?: boolean;
-    width?: string;
-}
-
 export interface ForexTableHeaderType {
     name: string;
     id: keyof ForexStreamType;
