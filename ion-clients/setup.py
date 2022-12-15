@@ -2,9 +2,11 @@ import os
 import re
 import pathlib
 import pkg_resources
-from setuptools import setup, find_packages
 
-name = "ion_clients"
+import setuptools
+from setuptools import setup
+
+name = "ion_client"
 req_file = "requirements.dev.txt"
 here = pathlib.Path.absolute(pathlib.Path(__file__).resolve().parent)
 
@@ -21,30 +23,30 @@ with open(
 
     version = result.group(1)
 
-with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
-
 with pathlib.Path(os.path.abspath("."), req_file).open() as requirements:
     install_requires = [
         str(requirement)
         for requirement in pkg_resources.parse_requirements(requirements)
     ]
 
-package_data = {"ion_clients": ["*.txt", "*.json", "*.preamble", "*.sql"]}
+
+def get_long_description():
+    with open("./README.md", "r", encoding="utf-8") as fh:
+        return fh.read()
+
 
 setup(
     name=name,
     version=version,
     author="Loh Yi Kuang",
-    description="",
-    long_description=long_description,
+    description="A CLI to manage shared package resource among the Ion Project",
+    long_description=get_long_description(),
+    license="Apache License 2.0",
     long_description_content_type="text/markdown",
     package_dir={"": "src"},
-    packages=find_packages("src", exclude=["*tests"]),
-    package_data=package_data,
+    packages=setuptools.find_namespace_packages(where="./src"),
+    package_data={"ion_clients": ["*.txt", "*.json", "*.preamble", "*.sql"]},
     install_requires=install_requires,
-    entry_points={
-        "console_scripts": ["ion = ion.launchers.cli:cli"],
-    },
+    entry_points={"console_scripts": [f"{name}=ion_clients.entrypoints:main"]},
     python_requires=">=3.9",
 )
