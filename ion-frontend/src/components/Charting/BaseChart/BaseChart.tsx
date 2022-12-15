@@ -75,12 +75,11 @@ export default function BaseChart({
             const maxDate = Math.max(...dateTime);
 
             let dataYc: number[] = [];
-            if (typeof dataY[0] === 'number') {
-                // We check if OHLC data is provided
-                dataYc = dataY as number[];
-            } else {
-                // We map to standardize OHLC data
+
+            if (dataY[0] !== null && typeof dataY[0] === 'object') {
                 dataYc = (dataY as OHLCDataSchema[]).map((d: OHLCDataSchema) => d.high);
+            } else {
+                dataYc = dataY as number[];
             }
             const minValue = Math.min(...dataYc);
             const maxValue = Math.max(...dataYc);

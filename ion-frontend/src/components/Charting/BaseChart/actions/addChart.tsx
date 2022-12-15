@@ -34,7 +34,8 @@ export default function addChart(props: addChartProps) {
     };
 
     let data: number[];
-    if (props.dataY[0].constructor.name === 'Object') {
+
+    if (props.dataY[0] !== null && typeof props.dataY[0] === 'object') {
         data = (props.dataY as OHLCDataSchema[]).map((d: OHLCDataSchema) => d.close) as number[];
     } else {
         data = props.dataY as number[];

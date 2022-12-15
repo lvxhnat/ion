@@ -1,24 +1,42 @@
 import * as React from 'react';
 import * as d3 from 'd3';
-import { getTableQuery } from 'data/ingestion/postgres';
 
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
-import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+
 import { ColorsEnum } from 'common/theme';
 import { StyledTableRow } from '../BaseTable/StyledTableRow';
-import { StyledTableCell } from '../BaseTable/StyledTableCell';
-import { TableRow } from '@mui/material';
+import { StyledTableCell, StyledChartCell } from '../BaseTable/StyledTableCell';
+import { getTableQuery } from 'data/ingestion/postgres';
+import BaseLineChart from 'components/Charting/BaseChart';
 
-export default function TreasuryTables() {
+export default function TreasuryTables(props: { table: string }) {
     const [data, setData] = React.useState<any[]>([]);
-    const [visData, setVisData] = React.useState<{}>({});
+    const [visData, setVisData] = React.useState<any>({});
 
     React.useEffect(() => {
-        getTableQuery('us_bill_rates').then(data => {
+        getTableQuery(props.table).then(data => {
             setData(data.data);
+            let columnNames = Object.keys(data.data[0]);
+            let obj: { [index: string]: Array<number | null> } = {};
+
+            columnNames.map((columnName: string) => (obj[columnName] = []));
+            data.data.map((data: any) => {
+                columnNames.map((columnName: string, index: number) => {
+                    let item = obj[columnName];
+                    let entry = data[columnName];
+                    if (index == 0) {
+                        entry = new Date(entry);
+                    }
+                    item.push(entry);
+                    obj[columnName] = item;
+                });
+            });
+            setVisData(obj);
         });
     }, []);
 
@@ -38,19 +56,36 @@ export default function TreasuryTables() {
                             : null}
                     </TableRow>
                     <TableRow>
-                        {/* {data.length !== 0
+                        {data.length !== 0
                             ? Object.keys(data[0]).map((column: string, index: number) => {
                                   return (
-                                      <BaseLineChart
-                                          baseId={`treasury_historicalChart`}
-                                          defaultData={data}
-                                          width={100}
-                                          height={30}
-                                          margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-                                      />
+                                      <StyledChartCell key={`treasury_header_${index}`}>
+                                          {index !== 0 ? (
+                                              <BaseLineChart
+                                                  baseId={`${column}_treasury_chart`}
+                                                  defaultData={{
+                                                      id: column,
+                                                      name: column,
+                                                      parent: true,
+                                                      dataX: visData._date,
+                                                      dataY: visData[column],
+                                                      color: 'white',
+                                                      type: 'pureLine',
+                                                  }}
+                                                  width={120}
+                                                  height={30}
+                                                  margin={{
+                                                      top: 0,
+                                                      right: 0,
+                                                      bottom: 0,
+                                                      left: 0,
+                                                  }}
+                                              />
+                                          ) : null}
+                                      </StyledChartCell>
                                   );
                               })
-                            : null} */}
+                            : null}
                     </TableRow>
                 </TableHead>
                 <TableBody>

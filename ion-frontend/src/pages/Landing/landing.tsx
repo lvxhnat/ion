@@ -7,6 +7,7 @@ import InternationalClock from './InternationalClock/InternationalClock';
 import { Grid } from '@mui/material';
 import ForexTable from 'components/Tables/ForexTable';
 import TreasuryTables from 'components/Tables/Treasury';
+import WidgetContainer from 'components/WidgetContainer';
 
 export default function Landing() {
     return (
@@ -28,7 +29,9 @@ export default function Landing() {
                         <InternationalClock timeZone={'Asia/Tokyo'} timeZoneName={'Tokyo'} />
                     </S.InternationalClockWrapper>
                     <Grid container>
-                        <TreasuryTables />
+                        <WidgetContainer title="us_bill_rates">
+                            <TreasuryTables table="us_bill_rates" />
+                        </WidgetContainer>
                     </Grid>
                 </Grid>
                 <Grid item xs={4}>

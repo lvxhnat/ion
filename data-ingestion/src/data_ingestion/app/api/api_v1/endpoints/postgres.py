@@ -12,7 +12,11 @@ router = APIRouter()
 @router.post("/query")
 def get_table_details(params: TableQueryParams):
     with postgres.session_scope() as session:
-        query = session.query(tables[params.table]).all()
+        query = (
+            session.query(tables[params.table])
+            .order_by(tables[params.table]._date)
+            .limit(50)
+        )
         return [
             {
                 c.name: getattr(row, c.name)
