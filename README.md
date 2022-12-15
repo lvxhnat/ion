@@ -4,7 +4,7 @@ Ion is a web application designed to leverage OSINT and common financial applica
 
 ## Documentation
 
-## Architecture 
+## Architecture
 
 ![](./assets/architecture.drawio.png)
 

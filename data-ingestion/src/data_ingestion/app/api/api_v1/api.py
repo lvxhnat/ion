@@ -6,6 +6,9 @@ from data_ingestion.app.api.api_v1.endpoints.autocomplete import (
 from data_ingestion.app.api.api_v1.endpoints.candles import (
     router as candles_router,
 )
+from data_ingestion.app.api.api_v1.endpoints.postgres import (
+    router as postgres_router,
+)
 
 api_router = APIRouter()
 api_router.include_router(
@@ -18,4 +21,9 @@ api_router.include_router(
     candles_router,
     prefix="/candles",
     tags=["candles"],
+)
+api_router.include_router(
+    postgres_router,
+    prefix="/db",
+    tags=["db"],
 )

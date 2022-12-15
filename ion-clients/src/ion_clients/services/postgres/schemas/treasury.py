@@ -65,3 +65,7 @@ class USRealLongTerm(Base):
     uuid: str = Column(String, primary_key=True)
     _date: datetime = Column(DateTime, nullable=True)
     _lt_real_average_10_yrs: float = Column(Numeric(4, 2), nullable=True)
+
+
+if __name__ == "__main__":
+    print(type(USRealLongTerm.__tablename__))

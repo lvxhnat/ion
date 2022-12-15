@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { forexStreamStore } from 'store/prices/prices';
 import { FormattedForexStreamType, ForexTableHeaderType } from '../type';
-import { StyledTableCell } from '../ForexTable';
 import { ColorsEnum } from 'common/theme';
+import { StyledTableCell } from 'components/Tables/BaseTable/StyledTableCell';
 
 export default function ForexTableCellGroup(props: {
     tableHeaders: ForexTableHeaderType[];
