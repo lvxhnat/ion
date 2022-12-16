@@ -4,7 +4,6 @@ import { styled } from '@mui/system';
 import { alpha } from '@mui/material';
 
 import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 
 export const TableCellWrapper = styled(TableCell)(({ theme }) => ({
