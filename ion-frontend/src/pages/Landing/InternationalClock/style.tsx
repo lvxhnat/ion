@@ -3,7 +3,7 @@ import { ColorsEnum } from 'common/theme';
 import { styled } from '@mui/system';
 
 export const ClockWrapper = styled('div')(({ theme }) => ({
-    width: 250,
+    width: '100%',
     padding: 15,
     paddingLeft: 0,
     paddingRight: 0,
