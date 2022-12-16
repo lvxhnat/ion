@@ -15,11 +15,11 @@ export const typographyTheme = {
         fontSize: 14,
     },
     body1: {
-        fontSize: `calc(0.7rem + 0.2vw)`,
+        fontSize: `calc(0.7rem + 0.3vw)`,
         fontWeight: 500,
     },
     body2: {
-        fontSize: `calc(0.6rem + 0.2vw)`,
+        fontSize: `calc(0.6rem + 0.35vw)`,
         fontWeight: 500,
     },
     button: {

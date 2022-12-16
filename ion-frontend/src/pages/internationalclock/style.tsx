@@ -2,6 +2,18 @@ import { ColorsEnum } from 'common/theme';
 
 import { styled } from '@mui/system';
 
+export const Panel = styled('div')(({ theme }) => ({}));
+
+export const LeftPanel = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'flex-start',
+}));
+
+export const RightPanel = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'flex-end',
+}));
+
 export const ClockWrapper = styled('div')(({ theme }) => ({
     width: '100%',
     padding: 15,

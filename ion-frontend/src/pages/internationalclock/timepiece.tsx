@@ -27,7 +27,7 @@ export default function TimePiece(props: { timeZoneName: string; timeZone: strin
         <>
             <S.TimeIndicator style={{ backgroundColor: color }} />
             <S.TimeWrapper>
-                <Typography variant="h1" align="center">
+                <Typography variant="h1" align="center" sx={{ padding: 1 }}>
                     {time}
                 </Typography>
                 <Typography variant="h3" align="left" sx={{ color: ColorsEnum.coolgray4 }}>

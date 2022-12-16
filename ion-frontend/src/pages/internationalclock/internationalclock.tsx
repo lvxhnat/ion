@@ -27,7 +27,6 @@ export default function InternationalClock(props: { timeZoneName: string }) {
             .then(data => {
                 setWeatherData(data.data);
                 setWeatherLoading(false);
-                console.log(data.data);
             });
     }, []);
 
