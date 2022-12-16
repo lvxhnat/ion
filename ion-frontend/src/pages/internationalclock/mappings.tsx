@@ -21,6 +21,13 @@ import {
     WiRainWind,
 } from 'react-icons/wi';
 
+export const geoMapping: { [index: string]: { IATA: string; timeZone: string } } = {
+    Singapore: { IATA: 'SIN', timeZone: 'Asia/Singapore' },
+    'New York': { IATA: 'NYC', timeZone: 'America/New_York' },
+    Tokyo: { IATA: 'HND', timeZone: 'Asia/Tokyo' },
+    London: { IATA: 'YXU', timeZone: 'Europe/London' },
+};
+
 export const weatherMapping: { [index: string]: React.ReactElement } = {
     Sunny: <WiDaySunny />,
     Clear: <WiThermometerExterior />,

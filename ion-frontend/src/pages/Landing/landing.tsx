@@ -3,11 +3,11 @@ import * as S from './style';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from 'components/Header';
-import InternationalClock from './InternationalClock/InternationalClock';
 import { Grid } from '@mui/material';
 import ForexTable from 'components/Tables/ForexTable';
 import TreasuryTables from 'components/Tables/Treasury';
 import WidgetContainer from 'components/WidgetContainer';
+import { InternationalClockWidget } from 'pages/internationalclock';
 
 export default function Landing() {
     return (
@@ -16,18 +16,7 @@ export default function Landing() {
             <Header />
             <Grid container columns={15} spacing={1}>
                 <Grid item xs={10}>
-                    <S.InternationalClockWrapper>
-                        <InternationalClock
-                            timeZone={'America/New_York'}
-                            timeZoneName={'New York'}
-                        />
-                        <InternationalClock timeZone={'Europe/London'} timeZoneName={'London'} />
-                        <InternationalClock
-                            timeZone={'Asia/Singapore'}
-                            timeZoneName={'Singapore'}
-                        />
-                        <InternationalClock timeZone={'Asia/Tokyo'} timeZoneName={'Tokyo'} />
-                    </S.InternationalClockWrapper>
+                    <InternationalClockWidget />
                     <Grid container>
                         <WidgetContainer title="us_bill_rates">
                             <TreasuryTables table="us_bill_rates" />
