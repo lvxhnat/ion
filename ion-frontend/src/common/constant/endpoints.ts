@@ -7,6 +7,7 @@ export const ENDPOINTS = {
         OANDA_FX_STREAMING_ENDPOINT: 'oanda/ws',
         OANDA_FX_HISTORICAL_ENDPOINT: 'candles/oanda/candlesHistorical',
         DB_QUERY: 'db/query',
+        WEATHER_ENDPOINT: 'weather/wttr',
     },
     PUBLIC: {
         BASE: '/',

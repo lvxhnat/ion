@@ -4,6 +4,10 @@ import * as S from './style';
 import moment from 'moment-timezone';
 import Typography from '@mui/material/Typography';
 import { ColorsEnum } from 'common/theme';
+import { dataIngestionRequest } from 'services/request';
+import { ENDPOINTS } from 'common/constant/endpoints';
+
+import { weatherMapping } from './mappings';
 
 // https://colordesigner.io/gradient-generator
 // https://momentjs.com/timezone/
@@ -11,6 +15,16 @@ export default function InternationalClock(props: { timeZoneName: string; timeZo
     const [date, setDate] = React.useState<string>('');
     const [time, setTime] = React.useState<string>('');
     const [color, setColor] = React.useState<string>('');
+    const [weatherData, setWeatherData] = React.useState<any>();
+    const [weatherLoading, setWeatherLoading] = React.useState<boolean>(false);
+
+    React.useEffect(() => {
+        setWeatherLoading(true);
+        dataIngestionRequest.post(ENDPOINTS.PRIVATE.WEATHER_ENDPOINT, {}).then(data => {
+            setWeatherData(data.data);
+            setWeatherLoading(false);
+        });
+    }, []);
 
     React.useEffect(() => {
         const interval = setInterval(() => {
@@ -38,9 +52,25 @@ export default function InternationalClock(props: { timeZoneName: string; timeZo
                 </Typography>
             </S.TimeWrapper>
             <S.WeatherWrapper>
-                <Typography variant="h2" align="center">
-                    32
-                </Typography>
+                {weatherData && !weatherLoading ? (
+                    <>
+                        <Typography variant="h3" align="left" sx={{ color: ColorsEnum.coolgray4 }}>
+                            {weatherData.current_condition[0].weatherDesc[0].value as string}
+                        </Typography>
+                        <S.LeftWeatherWrapper>
+                            <Typography variant="h2" align="center">
+                                {`${weatherData.current_condition[0].temp_C}°C`}
+                            </Typography>
+                        </S.LeftWeatherWrapper>
+                        <S.RightWeatherWrapper>
+                            {
+                                weatherMapping[
+                                    weatherData.current_condition[0].weatherDesc[0].value as string
+                                ]
+                            }
+                        </S.RightWeatherWrapper>
+                    </>
+                ) : null}
             </S.WeatherWrapper>
         </S.ClockWrapper>
     );

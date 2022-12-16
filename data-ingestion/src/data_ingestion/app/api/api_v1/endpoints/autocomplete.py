@@ -7,7 +7,7 @@ from data_ingestion.app.api.api_v1.models.autocomplete import SecurityFunctions
 
 load_dotenv()
 
-router = APIRouter()
+router = APIRouter(prefix="/autocomplete", tags=["autocomplete"],)
 
 
 @router.post("/securityFunctions")
