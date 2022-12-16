@@ -34,6 +34,33 @@ def get_long_description():
     with open("./README.md", "r", encoding="utf-8") as fh:
         return fh.read()
 
+base_requirements = {
+    "typing_extensions>=3.7.4.3 ;  python_version < '3.8'",
+    "typing_extensions>=3.10.0.2 ;  python_version >= '3.8'",
+    "mypy_extensions>=0.4.3",
+    "typing-inspect",
+    "pydantic>=1.5.1",
+    "mixpanel>=4.9.0",
+}
+
+framework_common = {
+    "fastapi==0.85.1",
+    "uvicorn==0.19.0",
+    "websockets==10.3",
+}
+
+base_dev_requirements = {
+    "black==22.10.0",
+    "pip-chill==1.0.1",
+    "pre-commit==2.20.0",
+    "coverage>=5.1",
+    "flake8>=3.8.3",
+    "flake8-tidy-imports>=4.3.0",
+    "isort>=5.7.0",
+    "mypy==0.991", 
+    "pydantic >=1.9.0, <1.10",
+    "pytest>=6.2.2",
+}
 
 setup(
     name=name,
@@ -46,7 +73,10 @@ setup(
     package_dir={"": "src"},
     packages=setuptools.find_namespace_packages(where="./src"),
     package_data={"ion_clients": ["*.txt", "*.json", "*.preamble", "*.sql"]},
-    install_requires=install_requires,
     entry_points={"console_scripts": [f"{name}=ion_clients.entrypoints:main"]},
     python_requires=">=3.9",
+    install_requires=list(base_requirements | framework_common),
+    extras_require={
+        "dev": [*base_dev_requirements]
+    }
 )
