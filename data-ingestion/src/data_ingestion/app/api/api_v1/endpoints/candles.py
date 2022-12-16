@@ -6,7 +6,10 @@ from data_ingestion.app.api.api_v1.models.candles import LiveCandles
 
 load_dotenv()
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/candles",
+    tags=["candles"],
+)
 
 
 @router.post("/oanda/candlesHistorical")

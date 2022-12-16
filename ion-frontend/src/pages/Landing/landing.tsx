@@ -15,7 +15,7 @@ export default function Landing() {
             <CssBaseline />
             <Header />
             <Grid container columns={15} spacing={1}>
-                <Grid item xs={11}>
+                <Grid item xs={10}>
                     <S.InternationalClockWrapper>
                         <InternationalClock
                             timeZone={'America/New_York'}
@@ -34,7 +34,7 @@ export default function Landing() {
                         </WidgetContainer>
                     </Grid>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={5}>
                     <ForexTable />
                 </Grid>
             </Grid>

@@ -4,5 +4,5 @@ import { styled } from '@mui/system';
 
 export const InternationalClockWrapper = styled('div')(({ theme }) => ({
     display: 'flex',
-    gap: 5,
+    gap: 15,
 }));

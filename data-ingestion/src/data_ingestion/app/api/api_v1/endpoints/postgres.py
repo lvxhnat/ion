@@ -6,7 +6,7 @@ from data_ingestion.app.api.api_v1.models.postgres import (
 )
 from fastapi import APIRouter
 
-router = APIRouter()
+router = APIRouter(prefix="/db", tags=["db"],)
 
 
 @router.post("/query")
