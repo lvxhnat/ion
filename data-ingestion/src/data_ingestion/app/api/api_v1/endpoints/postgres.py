@@ -5,8 +5,12 @@ from data_ingestion.app.api.api_v1.models.postgres import (
     tables,
 )
 from fastapi import APIRouter
+from sqlalchemy import desc
 
-router = APIRouter(prefix="/db", tags=["db"],)
+router = APIRouter(
+    prefix="/db",
+    tags=["db"],
+)
 
 
 @router.post("/query")
@@ -14,7 +18,7 @@ def get_table_details(params: TableQueryParams):
     with postgres.session_scope() as session:
         query = (
             session.query(tables[params.table])
-            .order_by(tables[params.table]._date)
+            .order_by(desc(tables[params.table]._date))
             .limit(50)
         )
         return [

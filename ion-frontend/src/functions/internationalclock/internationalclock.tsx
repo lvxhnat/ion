@@ -37,7 +37,12 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                 timeZone={geoMapping[props.timeZoneName].timeZone}
             />
             <S.WeatherTextWrapper>
-                <Typography variant="h3" align="left" sx={{ color: ColorsEnum.coolgray4 }}>
+                <Typography
+                    noWrap
+                    variant="h3"
+                    align="left"
+                    sx={{ color: ColorsEnum.coolgray4, paddingLeft: 1, paddingRight: 1 }}
+                >
                     {weatherData
                         ? (weatherData.current_condition[0].weatherDesc[0].value as string)
                         : null}
@@ -54,7 +59,9 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                         <S.RightWeatherWrapper>
                             {
                                 weatherMapping[
-                                    weatherData.current_condition[0].weatherDesc[0].value as string
+                                    weatherData.current_condition[0].weatherDesc[0].value.split(
+                                        ','
+                                    )[0] as string
                                 ]
                             }
                         </S.RightWeatherWrapper>

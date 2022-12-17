@@ -1,6 +1,7 @@
 import { ColorsEnum } from 'common/theme';
 
 import { styled } from '@mui/system';
+import Grid from '@mui/material/Grid';
 
 export const Panel = styled('div')(({ theme }) => ({}));
 
@@ -69,10 +70,20 @@ export const RightWeatherWrapper = styled('div')(({ theme }) => ({
     verticalAlign: 'middle',
 }));
 
-export const InternationalClockWrapper = styled('div')(({ theme }) => ({
-    display: 'flex',
-    gap: 15,
+export const ICWidgetWrapper = styled(Grid)(({ theme }) => ({
     minHeight: 200,
+}));
+
+export const ICObjectWrapper3 = styled(Grid)(({ theme }) => ({
+    [theme.breakpoints.down('xl')]: {
+        display: 'none',
+    },
+}));
+
+export const ICObjectWrapper2 = styled(Grid)(({ theme }) => ({
+    [theme.breakpoints.down('lg')]: {
+        display: 'none',
+    },
 }));
 
 export const IconWrapper = styled('div')(({ theme }) => ({
