@@ -82,7 +82,7 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                         {' '}
                         <WiStrongWind />{' '}
                     </S.IconWrapper>
-                    <Typography variant="body2" align="center" component="p">
+                    <Typography sx={{ fontSize: 10 }} variant="body2" align="center" component="p">
                         {weatherData ? weatherData.current_condition[0].windspeedKmph : null} KMPH
                     </Typography>
                 </S.IconObjectWrapper>
@@ -91,7 +91,7 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                         {' '}
                         <WiRaindrop />{' '}
                     </S.IconWrapper>
-                    <Typography variant="body2" align="center" component="p">
+                    <Typography sx={{ fontSize: 10 }} variant="body2" align="center" component="p">
                         {weatherData ? weatherData.current_condition[0].humidity : null} %
                     </Typography>
                 </S.IconObjectWrapper>

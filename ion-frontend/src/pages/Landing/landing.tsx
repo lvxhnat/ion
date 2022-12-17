@@ -3,10 +3,11 @@ import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from 'components/Header';
 import { Grid } from '@mui/material';
-import ForexTable from 'components/Tables/ForexTable';
 import TreasuryTables from 'components/Tables/Treasury';
 import WidgetContainer from 'components/WidgetContainer';
-import { InternationalClockWidget } from 'pages/internationalclock';
+
+import { ForexTableWidget } from 'functions/forextable';
+import { InternationalClockWidget } from 'functions/internationalclock';
 
 export default function Landing() {
     return (
@@ -23,7 +24,7 @@ export default function Landing() {
                     </Grid>
                 </Grid>
                 <Grid item xs={5}>
-                    <ForexTable />
+                    <ForexTableWidget />
                 </Grid>
             </Grid>
         </>
