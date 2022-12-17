@@ -18,8 +18,7 @@ export default function InternationalClock(props: { timeZoneName: string }) {
     const [weatherData, setWeatherData] = React.useState<any>();
     const [weatherLoading, setWeatherLoading] = React.useState<boolean>(false);
 
-    React.useEffect(() => {
-        setWeatherLoading(true);
+    const updateWeatherData = () => {
         dataIngestionRequest
             .post(ENDPOINTS.PRIVATE.WEATHER_ENDPOINT, {
                 iata: geoMapping[props.timeZoneName].IATA,
@@ -28,6 +27,15 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                 setWeatherData(data.data);
                 setWeatherLoading(false);
             });
+    };
+
+    React.useEffect(() => {
+        setWeatherLoading(true);
+        updateWeatherData();
+        const interval = setInterval(() => {
+            updateWeatherData();
+        }, 1000 * 60 * 60);
+        return () => clearInterval(interval);
     }, []);
 
     return (
