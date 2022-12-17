@@ -28,7 +28,7 @@ const CenteredGridWrapper = (props: { children: any }) => {
 };
 
 export default function CreatePortfolio() {
-    const handleClose = () => {};
+    const handlePortfolioCreate = () => {};
 
     return (
         <BootstrapDialogFrame title="Create Portfolio" openIcon={<AddIcon />} openPrompt="Create">
@@ -75,7 +75,7 @@ export default function CreatePortfolio() {
             </DialogContent>
             <Divider />
             <DialogActions>
-                <Button disableRipple onClick={handleClose}>
+                <Button disableRipple onClick={handlePortfolioCreate}>
                     {' '}
                     Create{' '}
                 </Button>
