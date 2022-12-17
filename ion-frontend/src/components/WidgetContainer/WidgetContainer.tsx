@@ -4,6 +4,7 @@ import * as S from './style';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import Divider from '@mui/material/Divider';
 import Box from '@mui/system/Box';
 
 import { ColorsEnum } from 'common/theme';
@@ -11,6 +12,9 @@ import { ColorsEnum } from 'common/theme';
 export default function WidgetContainer(props: { title: string; children: any }) {
     return (
         <Box style={{ width: '100%' }}>
+            <S.DividerWrapper>
+                <Divider />
+            </S.DividerWrapper>
             <S.HeaderPanel>
                 <S.LeftPanel>
                     <Typography align="left" variant="h3" sx={{ color: ColorsEnum.warmgray4 }}>

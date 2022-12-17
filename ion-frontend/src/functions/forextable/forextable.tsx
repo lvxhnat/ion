@@ -13,8 +13,8 @@ import { forexStreamStore } from 'store/prices/prices';
 import ForexTableCellGroup from './ForexTableCellGroup';
 import ForexHistoricalCell from './ForexHistoricalCell/ForexHistoricalCell';
 import { getWebsocketForex } from 'data/ingestion/forex';
-import { StyledTableCell } from '../BaseTable/StyledTableCell';
-import { StyledTableRow } from '../BaseTable/StyledTableRow';
+import { StyledTableCell } from '../../components/Tables/BaseTable/StyledTableCell';
+import { StyledTableRow } from '../../components/Tables/BaseTable/StyledTableRow';
 
 export default function ForexTable() {
     const setForexStream = forexStreamStore((store: any) => store.setForexStream);

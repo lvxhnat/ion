@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 import BaseLineChart from 'components/Charting/BaseChart';
 
 import { dataIngestionRequest } from 'services/request';
-import { REQUEST_ENDPOINTS } from '../../../../data/endpoints/oanda';
+import { REQUEST_ENDPOINTS } from '../../../data/endpoints/oanda';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { TableCellWrapper } from 'components/Tables/BaseTable/style';
 

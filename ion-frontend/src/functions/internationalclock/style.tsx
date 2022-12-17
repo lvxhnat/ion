@@ -65,7 +65,7 @@ export const RightWeatherWrapper = styled('div')(({ theme }) => ({
     flexDirection: 'row',
     fontSize: '35px',
     justifyContent: 'flex-end',
-    alignItems: 'middle',
+    alignItems: 'center',
     verticalAlign: 'middle',
 }));
 
@@ -76,14 +76,8 @@ export const InternationalClockWrapper = styled('div')(({ theme }) => ({
 }));
 
 export const IconWrapper = styled('div')(({ theme }) => ({
-    height: 35,
-    width: 35,
+    height: 30,
     fontSize: 30,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    verticalAlign: 'middle',
 }));
 
 export const IconObjectWrapper = styled('div')(({ theme }) => ({
@@ -92,7 +86,10 @@ export const IconObjectWrapper = styled('div')(({ theme }) => ({
 }));
 
 export const IconWaveObjectWrapper = styled('div')(({ theme }) => ({
-    paddingTop: 0,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
 }));
 
 export const IconObjectTextWrapper = styled('div')(({ theme }) => ({
