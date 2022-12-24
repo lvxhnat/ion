@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as S from './style';
 
-import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
@@ -19,7 +18,7 @@ import BaseLineChart from 'components/Charting/BaseChart';
 export default function TreasuryTable(props: { table: string }) {
     const [data, setData] = React.useState<any>({});
 
-    const processColumnName = (colName: string) =>
+    const processString = (colName: string) =>
         colName
             .slice(1, colName.length)
             .split('_')
@@ -44,7 +43,6 @@ export default function TreasuryTable(props: { table: string }) {
                 });
             });
             setData(obj);
-            console.log(obj);
         });
     }, []);
 
@@ -72,7 +70,7 @@ export default function TreasuryTable(props: { table: string }) {
                                 <StyledTableRow key={`treasury_row_${index}`}>
                                     <StyledTableCell key={`tLabel_${index}`}>
                                         {' '}
-                                        {processColumnName(column)}{' '}
+                                        {processString(column)}{' '}
                                     </StyledTableCell>
                                     <StyledTableCell key={`tRate_${index}`}>
                                         {' '}

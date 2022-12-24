@@ -14,11 +14,12 @@ export default function Landing() {
         <>
             <CssBaseline />
             <Header />
-            <Grid container columns={15} spacing={1}>
-                <Grid item xs={10}>
+            <Grid container columns={25} spacing={1}>
+                <Grid item xs={5}></Grid>
+                <Grid item xs={14}>
                     <InternationalClockWidget />
                 </Grid>
-                <Grid item xs={5}>
+                <Grid item xs={6}>
                     <ForexTableWidget />
                     <TreasuryTableWidget tableType="us_bill_rates" />
                 </Grid>

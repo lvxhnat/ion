@@ -29,7 +29,7 @@ export default function WidgetContainer(props: { title: string; children: any })
                     </Typography>
                 </S.LeftPanel>
                 <S.RightPanel>
-                    <IconButton>
+                    <IconButton disableRipple>
                         <FullscreenIcon />
                     </IconButton>
                 </S.RightPanel>

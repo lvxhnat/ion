@@ -10,7 +10,7 @@ export interface StyledTableCellProps {
 export function StyledTableCell({ children, isHeader, width }: StyledTableCellProps) {
     return (
         <S.TableCellWrapper width={width}>
-            <S.TableCellLabel variant="body2" align="center" isHeader={isHeader}>
+            <S.TableCellLabel variant="subtitle2" align="center" isHeader={isHeader}>
                 {children}
             </S.TableCellLabel>
         </S.TableCellWrapper>

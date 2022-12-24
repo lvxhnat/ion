@@ -11,15 +11,19 @@ export const typographyTheme = {
     h3: {
         fontSize: `calc(0.5rem + 0.5vw)`,
     },
-    subtitle1: {
-        fontSize: 14,
-    },
     body1: {
         fontSize: `calc(0.7rem + 0.3vw)`,
         fontWeight: 500,
     },
     body2: {
         fontSize: `calc(0.6rem + 0.35vw)`,
+        fontWeight: 500,
+    },
+    subtitle1: {
+        fontSize: 14,
+    },
+    subtitle2: {
+        fontSize: `calc(0.5rem + 0.35vw)`,
         fontWeight: 500,
     },
     button: {

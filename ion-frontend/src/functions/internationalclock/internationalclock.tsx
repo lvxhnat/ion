@@ -6,27 +6,26 @@ import { WiStrongWind, WiRaindrop, WiThermometer } from 'react-icons/wi';
 import { MdWavingHand } from 'react-icons/md';
 
 import { ColorsEnum } from 'common/theme';
-import { dataIngestionRequest } from 'services/request';
-import { ENDPOINTS } from 'common/constant/endpoints';
-import { geoMapping, weatherMapping } from './mappings';
+import { geoMapping } from './mappings';
 
 import TimePiece from './timepiece';
+import { getCurrentWeather } from 'data/ingestion/weather';
+import { CurrentWeatherSchema } from 'data/schema/weather';
+import { capitalizeString } from 'common/helper/general';
 
 // https://colordesigner.io/gradient-generator
 // https://momentjs.com/timezone/
 export default function InternationalClock(props: { timeZoneName: string }) {
-    const [weatherData, setWeatherData] = React.useState<any>();
+    const [weatherData, setWeatherData] = React.useState<CurrentWeatherSchema>();
     const [weatherLoading, setWeatherLoading] = React.useState<boolean>(false);
 
     const updateWeatherData = () => {
-        dataIngestionRequest
-            .post(ENDPOINTS.PRIVATE.WEATHER_ENDPOINT, {
-                iata: geoMapping[props.timeZoneName].IATA,
-            })
-            .then(data => {
-                setWeatherData(data.data);
+        getCurrentWeather(props.timeZoneName, geoMapping[props.timeZoneName].country_code).then(
+            data => {
+                if (Object.keys(data.data).length !== 0) setWeatherData(data.data);
                 setWeatherLoading(false);
-            });
+            }
+        );
     };
 
     React.useEffect(() => {
@@ -41,7 +40,7 @@ export default function InternationalClock(props: { timeZoneName: string }) {
     return (
         <S.ClockWrapper>
             <TimePiece
-                timeZoneName={props.timeZoneName}
+                timeZoneName={weatherData ? weatherData.city : props.timeZoneName}
                 timeZone={geoMapping[props.timeZoneName].timeZone}
             />
             <S.WeatherTextWrapper>
@@ -51,9 +50,7 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                     align="left"
                     sx={{ color: ColorsEnum.coolgray4, paddingLeft: 1, paddingRight: 1 }}
                 >
-                    {weatherData
-                        ? (weatherData.current_condition[0].weatherDesc[0].value as string)
-                        : null}
+                    {weatherData ? capitalizeString(weatherData.weather_condition) : null}
                 </Typography>
             </S.WeatherTextWrapper>
             <S.WeatherWrapper>
@@ -61,17 +58,15 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                     <>
                         <S.LeftWeatherWrapper>
                             <Typography variant="h2" align="center">
-                                {`${weatherData.current_condition[0].temp_C}°C`}
+                                {`${Math.round(weatherData.temp)}°C`}
                             </Typography>
                         </S.LeftWeatherWrapper>
                         <S.RightWeatherWrapper>
-                            {
-                                weatherMapping[
-                                    weatherData.current_condition[0].weatherDesc[0].value.split(
-                                        ','
-                                    )[0] as string
-                                ]
-                            }
+                            <img
+                                style={{ width: 40, height: 40 }}
+                                src={weatherData.weather_icon_url}
+                                alt=""
+                            />
                         </S.RightWeatherWrapper>
                         <S.IconObjectTextWrapper>
                             <S.IconWaveObjectWrapper>
@@ -85,7 +80,7 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                                     fontSize: 10,
                                 }}
                             >
-                                {weatherData.current_condition[0].FeelsLikeC}°C
+                                {`${Math.round(weatherData.feels_like)}°C`}
                             </Typography>
                         </S.IconObjectTextWrapper>
                     </>
@@ -98,7 +93,7 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                         <WiStrongWind />{' '}
                     </S.IconWrapper>
                     <Typography sx={{ fontSize: 10 }} variant="body2" align="center" component="p">
-                        {weatherData ? weatherData.current_condition[0].windspeedKmph : null} KMPH
+                        {weatherData ? Math.round(weatherData.wind_speed) : null} KMPH
                     </Typography>
                 </S.IconObjectWrapper>
                 <S.IconObjectWrapper>
@@ -107,7 +102,7 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                         <WiRaindrop />{' '}
                     </S.IconWrapper>
                     <Typography sx={{ fontSize: 10 }} variant="body2" align="center" component="p">
-                        {weatherData ? weatherData.current_condition[0].humidity : null} %
+                        {weatherData ? weatherData.humidity : null} %
                     </Typography>
                 </S.IconObjectWrapper>
                 <S.IconObjectWrapper>
@@ -117,7 +112,7 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                         component="p"
                         sx={{ fontSize: 10, marginLeft: 4, marginTop: -0.5, position: 'absolute' }}
                     >
-                        {weatherData ? weatherData.weather[0].maxtempC : null} °C
+                        {weatherData ? Math.round(weatherData.temp_max) : null} °C
                     </Typography>
                     <S.IconWrapper>
                         {' '}
@@ -129,7 +124,7 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                         component="p"
                         sx={{ fontSize: 10, marginLeft: 4, marginTop: -1.5, position: 'absolute' }}
                     >
-                        {weatherData ? weatherData.weather[0].mintempC : null} °C
+                        {weatherData ? Math.round(weatherData.temp_min) : null} °C
                     </Typography>
                 </S.IconObjectWrapper>
             </S.WeatherTextWrapper>

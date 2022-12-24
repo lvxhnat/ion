@@ -1,12 +1,7 @@
 #!/usr/bin/env python3
-
-import os
 import enum
 from datetime import timedelta
-from dotenv import load_dotenv
-
-__ENV_LOADED: bool = load_dotenv()
-
+from ion_clients.clients.configs import ingestion_settings
 
 class CurrencyPairs(enum.Enum):
     """Supported Currency Pairs by Oanda Instruments Candles Endpoint"""
@@ -162,7 +157,7 @@ ENDPOINTS = {
     "BASE_URL": "https://api-fxtrade.oanda.com",
     "ENDPOINTS": {
         "INSTRUMENTS": {
-            "PRICESTREAM": lambda symbol: f'https://stream-fxtrade.oanda.com/v3/accounts/{os.environ["OANDA_ACCOUNT_ID"]}/pricing/stream?instruments={"%2C".join(symbol)}',
+            "PRICESTREAM": lambda symbol: f'https://stream-fxtrade.oanda.com/v3/accounts/{ingestion_settings.OANDA_ACCOUNT_ID}/pricing/stream?instruments={"%2C".join(symbol)}',
             "CANDLES": lambda symbol: f"/v3/instruments/{symbol}/candles",
         }
     },
@@ -170,5 +165,5 @@ ENDPOINTS = {
 
 HEADERS = {
     "Content-Type": "application/json",
-    "Authorization": "Bearer " + os.environ.get("OANDA_LIVE_API_KEY"),
+    "Authorization": "Bearer " + ingestion_settings.OANDA_LIVE_API_KEY,
 }
