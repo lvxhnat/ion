@@ -1,3 +1,4 @@
+import logging
 from contextlib import contextmanager
 from logging import Logger, getLogger
 
@@ -6,6 +7,8 @@ from sqlalchemy import engine, exc, orm
 from ion_clients.core.configuration.storage.postgres import postgres_config
 
 logger: Logger = getLogger(__name__)
+logging.basicConfig()
+logging.getLogger("sqlalchemy").setLevel(logging.ERROR)
 
 postgres_engine = engine.create_engine(postgres_config.POSTGRES_URI, echo=True)
 postgres_session_maker = orm.sessionmaker(

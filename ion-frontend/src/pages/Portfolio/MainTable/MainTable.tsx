@@ -151,6 +151,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         }}
                     />
                 </TableCell>
+                <TableCell key={'portfolio_id'}>{'id'}</TableCell>
                 {headCells.map(headCell => (
                     <TableCell
                         key={headCell.id}
@@ -308,14 +309,8 @@ export default function MainTable() {
                                                 }}
                                             />
                                         </TableCell>
-                                        <TableCell
-                                            component="th"
-                                            id={labelId}
-                                            scope="row"
-                                            padding="none"
-                                        >
-                                            {row.name}
-                                        </TableCell>
+                                        <TableCell>{'id'}</TableCell>
+                                        <TableCell> {row.name} </TableCell>
                                         <TableCell align="right">{row.calories}</TableCell>
                                         <TableCell align="right">{row.fat}</TableCell>
                                         <TableCell align="right">{row.carbs}</TableCell>

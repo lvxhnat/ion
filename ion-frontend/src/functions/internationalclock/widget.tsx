@@ -10,7 +10,7 @@ export default function Widget() {
         <WidgetContainer title="International Clock">
             <S.ICWidgetWrapper container spacing={2} columns={12}>
                 <Grid item xs={6} md={6} lg={4} xl={3}>
-                    <InternationalClock timeZoneName={'New York'} />
+                    <InternationalClock timeZoneName={'New York City'} />
                 </Grid>
                 <Grid item xs={6} md={6} lg={4} xl={3}>
                     <InternationalClock timeZoneName={'Singapore'} />

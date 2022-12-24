@@ -1,11 +1,7 @@
-from typing import Literal
 from pydantic import BaseModel
-from ion_clients.services.postgres.schemas.treasury import (
-    USBillRates,
-    USRealLongTerm,
-    USLongTermRates,
-    USRealYieldCurve,
-    USTreasuryYield,
+from ion_clients.services.postgres.schemas import (
+    treasury,
+    area_latlon,
 )
 
 
@@ -14,9 +10,10 @@ class TableQueryParams(BaseModel):
 
 
 tables = {
-    USBillRates.__tablename__: USBillRates,
-    USRealLongTerm.__tablename__: USRealLongTerm,
-    USLongTermRates.__tablename__: USLongTermRates,
-    USRealYieldCurve.__tablename__: USRealYieldCurve,
-    USTreasuryYield.__tablename__: USTreasuryYield,
+    treasury.USBillRates.__tablename__: treasury.USBillRates,
+    treasury.USRealLongTerm.__tablename__: treasury.USRealLongTerm,
+    treasury.USLongTermRates.__tablename__: treasury.USLongTermRates,
+    treasury.USRealYieldCurve.__tablename__: treasury.USRealYieldCurve,
+    treasury.USTreasuryYield.__tablename__: treasury.USTreasuryYield,
+    area_latlon.AreaLatLon.__tablename__: area_latlon.AreaLatLon,
 }

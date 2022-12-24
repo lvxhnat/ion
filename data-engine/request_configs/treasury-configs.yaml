@@ -1,0 +1,19 @@
+scrapers:
+  usgov:
+    treasury_info:
+      year:
+        - 2017
+        - 2018
+        - 2019
+        - 2020
+        - 2021
+        - 2022
+      type:
+        - "YIELD_CURVE"
+        - "BILL_RATES"
+        - "LONG_TERM_RATE"
+        - "REAL_YIELD_CURVE"
+        - "REAL_LONG_TERM"
+      schedule:
+        cron: "01 00 * * *"
+        timezone: America/New_York

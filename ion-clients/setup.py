@@ -34,6 +34,7 @@ def get_long_description():
     with open("./README.md", "r", encoding="utf-8") as fh:
         return fh.read()
 
+
 base_requirements = {
     "typing_extensions>=3.7.4.3 ;  python_version < '3.8'",
     "typing_extensions>=3.10.0.2 ;  python_version >= '3.8'",
@@ -57,8 +58,7 @@ base_dev_requirements = {
     "flake8>=3.8.3",
     "flake8-tidy-imports>=4.3.0",
     "isort>=5.7.0",
-    "mypy==0.991", 
-    "pydantic >=1.9.0, <1.10",
+    "mypy==0.991",
     "pytest>=6.2.2",
 }
 
@@ -76,7 +76,5 @@ setup(
     entry_points={"console_scripts": [f"{name}=ion_clients.entrypoints:main"]},
     python_requires=">=3.9",
     install_requires=list(base_requirements | framework_common),
-    extras_require={
-        "dev": [*base_dev_requirements]
-    }
+    extras_require={"dev": [*base_dev_requirements]},
 )

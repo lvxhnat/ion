@@ -1,12 +1,9 @@
-import * as d3 from 'd3';
 import { dataIngestionRequest } from 'services/request';
-import { ENDPOINTS } from 'common/constant/endpoints';
-
-import { REQUEST_ENDPOINTS } from 'data/endpoints/oanda';
+import { REQUEST_ENDPOINTS } from 'data/endpoints/forex';
 import { OandaFXSocketConnection } from 'data/clients/oanda';
 
 export const getHistoricalForex = (symbol: string, period: string) => {
-    return dataIngestionRequest.post(ENDPOINTS.PRIVATE.OANDA_FX_HISTORICAL_ENDPOINT, {
+    return dataIngestionRequest.post(REQUEST_ENDPOINTS.OANDA_HISTORICAL.ENDPOINT, {
         symbol: symbol,
         period: period,
     });

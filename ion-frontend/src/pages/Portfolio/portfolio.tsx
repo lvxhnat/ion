@@ -6,7 +6,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 
 import Header from 'components/Header';
-import { ColorsEnum } from 'common/theme';
 import CreatePortfolio from './CreatePortfolio/CreatePortfolio';
 import MainTable from './MainTable';
 

@@ -1,15 +1,24 @@
-import os
 import time
 import requests
 import pandas as pd
 from functools import partial
-from dotenv import load_dotenv
 from typing import Union, List
+from pydantic import BaseModel
 from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-env_loaded = load_dotenv()
+from ion_clients.clients.configs import ingestion_settings
 
+
+class AssetHistoricalData(BaseModel):
+    # Data Returned directly from the scrapers
+    close: float
+    high: float
+    open: float
+    low: float
+    date: int
+    volume: int
+    symbol: str
 
 def get_finnhub_tickers_hd(
     tickers: List[str],
@@ -45,7 +54,7 @@ def date_to_unixtime(date, datetime_format) -> int:
 
 def get_finnhub_historical_data(
     ticker: str,
-    api_key: str = os.environ["FINNHUB_API_KEY"],
+    api_key: str = ingestion_settings.FINNHUB_API_KEY,
     from_date: str = "2022-02-20",
     resolution: int = "D",
     data_format: str = "json",

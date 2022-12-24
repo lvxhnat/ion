@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 
 export const OptionsWrapper = styled('div')(({ theme }) => ({
     display: 'flex',
-    backgroundColor: ColorsEnum.royalred,
+    backgroundColor: ColorsEnum.black,
     gap: 5,
 }));
 
