@@ -20,7 +20,6 @@ class AssetHistoricalData(BaseModel):
     volume: int
     symbol: str
 
-
 def get_finnhub_tickers_hd(
     tickers: List[str],
     from_date: str,
@@ -29,9 +28,7 @@ def get_finnhub_tickers_hd(
     promise = partial(get_finnhub_historical_data, from_date=from_date)
     data = []
 
-    with ThreadPoolExecutor(
-        max_workers=min(os.cpu_count() - 1, len(tickers))
-    ) as executor:
+    with ThreadPoolExecutor(max_workers=min(os.cpu_count() - 1, len(tickers))) as executor:
 
         future_promise = {
             executor.submit(promise, blob): blob for blob in tickers
@@ -42,7 +39,6 @@ def get_finnhub_tickers_hd(
             data.append(response)
 
     return data
-
 
 def date_to_unixtime(date, datetime_format) -> int:
     """Return UNIX Time Stamp give a date and datetime format
