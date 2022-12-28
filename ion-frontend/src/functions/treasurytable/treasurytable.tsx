@@ -1,5 +1,6 @@
-import * as React from 'react';
 import * as S from './style';
+import * as React from 'react';
+import { TreasuryTableProps } from './type';
 
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
@@ -15,7 +16,7 @@ import {
 import { getTableQuery } from 'data/ingestion/postgres';
 import BaseLineChart from 'components/Charting/BaseChart';
 
-export default function TreasuryTable(props: { table: string }) {
+export default function TreasuryTable(props: TreasuryTableProps) {
     const [data, setData] = React.useState<any>({});
 
     const processString = (colName: string) =>
@@ -29,7 +30,6 @@ export default function TreasuryTable(props: { table: string }) {
         getTableQuery(props.table).then(data => {
             let columnNames = Object.keys(data.data[0]);
             let obj: { [index: string]: Array<number | null> } = {};
-
             columnNames.map((columnName: string) => (obj[columnName] = []));
             data.data.map((data: any) => {
                 columnNames.map((columnName: string, index: number) => {
@@ -44,17 +44,17 @@ export default function TreasuryTable(props: { table: string }) {
             });
             setData(obj);
         });
-    }, []);
+    }, [props.table]);
 
     return (
         <S.StyledTableContainer style={{ width: '100%' }}>
             <Table style={{ minWidth: 150 }} aria-label="a dense table" stickyHeader>
                 <TableHead>
                     <TableRow sx={{ backgroundColor: ColorsEnum.coolgray8 }}>
-                        <StyledTableCell width="50%" isHeader key={`treasury_header_0`}>
+                        <StyledTableCell isHeader key={`treasury_header_0`}>
                             item
                         </StyledTableCell>
-                        <StyledTableCell width="20%" isHeader key={`treasury_header_1`}>
+                        <StyledTableCell isHeader key={`treasury_header_1`}>
                             rate
                         </StyledTableCell>
                         <StyledTableCell width="30%" isHeader key={`treasury_header_2`}>

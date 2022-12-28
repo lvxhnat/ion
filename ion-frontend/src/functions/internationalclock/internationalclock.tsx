@@ -106,26 +106,28 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                     </Typography>
                 </S.IconObjectWrapper>
                 <S.IconObjectWrapper>
-                    <Typography
-                        variant="body2"
-                        align="center"
-                        component="p"
-                        sx={{ fontSize: 10, marginLeft: 4, marginTop: -0.5, position: 'absolute' }}
-                    >
-                        {weatherData ? Math.round(weatherData.temp_max) : null} °C
-                    </Typography>
-                    <S.IconWrapper>
-                        {' '}
-                        <WiThermometer />{' '}
-                    </S.IconWrapper>
-                    <Typography
-                        variant="body2"
-                        align="center"
-                        component="p"
-                        sx={{ fontSize: 10, marginLeft: 4, marginTop: -1.5, position: 'absolute' }}
-                    >
-                        {weatherData ? Math.round(weatherData.temp_min) : null} °C
-                    </Typography>
+                    <S.TempWrapper>
+                        <Typography
+                            variant="body2"
+                            align="center"
+                            component="p"
+                            sx={{ fontSize: 9, marginTop: -0.8, position: 'absolute' }}
+                        >
+                            {weatherData ? Math.round(weatherData.temp_max) : null} °C
+                        </Typography>
+                        <S.IconWrapper>
+                            {' '}
+                            <WiThermometer />{' '}
+                        </S.IconWrapper>
+                        <Typography
+                            variant="body2"
+                            align="center"
+                            component="p"
+                            sx={{ fontSize: 9, marginTop: 3.6, position: 'absolute' }}
+                        >
+                            {weatherData ? Math.round(weatherData.temp_min) : null} °C
+                        </Typography>
+                    </S.TempWrapper>
                 </S.IconObjectWrapper>
             </S.WeatherTextWrapper>
         </S.ClockWrapper>

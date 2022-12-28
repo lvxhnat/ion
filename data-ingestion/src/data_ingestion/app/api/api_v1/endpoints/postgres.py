@@ -16,5 +16,9 @@ router = APIRouter(
 
 
 @router.post("/query")
-def get_table_details(params: TableQueryParams, session: Session = Depends(get_session)):
-    return order_query(tables[params.table], session, tables[params.table]._date)
+def get_table_details(
+    params: TableQueryParams, session: Session = Depends(get_session)
+):
+    return order_query(
+        tables[params.table], session, tables[params.table]._date
+    )

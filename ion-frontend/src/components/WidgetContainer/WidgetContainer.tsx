@@ -9,7 +9,11 @@ import Box from '@mui/system/Box';
 
 import { ColorsEnum } from 'common/theme';
 
-export default function WidgetContainer(props: { title: string; children: any }) {
+export default function WidgetContainer(props: {
+    title: string;
+    children: any;
+    component?: React.ReactElement;
+}) {
     return (
         <Box style={{ width: '100%' }}>
             <S.DividerWrapper>
@@ -29,7 +33,8 @@ export default function WidgetContainer(props: { title: string; children: any })
                     </Typography>
                 </S.LeftPanel>
                 <S.RightPanel>
-                    <IconButton disableRipple>
+                    {props.component}
+                    <IconButton disableRipple style={{ paddingRight: 0 }}>
                         <FullscreenIcon />
                     </IconButton>
                 </S.RightPanel>

@@ -13,12 +13,12 @@ class GeoNamesData(BaseModel):
     feature_code: str
     country_code: str
     cc2: str
-    admin1_cod: str
-    admin2_cod: str
-    admin3_cod: str
-    admin4_cod: str
-    populatio: str
-    elevatio: str
+    admin1_code: str
+    admin2_code: str
+    admin3_code: str
+    admin4_code: str
+    population: str
+    elevation: str
     dem: str
-    timezon: str
-    modification_dat: str
+    timezone: str
+    modification_date: str

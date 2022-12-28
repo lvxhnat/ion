@@ -4,7 +4,7 @@ from datetime import datetime
 from prefect import task, flow
 from prefect.task_runners import ConcurrentTaskRunner
 
-from flows.shared import write_table
+from flows.shared import refresh_table
 
 from ion_clients.clients.usdept.treasury import treasury_info
 from ion_clients.clients.usdept.types.treasury import (
@@ -48,10 +48,11 @@ def treasury_ingestion_flow(years: List[int], types: List[str]):
                 treasury_item = ingest_treasury.submit(
                     year, treasury_type
                 ).result()
-                write_table.submit(table_name, treasury_item).result()
+                refresh_table.submit(table_name, treasury_item).result()
         else:
             year = datetime.now().year
             treasury_item = ingest_treasury.submit(
                 year, treasury_type
             ).result()
-            write_table.submit(table_name, treasury_item).result()
+            refresh_table.submit(table_name, treasury_item).result()
+    

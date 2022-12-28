@@ -119,15 +119,19 @@ def postgres_bulk_upsert(
                     session.add(TableSchema(uuid=str(uuid.uuid4()), **object))
         return
 
-def postgres_bulk_refresh(TableSchema: Table, WriteObject: Union[List[dict], pd.DataFrame]):
+
+def postgres_bulk_refresh(
+    TableSchema: Table, WriteObject: Union[List[dict], pd.DataFrame]
+):
     try:
-        TableSchema.__table__.drop()
-    except UnboundExecutionError: 
+        if table_exists(TableSchema):
+            TableSchema.__table__.drop()
+    except UnboundExecutionError:
         TableSchema.__table__.drop(postgres_engine)
     postgres_bulk_upsert(TableSchema, WriteObject)
-    
 
 
 if __name__ == "__main__":
     from ion_clients.services.postgres.schemas.area_latlon import AreaLatLon
+
     print(type(AreaLatLon.uuid), AreaLatLon.uuid)

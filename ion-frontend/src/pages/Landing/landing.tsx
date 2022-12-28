@@ -4,7 +4,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Header from 'components/Header';
 import { Grid } from '@mui/material';
 import { TreasuryTableWidget } from 'functions/treasurytable';
-import WidgetContainer from 'components/WidgetContainer';
 
 import { ForexTableWidget } from 'functions/forextable';
 import { InternationalClockWidget } from 'functions/internationalclock';
@@ -21,7 +20,7 @@ export default function Landing() {
                 </Grid>
                 <Grid item xs={6}>
                     <ForexTableWidget />
-                    <TreasuryTableWidget tableType="us_bill_rates" />
+                    <TreasuryTableWidget />
                 </Grid>
             </Grid>
         </>

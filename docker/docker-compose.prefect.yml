@@ -2,7 +2,7 @@ version: "3"
 
 services:
   prefect-server:
-    build: 
+    build:
       context: ../data-engine/
       dockerfile: Dockerfile
     command:

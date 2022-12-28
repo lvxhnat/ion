@@ -10,7 +10,7 @@ logger: Logger = getLogger(__name__)
 logging.basicConfig()
 logging.getLogger("sqlalchemy").setLevel(logging.ERROR)
 
-postgres_engine = engine.create_engine(postgres_config.POSTGRES_URI, echo=True)
+postgres_engine = engine.create_engine(postgres_config.POSTGRES_URI, echo=False)
 postgres_session_maker = orm.sessionmaker(
     bind=postgres_engine, expire_on_commit=False
 )

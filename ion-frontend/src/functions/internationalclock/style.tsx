@@ -92,8 +92,16 @@ export const IconWrapper = styled('div')(({ theme }) => ({
 }));
 
 export const IconObjectWrapper = styled('div')(({ theme }) => ({
+    height: '100%',
     textAlign: 'center',
     padding: 5,
+}));
+
+export const TempWrapper = styled('div')(({ theme }) => ({
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
 }));
 
 export const IconWaveObjectWrapper = styled('div')(({ theme }) => ({

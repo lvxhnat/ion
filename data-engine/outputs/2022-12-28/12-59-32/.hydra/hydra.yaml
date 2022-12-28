@@ -12,15 +12,15 @@ hydra:
     params: null
   help:
     app_name: ${hydra.job.name}
-    header: '${hydra.help.app_name} is powered by Hydra.
+    header: "${hydra.help.app_name} is powered by Hydra.
 
-      '
-    footer: 'Powered by Hydra (https://hydra.cc)
+      "
+    footer: "Powered by Hydra (https://hydra.cc)
 
       Use --hydra-help to view Hydra specific help
 
-      '
-    template: '${hydra.help.header}
+      "
+    template: "${hydra.help.header}
 
       == Configuration groups ==
 
@@ -40,9 +40,9 @@ hydra:
 
       ${hydra.help.footer}
 
-      '
+      "
   hydra_help:
-    template: 'Hydra (${hydra.runtime.version})
+    template: "Hydra (${hydra.runtime.version})
 
       See https://hydra.cc for more info.
 
@@ -61,15 +61,15 @@ hydra:
       $HYDRA_CONFIG_GROUPS
 
 
-      Use ''--cfg hydra'' to Show the Hydra config.
+      Use '--cfg hydra' to Show the Hydra config.
 
-      '
+      "
     hydra_help: ???
   hydra_logging:
     version: 1
     formatters:
       simple:
-        format: '[%(asctime)s][HYDRA] %(message)s'
+        format: "[%(asctime)s][HYDRA] %(message)s"
     handlers:
       console:
         class: logging.StreamHandler
@@ -78,7 +78,7 @@ hydra:
     root:
       level: INFO
       handlers:
-      - console
+        - console
     loggers:
       logging_example:
         level: DEBUG
@@ -87,7 +87,7 @@ hydra:
     version: 1
     formatters:
       simple:
-        format: '[%(asctime)s][%(name)s][%(levelname)s] - %(message)s'
+        format: "[%(asctime)s][%(name)s][%(levelname)s] - %(message)s"
     handlers:
       console:
         class: logging.StreamHandler
@@ -100,8 +100,8 @@ hydra:
     root:
       level: INFO
       handlers:
-      - console
-      - file
+        - console
+        - file
     disable_existing_loggers: false
   env: {}
   mode: RUN
@@ -110,12 +110,12 @@ hydra:
   output_subdir: .hydra
   overrides:
     hydra:
-    - hydra.mode=RUN
+      - hydra.mode=RUN
     task: []
   job:
     name: deployment
     chdir: null
-    override_dirname: ''
+    override_dirname: ""
     id: ???
     num: ???
     config_name: treasury-configs
@@ -123,24 +123,24 @@ hydra:
     env_copy: []
     config:
       override_dirname:
-        kv_sep: '='
-        item_sep: ','
+        kv_sep: "="
+        item_sep: ","
         exclude_keys: []
   runtime:
     version: 1.3.1
-    version_base: '1.3'
+    version_base: "1.3"
     cwd: /Users/lohyikuang/Downloads/personal_projects/ion/data-engine
     config_sources:
-    - path: hydra.conf
-      schema: pkg
-      provider: hydra
-    - path: /Users/lohyikuang/Downloads/personal_projects/ion/data-engine/request_configs
-      schema: file
-      provider: main
-    - path: ''
-      schema: structured
-      provider: schema
-    output_dir: /Users/lohyikuang/Downloads/personal_projects/ion/data-engine/outputs/2022-12-25/16-33-55
+      - path: hydra.conf
+        schema: pkg
+        provider: hydra
+      - path: /Users/lohyikuang/Downloads/personal_projects/ion/data-engine/request_configs
+        schema: file
+        provider: main
+      - path: ""
+        schema: structured
+        provider: schema
+    output_dir: /Users/lohyikuang/Downloads/personal_projects/ion/data-engine/outputs/2022-12-28/12-59-32
     choices:
       hydra/env: default
       hydra/callbacks: null

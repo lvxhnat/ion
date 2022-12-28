@@ -2,5 +2,5 @@ scrapers:
   common:
     geonames:
       schedule:
-        cron: "01 00 * * *"
+        cron: 01 00 * * *
         timezone: Asia/Singapore

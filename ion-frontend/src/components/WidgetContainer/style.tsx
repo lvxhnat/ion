@@ -8,7 +8,7 @@ export const HeaderPanel = styled('div')(({ theme }) => ({
     display: 'flex',
     width: '100%',
     height: 40,
-    padding: theme.spacing(1),
+    padding: theme.spacing(0.5),
 }));
 
 export const LeftPanel = styled('div')(({ theme }) => ({
