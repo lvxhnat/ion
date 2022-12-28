@@ -11,6 +11,7 @@ import { ColorsEnum } from 'common/theme';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
 import { TEST_ENDPOINTS } from 'common/constant/endpoints';
 import { dataIngestionRequest } from 'services/request';
+import axios from 'axios';
 
 const StyledTableCell = (props: {
     children: any;
@@ -21,23 +22,25 @@ const StyledTableCell = (props: {
     </TableCell>
 );
 
-const StatusDot = (props: { status: number | undefined }): React.ReactElement => (
-    <span
-        style={{
-            height: '8px',
-            width: '8px',
-            backgroundColor:
-                props.status === 200
-                    ? ColorsEnum.upHint
-                    : props.status === 500
-                    ? ColorsEnum.downHint
-                    : ColorsEnum.mainstreamYellow,
-            borderRadius: '50%',
-            display: 'inline-block',
-            border: '0.1px solid ' + ColorsEnum.white,
-        }}
-    />
-);
+const StatusDot = (props: { status: number | undefined }): React.ReactElement => {
+    return (
+        <span
+            style={{
+                height: '8px',
+                width: '8px',
+                backgroundColor:
+                    props.status === 200
+                        ? ColorsEnum.upHint
+                        : props.status === 500
+                        ? ColorsEnum.downHint
+                        : ColorsEnum.mainstreamYellow,
+                borderRadius: '50%',
+                display: 'inline-block',
+                border: '0.1px solid ' + ColorsEnum.white,
+            }}
+        />
+    );
+};
 
 const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
     width: '100%',
@@ -47,18 +50,25 @@ const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
 }));
 
 export default function SystemChecks() {
-    const [status, setStatus] = React.useState<{ [name: string]: number }>({});
+    const [status, setStatus] = React.useState<{ [name: string]: number | undefined }>({});
     const [lastUpdated, setLastUpdated] = React.useState<string>();
 
     React.useEffect(() => {
-        Object.keys(TEST_ENDPOINTS).map((key: string) => {
-            dataIngestionRequest
-                .get(TEST_ENDPOINTS[key as keyof typeof TEST_ENDPOINTS].ENDPOINT)
-                .then(response => {
-                    setStatus({ ...status, key: response.data.status });
+        axios
+            .all(
+                Object.keys(TEST_ENDPOINTS).map((key: string) =>
+                    dataIngestionRequest.get(
+                        TEST_ENDPOINTS[key as keyof typeof TEST_ENDPOINTS].ENDPOINT
+                    )
+                )
+            )
+            .then(response => {
+                Object.keys(TEST_ENDPOINTS).map((key: string, index: number) => {
+                    status[key] = response[index].data.status;
+                    setStatus({ ...status });
                     setLastUpdated(new Date().toLocaleString());
                 });
-        });
+            });
     }, []);
 
     return (
@@ -79,9 +89,7 @@ export default function SystemChecks() {
                             </StyledTableCell>
                             <StyledTableCell key={`${key}_status_${index}`} align="right">
                                 {' '}
-                                <StatusDot
-                                    status={status[key as keyof typeof TEST_ENDPOINTS]}
-                                />{' '}
+                                <StatusDot status={status[key]} /> {console.log(status)}
                             </StyledTableCell>
                         </StyledTableRow>
                     ))}
