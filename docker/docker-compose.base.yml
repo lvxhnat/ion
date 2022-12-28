@@ -1,4 +1,5 @@
 version: "3"
+
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1
@@ -18,17 +19,6 @@ services:
     ports:
       - ${ION_MAPPED_KAFKA_BROKER_PORT:-9092}:9092
 
-  schema-registry:
-    image: confluentinc/cp-schema-registry:5.4.0
-    env_file: ./schema-registry/env/docker.env
-    hostname: schema-registry
-    container_name: schema-registry
-    depends_on:
-      - zookeeper
-      - broker
-    ports:
-      - ${ION_MAPPED_SCHEMA_REGISTRY_PORT:-8081}:8081
-
   postgres:
     image: postgres:12.3
     env_file: ./postgres/env/docker.env
@@ -36,14 +26,3 @@ services:
     container_name: postgres
     ports:
       - "5432:5432"
-
-  prefect-orion:
-    image: prefecthq/prefect:2.7.1-python3.9
-    restart: always
-    hostname: prefect-orion
-    container_name: prefect-orion
-    entrypoint: ["prefect", "orion", "start"]
-    ports:
-      - 4200:4200
-    environment:
-      - PREFECT_ORION_API_HOST=0.0.0.0

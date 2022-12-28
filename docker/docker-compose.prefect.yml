@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  prefect-server:
+    build: 
+      context: ../data-engine/
+      dockerfile: Dockerfile
+    command:
+      - prefect
+      - orion
+      - start
+    ports:
+      - 4200:4200
+    depends_on:
+      postgres:
+        condition: service_started
+    environment:
+      PREFECT_ORION_API_HOST: 0.0.0.0
+      PREFECT_ORION_ANALYTICS_ENABLED: "false"
+      PREFECT_LOGGING_SERVER_LEVEL: WARNING
+      PREFECT_API_URL: http://0.0.0.0:4200/api
+    networks:
+      - prefect
+
+  prefect-agent:
+    image: prefecthq/prefect:2.7-python3.9
+    command:
+      - prefect
+      - agent
+      - start
+      - -q
+      - treasury
+      - common
+    depends_on:
+      prefect-server:
+        condition: service_started
+    environment:
+      PREFECT_API_URL: http://0.0.0.0:4200/api
+      PREFECT_LOGGING_LEVEL: DEBUG
+      DOCKER_HOST: unix://var/run/docker.sock
+    networks:
+      - prefect

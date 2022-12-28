@@ -1,13 +1,16 @@
 import * as React from 'react';
 
-export type Order = 'asc' | 'desc';
-
 export interface Data {
-    calories: number;
-    carbs: number;
-    fat: number;
-    name: string;
-    protein: number;
+    portfolioId: string;
+    portfolioName: string;
+    assetClasses: string;
+    status: string;
+    benchmark: string;
+    privelage: string;
+    currencies: string;
+    num: number;
+    lastUpdated: Date;
+    createdAt: Date;
 }
 
 export interface HeadCell {
@@ -21,7 +24,7 @@ export interface EnhancedTableProps {
     numSelected: number;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
     onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    order: Order;
+    order: 'asc' | 'desc';
     orderBy: string;
     rowCount: number;
 }

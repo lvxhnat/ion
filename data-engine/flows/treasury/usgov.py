@@ -4,8 +4,7 @@ from datetime import datetime
 from prefect import task, flow
 from prefect.task_runners import ConcurrentTaskRunner
 
-from configs.config_loader import request_cfgs
-from task_flows.common import write_table
+from flows.shared import write_table
 
 from ion_clients.clients.usdept.treasury import treasury_info
 from ion_clients.clients.usdept.types.treasury import (
@@ -35,7 +34,6 @@ def ingest_treasury(year: TreasuryYears, treasury_type: TreasuryTypes):
     description="Scheduled prefect pipeline for extracting treasury information.",
 )
 def treasury_ingestion_flow(years: List[int], types: List[str]):
-
     table_names = [
         USTreasuryYield,
         USBillRates,
@@ -57,10 +55,3 @@ def treasury_ingestion_flow(years: List[int], types: List[str]):
                 year, treasury_type
             ).result()
             write_table.submit(table_name, treasury_item).result()
-
-
-if __name__ == "__main__":
-    treasury_ingestion_flow(
-        request_cfgs["usgov"]["treasury_info"]["year"],
-        request_cfgs["usgov"]["treasury_info"]["type"],
-    )

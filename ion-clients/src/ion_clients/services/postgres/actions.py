@@ -1,9 +1,11 @@
 import uuid
 import pandas as pd
 from typing import List, Union
+
 from sqlalchemy import inspect, desc, Table
-from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import UnboundExecutionError
+from sqlalchemy.orm.attributes import InstrumentedAttribute
 
 from ion_clients.services.postgres.postgres_service import (
     postgres,
@@ -17,22 +19,22 @@ def get_session():
 
 
 def order_search(
-    table: Table,
+    TableSchema: Table,
     session: Session,
     filters: List,
 ) -> dict:
-    return session.query(table).filter(*filters).first()
+    return session.query(TableSchema).filter(*filters).first()
 
 
 def order_query(
-    table: Table,
+    TableSchema: Table,
     session: Session,
     col: InstrumentedAttribute,
     descending: bool = True,
 ) -> List[dict]:
 
     query = (
-        session.query(table)
+        session.query(TableSchema)
         .order_by(desc(col) if descending else col)
         .limit(50)
     )
@@ -52,7 +54,7 @@ def table_exists(TableSchema) -> bool:
 
 
 def postgres_bulk_upsert(
-    TableSchema,
+    TableSchema: Table,
     WriteObject: Union[List[dict], pd.DataFrame],
     primary_key: str = "_date",
 ):
@@ -117,8 +119,15 @@ def postgres_bulk_upsert(
                     session.add(TableSchema(uuid=str(uuid.uuid4()), **object))
         return
 
+def postgres_bulk_refresh(TableSchema: Table, WriteObject: Union[List[dict], pd.DataFrame]):
+    try:
+        TableSchema.__table__.drop()
+    except UnboundExecutionError: 
+        TableSchema.__table__.drop(postgres_engine)
+    postgres_bulk_upsert(TableSchema, WriteObject)
+    
+
 
 if __name__ == "__main__":
     from ion_clients.services.postgres.schemas.area_latlon import AreaLatLon
-
     print(type(AreaLatLon.uuid), AreaLatLon.uuid)

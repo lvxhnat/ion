@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as S from './style';
-import { Data, EnhancedTableProps, EnhancedTableToolbarProps, HeadCell, Order } from './type';
+import { Data, EnhancedTableProps, HeadCell } from './type';
 
-import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,125 +9,22 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-
-function createData(
-    name: string,
-    calories: number,
-    fat: number,
-    carbs: number,
-    protein: number
-): Data {
-    return {
-        name,
-        calories,
-        fat,
-        carbs,
-        protein,
-    };
-}
-
-const rows = [
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Donut', 452, 25.0, 51, 4.9),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-    createData('Honeycomb', 408, 3.2, 87, 6.5),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Jelly Bean', 375, 0.0, 94, 0.0),
-    createData('KitKat', 518, 26.0, 65, 7.0),
-    createData('Lollipop', 392, 0.2, 98, 0.0),
-    createData('Marshmallow', 318, 0, 81, 2.0),
-    createData('Nougat', 360, 19.0, 9, 37.0),
-    createData('Oreo', 437, 18.0, 63, 4.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Donut', 452, 25.0, 51, 4.9),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-    createData('Honeycomb', 408, 3.2, 87, 6.5),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Jelly Bean', 375, 0.0, 94, 0.0),
-    createData('KitKat', 518, 26.0, 65, 7.0),
-    createData('Lollipop', 392, 0.2, 98, 0.0),
-    createData('Marshmallow', 318, 0, 81, 2.0),
-    createData('Nougat', 360, 19.0, 9, 37.0),
-    createData('Oreo', 437, 18.0, 63, 4.0),
-];
-
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
-}
-
-function getComparator<Key extends keyof any>(
-    order: Order,
-    orderBy: Key
-): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
-    return order === 'desc'
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// This method is created for cross-browser compatibility, if you don't
-// need to support IE11, you can use Array.prototype.sort() directly
-function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
-    const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-    stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) {
-            return order;
-        }
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map(el => el[0]);
-}
+import { getComparator, stableSort } from 'common/helper/general';
 
 const headCells: readonly HeadCell[] = [
-    {
-        id: 'name',
-        numeric: false,
-        disablePadding: true,
-        label: 'Dessert (100g serving)',
-    },
-    {
-        id: 'calories',
-        numeric: true,
-        disablePadding: false,
-        label: 'Calories',
-    },
-    {
-        id: 'fat',
-        numeric: true,
-        disablePadding: false,
-        label: 'Fat (g)',
-    },
-    {
-        id: 'carbs',
-        numeric: true,
-        disablePadding: false,
-        label: 'Carbs (g)',
-    },
-    {
-        id: 'protein',
-        numeric: true,
-        disablePadding: false,
-        label: 'Protein (g)',
-    },
+    { id: 'portfolioId', numeric: false, disablePadding: true, label: 'Id' },
+    { id: 'portfolioName', numeric: false, disablePadding: true, label: 'Portfolio' },
+    { id: 'assetClasses', numeric: true, disablePadding: false, label: 'Asset Classes' },
+    { id: 'status', numeric: true, disablePadding: false, label: 'Status' },
+    { id: 'benchmark', numeric: true, disablePadding: false, label: 'Benchmark' },
+    { id: 'privelage', numeric: true, disablePadding: false, label: 'Privelage' },
+    { id: 'currencies', numeric: true, disablePadding: false, label: 'CCYs' },
+    { id: 'num', numeric: true, disablePadding: false, label: 'Num' },
+    { id: 'lastUpdated', numeric: true, disablePadding: false, label: 'lastUpdated' },
+    { id: 'createdAt', numeric: true, disablePadding: false, label: 'createdAt' },
 ];
 
 function EnhancedTableHead(props: EnhancedTableProps) {
@@ -178,56 +74,11 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     );
 }
 
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-    const { numSelected } = props;
-
-    return (
-        <Toolbar
-            sx={{
-                pl: { sm: 2 },
-                pr: { xs: 1, sm: 1 },
-                height: '2vh',
-                ...(numSelected > 0 && {
-                    bgcolor: theme =>
-                        alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-                }),
-            }}
-        >
-            {numSelected > 0 ? (
-                <Typography
-                    sx={{ flex: '1 1 100%' }}
-                    color="inherit"
-                    variant="subtitle1"
-                    component="div"
-                >
-                    {numSelected} selected
-                </Typography>
-            ) : (
-                <Typography sx={{ flex: '1 1 100%' }} variant="h2" id="tableTitle" component="div">
-                    Nutrition
-                </Typography>
-            )}
-            {numSelected > 0 ? (
-                <Tooltip title="Delete">
-                    <IconButton>
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
-            ) : (
-                <Tooltip title="Filter list">
-                    <IconButton>
-                        <FilterListIcon />
-                    </IconButton>
-                </Tooltip>
-            )}
-        </Toolbar>
-    );
-}
-
 export default function MainTable() {
-    const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
+    const [order, setOrder] = React.useState<'asc' | 'desc'>('asc');
+    const [orderBy, setOrderBy] = React.useState<keyof Data>('portfolioId');
     const [selected, setSelected] = React.useState<readonly string[]>([]);
+    const rows: Data[] = [];
 
     const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -237,7 +88,7 @@ export default function MainTable() {
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
-            const newSelected = rows.map(n => n.name);
+            const newSelected = rows.map(n => n.portfolioId);
             setSelected(newSelected);
             return;
         }
@@ -269,7 +120,6 @@ export default function MainTable() {
     return (
         <Box sx={{ width: '100%' }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
-                <EnhancedTableToolbar numSelected={selected.length} />
                 <S.StyledTableContainer>
                     <Table
                         sx={{ minWidth: 750 }}
@@ -287,17 +137,16 @@ export default function MainTable() {
                         />
                         <TableBody>
                             {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
-                                const isItemSelected = isSelected(row.name);
+                                const isItemSelected = isSelected(row.portfolioId);
                                 const labelId = `enhanced-table-checkbox-${index}`;
 
                                 return (
                                     <TableRow
                                         hover
-                                        onClick={event => handleClick(event, row.name)}
+                                        onClick={event => handleClick(event, row.portfolioId)}
                                         role="checkbox"
                                         aria-checked={isItemSelected}
-                                        tabIndex={-1}
-                                        key={row.name}
+                                        key={row.portfolioId}
                                         selected={isItemSelected}
                                     >
                                         <TableCell padding="checkbox">
@@ -309,20 +158,12 @@ export default function MainTable() {
                                                 }}
                                             />
                                         </TableCell>
-                                        <TableCell>{'id'}</TableCell>
-                                        <TableCell> {row.name} </TableCell>
-                                        <TableCell align="right">{row.calories}</TableCell>
-                                        <TableCell align="right">{row.fat}</TableCell>
-                                        <TableCell align="right">{row.carbs}</TableCell>
-                                        <TableCell align="right">{row.protein}</TableCell>
+                                        {headCells.map((item: HeadCell) => (
+                                            <TableCell>{row[item.id].toString()}</TableCell>
+                                        ))}
                                     </TableRow>
                                 );
                             })}
-                            {
-                                <TableRow>
-                                    <TableCell colSpan={6} />
-                                </TableRow>
-                            }
                         </TableBody>
                     </Table>
                 </S.StyledTableContainer>

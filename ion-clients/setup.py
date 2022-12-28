@@ -1,13 +1,10 @@
-import os
 import re
 import pathlib
-import pkg_resources
 
 import setuptools
 from setuptools import setup
 
 name = "ion_client"
-req_file = "requirements.dev.txt"
 here = pathlib.Path.absolute(pathlib.Path(__file__).resolve().parent)
 
 # get package version
@@ -22,12 +19,6 @@ with open(
         )
 
     version = result.group(1)
-
-with pathlib.Path(os.path.abspath("."), req_file).open() as requirements:
-    install_requires = [
-        str(requirement)
-        for requirement in pkg_resources.parse_requirements(requirements)
-    ]
 
 
 def get_long_description():
@@ -47,7 +38,7 @@ base_requirements = {
 framework_common = {
     "fastapi==0.85.1",
     "uvicorn==0.19.0",
-    "websockets==10.3",
+    "websockets==10.4",
 }
 
 base_dev_requirements = {
