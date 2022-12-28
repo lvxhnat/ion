@@ -14,3 +14,22 @@ export const ENDPOINTS = {
     },
     PUBLIC_REQUIRED_TOKEN: {},
 };
+
+export const TEST_ENDPOINTS = {
+    SEARCH_FUNCTIONS: {
+        NAME: 'Autocomplete',
+        ENDPOINT: 'autocomplete/ping',
+    },
+    OANDA_FUNCTIONS: {
+        NAME: 'Candles',
+        ENDPOINT: 'candles/ping',
+    },
+    DB_FUNCTIONS: {
+        NAME: 'Database',
+        ENDPOINT: 'db/ping',
+    },
+    WEATHER_FUNCTIONS: {
+        NAME: 'Weather',
+        ENDPOINT: 'weather/ping',
+    },
+} as const;

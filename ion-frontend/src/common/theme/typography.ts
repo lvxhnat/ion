@@ -23,8 +23,11 @@ export const typographyTheme = {
         fontSize: 14,
     },
     subtitle2: {
-        fontSize: `calc(0.5rem + 0.35vw)`,
+        fontSize: `calc(0.5rem + 0.3vw)`,
         fontWeight: 500,
+    },
+    overline: {
+        fontSize: `calc(0.3rem + 0.3vw)`,
     },
     button: {
         fontSize: '0.8rem + 0.2vw',

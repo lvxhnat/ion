@@ -2,13 +2,20 @@ from dotenv import load_dotenv
 from fastapi import APIRouter
 
 from data_ingestion.app.core.config import settings
-from data_ingestion.app.singleton import mongodb_client
+from data_ingestion.app.singleton import mongodb_client, test_connection
 from data_ingestion.app.api.api_v1.models.autocomplete import SecurityFunctions
 
 load_dotenv()
 
 router = APIRouter(prefix="/autocomplete", tags=["autocomplete"],)
 
+@router.get("/ping")
+def ping():
+    """Test Connection to MongoDB Server
+    """
+    return {
+        "status": test_connection()
+    }
 
 @router.post("/securityFunctions")
 def get_asset_autocomplete_info(params: SecurityFunctions):

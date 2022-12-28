@@ -15,6 +15,11 @@ router = APIRouter(
 )
 
 
+@router.get("/ping")
+def ping():
+    return {"status": 200}
+
+
 @router.post("/query")
 def get_table_details(
     params: TableQueryParams, session: Session = Depends(get_session)

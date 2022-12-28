@@ -7,6 +7,7 @@ import { TreasuryTableWidget } from 'functions/treasurytable';
 
 import { ForexTableWidget } from 'functions/forextable';
 import { InternationalClockWidget } from 'functions/internationalclock';
+import { SystemCheckWidget } from 'functions/systemchecks';
 
 export default function Landing() {
     return (
@@ -14,7 +15,9 @@ export default function Landing() {
             <CssBaseline />
             <Header />
             <Grid container columns={25} spacing={1}>
-                <Grid item xs={5}></Grid>
+                <Grid item xs={5}>
+                    <SystemCheckWidget />
+                </Grid>
                 <Grid item xs={14}>
                     <InternationalClockWidget />
                 </Grid>

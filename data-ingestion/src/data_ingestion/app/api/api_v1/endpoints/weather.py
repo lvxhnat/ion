@@ -20,6 +20,11 @@ router = APIRouter(
 )
 
 
+@router.get("/ping")
+def ping():
+    return {"status": 200}
+
+
 @router.post("/currentWeather")
 def get_current_weather_conditions(
     params: weather.CurrentWeatherProps,

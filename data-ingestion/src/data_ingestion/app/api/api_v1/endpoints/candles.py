@@ -14,6 +14,13 @@ router = APIRouter(
     tags=["candles"],
 )
 
+@router.get("/ping")
+def ping():
+    try:
+        oanda_instruments.historical("EUR_USD", "1M_S")
+        return {"status": 200}
+    except: 
+        return {"status": 500}
 
 @router.post("/finnhub/candlesHistorical")
 def get_finnhub_historical_candles():
