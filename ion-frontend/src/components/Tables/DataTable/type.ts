@@ -38,3 +38,10 @@ export interface DataTableHeaderDefinition {
     width?: number | undefined;
     description?: string | undefined;
 }
+
+// The data we store in our local state object
+export interface DataType {
+    file_name: string;
+    content_header: DataTableHeaderDefinition[];
+    content_body: any;
+}

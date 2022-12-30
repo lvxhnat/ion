@@ -22,7 +22,7 @@ export const StyledSearch = styled('input')(({ theme }) => ({
     backgroundColor: 'transparent',
     padding: theme.spacing(0.5),
     paddingLeft: theme.spacing(2.5),
-    border: '1px solid ' + ColorsEnum.royalred,
+    border: '1px solid ' + ColorsEnum.beer,
     color: theme.palette.mode === 'dark' ? ColorsEnum.white : ColorsEnum.black,
     outline: 'none',
     minWidth: `calc(500px + 5vw)`,
@@ -34,7 +34,7 @@ export const StyledSearchTag = styled('div')(({ theme }) => ({
     left: 0,
     height: '100%',
     width: '20px',
-    backgroundColor: ColorsEnum.royalred,
+    backgroundColor: ColorsEnum.beer,
     clipPath: 'polygon(0 0, 20% 0, 60% 50%, 20% 100%, 0 100%)',
 }));
 

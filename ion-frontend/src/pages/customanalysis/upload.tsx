@@ -3,19 +3,16 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 
-import { ingestFile } from 'data/ingestion/ingestion';
 import DataTable from 'components/Tables/DataTable/DataTable';
-import { DataTableHeaderDefinition } from 'components/Tables/DataTable/type';
+import { DataTableHeaderDefinition, DataType } from 'components/Tables/DataTable/type';
 import { ColorsEnum } from 'common/theme';
+import { useAnalysisStore } from 'store/customanalysis/customanalysis';
+import { ingestFile } from 'data/ingestion/ingestion';
 
 export default function Upload() {
     const [selectedFile, setSelectedFile] = React.useState<File>();
     const [progress, setProgress] = React.useState<number>(0);
-    const [fileData, setFileData] = React.useState<{
-        file_name: string;
-        content_header: DataTableHeaderDefinition[];
-        content_body: any;
-    }>();
+    const [fileData, setFileData] = useAnalysisStore();
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) setSelectedFile(e.target.files[0]);
@@ -35,26 +32,33 @@ export default function Upload() {
             },
         }).then(res => {
             const data = res.data;
-            if (data)
-                data.content_body = data.content_body.map((entry: any, index: number) => {
-                    entry.id = index;
-                    return entry;
-                });
-            data.content_body = data.content_body.map((entry: any[], parent_index: number) => {
-                const d: { [index: string]: number | string } = {};
-                d['id'] = parent_index;
-                data.content_header.map((col: string, index: number) => {
-                    d[col] = entry[index];
-                });
-                return d;
-            });
-            data.content_header = data.content_header.map(
+            const formattedData: DataType = {
+                file_name: '',
+                content_body: [],
+                content_header: [],
+            };
+
+            formattedData['content_body'] = data.content_body.map(
+                (entry: any[], parent_index: number) => {
+                    const d: { [index: string]: number | string } = {};
+                    d['id'] = parent_index;
+                    data.content_header.map((col: string, index: number) => {
+                        d[col] = entry[index];
+                    });
+                    return d;
+                }
+            );
+
+            formattedData['content_header'] = data.content_header.map(
                 (col: string): DataTableHeaderDefinition => ({
                     id: col,
                     headerName: col,
                 })
             );
-            setFileData(data);
+
+            formattedData['file_name'] = data.file_name;
+
+            setFileData(formattedData);
         });
     };
 
@@ -73,7 +77,7 @@ export default function Upload() {
                 <LinearProgress color="inherit" variant="determinate" value={progress} />
             </div>
             <Box sx={{ height: 500, width: '100%' }}>
-                {fileData ? (
+                {fileData.content_body.length !== 0 ? (
                     <DataTable
                         stickyHeader
                         rowsPerPage={25}

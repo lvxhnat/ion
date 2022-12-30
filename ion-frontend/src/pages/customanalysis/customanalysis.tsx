@@ -4,12 +4,13 @@ import { styled } from '@mui/system';
 import CssBaseline from '@mui/material/CssBaseline';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 
-import StorageIcon from '@mui/icons-material/Storage';
+import { FaDatabase } from 'react-icons/fa';
+import WindowIcon from '@mui/icons-material/Window';
 
 import Header from 'components/Header';
 import Upload from './upload';
+import Sheet from './sheet';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -27,12 +28,6 @@ const StyledTab = styled((props: StyledTabProps) => <Tab disableRipple {...props
         textTransform: 'none',
         fontWeight: 300,
         fontSize: 15,
-        '&.Mui-selected': {
-            color: '#fff',
-        },
-        '&.Mui-focusVisible': {
-            backgroundColor: 'rgba(100, 95, 228, 0.32)',
-        },
         padding: 10,
     })
 );
@@ -73,23 +68,18 @@ export default function CustomAnalysis() {
                     paddingTop: 0,
                 }}
             >
+                <StyledTab icon={<FaDatabase />} iconPosition="start" label="Data Source" />
                 <StyledTab
-                    icon={<StorageIcon fontSize="small" />}
+                    icon={<WindowIcon fontSize="small" />}
                     iconPosition="start"
-                    label="Data Source"
-                    sx={{ padding: 0 }}
+                    label="Dashboard"
                 />
-                <StyledTab label="Item Two" />
-                <StyledTab label="Item Three" />
             </Tabs>
             <TabPanel value={value} index={0}>
                 <Upload />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Item Two
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                Item Three
+                <Sheet />
             </TabPanel>
         </>
     );
