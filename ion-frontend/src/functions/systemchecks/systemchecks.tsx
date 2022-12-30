@@ -17,7 +17,7 @@ const StyledTableCell = (props: {
     children: any;
     align?: 'inherit' | 'left' | 'center' | 'right' | 'justify' | undefined;
 }) => (
-    <TableCell style={{ padding: 0, border: 0 }} align={props.align}>
+    <TableCell style={{ padding: 0, border: 0, paddingRight: 5 }} align={props.align}>
         {props.children}
     </TableCell>
 );
@@ -36,7 +36,6 @@ const StatusDot = (props: { status: number | undefined }): React.ReactElement =>
                         : ColorsEnum.mainstreamYellow,
                 borderRadius: '50%',
                 display: 'inline-block',
-                border: '0.1px solid ' + ColorsEnum.white,
             }}
         />
     );
@@ -88,8 +87,7 @@ export default function SystemChecks() {
                                 </Typography>
                             </StyledTableCell>
                             <StyledTableCell key={`${key}_status_${index}`} align="right">
-                                {' '}
-                                <StatusDot status={status[key]} /> {console.log(status)}
+                                <StatusDot status={status[key]} />
                             </StyledTableCell>
                         </StyledTableRow>
                     ))}
