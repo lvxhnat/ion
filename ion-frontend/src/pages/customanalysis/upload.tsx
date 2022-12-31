@@ -80,7 +80,7 @@ export default function Upload() {
                 {fileData.content_body.length !== 0 ? (
                     <DataTable
                         stickyHeader
-                        rowsPerPage={25}
+                        rowsPerPage={50}
                         defaultColumnWidth={100}
                         rows={fileData.content_body}
                         columns={fileData.content_header}

@@ -43,7 +43,7 @@ export default function DataTable(props: DataTableProps) {
     const [orderBy, setOrderBy] = React.useState<any>(props.rows[0].id);
 
     const [rowsPerPage, setRowsPerPage] = React.useState<number>(
-        props.rowsPerPage ? props.rowsPerPage : 10
+        props.rowsPerPage ? props.rowsPerPage : 25
     );
 
     function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -144,7 +144,7 @@ export default function DataTable(props: DataTableProps) {
                 </Table>
             </S.StyledTableContainer>
             <TablePagination
-                rowsPerPageOptions={[25, 50, 100]}
+                rowsPerPageOptions={[50, 100, 150, 200]}
                 component="div"
                 count={props.rows.length}
                 rowsPerPage={rowsPerPage}

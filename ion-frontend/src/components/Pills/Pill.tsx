@@ -22,7 +22,8 @@ export const StyledPill = (props: {
             sx={{
                 backgroundColor: props.selected ? pillColor : 'transparent',
                 '&:hover': { backgroundColor: props.selected ? pillColor : `${pillColor}99` },
-                width: 150,
+                width: 175,
+                zIndex: 1, // zIndex = 1 prevents the background from being inherited while dragging the div
             }}
             {...props}
         >
