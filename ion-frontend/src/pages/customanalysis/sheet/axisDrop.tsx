@@ -4,17 +4,21 @@ import * as S from '../style';
 import Typography from '@mui/material/Typography';
 import { TfiLayoutColumn3Alt } from 'react-icons/tfi';
 
-import { useAnalysisDragStore, useAnalysisStore } from 'store/customanalysis/customanalysis';
+import {
+    useAnalysisDragStore,
+    useAnalysisStore,
+    useAnalysisFieldsDeclared,
+} from 'store/customanalysis/customanalysis';
 import StyledPill from 'components/Pills';
 import { ColorsEnum } from 'common/theme';
+import { capitalizeString } from 'common/helper/general';
 
-export default function axisDrop() {
+export default function AxisDrop(props: { entryType: 'columns' | 'rows' }) {
     const [data] = useAnalysisStore();
     const [dragStarted] = useAnalysisDragStore();
     const [dragOver, setDragOver] = React.useState(false);
 
-    const [columnEntries, setColumnEntries] = React.useState<number[]>([]);
-    const [rowEntries, setRowEntries] = React.useState<number[]>([]);
+    const [entries, setEntries] = useAnalysisFieldsDeclared();
 
     const handleDragOverStart = () => setDragOver(true);
     const handleDragOverLeave = () => setDragOver(false);
@@ -23,8 +27,10 @@ export default function axisDrop() {
         e.preventDefault();
     };
     const handleColumnDrop = (e: React.DragEvent<HTMLDivElement>) => {
-        const id = e.dataTransfer.getData('text');
-        setColumnEntries([...columnEntries, parseInt(id)]);
+        let id = parseInt(e.dataTransfer.getData('text'));
+        if (!entries[props.entryType].has(id)) entries[props.entryType].add(id);
+        setEntries(entries);
+        setDragOver(false);
     };
 
     return (
@@ -33,30 +39,39 @@ export default function axisDrop() {
             onDragEnter={handleDragOverStart}
             onDragLeave={handleDragOverLeave}
             onDrop={handleColumnDrop}
-            style={{ height: '40px' }}
+            style={{ height: '28px' }}
         >
             <S.TypeDeclarationWrapper
                 style={{
-                    border: '1px solid ' + (dragStarted ? ColorsEnum.beer : ColorsEnum.white),
+                    border: '0.5px solid ' + (dragStarted ? ColorsEnum.beer : ColorsEnum.coolgray1),
                     padding: 5,
                     paddingRight: 30,
                     gap: 5,
                     height: '100%',
+                    width: 100,
                 }}
             >
-                <TfiLayoutColumn3Alt />
-                <Typography variant="subtitle2"> Columns </Typography>
+                <TfiLayoutColumn3Alt
+                    style={{ transform: props.entryType === 'rows' ? 'rotate(90deg)' : 'none' }}
+                />
+                <Typography variant="subtitle2"> {capitalizeString(props.entryType)} </Typography>
             </S.TypeDeclarationWrapper>
             <S.TypeDeclarationWrapper
                 style={{
-                    gap: 10,
-                    width: 1000,
+                    gap: 5,
                     height: '100%',
-                    border: '1px solid ' + (dragStarted ? ColorsEnum.beer : ColorsEnum.white),
+                    paddingLeft: 5,
+                    width: 515,
+                    border: '0.5px solid ' + (dragStarted ? ColorsEnum.beer : ColorsEnum.coolgray1),
                 }}
             >
-                {columnEntries.map((index: number) => (
-                    <StyledPill draggable key={`selected_draggablePill_${index}`} selected={true}>
+                {[...entries[props.entryType]].map((index: number) => (
+                    <StyledPill
+                        draggable
+                        style={{ width: 120 }}
+                        key={`selected_draggablePill_${index}`}
+                        selected={true}
+                    >
                         <Typography key={`panelTypography_${index}`} variant="subtitle2" noWrap>
                             {data.content_header[index].headerName}
                         </Typography>

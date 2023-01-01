@@ -10,11 +10,10 @@ import { DataTableHeaderDefinition } from 'components/Tables/DataTable/type';
 import StyledPill from 'components/Pills';
 import { useAnalysisDragStore, useAnalysisStore } from 'store/customanalysis/customanalysis';
 
-export default function SidePanel() {
+export default function SidePanel(props: { className?: string }) {
     const [data] = useAnalysisStore();
     const setDragStarted = useAnalysisDragStore()[1];
     const [pillSelected, setPillSelected] = React.useState<number>();
-    const [dataHovered, setDataHovered] = React.useState<boolean>();
 
     const dragStart = (e: React.DragEvent<HTMLDivElement>, id: number) => {
         e.dataTransfer.setData('text', id.toString());
@@ -22,7 +21,7 @@ export default function SidePanel() {
     };
 
     return (
-        <S.SidePanel>
+        <S.SidePanel className={props.className}>
             <S.SidePanelRow>
                 <Typography variant="subtitle1">
                     <strong>Data</strong>
@@ -30,19 +29,15 @@ export default function SidePanel() {
             </S.SidePanelRow>
             <Divider style={{ marginBottom: 3 }} />
 
-            <S.SidePanelRow
-                dense
-                displayHover
-                style={{
-                    paddingBottom: 5,
-                    paddingTop: 5,
-                }}
-            >
-                <FaDatabase />
-                <Typography variant="subtitle2" style={{ paddingTop: 5, paddingBottom: 5 }}>
-                    {' '}
-                    {data.file_name}{' '}
-                </Typography>
+            <S.SidePanelRow dense displayHover>
+                {data.file_name ? (
+                    <>
+                        <FaDatabase />
+                        <Typography variant="subtitle2" style={{ padding: 5 }}>
+                            {data.file_name}
+                        </Typography>
+                    </>
+                ) : null}
             </S.SidePanelRow>
 
             <S.SidePanelRow>

@@ -2,8 +2,8 @@ import { DataType } from 'components/Tables/DataTable/type';
 import create from 'zustand';
 
 interface FieldsDeclaredType {
-    rows: string[];
-    columns: string[];
+    rows: Set<number>;
+    columns: Set<number>;
 }
 
 interface AnalysisStoreTypes {
@@ -22,8 +22,8 @@ export const analysisStore = create<AnalysisStoreTypes>(set => ({
         content_header: [],
     },
     fieldsDeclared: {
-        rows: [],
-        columns: [],
+        rows: new Set(),
+        columns: new Set(),
     }, // Store for the current fields chosen by the user, done by the drag action.
     dragStarted: false, // Store for whether or not a drag action has started
     setData: (data: DataType) => set({ data: data }),

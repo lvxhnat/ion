@@ -20,10 +20,10 @@ export const typographyTheme = {
         fontWeight: 500,
     },
     subtitle1: {
-        fontSize: 14,
+        fontSize: `calc(0.5rem + 0.3vw)`,
     },
     subtitle2: {
-        fontSize: `calc(0.5rem + 0.3vw)`,
+        fontSize: `calc(0.4rem + 0.3vw)`,
         fontWeight: 500,
     },
     overline: {

@@ -1,11 +1,8 @@
 import * as React from 'react';
-import { styled } from '@mui/system';
-
-import CssBaseline from '@mui/material/CssBaseline';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import * as S from './style';
 
 import { FaDatabase } from 'react-icons/fa';
+import CssBaseline from '@mui/material/CssBaseline';
 import WindowIcon from '@mui/icons-material/Window';
 
 import Header from 'components/Header';
@@ -17,20 +14,6 @@ interface TabPanelProps {
     index: number;
     value: number;
 }
-
-interface StyledTabProps {
-    label: string;
-    [prop: string]: any;
-}
-
-const StyledTab = styled((props: StyledTabProps) => <Tab disableRipple {...props} />)(
-    ({ theme }) => ({
-        textTransform: 'none',
-        fontWeight: 300,
-        fontSize: 15,
-        padding: 10,
-    })
-);
 
 function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
@@ -59,22 +42,20 @@ export default function CustomAnalysis() {
         <>
             <CssBaseline />
             <Header />
-            <Tabs
-                value={value}
-                onChange={handleChange}
-                style={{
-                    height: 65,
-                    padding: 10,
-                    paddingTop: 0,
-                }}
-            >
-                <StyledTab icon={<FaDatabase />} iconPosition="start" label="Data Source" />
-                <StyledTab
+            <S.Tabs>
+                <S.Tab
+                    selected={value === 0}
+                    onClick={(e: React.SyntheticEvent) => handleChange(e, 0)}
+                    icon={<FaDatabase />}
+                    label="Data Source"
+                />
+                <S.Tab
+                    selected={value === 1}
+                    onClick={(e: React.SyntheticEvent) => handleChange(e, 1)}
                     icon={<WindowIcon fontSize="small" />}
-                    iconPosition="start"
                     label="Dashboard"
                 />
-            </Tabs>
+            </S.Tabs>
             <TabPanel value={value} index={0}>
                 <Upload />
             </TabPanel>

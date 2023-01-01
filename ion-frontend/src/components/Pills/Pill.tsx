@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 
 const Pill = styled('div')(({ theme }) => ({
     width: '30%',
-    padding: `${theme.spacing(0.5)} ${theme.spacing(1)}`,
+    padding: `${theme.spacing(0.25)} ${theme.spacing(1)}`,
     marginTop: 5,
     borderRadius: 15,
     cursor: 'default',
@@ -22,7 +22,8 @@ export const StyledPill = (props: {
             sx={{
                 backgroundColor: props.selected ? pillColor : 'transparent',
                 '&:hover': { backgroundColor: props.selected ? pillColor : `${pillColor}99` },
-                width: 175,
+                width: '100%',
+                margin: 0,
                 zIndex: 1, // zIndex = 1 prevents the background from being inherited while dragging the div
             }}
             {...props}
