@@ -1,4 +1,4 @@
-import { DataType } from 'components/Tables/DataTable/type';
+import { UploadDataType } from 'components/Tables/DataTable/type';
 import create from 'zustand';
 
 interface FieldsDeclaredType {
@@ -7,10 +7,10 @@ interface FieldsDeclaredType {
 }
 
 interface AnalysisStoreTypes {
-    data: DataType;
+    data: UploadDataType;
     fieldsDeclared: FieldsDeclaredType;
     dragStarted: boolean;
-    setData: (data: DataType) => void;
+    setData: (data: UploadDataType) => void;
     setDragStarted: (dragStarted: boolean) => void;
     setFieldsDeclared: (fieldsDeclared: FieldsDeclaredType) => void;
 }
@@ -20,19 +20,20 @@ export const analysisStore = create<AnalysisStoreTypes>(set => ({
         file_name: '',
         content_body: [],
         content_header: [],
+        dtypes: {},
     },
     fieldsDeclared: {
         rows: new Set(),
         columns: new Set(),
     }, // Store for the current fields chosen by the user, done by the drag action.
     dragStarted: false, // Store for whether or not a drag action has started
-    setData: (data: DataType) => set({ data: data }),
+    setData: (data: UploadDataType) => set({ data: data }),
     setDragStarted: (dragStarted: boolean) => set({ dragStarted: dragStarted }),
     setFieldsDeclared: (fieldsDeclared: FieldsDeclaredType) =>
         set({ fieldsDeclared: fieldsDeclared }),
 }));
 
-export const useAnalysisStore = (): [DataType, (data: DataType) => void] =>
+export const useAnalysisStore = (): [UploadDataType, (data: UploadDataType) => void] =>
     analysisStore(state => [state.data, state.setData]);
 
 export const useAnalysisDragStore = (): [boolean, (dragStarted: boolean) => void] =>

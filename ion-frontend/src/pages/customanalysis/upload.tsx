@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 
 import DataTable from 'components/Tables/DataTable/DataTable';
-import { DataTableHeaderDefinition, DataType } from 'components/Tables/DataTable/type';
+import { DataTableHeaderDefinition, UploadDataType } from 'components/Tables/DataTable/type';
 import { ColorsEnum } from 'common/theme';
 import { useAnalysisStore } from 'store/customanalysis/customanalysis';
 import { ingestFile } from 'data/ingestion/ingestion';
@@ -32,31 +32,31 @@ export default function Upload() {
             },
         }).then(res => {
             const data = res.data;
-            const formattedData: DataType = {
+            console.log(data);
+            const formattedData: UploadDataType = {
                 file_name: '',
                 content_body: [],
                 content_header: [],
+                dtypes: {},
             };
 
             formattedData['content_body'] = data.content_body.map(
                 (entry: any[], parent_index: number) => {
-                    const d: { [index: string]: number | string } = {};
-                    d['id'] = parent_index;
+                    const d: { id: number; [col: string]: any } = { id: parent_index };
                     data.content_header.map((col: string, index: number) => {
                         d[col] = entry[index];
                     });
                     return d;
                 }
             );
-
             formattedData['content_header'] = data.content_header.map(
                 (col: string): DataTableHeaderDefinition => ({
                     id: col,
                     headerName: col,
                 })
             );
-
             formattedData['file_name'] = data.file_name;
+            formattedData['dtypes'] = data.dtypes;
 
             setFileData(formattedData);
         });
@@ -80,10 +80,9 @@ export default function Upload() {
                 {fileData.content_body.length !== 0 ? (
                     <DataTable
                         stickyHeader
+                        data={fileData}
                         rowsPerPage={50}
                         defaultColumnWidth={100}
-                        rows={fileData.content_body}
-                        columns={fileData.content_header}
                     />
                 ) : null}
             </Box>

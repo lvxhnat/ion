@@ -1,10 +1,21 @@
 import { dataIngestionRequest } from 'services/request';
 import { ENDPOINTS } from 'common/constant/endpoints';
+import { UploadColumnTypes } from 'components/Tables/DataTable/type';
 
-interface IngestionDataType {
+export interface IngestionDataType {
     file_name: string;
     content_header: string[];
-    content_body: any[];
+    content_body: any[][];
+    dtypes: {
+        [header: string]: IngestionDtypeObjectType;
+    };
+}
+
+export interface IngestionDtypeObjectType {
+    name: string;
+    types: { [column in UploadColumnTypes]: number };
+    nullable: boolean;
+    type_guessed: UploadColumnTypes;
 }
 
 export const ingestFile = (file: FormData, configs: any) => {
