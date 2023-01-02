@@ -82,6 +82,28 @@ export default function DataTable(props: DataTableProps) {
 
     return (
         <Box>
+            <TablePagination
+                rowsPerPageOptions={[50, 100, 150, 200]}
+                component="div"
+                count={props.data.content_body.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={(e: unknown, newPage: number) => setPage(newPage)}
+                onRowsPerPageChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setRowsPerPage(parseInt(e.target.value, 10));
+                    setPage(0);
+                }}
+                sx={{
+                    fontSize: `calc(0.5rem + 0.3vw)`,
+                    '.MuiTablePagination-selectLabel': {
+                        fontSize: `calc(0.5rem + 0.3vw)`,
+                    },
+                    '.MuiTablePagination-displayedRows': {
+                        fontSize: `calc(0.5rem + 0.3vw)`,
+                    },
+                }}
+                style={{ padding: 0, margin: 0 }}
+            />
             <S.StyledTableContainer>
                 <Table stickyHeader={props.stickyHeader}>
                     <DataTableHead
@@ -151,27 +173,6 @@ export default function DataTable(props: DataTableProps) {
                     </TableBody>
                 </Table>
             </S.StyledTableContainer>
-            <TablePagination
-                rowsPerPageOptions={[50, 100, 150, 200]}
-                component="div"
-                count={props.data.content_body.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={(e: unknown, newPage: number) => setPage(newPage)}
-                onRowsPerPageChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setRowsPerPage(parseInt(e.target.value, 10));
-                    setPage(0);
-                }}
-                sx={{
-                    fontSize: `calc(0.5rem + 0.3vw)`,
-                    '.MuiTablePagination-selectLabel': {
-                        fontSize: `calc(0.5rem + 0.3vw)`,
-                    },
-                    '.MuiTablePagination-displayedRows': {
-                        fontSize: `calc(0.5rem + 0.3vw)`,
-                    },
-                }}
-            />
         </Box>
     );
 }
