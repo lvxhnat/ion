@@ -17,9 +17,6 @@ export const RightPanel = styled('div')(({ theme }) => ({
 
 export const ClockWrapper = styled('div')(({ theme }) => ({
     width: '100%',
-    padding: 15,
-    paddingLeft: 0,
-    paddingRight: 0,
 }));
 
 export const TimeIndicator = styled('div')(({ theme }) => ({
@@ -42,7 +39,7 @@ export const WeatherWrapper = styled('div')(({ theme }) => ({
 }));
 
 export const WeatherTextWrapper = styled('div')(({ theme }) => ({
-    minHeight: 30,
+    minHeight: 10,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -75,7 +72,7 @@ export const ICWidgetWrapper = styled(Grid)(({ theme }) => ({
 }));
 
 export const ICObjectWrapper3 = styled(Grid)(({ theme }) => ({
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
         display: 'none',
     },
 }));
@@ -87,14 +84,14 @@ export const ICObjectWrapper2 = styled(Grid)(({ theme }) => ({
 }));
 
 export const IconWrapper = styled('div')(({ theme }) => ({
-    height: 30,
-    fontSize: 30,
+    height: 15,
+    fontSize: 20,
 }));
 
 export const IconObjectWrapper = styled('div')(({ theme }) => ({
     height: '100%',
     textAlign: 'center',
-    padding: 10,
+    padding: 0,
 }));
 
 export const TempWrapper = styled('div')(({ theme }) => ({

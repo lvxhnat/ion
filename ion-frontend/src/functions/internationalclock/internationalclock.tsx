@@ -46,9 +46,9 @@ export default function InternationalClock(props: { timeZoneName: string }) {
             <S.WeatherTextWrapper>
                 <Typography
                     noWrap
-                    variant="h3"
+                    variant="h4"
                     align="left"
-                    sx={{ color: ColorsEnum.coolgray4, paddingLeft: 1, paddingRight: 1 }}
+                    sx={{ color: ColorsEnum.coolgray4, padding: 1 }}
                 >
                     {weatherData ? capitalizeString(weatherData.weather_condition) : null}
                 </Typography>
@@ -57,7 +57,7 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                 {weatherData && !weatherLoading ? (
                     <>
                         <S.LeftWeatherWrapper>
-                            <Typography variant="h2" align="center">
+                            <Typography variant="h3" align="center">
                                 {`${Math.round(weatherData.temp)}°C`}
                             </Typography>
                         </S.LeftWeatherWrapper>
@@ -92,7 +92,7 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                         {' '}
                         <WiStrongWind />{' '}
                     </S.IconWrapper>
-                    <Typography sx={{ fontSize: 10 }} variant="body2" align="center" component="p">
+                    <Typography variant="overline" align="center" component="p">
                         {weatherData ? Math.round(weatherData.wind_speed) : null} KMPH
                     </Typography>
                 </S.IconObjectWrapper>
@@ -101,33 +101,31 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                         {' '}
                         <WiRaindrop />{' '}
                     </S.IconWrapper>
-                    <Typography sx={{ fontSize: 10 }} variant="body2" align="center" component="p">
+                    <Typography variant="overline" align="center" component="p">
                         {weatherData ? weatherData.humidity : null} %
                     </Typography>
                 </S.IconObjectWrapper>
                 <S.IconObjectWrapper>
-                    <S.TempWrapper>
-                        <Typography
-                            variant="body2"
-                            align="center"
-                            component="p"
-                            sx={{ fontSize: 9, marginTop: -0.8, position: 'absolute' }}
-                        >
-                            {weatherData ? Math.round(weatherData.temp_max) : null} °C
-                        </Typography>
-                        <S.IconWrapper>
-                            {' '}
-                            <WiThermometer />{' '}
-                        </S.IconWrapper>
-                        <Typography
-                            variant="body2"
-                            align="center"
-                            component="p"
-                            sx={{ fontSize: 9, marginTop: 3.6, position: 'absolute' }}
-                        >
-                            {weatherData ? Math.round(weatherData.temp_min) : null} °C
-                        </Typography>
-                    </S.TempWrapper>
+                    <Typography
+                        variant="overline"
+                        align="center"
+                        component="p"
+                        sx={{ marginTop: -2, marginLeft: 2, position: 'absolute' }}
+                    >
+                        {weatherData ? Math.round(weatherData.temp_max) : null} °C
+                    </Typography>
+                    <S.IconWrapper style={{ marginBottom: 2 }}>
+                        {' '}
+                        <WiThermometer />{' '}
+                    </S.IconWrapper>
+                    <Typography
+                        variant="overline"
+                        align="center"
+                        component="p"
+                        sx={{ marginTop: -1, marginLeft: 2, position: 'absolute' }}
+                    >
+                        {weatherData ? Math.round(weatherData.temp_min) : null} °C
+                    </Typography>
                 </S.IconObjectWrapper>
             </S.WeatherTextWrapper>
         </S.ClockWrapper>
