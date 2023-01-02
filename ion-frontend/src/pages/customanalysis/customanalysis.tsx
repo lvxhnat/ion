@@ -1,41 +1,19 @@
 import * as React from 'react';
-import { styled } from '@mui/system';
+import * as S from './style';
 
+import { FaDatabase } from 'react-icons/fa';
 import CssBaseline from '@mui/material/CssBaseline';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-
-import StorageIcon from '@mui/icons-material/Storage';
+import WindowIcon from '@mui/icons-material/Window';
 
 import Header from 'components/Header';
 import Upload from './upload';
+import Sheet from './sheet';
 
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
     value: number;
 }
-
-interface StyledTabProps {
-    label: string;
-    [prop: string]: any;
-}
-
-const StyledTab = styled((props: StyledTabProps) => <Tab disableRipple {...props} />)(
-    ({ theme }) => ({
-        textTransform: 'none',
-        fontWeight: 300,
-        fontSize: 15,
-        '&.Mui-selected': {
-            color: '#fff',
-        },
-        '&.Mui-focusVisible': {
-            backgroundColor: 'rgba(100, 95, 228, 0.32)',
-        },
-        padding: 10,
-    })
-);
 
 function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
@@ -64,32 +42,25 @@ export default function CustomAnalysis() {
         <>
             <CssBaseline />
             <Header />
-            <Tabs
-                value={value}
-                onChange={handleChange}
-                style={{
-                    height: 65,
-                    padding: 10,
-                    paddingTop: 0,
-                }}
-            >
-                <StyledTab
-                    icon={<StorageIcon fontSize="small" />}
-                    iconPosition="start"
+            <S.Tabs>
+                <S.Tab
+                    selected={value === 0}
+                    onClick={(e: React.SyntheticEvent) => handleChange(e, 0)}
+                    icon={<FaDatabase />}
                     label="Data Source"
-                    sx={{ padding: 0 }}
                 />
-                <StyledTab label="Item Two" />
-                <StyledTab label="Item Three" />
-            </Tabs>
+                <S.Tab
+                    selected={value === 1}
+                    onClick={(e: React.SyntheticEvent) => handleChange(e, 1)}
+                    icon={<WindowIcon fontSize="small" />}
+                    label="Dashboard"
+                />
+            </S.Tabs>
             <TabPanel value={value} index={0}>
                 <Upload />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Item Two
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                Item Three
+                <Sheet />
             </TabPanel>
         </>
     );

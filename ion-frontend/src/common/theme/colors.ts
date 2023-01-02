@@ -1,6 +1,6 @@
 // https://colordesigner.io/gradient-generator
 export enum ColorsEnum {
-    primary = '#FF5208',
+    primary = '#ff9b00',
     secondary = '#FFBAAB',
     success = '#85B899',
     beer = '#FF9B00',

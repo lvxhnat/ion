@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as S from './style';
 
-import { DataTableProps } from './type';
+import { DataTableHeaderDefinition, DataTableProps } from './type';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -39,11 +39,11 @@ export default function DataTable(props: DataTableProps) {
     const [page, setPage] = React.useState(0);
     const [order, setOrder] = React.useState<'asc' | 'desc'>('asc');
     const [cellSelected, setCellSelected] = React.useState<string>('');
-    const [selected, setSelected] = React.useState<readonly string[]>([]);
-    const [orderBy, setOrderBy] = React.useState<any>(props.rows[0].id);
+    const [selected, setSelected] = React.useState<readonly number[]>([]);
+    const [orderBy, setOrderBy] = React.useState<any>(props.data.content_body[0].id);
 
     const [rowsPerPage, setRowsPerPage] = React.useState<number>(
-        props.rowsPerPage ? props.rowsPerPage : 10
+        props.rowsPerPage ? props.rowsPerPage : 25
     );
 
     function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -67,7 +67,7 @@ export default function DataTable(props: DataTableProps) {
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
-            const newSelected = props.rows.map(n => n.id);
+            const newSelected = props.data.content_body.map(n => n.id);
             setSelected(newSelected);
             return;
         }
@@ -91,13 +91,13 @@ export default function DataTable(props: DataTableProps) {
                         orderBy={orderBy}
                         onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
-                        rowCount={props.rows.length}
+                        rowCount={props.data.content_body.length}
                     />
                     <TableBody>
-                        {props.rows
+                        {props.data.content_body
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .sort(getComparator(order, orderBy))
-                            .map((row, row_index: number) => (
+                            .map((row: { id: number; [col: string]: any }, row_index: number) => (
                                 <TableRow
                                     hover
                                     role="checkbox"
@@ -122,31 +122,39 @@ export default function DataTable(props: DataTableProps) {
                                             size="small"
                                         />
                                     </StyledTableCell>
-                                    {props.columns.map((entry, column_index: number) => {
-                                        return (
-                                            <DataTableCell
-                                                id={`${row_index}-${column_index}`}
-                                                selected={
-                                                    cellSelected === `${row_index}-${column_index}`
-                                                }
-                                                onClick={() => {
-                                                    setCellSelected(`${row_index}-${column_index}`);
-                                                }}
-                                                key={`dataTableBody_${entry.headerName}_${row_index}`}
-                                            >
-                                                {row[entry.headerName]}
-                                            </DataTableCell>
-                                        );
-                                    })}
+                                    {props.data.content_header.map(
+                                        (
+                                            entry: DataTableHeaderDefinition,
+                                            column_index: number
+                                        ) => {
+                                            return (
+                                                <DataTableCell
+                                                    id={`${row_index}-${column_index}`}
+                                                    selected={
+                                                        cellSelected ===
+                                                        `${row_index}-${column_index}`
+                                                    }
+                                                    onClick={() => {
+                                                        setCellSelected(
+                                                            `${row_index}-${column_index}`
+                                                        );
+                                                    }}
+                                                    key={`dataTableBody_${entry.headerName}_${row_index}`}
+                                                >
+                                                    {row[entry.headerName]}
+                                                </DataTableCell>
+                                            );
+                                        }
+                                    )}
                                 </TableRow>
                             ))}
                     </TableBody>
                 </Table>
             </S.StyledTableContainer>
             <TablePagination
-                rowsPerPageOptions={[25, 50, 100]}
+                rowsPerPageOptions={[50, 100, 150, 200]}
                 component="div"
-                count={props.rows.length}
+                count={props.data.content_body.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={(e: unknown, newPage: number) => setPage(newPage)}

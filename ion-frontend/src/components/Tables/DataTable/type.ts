@@ -1,16 +1,13 @@
+import { Modify } from 'common/types';
+import { IngestionDataType } from 'data/ingestion/ingestion';
+
 export interface DataTableProps {
-    rows: readonly DataTableRowDefinition[];
-    columns: DataTableHeaderDefinition[];
+    data: UploadDataType;
     stickyHeader?: boolean | undefined;
     pageSize?: number | undefined;
     rowsPerPage?: number | undefined;
     rowHeight?: number | undefined;
     defaultColumnWidth?: number | undefined;
-}
-
-interface DataTableRowDefinition {
-    id: string;
-    [column: string]: any;
 }
 
 export interface DataTableCellProps {
@@ -38,3 +35,13 @@ export interface DataTableHeaderDefinition {
     width?: number | undefined;
     description?: string | undefined;
 }
+
+// The data we store in our local state object
+export type UploadColumnTypes = 'DATETIME' | 'INT' | 'TEXT' | 'FLOAT' | 'BLANK';
+export type UploadDataType = Modify<
+    IngestionDataType,
+    {
+        content_header: DataTableHeaderDefinition[];
+        content_body: { id: number; [col: string]: any }[];
+    }
+>;

@@ -3,7 +3,7 @@ import TableContainer from '@mui/material/TableContainer';
 
 export const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
     width: '100%',
-    maxHeight: '75vh',
+    maxHeight: '70vh',
     overflowY: 'scroll',
     '&::-webkit-scrollbar': { width: 0 },
 }));
