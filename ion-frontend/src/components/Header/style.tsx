@@ -5,7 +5,6 @@ export const HeaderPanel = styled('div')(({ theme }) => ({
     marginLeft: 'auto',
     display: 'flex',
     alignItems: 'center',
-    height: '100%',
     width: '100%',
     gap: theme.spacing(1),
 }));

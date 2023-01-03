@@ -7,12 +7,11 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
 import DataTableHead from './DataTableHead';
-import Typography from '@mui/material/Typography';
-import TablePagination from '@mui/material/TablePagination';
 import Box from '@mui/material/Box';
 import DataTableCell from './DataTableCell';
+import DataTableEnhancedHeader from './DataTableEnhancedHeader';
+import { useUploadPage } from 'store/customanalysis/customanalysis';
 
 interface TableCellProps {
     [x: string]: any;
@@ -36,15 +35,11 @@ export const StyledTableCell: React.FC<TableCellProps> = props => {
 };
 
 export default function DataTable(props: DataTableProps) {
-    const [page, setPage] = React.useState(0);
+    const [page] = useUploadPage();
     const [order, setOrder] = React.useState<'asc' | 'desc'>('asc');
     const [cellSelected, setCellSelected] = React.useState<string>('');
-    const [selected, setSelected] = React.useState<readonly number[]>([]);
+    const [columnSelected, setColumnSelected] = React.useState<number>();
     const [orderBy, setOrderBy] = React.useState<any>(props.data.content_body[0].id);
-
-    const [rowsPerPage, setRowsPerPage] = React.useState<number>(
-        props.rowsPerPage ? props.rowsPerPage : 25
-    );
 
     function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
         if (b[orderBy] < a[orderBy]) {
@@ -65,15 +60,6 @@ export default function DataTable(props: DataTableProps) {
             : (a, b) => -descendingComparator(a, b, orderBy);
     }
 
-    const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) {
-            const newSelected = props.data.content_body.map(n => n.id);
-            setSelected(newSelected);
-            return;
-        }
-        setSelected([]);
-    };
-
     const handleRequestSort = (_: React.MouseEvent<unknown>, property: any) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -81,43 +67,23 @@ export default function DataTable(props: DataTableProps) {
     };
 
     return (
-        <Box>
-            <TablePagination
-                rowsPerPageOptions={[50, 100, 150, 200]}
-                component="div"
-                count={props.data.content_body.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={(e: unknown, newPage: number) => setPage(newPage)}
-                onRowsPerPageChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setRowsPerPage(parseInt(e.target.value, 10));
-                    setPage(0);
-                }}
-                sx={{
-                    fontSize: `calc(0.5rem + 0.3vw)`,
-                    '.MuiTablePagination-selectLabel': {
-                        fontSize: `calc(0.5rem + 0.3vw)`,
-                    },
-                    '.MuiTablePagination-displayedRows': {
-                        fontSize: `calc(0.5rem + 0.3vw)`,
-                    },
-                }}
-                style={{ padding: 0, margin: 0 }}
+        <>
+            <DataTableEnhancedHeader
+                file_name={props.data.file_name}
+                data_length={props.data.content_body.length}
             />
             <S.StyledTableContainer>
                 <Table stickyHeader={props.stickyHeader}>
                     <DataTableHead
                         {...props}
-                        numSelected={selected.length}
                         order={order}
                         orderBy={orderBy}
-                        onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
-                        rowCount={props.data.content_body.length}
+                        setColumnSelect={setColumnSelected}
                     />
                     <TableBody>
                         {props.data.content_body
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .slice(page * 25, page * 25 + 25)
                             .sort(getComparator(order, orderBy))
                             .map((row: { id: number; [col: string]: any }, row_index: number) => (
                                 <TableRow
@@ -126,24 +92,6 @@ export default function DataTable(props: DataTableProps) {
                                     tabIndex={-1}
                                     key={`dataTableBody_${row_index}`}
                                 >
-                                    <StyledTableCell
-                                        align="left"
-                                        padding="checkbox"
-                                        key={`dataTableBody_checkBox_${row_index}`}
-                                    >
-                                        <Checkbox
-                                            color="primary"
-                                            checked={selected.includes(row.id)}
-                                            onChange={() => {
-                                                if (selected.includes(row.id))
-                                                    setSelected(
-                                                        selected.filter(id => id !== row.id)
-                                                    );
-                                                else setSelected([...selected, row.id]);
-                                            }}
-                                            size="small"
-                                        />
-                                    </StyledTableCell>
                                     {props.data.content_header.map(
                                         (
                                             entry: DataTableHeaderDefinition,
@@ -154,7 +102,8 @@ export default function DataTable(props: DataTableProps) {
                                                     id={`${row_index}-${column_index}`}
                                                     selected={
                                                         cellSelected ===
-                                                        `${row_index}-${column_index}`
+                                                            `${row_index}-${column_index}` ||
+                                                        columnSelected === column_index
                                                     }
                                                     onClick={() => {
                                                         setCellSelected(
@@ -173,6 +122,6 @@ export default function DataTable(props: DataTableProps) {
                     </TableBody>
                 </Table>
             </S.StyledTableContainer>
-        </Box>
+        </>
     );
 }

@@ -8,6 +8,7 @@ import WindowIcon from '@mui/icons-material/Window';
 import Header from 'components/Header';
 import Upload from './upload';
 import Sheet from './sheet';
+import Box from '@mui/material/Box';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -24,6 +25,7 @@ function TabPanel(props: TabPanelProps) {
             hidden={value !== index}
             id={`simple-tabpanel-${index}`}
             aria-labelledby={`simple-tab-${index}`}
+            style={{ height: '100%' }}
             {...other}
         >
             {children}
@@ -39,7 +41,7 @@ export default function CustomAnalysis() {
     };
 
     return (
-        <>
+        <Box height="100vh" display="flex" flexDirection="column">
             <CssBaseline />
             <Header />
             <S.Tabs>
@@ -62,6 +64,6 @@ export default function CustomAnalysis() {
             <TabPanel value={value} index={1}>
                 <Sheet />
             </TabPanel>
-        </>
+        </Box>
     );
 }

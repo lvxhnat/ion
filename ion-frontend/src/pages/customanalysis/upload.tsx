@@ -1,6 +1,8 @@
 import * as React from 'react';
+import * as S from './style';
 
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import LinearProgress from '@mui/material/LinearProgress';
 
 import DataTable from 'components/Tables/DataTable/DataTable';
@@ -8,6 +10,8 @@ import { DataTableHeaderDefinition, UploadDataType } from 'components/Tables/Dat
 import { ColorsEnum } from 'common/theme';
 import { useAnalysisStore } from 'store/customanalysis/customanalysis';
 import { ingestFile } from 'data/ingestion/ingestion';
+import DatasetFlow from './upload/DatasetFlow';
+import ColumnPanel from './upload/ColumnPanel';
 
 export default function Upload() {
     const [selectedFile, setSelectedFile] = React.useState<File>();
@@ -32,7 +36,6 @@ export default function Upload() {
             },
         }).then(res => {
             const data = res.data;
-            console.log(data);
             const formattedData: UploadDataType = {
                 file_name: '',
                 content_body: [],
@@ -63,29 +66,43 @@ export default function Upload() {
     };
 
     return (
-        <div>
+        <div style={{ display: 'flex', height: '100%', flexDirection: 'column', paddingTop: 10 }}>
+            <DatasetFlow />
             <div style={{ padding: 10 }}>
-                <input
-                    required
-                    type="file"
-                    accept=".csv, .parquet, .tsv, .json"
-                    onChange={handleFileChange}
-                />
+                <input required type="file" accept=".csv" onChange={handleFileChange} />
                 <button onClick={handleFileUploadClick}> Upload </button>
             </div>
             <div style={{ paddingTop: 5, paddingBottom: 10, color: ColorsEnum.bone }}>
                 <LinearProgress color="inherit" variant="determinate" value={progress} />
             </div>
-            <Box sx={{ height: 500, width: '100%' }}>
-                {fileData.content_body.length !== 0 ? (
-                    <DataTable
-                        stickyHeader
-                        data={fileData}
-                        rowsPerPage={50}
-                        defaultColumnWidth={100}
-                    />
-                ) : null}
-            </Box>
+            <Grid container>
+                <Grid item xs={10}>
+                    {fileData.content_body.length !== 0 ? (
+                        <DataTable
+                            stickyHeader
+                            data={fileData}
+                            rowsPerPage={50}
+                            defaultColumnWidth={100}
+                        />
+                    ) : null}
+                </Grid>
+                <Grid item xs={2}>
+                    <Box
+                        sx={{
+                            height: '60vh',
+                            overflowY: 'scroll',
+                            '&::-webkit-scrollbar': { width: 0 },
+                        }}
+                    >
+                        {fileData.content_header.map((entry: DataTableHeaderDefinition) => (
+                            <ColumnPanel
+                                name={entry.headerName}
+                                type={fileData.dtypes[entry.headerName].type_guessed}
+                            />
+                        ))}
+                    </Box>
+                </Grid>
+            </Grid>
         </div>
     );
 }
