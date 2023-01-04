@@ -2,11 +2,13 @@ import math
 import ast
 import datetime
 from dateutil import parser
-from typing import List, Literal
+from typing import List, Literal, Dict
 from pydantic import BaseModel
 
+ParseableTypes = Literal["DATETIME", "INT", "TEXT", "FLOAT", "BLANK"]
 
-def dataType(s) -> Literal["DATETIME", "INT", "TEXT", "FLOAT", "BLANK"]:
+
+def dataType(s) -> ParseableTypes:
 
     if type(s) == datetime.datetime:
         return "DATETIME"
@@ -43,14 +45,14 @@ def dataType(s) -> Literal["DATETIME", "INT", "TEXT", "FLOAT", "BLANK"]:
 
 class TypeDetectEntry(BaseModel):
     name: str
-    type: dict  # { type: count }
+    type: Dict[ParseableTypes, int]  # { type: count }
     nullable: bool
-    type_guessed: str
+    type_guessed: ParseableTypes
 
 
 def detect_types(
     cols: List[str], body: List[List[str]]
-) -> List[TypeDetectEntry]:
+) -> Dict[str, TypeDetectEntry]:
 
     dtypes = {}
 

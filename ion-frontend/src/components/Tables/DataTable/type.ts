@@ -19,13 +19,11 @@ export interface DataTableCellProps {
 }
 
 export interface DataTableHeaderProps extends DataTableProps {
-    numSelected: number;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof any) => void;
-    onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
     order: 'asc' | 'desc';
     orderBy: string;
-    rowCount: number;
     headerHeight?: number | undefined;
+    setColumnSelect: Function;
 }
 
 export interface DataTableHeaderDefinition {
@@ -37,7 +35,6 @@ export interface DataTableHeaderDefinition {
 }
 
 // The data we store in our local state object
-export type UploadColumnTypes = 'DATETIME' | 'INT' | 'TEXT' | 'FLOAT' | 'BLANK';
 export type UploadDataType = Modify<
     IngestionDataType,
     {

@@ -43,3 +43,16 @@ export const useAnalysisFieldsDeclared = (): [
     FieldsDeclaredType,
     (fieldsDeclared: FieldsDeclaredType) => void
 ] => analysisStore(state => [state.fieldsDeclared, state.setFieldsDeclared]);
+
+interface UploadStoreTypes {
+    page: number;
+    setPage: (page: number) => void;
+}
+
+export const uploadStore = create<UploadStoreTypes>(set => ({
+    page: 1,
+    setPage: (page: number) => set({ page: page }),
+}));
+
+export const useUploadPage = (): [number, (page: number) => void] =>
+    uploadStore(state => [state.page, state.setPage]);
