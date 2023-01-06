@@ -4,7 +4,7 @@ from datetime import datetime
 from prefect import task, flow
 from prefect.task_runners import ConcurrentTaskRunner
 
-from flows.shared import refresh_table
+from flows.shared import refresh_table, write_table
 
 from ion_clients.clients.usdept.treasury import treasury_info
 from ion_clients.clients.usdept.types.treasury import (
@@ -13,6 +13,7 @@ from ion_clients.clients.usdept.types.treasury import (
 )
 from ion_clients.services.postgres.actions import (
     table_exists,
+    order_exists,
 )
 from ion_clients.services.postgres.schemas.treasury import (
     USTreasuryYield,
@@ -54,5 +55,17 @@ def treasury_ingestion_flow(years: List[int], types: List[str]):
             treasury_item = ingest_treasury.submit(
                 year, treasury_type
             ).result()
-            refresh_table.submit(table_name, treasury_item).result()
-    
+            write_table.submit(table_name, treasury_item).result()
+
+
+if __name__ == "__main__":
+    treasury_ingestion_flow(
+        [2017, 2018, 2019, 2020, 2021, 2022],
+        [
+            "YIELD_CURVE",
+            "BILL_RATES",
+            "LONG_TERM_RATE",
+            "REAL_YIELD_CURVE",
+            "REAL_LONG_TERM",
+        ],
+    )

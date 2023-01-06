@@ -10,7 +10,7 @@ import { DataTableHeaderDefinition } from 'components/Tables/DataTable/type';
 import StyledPill from 'components/Pills';
 import { useAnalysisDragStore, useAnalysisStore } from 'store/customanalysis/customanalysis';
 
-export default function SidePanel(props: { className?: string }) {
+export default function SidePanel() {
     const [data] = useAnalysisStore();
     const setDragStarted = useAnalysisDragStore()[1];
     const [pillSelected, setPillSelected] = React.useState<number>();
@@ -21,32 +21,27 @@ export default function SidePanel(props: { className?: string }) {
     };
 
     return (
-        <S.SidePanel className={props.className}>
+        <S.SidePanel>
             <S.SidePanelRow>
                 <Typography variant="subtitle1">
                     <strong>Data</strong>
                 </Typography>
             </S.SidePanelRow>
             <Divider style={{ marginBottom: 3 }} />
-
-            <S.SidePanelRow dense displayHover>
-                {data.file_name ? (
-                    <>
-                        <FaDatabase />
-                        <Typography variant="subtitle2" style={{ padding: 5 }}>
-                            {data.file_name}
-                        </Typography>
-                    </>
-                ) : null}
-            </S.SidePanelRow>
-
+            {data.file_name ? (
+                <S.SidePanelRow dense displayHover>
+                    <FaDatabase />
+                    <Typography variant="subtitle2" style={{ padding: 5 }}>
+                        {data.file_name}
+                    </Typography>
+                </S.SidePanelRow>
+            ) : null}
             <S.SidePanelRow>
                 <Typography variant="subtitle1">
                     <strong>Tables</strong>
                 </Typography>
             </S.SidePanelRow>
             <Divider style={{ marginBottom: 3 }} />
-
             {data.content_header.map((col: DataTableHeaderDefinition, index: number) => (
                 <S.SidePanelRow key={`sidePanelRow_${index}`} dense>
                     <AbcIcon key={`panelIcon_${index}`} fontSize="small" />

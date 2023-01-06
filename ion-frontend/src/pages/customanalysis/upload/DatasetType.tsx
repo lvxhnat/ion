@@ -1,13 +1,14 @@
 import * as React from 'react';
 
-import { IntRange } from 'common/types';
-import { ColorsEnum } from 'common/theme';
-
 import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
-import { Grid } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import Grid from '@mui/material/Grid';
+
+import { IntRange } from 'common/types';
+import { ColorsEnum } from 'common/theme';
 import { typeIconHints, Types } from 'common/theme/components/icons';
 
 const ColorHint = (props: { color: any; text?: string }) => {
@@ -122,24 +123,26 @@ export default function ColumnPanel(props: { type: Types; name: string }) {
             </div>
             <CompositionBar first={90} second={10} />
             <Table>
-                {tableValues.map(entry => {
-                    if (entry.empty) {
-                        return (
-                            <TableRow>
-                                <TableCell colSpan={5} style={{ border: 0, padding: 5 }} />
-                            </TableRow>
-                        );
-                    } else {
-                        return (
-                            <TableRow>
-                                <StyledTableCell width={40}>{entry.prompt}</StyledTableCell>
-                                <StyledTableCell width={40}></StyledTableCell>
-                                <StyledTableCell width={10}>{entry.first}</StyledTableCell>
-                                <StyledTableCell width={10}>{entry.second}</StyledTableCell>
-                            </TableRow>
-                        );
-                    }
-                })}
+                <TableBody>
+                    {tableValues.map((entry, index) => {
+                        if (entry.empty) {
+                            return (
+                                <TableRow key={`emptyRow_${index}`}>
+                                    <TableCell colSpan={5} style={{ border: 0, padding: 5 }} />
+                                </TableRow>
+                            );
+                        } else {
+                            return (
+                                <TableRow key={`row${entry.prompt}_${index}`}>
+                                    <StyledTableCell width={40}>{entry.prompt}</StyledTableCell>
+                                    <StyledTableCell width={40}></StyledTableCell>
+                                    <StyledTableCell width={10}>{entry.first}</StyledTableCell>
+                                    <StyledTableCell width={10}>{entry.second}</StyledTableCell>
+                                </TableRow>
+                            );
+                        }
+                    })}
+                </TableBody>
             </Table>
         </Grid>
     );
