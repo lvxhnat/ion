@@ -6,17 +6,44 @@ import Box, { BoxProps } from '@mui/system/Box';
 
 export const Panel = styled('div')(({ theme }) => ({
     display: 'flex',
-    marginTop: 10,
+    height: '100%',
+    width: '100%',
+    gap: 10,
+}));
+
+export const PanelRow = styled('div')(({ theme }) => ({
+    width: '100%',
+    padding: `${theme.spacing(0.8)} ${theme.spacing(1)}`,
+    display: 'flex',
+    flexDirection: 'row',
+}));
+
+export const ConnectionFlag = styled(PanelRow)(({ theme }) => ({
+    display: 'block',
+    padding: `${theme.spacing(0.5)} ${theme.spacing(2)}`,
+    borderLeft: `3px solid ${ColorsEnum.beer}`,
+    backgroundColor: ColorsEnum.darkGrey,
+}));
+
+export const SelectableRow = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+    gap: 10,
+    '&:hover': {
+        backgroundColor: ColorsEnum.warmgray1,
+        cursor: 'pointer',
+    },
+    padding: `${theme.spacing(0.8)} ${theme.spacing(1.5)}`,
+    borderRadius: 2,
 }));
 
 export const SidePanel = styled('div')(({ theme }) => ({
     width: '15%',
-    minWidth: '13%',
-    maxWidth: '30%',
-    resize: 'horizontal',
     backgroundColor: ColorsEnum.darkGrey,
     border: `1px solid ${ColorsEnum.coolgray1}`,
     borderLeft: 'none',
+    height: '100%',
 }));
 
 export const SidePanelRow = (props: {
@@ -58,16 +85,13 @@ export const SidePanelRow = (props: {
     );
 };
 
-export const ResizingCursor = styled('div')(({ theme }) => ({
-    cursor: 'col-resize',
-    flexShrink: 0,
-    zIndex: 10,
-    width: '5px',
-}));
-
 export const MainPanel = styled('div')(({ theme }) => ({
     flexGrow: 1,
     gap: 5,
+}));
+
+export const MainPanelChartWrapper = styled('div')(({ theme }) => ({
+    width: '80%',
 }));
 
 export const TypeDeclarationWrapper = styled('div')(({ theme }) => ({
@@ -82,6 +106,7 @@ export const Tabs = (props: { children: any; [prop: string]: any }) => {
                 display: 'flex',
                 gap: 15,
                 paddingLeft: 10,
+                paddingBottom: 5,
             }}
             {...props}
         >

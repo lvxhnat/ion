@@ -26,6 +26,14 @@ def order_search(
     return session.query(TableSchema).filter(*filters).first()
 
 
+def order_exists(
+    TableSchema: Table,
+    filters: List,
+) -> dict:
+    with postgres.session_scope() as session:
+        return session.query(TableSchema).filter(*filters).exists()
+
+
 def order_query(
     TableSchema: Table,
     session: Session,
