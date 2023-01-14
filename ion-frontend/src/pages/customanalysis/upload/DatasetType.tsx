@@ -10,6 +10,7 @@ import Grid from '@mui/material/Grid';
 import { IntRange } from 'common/types';
 import { ColorsEnum } from 'common/theme';
 import { typeIconHints, Types } from 'common/theme/components/icons';
+import { useAnalysisStore } from 'store/customanalysis/customanalysis';
 
 const ColorHint = (props: { color: any; text?: string }) => {
     return (
@@ -62,7 +63,18 @@ const StyledTableCell = (props: { children?: any; width: number; [rest: string]:
     );
 };
 
-export default function ColumnPanel(props: { type: Types; name: string }) {
+/**
+ * Panel on the main table that indicates the type of columns
+ */
+export default function ColumnPanel(props: { name: string }) {
+    const [fileData] = useAnalysisStore();
+
+    let type: string = '';
+
+    if (fileData.dtypes[props.name]) {
+        type = fileData.dtypes[props.name].type_guessed;
+    }
+
     const numericValues = [
         { prompt: '', first: '', second: '', empty: true },
         {
@@ -109,7 +121,7 @@ export default function ColumnPanel(props: { type: Types; name: string }) {
 
     let tableValues;
 
-    if (props.type === 'TEXT' || props.type === 'DATETIME') {
+    if (type === 'TEXT' || type === 'DATETIME') {
         tableValues = textValues;
     } else {
         tableValues = numericValues;
@@ -117,9 +129,27 @@ export default function ColumnPanel(props: { type: Types; name: string }) {
 
     return (
         <Grid container style={{ padding: 5 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingBottom: 5 }}>
-                {typeIconHints[props.type]}
-                {props.name}
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 10,
+                    paddingBottom: 5,
+                    width: '100%',
+                }}
+            >
+                <Typography
+                    variant="h3"
+                    align="left"
+                    component="div"
+                    style={{ width: '100%', display: 'flex', gap: 5, alignItems: 'center' }}
+                >
+                    {type !== '' ? typeIconHints[type as Types] : null}
+                    {props.name}
+                </Typography>
+                <Typography variant="subtitle2" align="right">
+                    {type}
+                </Typography>
             </div>
             <CompositionBar first={90} second={10} />
             <Table>

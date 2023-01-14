@@ -4,11 +4,11 @@ import numpy as np
 from prefect import task, flow
 from prefect.task_runners import ConcurrentTaskRunner
 
-from flows.shared import refresh_table
+from data_engine.flows.shared import refresh_table
 
 from ion_clients.clients.common.area_latlon import geonames_info
 from ion_clients.clients.common.types.area_latlon import GeoNamesData
-from ion_clients.services.postgres.schemas.area_latlon import AreaLatLon
+from ion_clients.services.postgres.schemas.data.area_latlon import AreaLatLon
 
 
 @task

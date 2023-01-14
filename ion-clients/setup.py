@@ -41,7 +41,7 @@ framework_common = {
     "websockets==10.4",
 }
 
-base_dev_requirements = {
+dev_requirements = {
     "black==22.10.0",
     "pip-chill==1.0.1",
     "pre-commit==2.20.0",
@@ -51,6 +51,9 @@ base_dev_requirements = {
     "isort>=5.7.0",
     "mypy==0.991",
     "pytest>=6.2.2",
+    "pytest-testmon==1.4.2",
+    "pytest-asyncio==0.20.3",
+    "vulture==2.7",
 }
 
 setup(
@@ -67,5 +70,5 @@ setup(
     entry_points={"console_scripts": [f"{name}=ion_clients.entrypoints:main"]},
     python_requires=">=3.9",
     install_requires=list(base_requirements | framework_common),
-    extras_require={"dev": [*base_dev_requirements]},
+    extras_require={"dev": [*dev_requirements]},
 )

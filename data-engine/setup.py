@@ -1,12 +1,15 @@
 import re
 import pathlib
-from setuptools import setup, find_packages
+import setuptools
+from setuptools import setup
 
 name = "data_engine"
 here = pathlib.Path.absolute(pathlib.Path(__file__).resolve().parent)
 
 # get package version
-with open(pathlib.Path(here, "./__init__.py"), encoding="utf-8") as f:
+with open(
+    pathlib.Path(here, "./src/data_engine/__init__.py"), encoding="utf-8"
+) as f:
     result = re.search(r'__version__ = ["\']([^"\']+)', f.read())
 
     if not result:
@@ -35,8 +38,8 @@ setup(
     description="",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    package_dir={"": "./"},
-    packages=find_packages("src", exclude=["*tests"]),
+    package_dir={"": "src"},
+    packages=setuptools.find_namespace_packages(where="./src"),
     package_data={"data_engine": ["*.txt", "*.json", "*.preamble", "*.sql"]},
     install_requires=list(base_requirements),
     python_requires=">=3.9",

@@ -12,7 +12,6 @@ import ColumnPanel from './DatasetType';
 
 export default function MainTableView() {
     const [fileData] = useAnalysisStore();
-
     return (
         <div
             style={{
@@ -22,7 +21,7 @@ export default function MainTableView() {
                 paddingTop: 10,
             }}
         >
-            <DatasetFlow />
+            <DatasetFlow labels={fileData.file_name ? [fileData.file_name] : []} />
             <Grid container columns={15}>
                 <Grid item xs={11}>
                     {fileData.content_body.length !== 0 ? (
@@ -46,7 +45,6 @@ export default function MainTableView() {
                             <ColumnPanel
                                 key={`${entry.headerName}_columnPanel`}
                                 name={entry.headerName}
-                                type={fileData.dtypes[entry.headerName].type_guessed}
                             />
                         ))}
                     </Box>
