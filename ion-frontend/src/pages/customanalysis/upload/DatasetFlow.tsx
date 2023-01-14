@@ -1,47 +1,45 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import ReactFlow, { Background, applyNodeChanges, applyEdgeChanges, addEdge } from 'reactflow';
 import 'reactflow/dist/style.css';
 
-const initialNodes = [
-    {
-        id: '1',
-        data: { label: 'iteration.csv' },
-        position: { x: 100, y: 75 },
-        type: 'input',
-    },
-    {
-        id: '2',
-        data: { label: 'World' },
-        position: { x: 500, y: 75 },
-    },
-];
+export default function DatasetFlow(props: { labels: string[] }) {
+    const [nodes, setNodes] = useState<any>([]);
+    const [edges, setEdges] = useState<any>([]);
 
-const initialEdges: any = [];
-
-export default function DatasetFlow() {
-    const [nodes, setNodes] = useState(initialNodes);
-    const [edges, setEdges] = useState(initialEdges);
+    useEffect(() => {
+        setNodes(
+            props.labels.map((label: string, index: number) => {
+                return {
+                    id: index.toString(),
+                    data: { label: label },
+                    position: { x: 100, y: 75 },
+                    type: 'input',
+                };
+            })
+        );
+    }, [props.labels]);
 
     const onNodesChange = useCallback(
-        (changes: any) => setNodes(nds => applyNodeChanges(changes, nds)),
-        []
+        (changes: any) => setNodes((nds: any) => applyNodeChanges(changes, nds)),
+        [setNodes]
     );
+
     const onEdgesChange = useCallback(
         (changes: any) => setEdges((eds: any) => applyEdgeChanges(changes, eds)),
-        []
+        [setEdges]
     );
 
     const onConnect = useCallback(
         (params: any) => setEdges((eds: any) => addEdge(params, eds)),
-        []
+        [setEdges]
     );
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', width: '100%', flex: 1 }}>
             <ReactFlow
                 nodes={nodes}
-                onNodesChange={onNodesChange}
                 edges={edges}
+                onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
                 proOptions={{ hideAttribution: true }}

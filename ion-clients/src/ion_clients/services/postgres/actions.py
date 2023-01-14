@@ -1,6 +1,9 @@
 import uuid
+import warnings
 import pandas as pd
 from typing import List, Union
+
+import psycopg2
 
 from sqlalchemy import inspect, desc, Table
 from sqlalchemy.orm import Session
@@ -22,8 +25,12 @@ def order_search(
     TableSchema: Table,
     session: Session,
     filters: List,
+    first: bool = True,
 ) -> dict:
-    return session.query(TableSchema).filter(*filters).first()
+    if first:
+        return session.query(TableSchema).filter(*filters).first()
+    else: 
+        return session.query(TableSchema).filter(*filters).all()
 
 
 def order_exists(
@@ -39,12 +46,13 @@ def order_query(
     session: Session,
     col: InstrumentedAttribute,
     descending: bool = True,
+    limit: int = 50
 ) -> List[dict]:
 
     query = (
         session.query(TableSchema)
         .order_by(desc(col) if descending else col)
-        .limit(50)
+        .limit(limit)
     )
 
     return [
@@ -61,10 +69,31 @@ def table_exists(TableSchema) -> bool:
     return inspect(postgres_engine).has_table(TableSchema.__tablename__)
 
 
-def postgres_bulk_upsert(
+def initialise_table(TableSchema) -> bool:
+    # Create table if it does not exist
+    try:
+        if not table_exists(TableSchema):
+            TableSchema.__table__.create(postgres_engine)
+        return True
+    except psycopg2.OperationalError:
+        raise
+
+
+def drop_table(TableSchema):
+    if table_exists(TableSchema=TableSchema):
+        try:
+            TableSchema.__table__.drop()
+        except UnboundExecutionError:
+            TableSchema.__table__.drop(postgres_engine)
+    else:
+        warnings.warn(f"No {TableSchema.__tablename__} to drop.")
+
+
+def bulk_upsert(
+    session,
     TableSchema: Table,
     WriteObject: Union[List[dict], pd.DataFrame],
-    primary_key: str = "_date",
+    upsert_key: str = None,
 ):
     """Create table and update table if entry does not exist
 
@@ -81,8 +110,15 @@ def postgres_bulk_upsert(
     >>> postgres_bulk_upsert(AreaLatLon, df, primary_key=None)
 
     """
-    if isinstance(WriteObject, pd.DataFrame):
-        WriteObject = WriteObject.to_dict("records")
+
+    table_columns: List[str] = [
+        *map(lambda s: s.name, TableSchema.__table__.columns)
+    ]
+
+    if upsert_key and upsert_key not in table_columns:
+        raise ValueError(
+            f"{upsert_key} not found in {TableSchema.__tablename__}. Available columns are {TableSchema.__tablename__}"
+        )
 
     if not isinstance(WriteObject, list) or not isinstance(
         WriteObject[0], dict
@@ -91,55 +127,55 @@ def postgres_bulk_upsert(
             "You entered WriteObject of type {str(type(WriteObject))} which is not supported. Please Enter WriteObject of type List[dict] or pd.DataFrame!"
         )
 
-    uuid_exists: bool = "uuid" in WriteObject[0].keys()
-
-    with postgres.session_scope() as session:
+    if not table_exists(TableSchema):
         # Create table if it does not exist
-        if not table_exists(TableSchema):
-            TableSchema.__table__.create(postgres_engine)
-            # Bulk insert if the table does not exist
+        TableSchema.__table__.create(postgres_engine)
+        uuid_col_exists: bool = "uuid" in table_columns
 
-            objects: List[TableSchema] = []
-            for object in WriteObject:
-                if uuid_exists:
-                    del object["uuid"]
+        objects: List[TableSchema] = []
+
+        if isinstance(WriteObject, pd.DataFrame):
+            WriteObject = WriteObject.iterrows()
+
+        for object in WriteObject:
+            # If id column exists, and uuid is not in table schema, then we pass
+            if uuid_col_exists and object["uuid"] is None:
+                del object["uuid"]
                 objects.append(TableSchema(uuid=str(uuid.uuid4()), **object))
+            else:
+                if not upsert_key:
+                    warnings.warn(
+                        "No unique id column provided, or uuid detected in schema. Defaulting to writing without one."
+                    )
+                objects.append(TableSchema(**object))
 
-            session.bulk_save_objects(
-                [
-                    TableSchema(uuid=str(uuid.uuid4()), **object)
-                    for object in WriteObject
-                ]
+    else:
+
+        if upsert_key == "uuid":
+            warnings.warn(
+                "Upsert key provided is uuid, which is unlikely to be existing in the current entries. Function will still compare otherwise, but it is recommended an alternative key be provided."
             )
-        else:
-            # Check if entry exists in table
-            for object in WriteObject:
-                if primary_key and (
-                    session.query(TableSchema.uuid)
-                    .filter_by(_date=object[primary_key])
-                    .first()
-                    is not None
-                ):
-                    pass
-                else:
-                    if uuid_exists:
-                        del object["uuid"]
-                    session.add(TableSchema(uuid=str(uuid.uuid4()), **object))
-        return
+
+        col_attr = getattr(TableSchema, upsert_key)
+        entries_existing = (
+            session.query(col_attr)
+            .filter(col_attr.in_([*map(lambda s: s[upsert_key], WriteObject)]))
+            .all()
+        )
+
+        upsert_entries = []
+        for object in WriteObject:
+            # Check if the entry is already in the database. If not, create tableschema
+            if not object[upsert_key] in entries_existing:
+                upsert_entries.append(TableSchema(**object))
+
+    session.bulk_save_objects(objects)
+
+    return
 
 
-def postgres_bulk_refresh(
-    TableSchema: Table, WriteObject: Union[List[dict], pd.DataFrame]
+def bulk_refresh(
+    session, TableSchema: Table, WriteObject: Union[List[dict], pd.DataFrame]
 ):
-    try:
-        if table_exists(TableSchema):
-            TableSchema.__table__.drop()
-    except UnboundExecutionError:
-        TableSchema.__table__.drop(postgres_engine)
-    postgres_bulk_upsert(TableSchema, WriteObject)
-
-
-if __name__ == "__main__":
-    from ion_clients.services.postgres.schemas.area_latlon import AreaLatLon
-
-    print(type(AreaLatLon.uuid), AreaLatLon.uuid)
+    drop_table(TableSchema)
+    bulk_upsert(session, TableSchema, WriteObject)

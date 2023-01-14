@@ -1,11 +1,17 @@
 import uvicorn
+import inspect
 from typing import List
+
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 
 from data_ingestion.app.core.config import settings
 from data_ingestion.app.api.api_v1 import api
 from data_ingestion.app.clients.oanda.instruments import stream_oanda_live_data
+
+from ion_clients.services.postgres.schemas.base import Base
+from ion_clients.services.postgres.schemas.infra import ingestion
+from ion_clients.services.postgres.actions import initialise_table
 
 app = FastAPI(
     title="data-ingestion",
@@ -28,6 +34,17 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.on_event("startup")
+async def intiialise_database_infra():
+    """Initialise tables in Postgres if does not exist already"""
+    for _, cls in inspect.getmembers(
+        ingestion, lambda member: inspect.isclass(member)
+    ):
+        # Check for table attribute excludes the direct parent class
+        if issubclass(cls, Base) and hasattr(cls, "__table__"):
+            initialise_table(cls)
 
 
 @app.get("/ping", include_in_schema=False)

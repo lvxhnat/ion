@@ -8,7 +8,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { ImTable2 } from 'react-icons/im';
 
 import { ColorsEnum } from 'common/theme';
-import { ingestFile } from 'data/ingestion/ingestion';
+import { ingestFile, retrieveUserUploads } from 'data/ingestion/ingestion';
 import { useAnalysisStore } from 'store/customanalysis/customanalysis';
 import { DataTableHeaderDefinition, UploadDataType } from 'components/Tables/DataTable/type';
 
@@ -16,20 +16,36 @@ export default function MainUploadView() {
     const [_, setFileData] = useAnalysisStore();
     const [progress, setProgress] = React.useState<number>(0);
     const [fileMetaData, setFileMetaData] = React.useState<{
-        fileName: string;
-        fileType: string;
-        fileSize: number;
-        lastModified: number;
-    }>();
+        [fileName: string]: {
+            fileType: string;
+            fileSize: number;
+            lastModified: string;
+        };
+    }>({});
+    const [selectedFiles, setSelectedFiles] = React.useState<string[]>([]);
+
+    React.useEffect(() => {
+        retrieveUserUploads('2100e95a-14fa-4716-a056-2aad204994f2').then(data => {
+            data.data.map(entry => {
+                fileMetaData[entry.file_name] = {
+                    fileType: entry.file_format,
+                    fileSize: entry.file_size,
+                    lastModified: entry.upload_date,
+                };
+            });
+        });
+    }, []);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const selectedFile = e.target.files[0];
             setFileMetaData({
-                fileName: selectedFile.name,
-                fileType: selectedFile.type,
-                fileSize: selectedFile.size,
-                lastModified: selectedFile.lastModified,
+                [selectedFile.name]: {
+                    fileType: selectedFile.type,
+                    fileSize: selectedFile.size,
+                    lastModified: 'TEST', // selectedFile.lastModified <- number
+                },
+                ...fileMetaData,
             });
 
             let formData = new FormData();
@@ -106,38 +122,48 @@ export default function MainUploadView() {
                     value={progress}
                 />
             </S.PanelRow>
-            {fileMetaData ? (
-                <S.PanelRow>
-                    <S.ConnectionFlag>
-                        <Typography component="div" variant="subtitle2">
-                            {fileMetaData.fileName}
-                            &nbsp;
-                            {fileMetaData
-                                ? `(${(fileMetaData.fileSize / 1000000).toFixed(2)}MB)`
-                                : null}
-                        </Typography>
-                        <Typography
-                            variant="subtitle2"
-                            component="div"
-                            sx={{ color: ColorsEnum.coolgray3 }}
-                        >
-                            {fileMetaData.fileType}
-                        </Typography>
-                    </S.ConnectionFlag>
-                </S.PanelRow>
-            ) : null}
+
+            {selectedFiles.map((column: string) => {
+                const selectedFileMetaData = fileMetaData[column];
+
+                return (
+                    <S.PanelRow>
+                        <S.ConnectionFlag>
+                            <Typography component="div" variant="subtitle2">
+                                <>
+                                    {fileMetaData.fileName} &nbsp;{' '}
+                                    {fileMetaData
+                                        ? `(${(selectedFileMetaData.fileSize / 1000000).toFixed(
+                                              2
+                                          )}MB)`
+                                        : null}
+                                </>
+                            </Typography>
+                            <Typography
+                                variant="subtitle2"
+                                component="div"
+                                sx={{ color: ColorsEnum.coolgray3 }}
+                            >
+                                {selectedFileMetaData.fileType}
+                            </Typography>
+                        </S.ConnectionFlag>
+                    </S.PanelRow>
+                );
+            })}
+
             <Divider sx={{ paddingTop: 1 }} />
+
             <Typography variant="subtitle1" sx={{ paddingLeft: 1, paddingTop: 1 }}>
                 <strong>Files</strong>
             </Typography>
-            {fileMetaData ? (
-                <S.PanelRow>
+            {Object.keys(fileMetaData).map((filename: string) => (
+                <S.PanelRow key={filename}>
                     <S.SelectableRow>
                         <ImTable2 />
-                        <Typography variant="subtitle2">{fileMetaData.fileName}</Typography>
+                        <Typography variant="subtitle2">{filename}</Typography>
                     </S.SelectableRow>
                 </S.PanelRow>
-            ) : null}
+            ))}
         </S.Panel>
     );
 }

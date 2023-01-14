@@ -4,7 +4,7 @@ from datetime import datetime
 from prefect import task, flow
 from prefect.task_runners import ConcurrentTaskRunner
 
-from flows.shared import refresh_table, write_table
+from data_engine.flows.shared import refresh_table, write_table
 
 from ion_clients.clients.usdept.treasury import treasury_info
 from ion_clients.clients.usdept.types.treasury import (
@@ -13,9 +13,8 @@ from ion_clients.clients.usdept.types.treasury import (
 )
 from ion_clients.services.postgres.actions import (
     table_exists,
-    order_exists,
 )
-from ion_clients.services.postgres.schemas.treasury import (
+from ion_clients.services.postgres.schemas.data.treasury import (
     USTreasuryYield,
     USBillRates,
     USLongTermRates,

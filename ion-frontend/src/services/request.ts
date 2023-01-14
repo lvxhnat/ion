@@ -3,7 +3,7 @@ import { ENDPOINTS } from 'common/constant/endpoints';
 
 const dataIngestionRequest = axios.create({
     baseURL: ENDPOINTS.BASEURLS.DATA_INGESTION,
-    timeout: 10000,
+    timeout: 60000,
     headers: {
         Authorization: 'null',
         'Content-Type': 'application/json',

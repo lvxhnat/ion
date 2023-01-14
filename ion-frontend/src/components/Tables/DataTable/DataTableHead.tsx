@@ -30,7 +30,11 @@ export default function DataTableHead(props: DataTableHeaderProps) {
             <TableRow>
                 {columns.map((column: DataTableHeaderDefinition, index: number) => {
                     const allTypes: IngestionDtypeObjectType = props.data.dtypes[column.headerName];
-                    const nullableTag: string = allTypes.nullable ? 'NULLABLE' : 'NOT NULLABLE';
+                    let nullableTag: string | undefined;
+
+                    if (allTypes) {
+                        nullableTag = allTypes.nullable ? 'NULLABLE' : 'NOT NULLABLE';
+                    }
 
                     return (
                         <StyledTableCell
@@ -64,7 +68,8 @@ export default function DataTableHead(props: DataTableHeaderProps) {
                                     paddingTop: 5,
                                 }}
                             >
-                                {typeIconHints[allTypes.type_guessed]} {allTypes.type_guessed}
+                                {allTypes ? typeIconHints[allTypes.type_guessed] : null}
+                                {allTypes ? allTypes.type_guessed : null}
                             </Typography>
                             <Typography variant="subtitle2" style={{ color: ColorsEnum.coolgray1 }}>
                                 {nullableTag}

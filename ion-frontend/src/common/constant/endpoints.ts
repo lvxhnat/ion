@@ -4,6 +4,7 @@ export const ENDPOINTS = {
     },
     PRIVATE: {
         INGEST_DATA: 'ingestion/upload',
+        QUERY_USER_UPLOADS: 'ingestion/retrieveUserUploads',
         SEARCH_FUNCTIONS: 'autocomplete/securityFunctions',
         OANDA_FX_STREAMING_ENDPOINT: 'oanda/ws',
         OANDA_FX_HISTORICAL_ENDPOINT: 'candles/oanda/candlesHistorical',

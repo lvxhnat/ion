@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from ion_clients.services.postgres.schemas import (
+from ion_clients.services.postgres.schemas.data import (
     treasury,
     area_latlon,
 )
