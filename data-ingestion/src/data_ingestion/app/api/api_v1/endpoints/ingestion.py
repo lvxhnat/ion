@@ -3,7 +3,10 @@ from typing import Dict, List
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, UploadFile, File, Depends
 
-from data_ingestion.app.api.api_v1.models.ingestion import UserUploadQuery
+from data_ingestion.app.api.api_v1.models.ingestion import (
+    UserUploadQuery, 
+    UserUploadFile,
+)
 
 from ion_clients.core.utils.type_detect import detect_types, TypeDetectEntry
 from ion_clients.services.postgres.mapper import initialise_dynamic_table
@@ -33,7 +36,7 @@ async def retrieve_files(
 
 @router.post("/upload")
 async def upload_file(
-    file: UploadFile = File(...), session: Session = Depends(get_session)
+    params: UserUploadFile, file: UploadFile = File(...), session: Session = Depends(get_session)
 ):
     if file.content_type == "text/csv":
 
@@ -49,13 +52,13 @@ async def upload_file(
         dtypes: Dict[str, TypeDetectEntry] = detect_types(header, content)
 
         # Creates a table in our database
-        table_id: str = initialise_dynamic_table(
-            session, schema=dtypes, data=content
+        initialise_dynamic_table(
+            session, params.table_id, schema=dtypes, data=content
         )
 
         # Insert into user table
         entry = UserUploadTables(
-            table_id=table_id,
+            table_id=params.table_id,
             user_id="2100e95a-14fa-4716-a056-2aad204994f2",
             file_name=file.filename,
             file_size=file_size,

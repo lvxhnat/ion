@@ -11,6 +11,12 @@ export const Panel = styled('div')(({ theme }) => ({
     gap: 10,
 }));
 
+export const FilePanel = styled('div')(({ theme }) => ({
+    gap: 0,
+    height: '100%',
+    padding: theme.spacing(0.5),
+}));
+
 export const PanelRow = styled('div')(({ theme }) => ({
     width: '100%',
     padding: `${theme.spacing(0.8)} ${theme.spacing(1)}`,
