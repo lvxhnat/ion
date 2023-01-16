@@ -18,6 +18,7 @@ from ion_clients.core.utils.type_detect import ParseableTypes, TypeDetectEntry
 
 def initialise_dynamic_table(
     session,
+    table_id: str,
     schema: Dict[str, TypeDetectEntry],
     data: List[List[Any]],
 ):
@@ -62,8 +63,6 @@ def initialise_dynamic_table(
         table_columns.append(
             Column("uuid", String, primary_key=True, nullable=False)
         )
-
-    table_id = uuid.uuid4().hex
 
     table_schema = Table(
         table_id,

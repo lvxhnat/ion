@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as S from '../style';
 
+import { v4 as uuidv4 } from 'uuid';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -12,37 +13,46 @@ import { ingestFile, retrieveUserUploads } from 'data/ingestion/ingestion';
 import { useAnalysisStore } from 'store/customanalysis/customanalysis';
 import { DataTableHeaderDefinition, UploadDataType } from 'components/Tables/DataTable/type';
 
+interface MetaData {
+    [fileName: string]: {
+        fileType: string;
+        fileSize: number;
+        lastModified: string;
+        tableId: string;
+    };
+}
+
 export default function MainUploadView() {
     const [_, setFileData] = useAnalysisStore();
     const [progress, setProgress] = React.useState<number>(0);
-    const [fileMetaData, setFileMetaData] = React.useState<{
-        [fileName: string]: {
-            fileType: string;
-            fileSize: number;
-            lastModified: string;
-        };
-    }>({});
+    const [fileMetaData, setFileMetaData] = React.useState<MetaData>({});
     const [selectedFiles, setSelectedFiles] = React.useState<string[]>([]);
 
     React.useEffect(() => {
+        const newFileMetaData: MetaData = {};
+        // Load initial user uploads into our panel, string passed is user id
         retrieveUserUploads('2100e95a-14fa-4716-a056-2aad204994f2').then(data => {
             data.data.map(entry => {
-                fileMetaData[entry.file_name] = {
+                newFileMetaData[entry.file_name] = {
                     fileType: entry.file_format,
                     fileSize: entry.file_size,
+                    tableId: entry.table_id,
                     lastModified: entry.upload_date,
                 };
             });
+            setFileMetaData(newFileMetaData);
         });
     }, []);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const selectedFile = e.target.files[0];
+            const generated_table_id: string = uuidv4();
             setFileMetaData({
                 [selectedFile.name]: {
                     fileType: selectedFile.type,
                     fileSize: selectedFile.size,
+                    tableId: generated_table_id,
                     lastModified: 'TEST', // selectedFile.lastModified <- number
                 },
                 ...fileMetaData,
@@ -52,6 +62,7 @@ export default function MainUploadView() {
             formData.append('file', selectedFile);
 
             ingestFile(formData, {
+                table_id: generated_table_id,
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -125,7 +136,6 @@ export default function MainUploadView() {
 
             {selectedFiles.map((column: string) => {
                 const selectedFileMetaData = fileMetaData[column];
-
                 return (
                     <S.PanelRow>
                         <S.ConnectionFlag>
@@ -156,14 +166,14 @@ export default function MainUploadView() {
             <Typography variant="subtitle1" sx={{ paddingLeft: 1, paddingTop: 1 }}>
                 <strong>Files</strong>
             </Typography>
-            {Object.keys(fileMetaData).map((filename: string) => (
-                <S.PanelRow key={filename}>
-                    <S.SelectableRow>
+            <S.FilePanel>
+                {Object.keys(fileMetaData).map((filename: string) => (
+                    <S.SelectableRow key={`${filename}_option`}>
                         <ImTable2 />
                         <Typography variant="subtitle2">{filename}</Typography>
                     </S.SelectableRow>
-                </S.PanelRow>
-            ))}
+                ))}
+            </S.FilePanel>
         </S.Panel>
     );
 }

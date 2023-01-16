@@ -7,11 +7,12 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from data_ingestion.app.core.config import settings
 from data_ingestion.app.api.api_v1 import api
-from data_ingestion.app.clients.oanda.instruments import stream_oanda_live_data
 
 from ion_clients.services.postgres.schemas.base import Base
 from ion_clients.services.postgres.schemas.infra import ingestion
 from ion_clients.services.postgres.actions import initialise_table
+
+from ion_clients.clients.oanda.instruments import stream_oanda_live_data
 
 app = FastAPI(
     title="data-ingestion",
