@@ -1,19 +1,21 @@
 import uuid
-import warnings
+import logging
 import pandas as pd
 from typing import List, Union
 
 import psycopg2
 
-from sqlalchemy import inspect, desc, Table
+from sqlalchemy import inspect, desc, Table, exc as sqlalchemyExcs
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import UnboundExecutionError
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 
 from ion_clients.services.postgres.postgres_service import (
     postgres,
     postgres_engine,
 )
+from ion_clients.services.logging import get_logger
+
+logger = get_logger()
 
 
 def get_session():
@@ -29,7 +31,7 @@ def order_search(
 ) -> dict:
     if first:
         return session.query(TableSchema).filter(*filters).first()
-    else: 
+    else:
         return session.query(TableSchema).filter(*filters).all()
 
 
@@ -46,7 +48,7 @@ def order_query(
     session: Session,
     col: InstrumentedAttribute,
     descending: bool = True,
-    limit: int = 50
+    limit: int = 50,
 ) -> List[dict]:
 
     query = (
@@ -76,17 +78,25 @@ def initialise_table(TableSchema) -> bool:
             TableSchema.__table__.create(postgres_engine)
         return True
     except psycopg2.OperationalError:
-        raise
+        logger.critical(
+            "Postgres server is not running or has an issue spinning up. psycopg2 raised OperationalError."
+        )
+        return False
+    except sqlalchemyExcs.OperationalError:
+        logger.critical(
+            "Postgres server is not running or has an issue spinning up. psycopg2 raised OperationalError."
+        )
+        return False
 
 
 def drop_table(TableSchema):
     if table_exists(TableSchema=TableSchema):
         try:
             TableSchema.__table__.drop()
-        except UnboundExecutionError:
+        except sqlalchemyExcs.UnboundExecutionError:
             TableSchema.__table__.drop(postgres_engine)
     else:
-        warnings.warn(f"No {TableSchema.__tablename__} to drop.")
+        logger.critical(f"No {TableSchema.__tablename__} to drop.")
 
 
 def bulk_upsert(
@@ -144,7 +154,7 @@ def bulk_upsert(
                 objects.append(TableSchema(uuid=str(uuid.uuid4()), **object))
             else:
                 if not upsert_key:
-                    warnings.warn(
+                    logger.critical(
                         "No unique id column provided, or uuid detected in schema. Defaulting to writing without one."
                     )
                 objects.append(TableSchema(**object))
@@ -152,7 +162,7 @@ def bulk_upsert(
     else:
 
         if upsert_key == "uuid":
-            warnings.warn(
+            logger.critical(
                 "Upsert key provided is uuid, which is unlikely to be existing in the current entries. Function will still compare otherwise, but it is recommended an alternative key be provided."
             )
 

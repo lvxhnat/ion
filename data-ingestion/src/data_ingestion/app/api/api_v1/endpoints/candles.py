@@ -7,7 +7,8 @@ from ion_clients.clients.finhub import instruments as finnhub_instruments
 
 from data_ingestion.app.api.api_v1.models.candles import (
     LiveCandles,
-    HistoricalCandles,
+    HistoricalOandaCandles,
+    HistoricalFinhubCandles,
 )
 
 load_dotenv()
@@ -28,8 +29,10 @@ def ping():
 
 
 @router.post("/finnhub/candlesHistorical")
-def get_finnhub_historical_candles():
-    finnhub_instruments.get_finnhub_tickers_hd()
+def get_finnhub_historical_candles(params: HistoricalFinhubCandles):
+    return finnhub_instruments.get_finnhub_tickers_hd(
+        params.tickers, params.from_date
+    )
 
 
 @router.post("/oanda/candlesHistorical")
@@ -38,7 +41,7 @@ def get_oanda_historical_candles(params: LiveCandles):
 
 
 @router.post("/oanda/unboundedCandlesHistorical")
-def get_oanda_unbounded_historical_candles(params: HistoricalCandles):
+def get_oanda_unbounded_historical_candles(params: HistoricalOandaCandles):
     """Research endpoint allowing for multithreaded extractions of long time ranges that oanda do not allow"""
     return oanda_instruments.get_oanda_historical_data(
         symbol=params.symbol,

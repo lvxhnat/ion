@@ -45,7 +45,9 @@ async def intiialise_database_infra():
     ):
         # Check for table attribute excludes the direct parent class
         if issubclass(cls, Base) and hasattr(cls, "__table__"):
-            initialise_table(cls)
+            table_initiated: bool = initialise_table(cls)
+            if not table_initiated:
+                return
 
 
 @app.get("/ping", include_in_schema=False)

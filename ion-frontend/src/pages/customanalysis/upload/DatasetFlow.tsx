@@ -35,7 +35,15 @@ export default function DatasetFlow(props: { labels: string[] }) {
     );
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', width: '100%', flex: 1 }}>
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                border: '1px solid transparent',
+                width: '100%',
+                flex: 1,
+            }}
+        >
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
