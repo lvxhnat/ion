@@ -168,7 +168,7 @@ export default function MainUploadView() {
             </Typography>
             <S.FilePanel>
                 {Object.keys(fileMetaData).map((filename: string) => (
-                    <S.SelectableRow key={`${filename}_option`}>
+                    <S.SelectableRow key={`${filename}_option`} draggable>
                         <ImTable2 />
                         <Typography variant="subtitle2">{filename}</Typography>
                     </S.SelectableRow>

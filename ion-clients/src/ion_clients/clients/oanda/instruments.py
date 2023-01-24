@@ -33,9 +33,6 @@ from ion_clients.clients.oanda.types.candles import (
 
 from ion_clients.clients.oanda.helpers.time import clean_time
 
-logging.basicConfig(level=logging.INFO)
-
-
 async def stream_oanda_live_data(
     symbols: List[OandaReqCurrencies], callback: Callable
 ):
