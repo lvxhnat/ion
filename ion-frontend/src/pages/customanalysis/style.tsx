@@ -100,7 +100,8 @@ export const MainPanel = styled('div')(({ theme }) => ({
 
 export const DatasetFlowWrapper = styled('div')(({ theme }) => ({
     width: '100%',
-    minHeight: '20vh',
+    minHeight: '100px',
+    height: '15vh',
 }));
 
 export const MainPanelChartWrapper = styled('div')(({ theme }) => ({

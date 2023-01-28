@@ -27,7 +27,7 @@ function TabPanel(props: TabPanelProps) {
             hidden={value !== index}
             id={`simple-tabpanel-${index}`}
             aria-labelledby={`simple-tab-${index}`}
-            style={{ height: '100%' }}
+            style={{ overflow: 'hidden' }}
             {...other}
         >
             {children}
@@ -43,7 +43,7 @@ export default function CustomAnalysis() {
     };
 
     return (
-        <Box height="100vh" style={{ overflow: 'hidden' }}>
+        <Box height="100vh">
             <CssBaseline />
             <Header />
             <S.Tabs>
