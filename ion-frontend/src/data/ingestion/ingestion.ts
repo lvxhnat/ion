@@ -4,6 +4,7 @@ import { Types } from 'common/theme/components/icons';
 
 export interface IngestionDataType {
     file_name: string;
+    file_rows: number;
     content_header: string[];
     content_body: any[][];
     dtypes: {
@@ -24,6 +25,14 @@ export const ingestFile = (file: FormData, configs: any) => {
         file,
         configs
     );
+};
+
+export const ingestTable = (tableId: string, page: number, pagesize: number) => {
+    return dataIngestionRequest.post(ENDPOINTS.PRIVATE.QUERY_TABLE_UPLOADS, {
+        table_id: tableId,
+        page: page,
+        pagesize: pagesize,
+    });
 };
 
 export interface UserUploadObjectType {

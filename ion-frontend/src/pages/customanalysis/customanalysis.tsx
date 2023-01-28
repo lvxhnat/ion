@@ -4,11 +4,13 @@ import * as S from './style';
 import { FaDatabase } from 'react-icons/fa';
 import CssBaseline from '@mui/material/CssBaseline';
 import WindowIcon from '@mui/icons-material/Window';
+import CableIcon from '@mui/icons-material/Cable';
+import Box from '@mui/material/Box';
 
 import Header from 'components/Header';
 import Upload from './upload';
 import Sheet from './sheet';
-import Box from '@mui/material/Box';
+import Sources from './sources';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -41,27 +43,36 @@ export default function CustomAnalysis() {
     };
 
     return (
-        <Box height="100vh" display="flex" flexDirection="column">
+        <Box height="100vh" style={{ overflow: 'hidden' }}>
             <CssBaseline />
             <Header />
             <S.Tabs>
                 <S.Tab
                     selected={value === 0}
                     onClick={(e: React.SyntheticEvent) => handleChange(e, 0)}
-                    icon={<FaDatabase />}
-                    label="Data Source"
+                    icon={<CableIcon fontSize="small" />}
+                    label="Connect"
                 />
                 <S.Tab
                     selected={value === 1}
                     onClick={(e: React.SyntheticEvent) => handleChange(e, 1)}
+                    icon={<FaDatabase />}
+                    label="Data Source"
+                />
+                <S.Tab
+                    selected={value === 2}
+                    onClick={(e: React.SyntheticEvent) => handleChange(e, 2)}
                     icon={<WindowIcon fontSize="small" />}
                     label="Dashboard"
                 />
             </S.Tabs>
             <TabPanel value={value} index={0}>
-                <Upload />
+                <Sources />
             </TabPanel>
             <TabPanel value={value} index={1}>
+                <Upload />
+            </TabPanel>
+            <TabPanel value={value} index={2}>
                 <Sheet />
             </TabPanel>
         </Box>

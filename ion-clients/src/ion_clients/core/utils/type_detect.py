@@ -3,7 +3,7 @@ import math
 import string
 import datetime
 from dateutil import parser
-from typing import List, Literal, Dict
+from typing import List, Literal, Dict, Tuple
 from pydantic import BaseModel
 
 ParseableTypes = Literal["DATETIME", "INT", "TEXT", "FLOAT", "BLANK", "BOOL"]
@@ -64,11 +64,19 @@ def cast_col_name(col: str):
 
 def detect_types(
     cols: List[str], body: List[List[str]]
-) -> Dict[str, TypeDetectEntry]:
+) -> Tuple[Dict[str, TypeDetectEntry], List[List[str]]]:
 
     dtypes = {}
+    types_mapper = {
+        "DATETIME": parser.parse,
+        "INT": int,
+        "TEXT": str,
+        "FLOAT": float,
+        "BOOL": bool,
+    }
 
     for col in cols:
+        # Iterate through each column name
         col: str = cast_col_name(col)
         dtypes[col] = {
             "name": col,
@@ -84,7 +92,10 @@ def detect_types(
 
         for col, el in zip(dtypes.keys(), row):
 
-            dtype = dataType(el)
+            try:
+                dtype = dataType(el)
+            except Exception as e:
+                dtype = "UNKNOWN"
 
             if dtype in dtypes[col]["types"]:
                 dtypes[col]["types"][dtype] += 1
@@ -96,8 +107,6 @@ def detect_types(
 
     for col in dtypes.keys():
 
-        tmp = None  # To store our blank values temporarily
-
         if "BLANK" in dtypes[col]["types"]:
 
             dtypes[col]["nullable"] = True
@@ -105,15 +114,42 @@ def detect_types(
             if len(dtypes[col]["types"]) == 1:
                 dtypes[col]["type_guessed"] = "BLANK"
                 continue
-            else:
+
+            if len(dtypes[col]["types"]) == 2:
+
                 tmp = dtypes[col]["types"]["BLANK"]
                 del dtypes[col]["types"]["BLANK"]
 
-        dtypes[col]["type_guessed"] = max(
-            dtypes[col]["types"], key=dtypes[col]["types"].get
-        )
+                dtypes[col]["type_guessed"] = max(
+                    dtypes[col]["types"], key=dtypes[col]["types"].get
+                )
 
-        if tmp:
-            dtypes[col]["types"]["BLANK"] = tmp
+                dtypes[col]["types"]["BLANK"] = tmp
+                continue
 
-    return dtypes
+            else:
+                dtypes[col]["type_guessed"] = "TEXT"
+
+        else:
+
+            if len(dtypes[col]["types"]) == 1:
+                dtypes[col]["type_guessed"] = [*dtypes[col]["types"].keys()][0]
+            else:
+                dtypes[col]["type_guessed"] = "TEXT"
+
+    cols = [*dtypes.keys()]
+    for entry in body:
+        for index, col in enumerate(cols):
+            type_guessed: str = dtypes[col]["type_guessed"]
+            if type_guessed == "BLANK":
+                continue
+            else:
+                if len(entry) == 0:
+                    continue
+                val = entry[index]
+                if val == "" or val == None:
+                    entry[index] = None
+                else:
+                    entry[index] = types_mapper[type_guessed](val)
+
+    return dtypes, body

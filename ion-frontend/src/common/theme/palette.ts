@@ -31,4 +31,5 @@ export const lightPalette = {
     background: {
         default: ColorsEnum.white,
     },
+    color: ColorsEnum.black,
 };

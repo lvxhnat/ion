@@ -4,14 +4,17 @@ import * as S from '../style';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
-import DataTable from 'components/Tables/DataTable/DataTable';
+import { DataTableSkeleton, DataTable } from 'components/Tables/DataTable';
 import { DataTableHeaderDefinition } from 'components/Tables/DataTable/type';
-import { useAnalysisStore } from 'store/customanalysis/customanalysis';
+import { useAnalysisStore, useRetrievingStateStore } from 'store/customanalysis/customanalysis';
 import DatasetFlow from './DatasetFlow';
-import ColumnPanel from './DatasetType';
+import ColumnPanel, { ColumnPanelSkeleton } from './DatasetType';
 
 export default function MainTableView() {
     const [fileData] = useAnalysisStore();
+    const [dataTableRetrievingState] = useRetrievingStateStore();
+    console.log(dataTableRetrievingState);
+
     return (
         <div
             style={{
@@ -21,32 +24,45 @@ export default function MainTableView() {
                 paddingTop: 10,
             }}
         >
-            <DatasetFlow labels={fileData.file_name ? [fileData.file_name] : []} />
+            <S.DatasetFlowWrapper>
+                <DatasetFlow labels={fileData.file_name ? [fileData.file_name] : []} />
+            </S.DatasetFlowWrapper>
             <Grid container columns={15}>
                 <Grid item xs={11}>
-                    {fileData.content_body.length !== 0 ? (
-                        <DataTable
-                            stickyHeader
-                            data={fileData}
-                            rowsPerPage={50}
-                            defaultColumnWidth={100}
-                        />
-                    ) : null}
+                    {!dataTableRetrievingState ? (
+                        fileData.content_body.length !== 0 ? (
+                            <DataTable
+                                stickyHeader
+                                data={fileData}
+                                rowCount={fileData.file_rows}
+                                rowsPerPage={50}
+                                defaultColumnWidth={100}
+                            />
+                        ) : null
+                    ) : (
+                        <DataTableSkeleton />
+                    )}
                 </Grid>
                 <Grid item xs={4}>
                     <Box
                         sx={{
-                            height: '60vh',
+                            height: '100%',
                             overflowY: 'scroll',
                             '&::-webkit-scrollbar': { width: 0 },
                         }}
                     >
-                        {fileData.content_header.map((entry: DataTableHeaderDefinition) => (
-                            <ColumnPanel
-                                key={`${entry.headerName}_columnPanel`}
-                                name={entry.headerName}
-                            />
-                        ))}
+                        {!dataTableRetrievingState ? (
+                            fileData.content_header.map(
+                                (entry: DataTableHeaderDefinition, index: number) => (
+                                    <ColumnPanel
+                                        key={`columnPanel_${index}`}
+                                        name={entry.headerName}
+                                    />
+                                )
+                            )
+                        ) : (
+                            <ColumnPanelSkeleton />
+                        )}
                     </Box>
                 </Grid>
             </Grid>
