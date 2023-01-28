@@ -1,10 +1,10 @@
 import * as React from 'react';
-import * as S from './style';
+import * as S from '../style';
 
-import MainTableView from './upload/MainTableView';
+import MainTableView from './MainTableView';
 
 import Grid from '@mui/material/Grid';
-import MainUploadView from './upload/MainUploadView';
+import MainUploadView from './MainUploadView';
 
 export default function Upload() {
     return (

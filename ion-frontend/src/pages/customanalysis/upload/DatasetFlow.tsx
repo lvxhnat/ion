@@ -35,25 +35,15 @@ export default function DatasetFlow(props: { labels: string[] }) {
     );
 
     return (
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                border: '1px solid transparent',
-                width: '100%',
-                flex: 1,
-            }}
+        <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            proOptions={{ hideAttribution: true }}
         >
-            <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                proOptions={{ hideAttribution: true }}
-            >
-                <Background />
-            </ReactFlow>
-        </div>
+            <Background />
+        </ReactFlow>
     );
 }

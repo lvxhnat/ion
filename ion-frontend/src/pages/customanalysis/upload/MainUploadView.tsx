@@ -9,8 +9,8 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { ImTable2 } from 'react-icons/im';
 
 import { ColorsEnum } from 'common/theme';
-import { ingestFile, retrieveUserUploads } from 'data/ingestion/ingestion';
-import { useAnalysisStore } from 'store/customanalysis/customanalysis';
+import { ingestFile, ingestTable, retrieveUserUploads } from 'data/ingestion/ingestion';
+import { analysisStore } from 'store/customanalysis/customanalysis';
 import { DataTableHeaderDefinition, UploadDataType } from 'components/Tables/DataTable/type';
 
 interface MetaData {
@@ -23,7 +23,9 @@ interface MetaData {
 }
 
 export default function MainUploadView() {
-    const [_, setFileData] = useAnalysisStore();
+    const setFileData = analysisStore(state => state.setData);
+    const setDataTableRetrievingState = analysisStore(state => state.setDataTableRetrievingState);
+
     const [progress, setProgress] = React.useState<number>(0);
     const [fileMetaData, setFileMetaData] = React.useState<MetaData>({});
     const [selectedFiles, setSelectedFiles] = React.useState<string[]>([]);
@@ -44,7 +46,28 @@ export default function MainUploadView() {
         });
     }, []);
 
+    const handleFileClick = (filename: string, tableId: string) => {
+        setDataTableRetrievingState(true);
+        ingestTable(tableId, 1, 100).then(res => {
+            const formattedData: UploadDataType = {
+                file_name: filename,
+                file_rows: res.data.file_rows,
+                content_body: res.data.content_body,
+                content_header: res.data.content_header,
+                dtypes: {},
+            };
+            setFileData(formattedData);
+            setDataTableRetrievingState(false);
+        });
+    };
+
+    /**
+     * Handler for onChange file upload for the file upload button
+     * @param e
+     */
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDataTableRetrievingState(true);
+
         if (e.target.files) {
             const selectedFile = e.target.files[0];
             const generated_table_id: string = uuidv4();
@@ -52,7 +75,7 @@ export default function MainUploadView() {
                 [selectedFile.name]: {
                     fileType: selectedFile.type,
                     fileSize: selectedFile.size,
-                    tableId: generated_table_id,
+                    tableId: generated_table_id, // The table ID allocated to the table for backend consumption
                     lastModified: 'TEST', // selectedFile.lastModified <- number
                 },
                 ...fileMetaData,
@@ -62,9 +85,9 @@ export default function MainUploadView() {
             formData.append('file', selectedFile);
 
             ingestFile(formData, {
-                table_id: generated_table_id,
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    table_id: generated_table_id,
                 },
                 onUploadProgress: (data: any) => {
                     //Set the progress value to show the progress bar
@@ -72,12 +95,7 @@ export default function MainUploadView() {
                 },
             }).then(res => {
                 const data = res.data;
-                const formattedData: UploadDataType = {
-                    file_name: '',
-                    content_body: [],
-                    content_header: [],
-                    dtypes: {},
-                };
+                const formattedData: UploadDataType = {} as UploadDataType;
                 formattedData['content_body'] = data.content_body.map(
                     (entry: any[], parent_index: number) => {
                         const d: { id: number; [col: string]: any } = { id: parent_index };
@@ -93,10 +111,12 @@ export default function MainUploadView() {
                         headerName: col,
                     })
                 );
+                formattedData['file_rows'] = data.file_rows;
                 formattedData['file_name'] = data.file_name;
                 formattedData['dtypes'] = data.dtypes;
 
                 setFileData(formattedData);
+                setDataTableRetrievingState(false);
             });
         }
     };
@@ -167,12 +187,20 @@ export default function MainUploadView() {
                 <strong>Files</strong>
             </Typography>
             <S.FilePanel>
-                {Object.keys(fileMetaData).map((filename: string) => (
-                    <S.SelectableRow key={`${filename}_option`} draggable>
-                        <ImTable2 />
-                        <Typography variant="subtitle2">{filename}</Typography>
-                    </S.SelectableRow>
-                ))}
+                {Object.keys(fileMetaData).map((filename: string) => {
+                    return (
+                        <S.SelectableRow
+                            key={`${filename}_option`}
+                            draggable
+                            onClick={() =>
+                                handleFileClick(filename, fileMetaData[filename].tableId)
+                            }
+                        >
+                            <ImTable2 />
+                            <Typography variant="subtitle2">{filename}</Typography>
+                        </S.SelectableRow>
+                    );
+                })}
             </S.FilePanel>
         </S.Panel>
     );

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import * as S from './style';
+import * as S from '../style';
 
-import SidePanel from './sheet/SidePanel';
-import MainPanel from './sheet/MainPanel';
+import SidePanel from './SidePanel';
+import MainPanel from './MainPanel';
 
 export default function Sheet() {
     return (

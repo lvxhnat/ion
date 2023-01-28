@@ -9,6 +9,9 @@ from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from ion_clients.clients.configs import ingestion_settings
+from ion_clients.services.logging import get_logger
+
+logger = get_logger("WARNING")
 
 
 class AssetHistoricalData(BaseModel):
@@ -95,34 +98,67 @@ def get_finnhub_historical_data(
     ), date_to_unixtime(to_date, "%Y-%m-%d")
     resolution = resolution.strip("1")
 
-    hist = requests.get(
+    if data_format not in ["csv", "json"]:
+        raise ValueError(
+            f"Entered data_format of type {data_format}, which is invalid. Make sure data_format is either json or csv."
+        )
+
+    response = requests.get(
         f"https://finnhub.io/api/v1/stock/candle?symbol={ticker}&resolution={resolution}&from={fromdate}&to={todate}&token={api_key}"
-    ).text
-
-    historical = (
-        pd.DataFrame(eval(hist))
-        .rename(
-            columns={
-                "c": "close",
-                "h": "high",
-                "l": "low",
-                "o": "open",
-                "s": "status",
-                "t": "date",
-                "v": "volume",
-            }
-        )
-        .drop(columns=["status"])
     )
-    historical["symbol"] = ticker
 
-    if data_format == "json":
-        return eval(historical.to_json(orient="table", index=False))["data"]
-
-    elif data_format == "csv":
-        historical.date = historical.date.apply(
-            lambda ts: datetime.utcfromtimestamp(ts).strftime(
-                "%Y-%m-%d %H:%M:%S"
-            )
+    if response.status_code == 429:
+        logger.warning("Too many requests. Sleeping...")
+        time.sleep(30)
+        return get_finnhub_historical_data(
+            ticker,
+            api_key=api_key,
+            from_date=from_date,
+            resolution=resolution,
+            data_format=data_format,
         )
+
+    elif response.status_code == 200:
+        try:
+            historical = (
+                pd.DataFrame(eval(response.text))
+                .rename(
+                    columns={
+                        "c": "close",
+                        "h": "high",
+                        "l": "low",
+                        "o": "open",
+                        "s": "status",
+                        "t": "date",
+                        "v": "volume",
+                    }
+                )
+                .drop(columns=["status"])
+            )
+            historical["symbol"] = ticker
+
+            if data_format == "json":
+                historical = eval(
+                    historical.to_json(orient="table", index=False)
+                )["data"]
+
+            elif data_format == "csv":
+                historical.date = historical.date.apply(
+                    lambda ts: datetime.utcfromtimestamp(ts).strftime(
+                        "%Y-%m-%d %H:%M:%S"
+                    )
+                )
+
+        except Exception as e:
+            logger.error(e)
+            if data_format == "json":
+                historical = {}
+            elif data_format == "csv":
+                historical = pd.DataFrame()
+
         return historical
+
+    else:
+        raise ValueError(
+            f"Unknown status code response of {response.status_code}. Returned error states: {response.text}"
+        )

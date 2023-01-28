@@ -11,6 +11,7 @@ import { IntRange } from 'common/types';
 import { ColorsEnum } from 'common/theme';
 import { typeIconHints, Types } from 'common/theme/components/icons';
 import { useAnalysisStore } from 'store/customanalysis/customanalysis';
+import { Skeleton } from '@mui/material';
 
 const ColorHint = (props: { color: any; text?: string }) => {
     return (
@@ -63,6 +64,17 @@ const StyledTableCell = (props: { children?: any; width: number; [rest: string]:
     );
 };
 
+export function ColumnPanelSkeleton() {
+    return (
+        <Skeleton
+            variant="rectangular"
+            width={'100%'}
+            height={'100%'}
+            animation="wave"
+            style={{ marginLeft: 10 }}
+        />
+    );
+}
 /**
  * Panel on the main table that indicates the type of columns
  */

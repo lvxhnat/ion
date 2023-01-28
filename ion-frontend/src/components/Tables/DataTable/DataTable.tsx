@@ -10,6 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import DataTableHead from './DataTableHead';
 import Box from '@mui/material/Box';
 import DataTableCell from './DataTableCell';
+import Skeleton from '@mui/material/Skeleton';
 import DataTableEnhancedHeader from './DataTableEnhancedHeader';
 import { useUploadPage } from 'store/customanalysis/customanalysis';
 
@@ -34,12 +35,26 @@ export const StyledTableCell: React.FC<TableCellProps> = props => {
     );
 };
 
+export function DataTableSkeleton() {
+    return (
+        <>
+            <S.TableHeader>
+                <Skeleton variant="rectangular" width={'100%'} height={''} animation="wave" />
+            </S.TableHeader>
+            <S.StyledTableContainer>
+                <Skeleton variant="rectangular" width={'100%'} height={'100%'} animation="wave" />
+            </S.StyledTableContainer>
+        </>
+    );
+}
 export default function DataTable(props: DataTableProps) {
     const [page] = useUploadPage();
     const [order, setOrder] = React.useState<'asc' | 'desc'>('asc');
     const [cellSelected, setCellSelected] = React.useState<string>('');
     const [columnSelected, setColumnSelected] = React.useState<number>();
     const [orderBy, setOrderBy] = React.useState<any>(props.data.content_body[0].id);
+
+    const rowsPerPage = 25;
 
     function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
         if (b[orderBy] < a[orderBy]) {
@@ -69,8 +84,9 @@ export default function DataTable(props: DataTableProps) {
     return (
         <>
             <DataTableEnhancedHeader
-                file_name={props.data.file_name}
-                data_length={props.data.content_body.length}
+                rowCount={props.rowCount ?? props.data.content_body.length}
+                fileName={props.data.file_name}
+                rowsPerPage={rowsPerPage}
             />
             <S.StyledTableContainer>
                 <Table stickyHeader={props.stickyHeader}>
@@ -83,42 +99,44 @@ export default function DataTable(props: DataTableProps) {
                     />
                     <TableBody>
                         {props.data.content_body
-                            .slice(page * 25, page * 25 + 25)
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .sort(getComparator(order, orderBy))
-                            .map((row: { id: number; [col: string]: any }, row_index: number) => (
-                                <TableRow
-                                    hover
-                                    role="checkbox"
-                                    tabIndex={-1}
-                                    key={`dataTableBody_${row_index}`}
-                                >
-                                    {props.data.content_header.map(
-                                        (
-                                            entry: DataTableHeaderDefinition,
-                                            column_index: number
-                                        ) => {
-                                            return (
-                                                <DataTableCell
-                                                    id={`${row_index}-${column_index}`}
-                                                    selected={
-                                                        cellSelected ===
-                                                            `${row_index}-${column_index}` ||
-                                                        columnSelected === column_index
-                                                    }
-                                                    onClick={() => {
-                                                        setCellSelected(
-                                                            `${row_index}-${column_index}`
-                                                        );
-                                                    }}
-                                                    key={`dataTableBody_${entry.headerName}_${row_index}`}
-                                                >
-                                                    {row[entry.headerName]}
-                                                </DataTableCell>
-                                            );
-                                        }
-                                    )}
-                                </TableRow>
-                            ))}
+                            .map((row: { id: number; [col: string]: any }, row_index: number) => {
+                                return (
+                                    <TableRow
+                                        hover
+                                        role="checkbox"
+                                        tabIndex={-1}
+                                        key={`dataTableBody_${row_index}`}
+                                    >
+                                        {props.data.content_header.map(
+                                            (
+                                                entry: DataTableHeaderDefinition,
+                                                column_index: number
+                                            ) => {
+                                                return (
+                                                    <DataTableCell
+                                                        id={`${row_index}-${column_index}`}
+                                                        selected={
+                                                            cellSelected ===
+                                                                `${row_index}-${column_index}` ||
+                                                            columnSelected === column_index
+                                                        }
+                                                        onClick={() => {
+                                                            setCellSelected(
+                                                                `${row_index}-${column_index}`
+                                                            );
+                                                        }}
+                                                        key={`dataTableBody_${column_index}_${row_index}`}
+                                                    >
+                                                        {row[entry.headerName]}
+                                                    </DataTableCell>
+                                                );
+                                            }
+                                        )}
+                                    </TableRow>
+                                );
+                            })}
                     </TableBody>
                 </Table>
             </S.StyledTableContainer>
