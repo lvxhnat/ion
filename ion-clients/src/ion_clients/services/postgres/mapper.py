@@ -18,6 +18,7 @@ from ion_clients.core.utils.type_detect import ParseableTypes, TypeDetectEntry
 
 def initialise_dynamic_table(
     session,
+    table_id: str,
     schema: Dict[str, TypeDetectEntry],
     data: List[List[Any]],
 ):
@@ -32,7 +33,6 @@ def initialise_dynamic_table(
         _type_: _description_
     """
 
-    kwargs = {"nullable": False}
     schema_mapper: Dict[
         TypeDetectEntry, Union[Integer, Float, String, DateTime, Boolean]
     ] = {
@@ -49,9 +49,10 @@ def initialise_dynamic_table(
 
     table_columns: List[Column] = []
     for col in schema.keys():
+        kwargs = {}
         if schema[col]["nullable"]:
             kwargs["nullable"] = True
-        if schema[col]["primary_key"]:
+        if schema[col]["primary_key"] and not schema[col]["nullable"]:
             kwargs["primary_key"] = True
             primary_key_available = True
         table_columns.append(
@@ -62,8 +63,6 @@ def initialise_dynamic_table(
         table_columns.append(
             Column("uuid", String, primary_key=True, nullable=False)
         )
-
-    table_id = uuid.uuid4().hex
 
     table_schema = Table(
         table_id,

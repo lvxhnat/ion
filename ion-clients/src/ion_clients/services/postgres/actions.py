@@ -1,19 +1,20 @@
 import uuid
-import warnings
 import pandas as pd
 from typing import List, Union
 
 import psycopg2
 
-from sqlalchemy import inspect, desc, Table
+from sqlalchemy import inspect, desc, Table, exc as sqlalchemyExcs, MetaData
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import UnboundExecutionError
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 
 from ion_clients.services.postgres.postgres_service import (
     postgres,
     postgres_engine,
 )
+from ion_clients.services.logging import get_logger
+
+logger = get_logger()
 
 
 def get_session():
@@ -21,16 +22,44 @@ def get_session():
         yield session
 
 
+def table(table_name: str) -> Table:
+    return Table(
+        table_name,
+        MetaData(),
+        autoload=True,
+        autoload_with=postgres_engine,
+    )
+
+
+def serialize(query) -> List[dict]:
+    if isinstance(query, list):
+        return [
+            {
+                c.name: getattr(row, c.name)
+                for c in row.__table__.columns
+                if c.name != "uuid"
+            }
+            for row in query
+        ]
+    else:
+        return {
+            c.name: getattr(query, c.name)
+            for c in query.__table__.columns
+            if c.name != "uuid"
+        }
+
+
 def order_search(
-    TableSchema: Table,
     session: Session,
     filters: List,
+    TableSchema: Table = None,
     first: bool = True,
 ) -> dict:
+
     if first:
-        return session.query(TableSchema).filter(*filters).first()
-    else: 
-        return session.query(TableSchema).filter(*filters).all()
+        return serialize(session.query(TableSchema).filter(*filters).first())
+    else:
+        return serialize(session.query(TableSchema).filter(*filters).all())
 
 
 def order_exists(
@@ -46,7 +75,7 @@ def order_query(
     session: Session,
     col: InstrumentedAttribute,
     descending: bool = True,
-    limit: int = 50
+    limit: int = 50,
 ) -> List[dict]:
 
     query = (
@@ -76,17 +105,25 @@ def initialise_table(TableSchema) -> bool:
             TableSchema.__table__.create(postgres_engine)
         return True
     except psycopg2.OperationalError:
-        raise
+        logger.error(
+            "Postgres server is not running or has an issue spinning up. psycopg2 raised OperationalError."
+        )
+        return False
+    except sqlalchemyExcs.OperationalError:
+        logger.error(
+            "Postgres server is not running or has an issue spinning up. psycopg2 raised OperationalError."
+        )
+        return False
 
 
 def drop_table(TableSchema):
     if table_exists(TableSchema=TableSchema):
         try:
             TableSchema.__table__.drop()
-        except UnboundExecutionError:
+        except sqlalchemyExcs.UnboundExecutionError:
             TableSchema.__table__.drop(postgres_engine)
     else:
-        warnings.warn(f"No {TableSchema.__tablename__} to drop.")
+        logger.error(f"No {TableSchema.__tablename__} to drop.")
 
 
 def bulk_upsert(
@@ -144,7 +181,7 @@ def bulk_upsert(
                 objects.append(TableSchema(uuid=str(uuid.uuid4()), **object))
             else:
                 if not upsert_key:
-                    warnings.warn(
+                    logger.info(
                         "No unique id column provided, or uuid detected in schema. Defaulting to writing without one."
                     )
                 objects.append(TableSchema(**object))
@@ -152,7 +189,7 @@ def bulk_upsert(
     else:
 
         if upsert_key == "uuid":
-            warnings.warn(
+            logger.info(
                 "Upsert key provided is uuid, which is unlikely to be existing in the current entries. Function will still compare otherwise, but it is recommended an alternative key be provided."
             )
 
@@ -179,3 +216,22 @@ def bulk_refresh(
 ):
     drop_table(TableSchema)
     bulk_upsert(session, TableSchema, WriteObject)
+
+
+def paginate_table_by_id(
+    session: Session, table_name: str, page: int = 1, pagesize: int = 10
+) -> List[dict]:
+    table: Table = Table(
+        table_name, MetaData(), autoload=True, autoload_with=postgres_engine
+    )
+
+    s = []
+    for entry in (
+        session.query(table)
+        .order_by(table.columns[0])
+        .offset(pagesize * (page - 1))
+        .limit(pagesize)
+        .all()
+    ):
+        s.append({c.name: getattr(entry, c.name) for c in table.columns})
+    return s

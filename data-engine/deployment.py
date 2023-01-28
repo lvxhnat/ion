@@ -3,8 +3,8 @@ from omegaconf import DictConfig, OmegaConf
 from prefect.deployments import Deployment
 from prefect.orion.schemas.schedules import CronSchedule
 
-from flows.treasury.usgov import treasury_ingestion_flow
-from flows.common.area_latlon import geonames_ingestion_flow
+from data_engine.flows.treasury.usgov import treasury_ingestion_flow
+from data_engine.flows.common.area_latlon import geonames_ingestion_flow
 
 
 @hydra.main(

@@ -1,5 +1,10 @@
 import os
 import json
+import logging
+import aiohttp
+import asyncio
+import warnings
+import requests
 import numpy as np
 from typing import Callable, List, Iterator
 from datetime import datetime, timedelta
@@ -27,12 +32,6 @@ from ion_clients.clients.oanda.types.candles import (
 )
 
 from ion_clients.clients.oanda.helpers.time import clean_time
-
-import requests
-import aiohttp
-import asyncio
-import warnings
-
 
 async def stream_oanda_live_data(
     symbols: List[OandaReqCurrencies], callback: Callable
@@ -124,14 +123,17 @@ def get_oanda_historical_data(
         int
     )  # Calculate the number of data points we will retrieve
     request_chunks: int = np.ceil(data_pts / 5000).astype(int)
-    increment: timedelta = 1000 * interval
+    increment: timedelta = 5000 * interval
 
-    from_date_requests: List[datetime] = [
-        from_date + increment * i for i in range(request_chunks)
-    ]
-    to_date_requests: List[datetime] = [
-        from_date + increment * i for i in range(1, request_chunks + 1)
-    ]
+    # Determine the date pairs we will want to extract
+    from_date_requests: List[datetime] = []
+    to_date_requests: List[datetime] = []
+    for i in range(request_chunks):
+        from_date_requests.append(from_date + increment * i)
+        if i != request_chunks - 1:  # if not the last element
+            to_date_requests.append(from_date + increment * (i + 1))
+        else:
+            to_date_requests.append(to_date)
 
     if request_chunks > 1 and parallelize:
         with ThreadPoolExecutor(max_workers=os.cpu_count() - 1) as executor:
@@ -227,6 +229,11 @@ def __get_oanda_base_data(
                 response.json()["candles"],
             )
         ]
+
+        logging.info(
+            f"Retrieved data point for {symbol} for date ranges {from_date} to {to_date}. {str(len(data))} points included."
+        )
+
         return {
             "response_code": response.status_code,
             "symbol": symbol,
@@ -271,6 +278,8 @@ def __unpack_oanda_base_data(
 
 
 if __name__ == "__main__":
+
+    print("__get_oanda_base_data")
     a = __get_oanda_base_data(
         symbol="EUR_USD",
         from_date=datetime(2021, 1, 1, 0, 0),
@@ -278,6 +287,7 @@ if __name__ == "__main__":
         granularity="M1",
     )
 
+    print("get_oanda_historical_data")
     b = get_oanda_historical_data(
         "EUR_USD",
         from_date="2021-01-01",

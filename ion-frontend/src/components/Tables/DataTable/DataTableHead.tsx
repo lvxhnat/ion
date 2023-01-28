@@ -38,7 +38,7 @@ export default function DataTableHead(props: DataTableHeaderProps) {
 
                     return (
                         <StyledTableCell
-                            key={column.id}
+                            key={`dataTableHead_${column.id}_${index}`}
                             align="left"
                             sortDirection={orderBy === column.id ? order : false}
                             sx={{

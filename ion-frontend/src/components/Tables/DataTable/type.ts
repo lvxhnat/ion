@@ -4,6 +4,7 @@ import { IngestionDataType } from 'data/ingestion/ingestion';
 export interface DataTableProps {
     data: UploadDataType;
     stickyHeader?: boolean | undefined;
+    rowCount?: number | undefined;
     pageSize?: number | undefined;
     rowsPerPage?: number | undefined;
     rowHeight?: number | undefined;

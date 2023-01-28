@@ -5,12 +5,14 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import TableBody from '@mui/material/TableBody';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
 
 import { IntRange } from 'common/types';
 import { ColorsEnum } from 'common/theme';
 import { typeIconHints, Types } from 'common/theme/components/icons';
 import { useAnalysisStore } from 'store/customanalysis/customanalysis';
+import { DataTableHeaderDefinition } from 'components/Tables/DataTable/type';
 
 const ColorHint = (props: { color: any; text?: string }) => {
     return (
@@ -63,17 +65,22 @@ const StyledTableCell = (props: { children?: any; width: number; [rest: string]:
     );
 };
 
+export function ColumnPanelSkeleton() {
+    return (
+        <Skeleton
+            variant="rectangular"
+            width={'100%'}
+            height={'100%'}
+            animation="wave"
+            style={{ marginLeft: 10 }}
+        />
+    );
+}
 /**
  * Panel on the main table that indicates the type of columns
  */
-export default function ColumnPanel(props: { name: string }) {
+export default function ColumnPanel() {
     const [fileData] = useAnalysisStore();
-
-    let type: string = '';
-
-    if (fileData.dtypes[props.name]) {
-        type = fileData.dtypes[props.name].type_guessed;
-    }
 
     const numericValues = [
         { prompt: '', first: '', second: '', empty: true },
@@ -119,61 +126,86 @@ export default function ColumnPanel(props: { name: string }) {
         { prompt: 'Most Common', first: 'yo', second: '20%', empty: false },
     ];
 
-    let tableValues;
-
-    if (type === 'TEXT' || type === 'DATETIME') {
-        tableValues = textValues;
-    } else {
-        tableValues = numericValues;
-    }
-
     return (
-        <Grid container style={{ padding: 5 }}>
-            <div
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 10,
-                    paddingBottom: 5,
-                    width: '100%',
-                }}
-            >
-                <Typography
-                    variant="h3"
-                    align="left"
-                    component="div"
-                    style={{ width: '100%', display: 'flex', gap: 5, alignItems: 'center' }}
-                >
-                    {type !== '' ? typeIconHints[type as Types] : null}
-                    {props.name}
-                </Typography>
-                <Typography variant="subtitle2" align="right">
-                    {type}
-                </Typography>
-            </div>
-            <CompositionBar first={90} second={10} />
-            <Table>
-                <TableBody>
-                    {tableValues.map((entry, index) => {
-                        if (entry.empty) {
-                            return (
-                                <TableRow key={`emptyRow_${index}`}>
-                                    <TableCell colSpan={5} style={{ border: 0, padding: 5 }} />
-                                </TableRow>
-                            );
-                        } else {
-                            return (
-                                <TableRow key={`row${entry.prompt}_${index}`}>
-                                    <StyledTableCell width={40}>{entry.prompt}</StyledTableCell>
-                                    <StyledTableCell width={40}></StyledTableCell>
-                                    <StyledTableCell width={10}>{entry.first}</StyledTableCell>
-                                    <StyledTableCell width={10}>{entry.second}</StyledTableCell>
-                                </TableRow>
-                            );
-                        }
-                    })}
-                </TableBody>
-            </Table>
-        </Grid>
+        <Box sx={{ height: '70vh', overflow: 'scroll' }}>
+            {fileData.content_header.map((entry: DataTableHeaderDefinition) => {
+                let tableValues: any;
+
+                let type: string = '';
+
+                if (fileData.dtypes[entry.headerName]) {
+                    type = fileData.dtypes[entry.headerName].type_guessed;
+                }
+                if (type === 'TEXT' || type === 'DATETIME') {
+                    tableValues = textValues;
+                } else {
+                    tableValues = numericValues;
+                }
+
+                return (
+                    <div style={{ padding: 2 }}>
+                        <div
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 10,
+                                paddingBottom: 5,
+                                width: '100%',
+                            }}
+                        >
+                            <Typography
+                                variant="h3"
+                                align="left"
+                                component="div"
+                                style={{
+                                    width: '100%',
+                                    display: 'flex',
+                                    gap: 5,
+                                    alignItems: 'center',
+                                }}
+                            >
+                                {type !== '' ? typeIconHints[type as Types] : null}
+                                {entry.headerName}
+                            </Typography>
+                            <Typography variant="subtitle2" align="right">
+                                {type}
+                            </Typography>
+                        </div>
+                        <CompositionBar first={90} second={10} />
+                        <Table>
+                            <TableBody>
+                                {tableValues.map((entry: any, index: number) => {
+                                    if (entry.empty) {
+                                        return (
+                                            <TableRow key={`emptyRow_${index}`}>
+                                                <TableCell
+                                                    colSpan={5}
+                                                    style={{ border: 0, padding: 5 }}
+                                                />
+                                            </TableRow>
+                                        );
+                                    } else {
+                                        return (
+                                            <TableRow key={`row${entry.prompt}_${index}`}>
+                                                <StyledTableCell width={40}>
+                                                    {entry.prompt}
+                                                </StyledTableCell>
+                                                <StyledTableCell width={40}></StyledTableCell>
+                                                <StyledTableCell width={10}>
+                                                    {entry.first}
+                                                </StyledTableCell>
+                                                <StyledTableCell width={10}>
+                                                    {entry.second}
+                                                </StyledTableCell>
+                                            </TableRow>
+                                        );
+                                    }
+                                })}
+                            </TableBody>
+                        </Table>
+                    </div>
+                );
+            })}
+        </Box>
     );
 }

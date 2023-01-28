@@ -3,12 +3,19 @@ import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import { ColorsEnum } from 'common/theme';
 import Box, { BoxProps } from '@mui/system/Box';
+import { useThemeStore } from 'store/theme';
 
 export const Panel = styled('div')(({ theme }) => ({
     display: 'flex',
     height: '100%',
     width: '100%',
     gap: 10,
+}));
+
+export const FilePanel = styled('div')(({ theme }) => ({
+    gap: 0,
+    height: '100%',
+    padding: theme.spacing(0.5),
 }));
 
 export const PanelRow = styled('div')(({ theme }) => ({
@@ -31,7 +38,8 @@ export const SelectableRow = styled('div')(({ theme }) => ({
     width: '100%',
     gap: 10,
     '&:hover': {
-        backgroundColor: ColorsEnum.warmgray1,
+        backgroundColor:
+            theme.palette.mode === 'dark' ? ColorsEnum.warmgray1 : ColorsEnum.warmgray5,
         cursor: 'pointer',
     },
     padding: `${theme.spacing(0.8)} ${theme.spacing(1.5)}`,
@@ -40,7 +48,7 @@ export const SelectableRow = styled('div')(({ theme }) => ({
 
 export const SidePanel = styled('div')(({ theme }) => ({
     width: '15%',
-    backgroundColor: ColorsEnum.darkGrey,
+    backgroundColor: theme.palette.mode === 'dark' ? ColorsEnum.darkGrey : 'transparent',
     border: `1px solid ${ColorsEnum.coolgray1}`,
     borderLeft: 'none',
     height: '100%',
@@ -90,6 +98,12 @@ export const MainPanel = styled('div')(({ theme }) => ({
     gap: 5,
 }));
 
+export const DatasetFlowWrapper = styled('div')(({ theme }) => ({
+    width: '100%',
+    minHeight: '100px',
+    height: '15vh',
+}));
+
 export const MainPanelChartWrapper = styled('div')(({ theme }) => ({
     width: '80%',
 }));
@@ -121,24 +135,28 @@ export const Tab = (props: {
     selected: boolean;
     [index: string]: any;
 }) => {
+    const { mode } = useThemeStore();
+    const defaultColor = mode === 'dark' ? ColorsEnum.white : ColorsEnum.black;
+    const selectedColor = mode === 'dark' ? ColorsEnum.beer : ColorsEnum.oldschoolOrange;
+
     return (
         <Box
             style={{
                 display: 'flex',
                 alignItems: 'center',
                 textTransform: 'none',
-                fontWeight: 300,
                 fontSize: `calc(0.5rem + 0.3vw)`,
                 gap: 5,
                 paddingBottom: 2,
                 paddingTop: 5,
-                color: props.selected ? ColorsEnum.beer : ColorsEnum.white,
-                boxShadow: props.selected ? `0 2px 0 ${ColorsEnum.beer}` : 'none',
+                color: props.selected ? selectedColor : defaultColor,
+                fontWeight: props.selected ? 'bold' : 300,
+                boxShadow: props.selected ? `0 2px 0 ${selectedColor}` : 'none',
             }}
             sx={{
                 '&:hover': {
                     cursor: 'pointer',
-                    boxShadow: `0 2px 0 ${ColorsEnum.beer}`,
+                    boxShadow: `0 2px 0 ${selectedColor}`,
                 },
             }}
             {...props}

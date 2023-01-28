@@ -1,12 +1,14 @@
-import { useState, useCallback, useEffect } from 'react';
+import * as React from 'react';
+import * as S from '../style';
+
 import ReactFlow, { Background, applyNodeChanges, applyEdgeChanges, addEdge } from 'reactflow';
 import 'reactflow/dist/style.css';
 
 export default function DatasetFlow(props: { labels: string[] }) {
-    const [nodes, setNodes] = useState<any>([]);
-    const [edges, setEdges] = useState<any>([]);
+    const [nodes, setNodes] = React.useState<any>([]);
+    const [edges, setEdges] = React.useState<any>([]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         setNodes(
             props.labels.map((label: string, index: number) => {
                 return {
@@ -19,23 +21,23 @@ export default function DatasetFlow(props: { labels: string[] }) {
         );
     }, [props.labels]);
 
-    const onNodesChange = useCallback(
+    const onNodesChange = React.useCallback(
         (changes: any) => setNodes((nds: any) => applyNodeChanges(changes, nds)),
         [setNodes]
     );
 
-    const onEdgesChange = useCallback(
+    const onEdgesChange = React.useCallback(
         (changes: any) => setEdges((eds: any) => applyEdgeChanges(changes, eds)),
         [setEdges]
     );
 
-    const onConnect = useCallback(
+    const onConnect = React.useCallback(
         (params: any) => setEdges((eds: any) => addEdge(params, eds)),
         [setEdges]
     );
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', width: '100%', flex: 1 }}>
+        <S.DatasetFlowWrapper>
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
@@ -46,6 +48,6 @@ export default function DatasetFlow(props: { labels: string[] }) {
             >
                 <Background />
             </ReactFlow>
-        </div>
+        </S.DatasetFlowWrapper>
     );
 }
