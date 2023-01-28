@@ -3,6 +3,7 @@ import TableContainer from '@mui/material/TableContainer';
 
 export const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
     width: '100%',
+    height: '65vh',
     overflow: 'scroll',
     '&::-webkit-scrollbar': { width: 0 },
 }));

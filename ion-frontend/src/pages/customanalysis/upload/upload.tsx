@@ -8,7 +8,7 @@ import MainUploadView from './MainUploadView';
 
 export default function Upload() {
     return (
-        <Grid container sx={{ height: '100%' }} columns={15}>
+        <Grid container columns={15}>
             <Grid item xs={3}>
                 <MainUploadView />
             </Grid>
