@@ -10,7 +10,6 @@ from ion_clients.clients.common.area_latlon import geonames_info
 from ion_clients.clients.common.types.area_latlon import GeoNamesData
 from ion_clients.services.postgres.schemas.data.area_latlon import AreaLatLon
 
-
 @task
 def ingest_geonames():
     return geonames_info()

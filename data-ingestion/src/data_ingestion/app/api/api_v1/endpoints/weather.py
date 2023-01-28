@@ -38,18 +38,17 @@ def get_current_weather_conditions(
 def get_openweather_weather_data(
     session, city: str, country_code
 ) -> weather.CurrentWeatherDTO:
-
     postgres_table = postgres.tables["global_area_latlon"]
     query = order_search(
-        postgres_table,
-        session,
-        [
+        TableSchema=postgres_table,
+        session=session,
+        filters=[
             postgres_table.name.like(city),
             postgres_table.country_code.like(country_code),
         ],
     )
     data: openweatherTypes.OpenWeatherDTO = openweatherAPI.get_current_weather(
-        query.latitude, query.longitude
+        query["latitude"], query["longitude"]
     )
     return {
         "city": data["name"],
