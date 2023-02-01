@@ -1,3 +1,4 @@
 [submodule "polar"]
 	path = polar
 	url = https://github.com/lvxhnat/polar.git
+	update = merge 
