@@ -7,7 +7,6 @@ import { ROUTES } from './common/constant/routes';
 import Forex from './pages/securities/[forex]';
 import Portfolio from 'pages/portfolio';
 import Landing from 'pages/landing';
-import CustomAnalysis from 'pages/customanalysis';
 
 function App() {
     return (
@@ -16,7 +15,6 @@ function App() {
                 <Route path={ROUTES.PUBLIC.LANDING} element={<Landing />} />
                 <Route path={`${ROUTES.PUBLIC.FOREX}/:symbolId`} element={<Forex />} />
                 <Route path={ROUTES.PUBLIC.PORTFOLIO} element={<Portfolio />} />
-                <Route path={ROUTES.PUBLIC.CUSTOM_ANALYSIS} element={<CustomAnalysis />} />
             </Routes>
         </Router>
     );

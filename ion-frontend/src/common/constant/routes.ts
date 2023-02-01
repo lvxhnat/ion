@@ -4,7 +4,6 @@ export const ROUTES = {
         LANDING: '/',
         FOREX: '/securities/forex',
         PORTFOLIO: '/function/portfolio-administration',
-        CUSTOM_ANALYSIS: '/function/dataset-analysis',
     },
     PUBLIC_REQUIRED_TOKEN: {},
 };
