@@ -9,3 +9,14 @@
 research-notebooks/
 
 .vscode/
+
+# External Folder 
+polar/
+
+# Data 
+*.csv
+*.json
+!.eslintrc.json
+!.prettierrc.json
+!.tsconfig.json
+*.parquet
