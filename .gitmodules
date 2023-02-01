@@ -2,3 +2,4 @@
 	path = polar
 	url = https://github.com/lvxhnat/polar.git
 	branch = master
+	update = merge 
