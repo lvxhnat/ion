@@ -10,10 +10,14 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
 import Header from 'components/Header';
-import { getETFAssetTypes } from 'data/ingestion/autocomplete';
+import { getETFAssetTypes, getETFInfos } from 'data/ingestion/autocomplete';
+import { UploadDataType } from 'components/Tables/DataTable/type';
+import { DataTable } from 'components/Tables/DataTable';
+import { ETFInfoDTO } from 'data/schema/autocomplete';
 
 export default function ETFExplorer() {
     const [categories, setCategories] = React.useState<string[]>([]);
+    const [categoryData, setCategoryData] = React.useState<UploadDataType>({} as UploadDataType);
     const [categorySelected, setCategorySelected] = React.useState<string>('All');
 
     React.useEffect(() => {
@@ -21,6 +25,29 @@ export default function ETFExplorer() {
             setCategories(res.data);
         });
     }, []);
+
+    const handleClick = (label: string) => {
+        setCategorySelected(label);
+        getETFInfos({
+            filter: [{ asset_class: categorySelected }],
+            sort: [{ ticker: 1 }],
+        }).then(res => {
+            setCategoryData({
+                file_name: '',
+                file_rows: res.data.length,
+                dtypes: {},
+                content_header: Object.keys(res.data[0]).map((column: string) => {
+                    return { id: column, headerName: column };
+                }),
+                content_body: res.data.map((value: ETFInfoDTO) => {
+                    const new_value: any = { ...value };
+                    delete new_value['alternative_etfs'];
+                    delete new_value['other_alternative_etfs'];
+                    return new_value;
+                }),
+            });
+        });
+    };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCategorySelected((event.target as HTMLInputElement).value);
@@ -49,7 +76,9 @@ export default function ETFExplorer() {
                             />
                             {categories.map((label: string) => (
                                 <FormControlLabel
+                                    key={label}
                                     value={label}
+                                    onClick={() => handleClick(label)}
                                     control={<Radio size="small" sx={{ padding: 0.5 }} />}
                                     label={<Typography variant="subtitle2">{label}</Typography>}
                                 />
@@ -57,7 +86,11 @@ export default function ETFExplorer() {
                         </RadioGroup>
                     </FormControl>
                 </Grid>
-                <Grid item xs={9}></Grid>
+                <Grid item xs={10}>
+                    {categoryData.content_body ? (
+                        <DataTable hideBasel stickyHeader boldHeader data={categoryData} />
+                    ) : null}
+                </Grid>
             </Grid>
         </>
     );

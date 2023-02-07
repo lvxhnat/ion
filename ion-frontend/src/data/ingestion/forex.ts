@@ -11,7 +11,8 @@ export const getHistoricalForex = (symbol: string, period: string) => {
 
 export const getWebsocketForex = () => {
     return new OandaFXSocketConnection({
-        socketURL: ENDPOINTS.PRIVATE.OANDA_FX_STREAMING_ENDPOINT,
+        socketURL:
+            process.env.REACT_APP_WEBSOCKET_URL + ENDPOINTS.PRIVATE.OANDA_FX_STREAMING_ENDPOINT,
         name: 'ForexWebSocket',
     });
 };

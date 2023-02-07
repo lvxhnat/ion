@@ -52,18 +52,21 @@ export default function DataTableHead(props: DataTableHeaderProps) {
                                 setCellSelected(index);
                             }}
                         >
-                            <div
-                                style={{
-                                    width: '100%',
-                                    height: 3,
-                                    backgroundColor: ColorsEnum.beer,
-                                }}
-                            />
+                            {!props.hideBasel ? (
+                                <div
+                                    style={{
+                                        width: '100%',
+                                        height: 3,
+                                        backgroundColor: ColorsEnum.beer,
+                                    }}
+                                />
+                            ) : null}
                             <Typography
                                 variant="subtitle2"
                                 style={{
                                     gap: 5,
                                     display: 'flex',
+                                    fontWeight: props.boldHeader ? 'bold' : 600,
                                     alignItems: 'center',
                                     paddingTop: 5,
                                 }}
@@ -71,7 +74,13 @@ export default function DataTableHead(props: DataTableHeaderProps) {
                                 {allTypes ? typeIconHints[allTypes.type_guessed] : null}
                                 {allTypes ? allTypes.type_guessed : null}
                             </Typography>
-                            <Typography variant="subtitle2" style={{ color: ColorsEnum.coolgray1 }}>
+                            <Typography
+                                variant="subtitle2"
+                                style={{
+                                    color: ColorsEnum.coolgray1,
+                                    fontWeight: props.boldHeader ? 'bold' : 600,
+                                }}
+                            >
                                 {nullableTag}
                             </Typography>
                             <Tooltip title={column.headerName}>
@@ -81,7 +90,11 @@ export default function DataTableHead(props: DataTableHeaderProps) {
                                     onClick={createSortHandler(column.id)}
                                     sx={{ width: columnWidth, gap: 1 }}
                                 >
-                                    <Typography variant="subtitle1" noWrap>
+                                    <Typography
+                                        variant="subtitle1"
+                                        noWrap
+                                        sx={{ fontWeight: props.boldHeader ? 'bold' : 600 }}
+                                    >
                                         {column.headerName}
                                     </Typography>
                                     {orderBy === column.id ? (

@@ -14,6 +14,7 @@ export const ENDPOINTS = {
         SEARCH_ASSETS: 'autocomplete/tradeableAssets',
         ALL_FUNCTIONS: 'autocomplete/allFunctions',
         ETFS_CATEGORIES: 'autocomplete/etfAssetTypes',
+        ETFS_INFOS: 'autocomplete/etfInfos',
     },
     PUBLIC: {
         BASE: '/',
