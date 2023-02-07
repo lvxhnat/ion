@@ -98,18 +98,18 @@ def table_exists(TableSchema) -> bool:
     return inspect(postgres_engine).has_table(TableSchema.__tablename__)
 
 
-def initialise_table(TableSchema) -> bool:
+def initialise_table(TableSchema, engine=postgres_engine) -> bool:
     # Create table if it does not exist
     try:
         if not table_exists(TableSchema):
-            TableSchema.__table__.create(postgres_engine)
+            TableSchema.__table__.create(engine)
         return True
-    except psycopg2.OperationalError:
+    except psycopg2.OperationalError as psye:
         logger.error(
             "Postgres server is not running or has an issue spinning up. psycopg2 raised OperationalError."
         )
         return False
-    except sqlalchemyExcs.OperationalError:
+    except sqlalchemyExcs.OperationalError as psye:
         logger.error(
             "Postgres server is not running or has an issue spinning up. psycopg2 raised OperationalError."
         )

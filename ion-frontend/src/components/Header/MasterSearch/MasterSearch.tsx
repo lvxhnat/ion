@@ -52,8 +52,8 @@ export default function MasterSearch(props: {}) {
                     <>
                         <TableRow style={{ display: 'block' }}>
                             <S.TableCellWrapper colSpan={2}>
-                                <S.TableHeaderWrapper variant="body1">
-                                    Functions
+                                <S.TableHeaderWrapper variant="subtitle1">
+                                    Functions:
                                 </S.TableHeaderWrapper>
                             </S.TableCellWrapper>
                         </TableRow>
@@ -61,19 +61,27 @@ export default function MasterSearch(props: {}) {
                             <S.TableRowWrapper
                                 hover
                                 key={d.name}
-                                sx={{ cursor: 'pointer' }}
+                                sx={{ cursor: 'pointer', color: ColorsEnum.machoBlue }}
                                 onClick={() => navigate(d.redirect)}
                             >
                                 <S.TableCellWrapper
                                     sx={{ paddingLeft: 'calc(1rem + 2vw)', minWidth: 200 }}
                                     width="50%"
                                 >
-                                    <Typography variant="body1" align="left">
+                                    <Typography
+                                        sx={{ color: ColorsEnum.machoBlue }}
+                                        variant="subtitle1"
+                                        align="left"
+                                    >
                                         {d.name}
                                     </Typography>
                                 </S.TableCellWrapper>
-                                <S.TableCellWrapper sx={{ color: ColorsEnum.beer }} width="50%">
-                                    <Typography variant="body1" align="left">
+                                <S.TableCellWrapper width="50%">
+                                    <Typography
+                                        sx={{ color: ColorsEnum.machoBlue }}
+                                        variant="subtitle1"
+                                        align="left"
+                                    >
                                         {d.long_name}
                                     </Typography>
                                 </S.TableCellWrapper>

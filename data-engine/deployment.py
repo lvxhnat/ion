@@ -7,9 +7,12 @@ from data_engine.flows.treasury.usgov import treasury_ingestion_flow
 from data_engine.flows.common.area_latlon import geonames_ingestion_flow
 
 
+config_file_path = "./src/data_engine/request_configs/"
+
+
 @hydra.main(
     version_base=None,
-    config_path="./request_configs/",
+    config_path=config_file_path,
     config_name="treasury-configs",
 )
 def execute_us_treasury_deployment(config: DictConfig):
@@ -38,7 +41,7 @@ def execute_us_treasury_deployment(config: DictConfig):
 
 @hydra.main(
     version_base=None,
-    config_path="./request_configs/",
+    config_path=config_file_path,
     config_name="common-configs",
 )
 def execute_geonames_deployment(config: DictConfig):

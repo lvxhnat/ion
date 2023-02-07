@@ -43,6 +43,7 @@ export const SearchWrapper = styled('div')(({ theme }) => ({
 }));
 
 export const TableHeaderWrapper = styled(Typography)(({ theme }) => ({
+    color: ColorsEnum.beer,
     paddingTop: `calc(0.1rem + 0.3vh)`,
     paddingLeft: `calc(0.1rem + 0.5vw)`,
 }));

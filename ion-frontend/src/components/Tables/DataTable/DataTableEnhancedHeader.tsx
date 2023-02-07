@@ -4,7 +4,7 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import TablePagination from '@mui/material/TablePagination';
 
-import { useUploadPage } from 'store/customanalysis/customanalysis';
+import { useUploadPage } from 'store/table/table';
 
 export default function DataTableEnhancedHeader(props: {
     fileName: string;

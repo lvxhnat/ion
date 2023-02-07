@@ -1,9 +1,9 @@
 import { dataIngestionRequest } from 'services/request';
-import { REQUEST_ENDPOINTS } from 'data/endpoints/forex';
+import { ENDPOINTS } from 'common/constant/endpoints';
 import { OandaFXSocketConnection } from 'data/clients/oanda';
 
 export const getHistoricalForex = (symbol: string, period: string) => {
-    return dataIngestionRequest.post(REQUEST_ENDPOINTS.OANDA_HISTORICAL.ENDPOINT, {
+    return dataIngestionRequest.post(ENDPOINTS.PRIVATE.OANDA_FX_HISTORICAL_ENDPOINT, {
         symbol: symbol,
         period: period,
     });
@@ -11,7 +11,7 @@ export const getHistoricalForex = (symbol: string, period: string) => {
 
 export const getWebsocketForex = () => {
     return new OandaFXSocketConnection({
-        socketURL: REQUEST_ENDPOINTS.OANDA_WEBSOCKET.ENDPOINT,
-        name: REQUEST_ENDPOINTS.OANDA_WEBSOCKET.NAME,
+        socketURL: ENDPOINTS.PRIVATE.OANDA_FX_STREAMING_ENDPOINT,
+        name: 'ForexWebSocket',
     });
 };

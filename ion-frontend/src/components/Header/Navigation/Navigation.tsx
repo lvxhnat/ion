@@ -3,12 +3,15 @@ import * as React from 'react';
 
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import HomeIcon from '@mui/icons-material/Home';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 import { useNavigate } from 'react-router-dom';
 import { useHeaderStore } from 'store/header/header';
+import { ROUTES } from 'common/constant';
 
 export default function Navigation() {
     const navigate = useNavigate();
@@ -42,6 +45,12 @@ export default function Navigation() {
                     </Select>
                 </FormControl>
             ) : null}
+            <S.IconButtonWrapper disableRipple onClick={() => navigate(ROUTES.PUBLIC.LANDING)}>
+                <HomeIcon fontSize="small" />
+            </S.IconButtonWrapper>
+            <S.IconButtonWrapper disableRipple onClick={() => navigate(ROUTES.PUBLIC.FUNCTION)}>
+                <ListAltIcon fontSize="small" />
+            </S.IconButtonWrapper>
         </S.NavigationPanel>
     );
 }

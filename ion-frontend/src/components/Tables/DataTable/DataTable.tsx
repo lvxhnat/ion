@@ -8,11 +8,10 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import DataTableHead from './DataTableHead';
-import Box from '@mui/material/Box';
 import DataTableCell from './DataTableCell';
 import Skeleton from '@mui/material/Skeleton';
 import DataTableEnhancedHeader from './DataTableEnhancedHeader';
-import { useUploadPage } from 'store/customanalysis/customanalysis';
+import { useUploadPage } from 'store/table/table';
 
 interface TableCellProps {
     [x: string]: any;
