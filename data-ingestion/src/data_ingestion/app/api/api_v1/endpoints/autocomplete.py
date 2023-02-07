@@ -6,6 +6,7 @@ from data_ingestion.app.singleton import mongodb_client, test_connection
 from data_ingestion.app.api.api_v1.models.autocomplete import (
     SecurityFunctions,
     TradeableAssets,
+    ETFInfoRequest,
 )
 
 load_dotenv()
@@ -121,13 +122,19 @@ def get_asset_autocomplete_info(params: TradeableAssets):
 
 @router.get("/etfAssetTypes")
 def get_etf_asset_types():
-    print(
-        mongodb_client[settings.MONGODB_ASSET_INFO_TABLE][
+    return [
+        *mongodb_client[settings.MONGODB_ASSET_INFO_TABLE][
             settings.MONGODB_ETFS_COLLECTION
         ].distinct("asset_class")
-    )
+    ]
 
 
 @router.post("/etfs")
-def get_etf_info(params):
-    pass
+def get_etf_info(params: ETFInfoRequest):
+    try:
+        request_info = mongodb_client[settings.MONGODB_ASSET_INFO_TABLE][settings.MONGODB_ETFS_COLLECTION].find(
+            params.request
+        )
+        return [*request_info]
+    except Exception: 
+        raise 

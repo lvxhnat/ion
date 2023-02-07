@@ -11,6 +11,7 @@ import Header from 'components/Header';
 import { ColorsEnum } from 'common/theme';
 import { useThemeStore } from 'store/theme';
 import { getAllFunctions } from 'data/ingestion/autocomplete';
+import HexLayer from 'components/Charting/HexLayer';
 
 export default function Function() {
     const { mode } = useThemeStore();
@@ -38,6 +39,7 @@ export default function Function() {
         <>
             <CssBaseline />
             <Header />
+            <HexLayer baseId="functionExplorerHex" />
             <Grid container sx={{ padding: 2 }}>
                 <Grid item xs={6}>
                     <Typography

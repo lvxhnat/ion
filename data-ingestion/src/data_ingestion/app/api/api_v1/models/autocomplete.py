@@ -13,7 +13,10 @@ class SecurityFunctions(QueryModel):
 class TradeableAssets(BaseModel):
     query_type: Optional[str]
     query_tick: Optional[str]
-
+    
+    
+class ETFInfoRequest(BaseModel):
+    request: dict
 
 class ETFInfoTable(BaseModel):
     ticker: str

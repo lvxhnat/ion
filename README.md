@@ -42,11 +42,11 @@ docker-compose to be updated.
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-## Data Fields that need to be prepopulated 
+## Data Fields that need to be prepopulated
 
 \[Prefect\] Treasury\
 \[Prefect\] Global Area Lat Lon\
-\[-\] ETFDB 
+\[-\] ETFDB
 
 ## License
 
