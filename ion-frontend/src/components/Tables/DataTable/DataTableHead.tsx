@@ -13,8 +13,10 @@ import { StyledTableCell } from './DataTable';
 import { ColorsEnum } from 'common/theme';
 import { IngestionDtypeObjectType } from 'data/ingestion/ingestion';
 import { typeIconHints } from 'common/theme/components/icons';
+import { useThemeStore } from 'store/theme';
 
 export default function DataTableHead(props: DataTableHeaderProps) {
+    const { mode } = useThemeStore();
     const [cellSelected, setCellSelected] = React.useState<number>();
 
     const { data, order, orderBy, onRequestSort } = props;
@@ -36,6 +38,13 @@ export default function DataTableHead(props: DataTableHeaderProps) {
                         nullableTag = allTypes.nullable ? 'NULLABLE' : 'NOT NULLABLE';
                     }
 
+                    let backgroundColor: string = ColorsEnum.white;
+                    if (mode === 'dark') {
+                        if (cellSelected === index && props.selectableCells)
+                            backgroundColor = ColorsEnum.darkGrey;
+                        else backgroundColor = ColorsEnum.black;
+                    }
+
                     return (
                         <StyledTableCell
                             key={`dataTableHead_${column.id}_${index}`}
@@ -44,12 +53,13 @@ export default function DataTableHead(props: DataTableHeaderProps) {
                             sx={{
                                 width: columnWidth,
                                 padding: '1px 3px',
-                                backgroundColor:
-                                    cellSelected === index ? ColorsEnum.darkGrey : ColorsEnum.black,
+                                backgroundColor: backgroundColor,
                             }}
                             onClick={() => {
-                                props.setColumnSelect(index);
-                                setCellSelected(index);
+                                if (props.selectableCells) {
+                                    props.setColumnSelect(index);
+                                    setCellSelected(index);
+                                }
                             }}
                         >
                             {!props.hideBasel ? (

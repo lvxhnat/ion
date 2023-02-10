@@ -20,14 +20,7 @@ export default function ETFExplorer() {
     const [categoryData, setCategoryData] = React.useState<UploadDataType>({} as UploadDataType);
     const [categorySelected, setCategorySelected] = React.useState<string>('All');
 
-    React.useEffect(() => {
-        getETFAssetTypes().then(res => {
-            setCategories(res.data);
-        });
-    }, []);
-
-    const handleClick = (label: string) => {
-        setCategorySelected(label);
+    function getInfos() {
         getETFInfos({
             filter: [{ asset_class: categorySelected }],
             sort: [{ ticker: 1 }],
@@ -39,14 +32,21 @@ export default function ETFExplorer() {
                 content_header: Object.keys(res.data[0]).map((column: string) => {
                     return { id: column, headerName: column };
                 }),
-                content_body: res.data.map((value: ETFInfoDTO) => {
-                    const new_value: any = { ...value };
-                    delete new_value['alternative_etfs'];
-                    delete new_value['other_alternative_etfs'];
-                    return new_value;
-                }),
+                content_body: res.data,
             });
         });
+    }
+
+    React.useEffect(() => {
+        getETFAssetTypes().then(res => {
+            setCategories(res.data);
+        });
+        getInfos();
+    }, []);
+
+    const handleClick = (label: string) => {
+        setCategorySelected(label);
+        getInfos();
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,7 +86,7 @@ export default function ETFExplorer() {
                         </RadioGroup>
                     </FormControl>
                 </Grid>
-                <Grid item xs={10}>
+                <Grid item xs={10} sx={{ paddingRight: 2 }}>
                     {categoryData.content_body ? (
                         <DataTable hideBasel stickyHeader boldHeader data={categoryData} />
                     ) : null}

@@ -39,7 +39,7 @@ export default function Function() {
         <>
             <CssBaseline />
             <Header />
-            <HexLayer baseId="functionExplorerHex" />
+            <HexLayer baseId="functionExplorerHex" theme={mode!} title="Functions" />
             <Grid container sx={{ padding: 2 }}>
                 <Grid item xs={6}>
                     <Typography
@@ -76,26 +76,41 @@ export default function Function() {
                     </S.MainWrapper>
                     {Object.keys(availableFunctions).map((key: string) => {
                         return (
-                            <>
-                                <Typography variant="subtitle1" style={{ color: ColorsEnum.beer }}>
+                            <React.Fragment key={`fragment_${key}`}>
+                                <Typography
+                                    key={key}
+                                    variant="subtitle1"
+                                    style={{ color: ColorsEnum.beer }}
+                                >
                                     {key}
                                 </Typography>
                                 {availableFunctions[key].map(entry => (
-                                    <S.MainWrapper onClick={() => navigate(entry.redirect)}>
+                                    <S.MainWrapper
+                                        onClick={() => navigate(entry.redirect)}
+                                        key={entry.name}
+                                    >
                                         {!['About'].includes(key) ? (
-                                            <S.SubWrappers style={{ width: '5%' }}>
+                                            <S.SubWrappers
+                                                style={{ width: '5%' }}
+                                                key={`${entry.name}_subwrapper1`}
+                                            >
                                                 <Typography
                                                     variant="subtitle1"
                                                     style={{ color: ColorsEnum.machoBlue }}
+                                                    key={`${entry.name}_typography1`}
                                                 >
                                                     {'>'}
                                                 </Typography>
                                             </S.SubWrappers>
                                         ) : null}
-                                        <S.SubWrappers style={{ width: '15%' }}>
+                                        <S.SubWrappers
+                                            style={{ width: '15%' }}
+                                            key={`${entry.name}_subwrapper2`}
+                                        >
                                             <Typography
                                                 variant="subtitle1"
                                                 style={{ color: ColorsEnum.machoBlue }}
+                                                key={`${entry.name}_typography2`}
                                             >
                                                 {entry.name}
                                             </Typography>
@@ -103,12 +118,13 @@ export default function Function() {
                                         <Typography
                                             variant="subtitle1"
                                             style={{ color: ColorsEnum.machoBlue }}
+                                            key={`${entry.name}_typography3`}
                                         >
                                             {entry.long_name}
                                         </Typography>
                                     </S.MainWrapper>
                                 ))}
-                            </>
+                            </React.Fragment>
                         );
                     })}
                 </Grid>

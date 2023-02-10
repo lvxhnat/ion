@@ -129,12 +129,50 @@ def get_etf_asset_types():
     ]
 
 
-@router.post("/etfs")
+@router.post("/etfInfos")
 def get_etf_info(params: ETFInfoRequest):
+
     try:
-        request_info = mongodb_client[settings.MONGODB_ASSET_INFO_TABLE][settings.MONGODB_ETFS_COLLECTION].find(
-            params.request
+
+        if not isinstance(params.request["filter"], list):
+            raise ValueError("Filter on multiple field in list")
+        if not isinstance(params.request["sort"], list):
+            raise ValueError("Sort on multiple field in list")
+
+        exclude_fields = {
+            "_id": False,
+            "other_alternative_etfs": False,
+            "alternative_etfs": False,
+            "etf_home_page": False,
+        }
+        if params.request["filter"][0]["asset_class"] == "All":
+            find_kwargs = (
+                {},
+                exclude_fields,
+            )
+        else:
+            find_kwargs = (
+                {"$and": params.request["filter"]},
+                exclude_fields,
+            )
+
+        request_info = (
+            mongodb_client[settings.MONGODB_ASSET_INFO_TABLE][
+                settings.MONGODB_ETFS_COLLECTION
+            ]
+            .find(*find_kwargs)
+            .sort(
+                [
+                    *map(
+                        lambda d: tuple(d.items())[0],
+                        params.request["sort"],
+                    )
+                ]
+            )
+            .limit(50)
         )
-        return [*request_info]
-    except Exception: 
-        raise 
+
+        return [*map(lambda s: {"id": s[0], **s[1]}, enumerate(request_info))]
+
+    except Exception:
+        raise

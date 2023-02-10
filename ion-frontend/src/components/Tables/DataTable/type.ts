@@ -43,6 +43,6 @@ export type UploadDataType = Modify<
     IngestionDataType,
     {
         content_header: DataTableHeaderDefinition[];
-        content_body: { id: number;[col: string]: any }[];
+        content_body: { id: number; [col: string]: any }[];
     }
 >;

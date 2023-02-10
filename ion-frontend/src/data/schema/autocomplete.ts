@@ -12,7 +12,6 @@ export interface ETFInfoDTO {
     brand: string;
     structure: string;
     expense_ratio: string;
-    etf_home_page: string;
     inception: string;
     index_tracked: string;
     category: string;
@@ -27,6 +26,4 @@ export interface ETFInfoDTO {
     strategy: string;
     weighting_scheme: string;
     description: string;
-    alternative_etfs: any[];
-    other_alternative_etfs: any[];
 }
