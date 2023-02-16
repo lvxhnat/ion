@@ -9,11 +9,10 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
-import Header from 'components/Header';
 import { getETFAssetTypes, getETFInfos } from 'data/ingestion/autocomplete';
 import { UploadDataType } from 'components/Tables/DataTable/type';
 import { DataTable } from 'components/Tables/DataTable';
-import { ETFInfoDTO } from 'data/schema/autocomplete';
+import Navigation from 'components/Navigation';
 
 export default function ETFExplorer() {
     const [categories, setCategories] = React.useState<string[]>([]);
@@ -56,7 +55,7 @@ export default function ETFExplorer() {
     return (
         <>
             <CssBaseline />
-            <Header />
+            <Navigation />
             <Grid container>
                 <Grid item xs={2}>
                     <FormControl sx={{ padding: 2 }}>

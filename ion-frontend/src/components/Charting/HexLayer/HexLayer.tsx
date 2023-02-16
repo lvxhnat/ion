@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import { useD3 } from 'common/hooks/useD3';
 import { ColorsEnum } from 'common/theme';
+import MasterSearch from 'components/Navigation/MasterSearch';
 
 interface HexLayerProps {
     baseId: string;
@@ -17,7 +18,7 @@ export default function HexLayer({ baseId, theme, title }: HexLayerProps): React
             // Ensure rerender does not duplicate chart
             const width = 1200;
             const height = 100;
-            const hexRadius = 8;
+            const hexRadius = 7;
 
             // Generates all the x-coordinates required
             let data: [number, number][] = Array.from(
@@ -90,10 +91,11 @@ export default function HexLayer({ baseId, theme, title }: HexLayerProps): React
                 svg.append('text')
                     .attr('x', width / 2)
                     .attr('y', height / 2)
+                    .attr('dy', -20)
                     .text(title)
                     .style('text-anchor', 'middle')
                     .style('font-weight', 'bold')
-                    .style('font-size', 'calc(12px + 0.5vw)')
+                    .style('font-size', 'calc(12px + 0.2vw)')
                     .style('fill', theme === 'dark' ? ColorsEnum.white : ColorsEnum.black);
             }
         },
@@ -103,6 +105,17 @@ export default function HexLayer({ baseId, theme, title }: HexLayerProps): React
     return (
         <div id={`${baseId}-container`}>
             <svg ref={ref} />
+            <div
+                style={{
+                    position: 'absolute',
+                    marginTop: -60,
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                }}
+            >
+                <MasterSearch />
+            </div>
         </div>
     );
 }

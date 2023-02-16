@@ -11,7 +11,7 @@ export const HeaderPanel = styled('div')(({ theme }) => ({
 
 export const NavigationPanel = styled('div')(({ theme }) => ({
     display: 'flex',
-    paddingTop: 2,
+    padding: `${theme.spacing(0.5)} 0`,
 }));
 
 export const IconButtonWrapper = styled(IconButton)(({ theme }) => ({

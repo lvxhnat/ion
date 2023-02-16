@@ -3,13 +3,29 @@ import { ColorsEnum } from 'common/theme';
 import Table from '@mui/material/Table';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
 
-export const TableCellWrapper = styled(TableCell)(({ theme }) => ({
-    padding: `${theme.spacing(0.5)} ${theme.spacing(0.5)}`,
-    border: 0,
-}));
+interface TableCellProps {
+    [x: string]: any;
+    width: string;
+    children?: any;
+    style?: React.CSSProperties;
+}
+
+export const StyledTableCell: React.FC<TableCellProps> = props => {
+    return (
+        <TableCell
+            width={props.width}
+            sx={{
+                padding: 0.5,
+                border: 0,
+                ...props.style,
+            }}
+        >
+            {props.children}
+        </TableCell>
+    );
+};
 
 export const StyledSearchWrapper = styled('div')(({ theme }) => ({
     display: 'inline-block',
@@ -17,15 +33,25 @@ export const StyledSearchWrapper = styled('div')(({ theme }) => ({
     borderRadius: '4px',
 }));
 
+const searchbarWidth = `calc(400px + 4vw)`;
+
 export const StyledSearch = styled('input')(({ theme }) => ({
     fontSize: `calc(0.7rem + 0.2vw)`,
-    backgroundColor: 'transparent',
+    backgroundColor: theme.palette.mode === 'dark' ? ColorsEnum.darkGrey : ColorsEnum.white,
     padding: theme.spacing(0.5),
     paddingLeft: theme.spacing(2.5),
-    border: '1px solid ' + ColorsEnum.beer,
+    border: '1px solid ' + ColorsEnum.coolgray4,
     color: theme.palette.mode === 'dark' ? ColorsEnum.white : ColorsEnum.black,
     outline: 'none',
-    minWidth: `calc(500px + 5vw)`,
+    minWidth: searchbarWidth,
+}));
+
+export const TableWrapper = styled(Table)(({ theme }) => ({
+    zIndex: 999,
+    width: searchbarWidth,
+    position: 'absolute',
+    border: `1px solid ${ColorsEnum.warmgray1}`,
+    backgroundColor: theme.palette.mode === 'dark' ? ColorsEnum.darkGrey : ColorsEnum.black,
 }));
 
 export const StyledSearchTag = styled('div')(({ theme }) => ({
@@ -34,7 +60,7 @@ export const StyledSearchTag = styled('div')(({ theme }) => ({
     left: 0,
     height: '100%',
     width: '20px',
-    backgroundColor: ColorsEnum.beer,
+    backgroundColor: ColorsEnum.coolgray4,
     clipPath: 'polygon(0 0, 20% 0, 60% 50%, 20% 100%, 0 100%)',
 }));
 
@@ -49,16 +75,8 @@ export const TableHeaderWrapper = styled(Typography)(({ theme }) => ({
 }));
 
 export const TableRowWrapper = styled(TableRow)(({ theme }) => ({
-    display: 'block',
     '&:hover': {
         backgroundColor: 'rgb(3, 37, 76, 0.8) !important',
     },
-}));
-
-export const TableWrapper = styled(Table)(({ theme }) => ({
-    zIndex: 999,
-    width: `calc(500px + 5vw)`,
-    position: 'absolute',
-    border: `1px solid ${ColorsEnum.warmgray1}`,
-    backgroundColor: theme.palette.mode === 'dark' ? ColorsEnum.darkGrey : ColorsEnum.black,
+    width: '100%',
 }));

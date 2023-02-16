@@ -14,7 +14,12 @@ function ToggleThemeMode() {
     if (!mode) return null;
 
     return (
-        <IconButton aria-label="delete" onClick={handleClick} disableRipple>
+        <IconButton
+            aria-label="delete"
+            onClick={handleClick}
+            disableRipple
+            style={{ padding: 0, paddingRight: 5 }}
+        >
             {mode === 'dark' ? (
                 <Brightness7Icon fontSize="small" data-testid="theme-mode-light-id" />
             ) : (

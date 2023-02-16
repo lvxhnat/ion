@@ -12,7 +12,7 @@ import { FunctionSuggestion, SearchSuggestions } from './type';
 import { ColorsEnum } from 'common/theme';
 import { useNavigate } from 'react-router-dom';
 
-export default function MasterSearch(props: {}) {
+export default function MasterSearch(props: { background?: boolean }) {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = React.useState<string>();
     const [searchResults, setSearchResults] = React.useState<SearchSuggestions>({
@@ -43,48 +43,52 @@ export default function MasterSearch(props: {}) {
                 <S.StyledSearch
                     type="text"
                     placeholder="Search"
+                    onFocus={event => {
+                        event.target.placeholder = '';
+                    }}
                     onChange={event => setSearchQuery(event.target.value)}
                 />
                 <S.StyledSearchTag />
             </S.StyledSearchWrapper>
             <S.TableWrapper sx={searchQuery ? { display: 'block' } : { display: 'none' }}>
-                <TableBody sx={{ display: 'block' }}>
+                <TableBody>
                     <>
                         <TableRow style={{ display: 'block' }}>
-                            <S.TableCellWrapper colSpan={2}>
+                            <S.StyledTableCell colSpan={2} width="100%">
                                 <S.TableHeaderWrapper variant="subtitle1">
                                     Functions:
                                 </S.TableHeaderWrapper>
-                            </S.TableCellWrapper>
+                            </S.StyledTableCell>
                         </TableRow>
                         {searchResults.functions.map((d: FunctionSuggestion) => (
                             <S.TableRowWrapper
                                 hover
                                 key={d.name}
-                                sx={{ cursor: 'pointer', color: ColorsEnum.machoBlue }}
+                                sx={{
+                                    cursor: 'pointer',
+                                    color: ColorsEnum.machoBlue,
+                                }}
                                 onClick={() => navigate(d.redirect)}
                             >
-                                <S.TableCellWrapper
-                                    sx={{ paddingLeft: 'calc(1rem + 2vw)', minWidth: 200 }}
-                                    width="50%"
-                                >
+                                <S.StyledTableCell width="5%">
                                     <Typography
-                                        sx={{ color: ColorsEnum.machoBlue }}
-                                        variant="subtitle1"
+                                        sx={{ color: ColorsEnum.machoBlue, paddingLeft: 1 }}
+                                        variant="subtitle2"
                                         align="left"
                                     >
                                         {d.name}
                                     </Typography>
-                                </S.TableCellWrapper>
-                                <S.TableCellWrapper width="50%">
+                                </S.StyledTableCell>
+                                <S.StyledTableCell width="95%">
                                     <Typography
+                                        noWrap
                                         sx={{ color: ColorsEnum.machoBlue }}
-                                        variant="subtitle1"
+                                        variant="subtitle2"
                                         align="left"
                                     >
                                         {d.long_name}
                                     </Typography>
-                                </S.TableCellWrapper>
+                                </S.StyledTableCell>
                             </S.TableRowWrapper>
                         ))}
                     </>

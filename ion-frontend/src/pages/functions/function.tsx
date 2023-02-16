@@ -7,11 +7,11 @@ import Grid from '@mui/material/Grid';
 
 import { useNavigate } from 'react-router-dom';
 
-import Header from 'components/Header';
 import { ColorsEnum } from 'common/theme';
 import { useThemeStore } from 'store/theme';
 import { getAllFunctions } from 'data/ingestion/autocomplete';
 import HexLayer from 'components/Charting/HexLayer';
+import Navigation from 'components/Navigation';
 
 export default function Function() {
     const { mode } = useThemeStore();
@@ -38,7 +38,7 @@ export default function Function() {
     return (
         <>
             <CssBaseline />
-            <Header />
+            <Navigation />
             <HexLayer baseId="functionExplorerHex" theme={mode!} title="Functions" />
             <Grid container sx={{ padding: 2 }}>
                 <Grid item xs={6}>
