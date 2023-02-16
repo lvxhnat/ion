@@ -24,7 +24,7 @@ yarn start
 
 ## Architecture
 
-![](./assets/architecture.drawio.png)
+![](./assets/architecture.drawio.svg)
 
 ---
 
