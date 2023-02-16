@@ -167,7 +167,6 @@ def bulk_upsert(
     if not table_exists(TableSchema):
         # Create table if it does not exist
         TableSchema.__table__.create(postgres_engine)
-        uuid_col_exists: bool = "uuid" in table_columns
 
         objects: List[TableSchema] = []
 
@@ -176,15 +175,11 @@ def bulk_upsert(
 
         for object in WriteObject:
             # If id column exists, and uuid is not in table schema, then we pass
-            if uuid_col_exists and object["uuid"] is None:
+            if "uuid" in object:
                 del object["uuid"]
-                objects.append(TableSchema(uuid=str(uuid.uuid4()), **object))
             else:
-                if not upsert_key:
-                    logger.info(
-                        "No unique id column provided, or uuid detected in schema. Defaulting to writing without one."
-                    )
-                objects.append(TableSchema(**object))
+                object["uuid"] = str(uuid.uuid4())
+            objects.append(TableSchema(**object))
 
     else:
 
