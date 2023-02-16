@@ -10,24 +10,24 @@ Ion is a web application designed to leverage OSINT and common financial applica
 
 ---
 
-### Start base services - postgres, kafka servers. In ```ion/docker```
+#### Start base services - postgres, kafka servers. In ```ion/docker```
 ```
 docker compose -f "./docker-compose.base.yml" up
 ```
 
-### Start ETL pipelines. In ```ion/data-engine```
+#### Start ETL pipelines. In ```ion/data-engine```
 ```
 prefect orion start
 prefect agent start -q "common" "treasury"
 python -m deployment
 ```
 
-### Start backend. In ```ion/data-ingestion```
+#### Start backend. In ```ion/data-ingestion```
 ```
 uvicorn src.data_ingestion.app.main:app --reload --port 1236
 ```
 
-### Start frontend. In ```ion/ion-frontend```
+#### Start frontend. In ```ion/ion-frontend```
 ```
 yarn start
 ```
