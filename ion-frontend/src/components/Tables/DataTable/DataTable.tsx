@@ -8,11 +8,10 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import DataTableHead from './DataTableHead';
-import Box from '@mui/material/Box';
 import DataTableCell from './DataTableCell';
 import Skeleton from '@mui/material/Skeleton';
 import DataTableEnhancedHeader from './DataTableEnhancedHeader';
-import { useUploadPage } from 'store/customanalysis/customanalysis';
+import { useUploadPage } from 'store/table/table';
 
 interface TableCellProps {
     [x: string]: any;
@@ -114,24 +113,34 @@ export default function DataTable(props: DataTableProps) {
                                                 entry: DataTableHeaderDefinition,
                                                 column_index: number
                                             ) => {
-                                                return (
-                                                    <DataTableCell
-                                                        id={`${row_index}-${column_index}`}
-                                                        selected={
-                                                            cellSelected ===
-                                                                `${row_index}-${column_index}` ||
-                                                            columnSelected === column_index
-                                                        }
-                                                        onClick={() => {
-                                                            setCellSelected(
-                                                                `${row_index}-${column_index}`
-                                                            );
-                                                        }}
-                                                        key={`dataTableBody_${column_index}_${row_index}`}
-                                                    >
-                                                        {row[entry.headerName]}
-                                                    </DataTableCell>
-                                                );
+                                                if (props.selectableCells)
+                                                    return (
+                                                        <DataTableCell
+                                                            id={`${row_index}-${column_index}`}
+                                                            selected={
+                                                                cellSelected ===
+                                                                    `${row_index}-${column_index}` ||
+                                                                columnSelected === column_index
+                                                            }
+                                                            onClick={() => {
+                                                                setCellSelected(
+                                                                    `${row_index}-${column_index}`
+                                                                );
+                                                            }}
+                                                            key={`dataTableBody_${column_index}_${row_index}`}
+                                                        >
+                                                            {row[entry.headerName]}
+                                                        </DataTableCell>
+                                                    );
+                                                else
+                                                    return (
+                                                        <DataTableCell
+                                                            id={`${row_index}-${column_index}`}
+                                                            key={`dataTableBody_${column_index}_${row_index}`}
+                                                        >
+                                                            {row[entry.headerName]}
+                                                        </DataTableCell>
+                                                    );
                                             }
                                         )}
                                     </TableRow>

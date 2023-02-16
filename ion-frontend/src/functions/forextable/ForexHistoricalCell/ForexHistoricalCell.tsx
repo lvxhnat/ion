@@ -4,9 +4,9 @@ import * as d3 from 'd3';
 import BaseLineChart from 'components/Charting/BaseChart';
 
 import { dataIngestionRequest } from 'services/request';
-import { REQUEST_ENDPOINTS } from '../../../data/endpoints/forex';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { TableCellWrapper } from 'components/Tables/BaseTable/style';
+import { ENDPOINTS } from 'common/constant/endpoints';
 
 export default function ForexHistoricalCell(props: { forexPair: string }) {
     const [data, setData] = React.useState<DefaultDataProps>();
@@ -15,7 +15,7 @@ export default function ForexHistoricalCell(props: { forexPair: string }) {
         const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
 
         dataIngestionRequest
-            .post(REQUEST_ENDPOINTS.OANDA_HISTORICAL.ENDPOINT, {
+            .post(ENDPOINTS.PRIVATE.OANDA_FX_HISTORICAL_ENDPOINT, {
                 symbol: props.forexPair,
                 period: '1M_S',
             })

@@ -73,6 +73,7 @@ export enum ColorsEnum {
     teenPurple = '#8A02E5',
     mainstreamBlue = '#00D2FF',
     machoBlue = '#4169E1',
+    lighterMachoBlue = '#80A0FF',
     seeAndBeGreen = '#00C89B',
     memeBlue = '#76ABFF',
     youthPink = '#FF00FF',
@@ -87,6 +88,9 @@ export enum ColorsEnum {
     instagram = '#C13584',
     darkGrey = '#2b2b2b',
     darkMode = '#121212',
+    economicBlue = '#01253F',
+    limeGreen = '#E4F5D5',
+    lightLime = '#F9FFF2',
 }
 
 /*

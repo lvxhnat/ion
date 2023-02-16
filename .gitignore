@@ -9,3 +9,11 @@
 research-notebooks/
 
 .vscode/
+
+# Data 
+*.csv
+*.json
+!.eslintrc.json
+!.prettierrc.json
+!.tsconfig.json
+*.parquet

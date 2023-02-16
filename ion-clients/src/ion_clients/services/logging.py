@@ -13,20 +13,19 @@ logger_mapping = {
 def get_logger(
     log_level: Literal[
         "CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"
-    ] = "DEBUG"
+    ] = "INFO"
 ):
 
-    root_logger = logging.getLogger()
+    logger = logging.getLogger()
+    logger.setLevel(logger_mapping[log_level])
+        
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG)
     formatter = logging.Formatter(
         fmt="[%(levelname)s %(asctime)s] %(filename)s - %(funcName)s(): %(message)s",
         datefmt="%m/%d/%Y %I:%M:%S %p",
     )
+    console_handler.setFormatter(formatter)
+    logger.addHandler(console_handler)    
 
-    for handler in root_logger.handlers:
-        if isinstance(handler, logging.StreamHandler):
-            handler.setFormatter(formatter)
-
-    root_logger.setLevel(logger_mapping[log_level])
-    root_logger.propagate = False
-
-    return root_logger
+    return logger

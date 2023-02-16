@@ -3,7 +3,10 @@ import { IngestionDataType } from 'data/ingestion/ingestion';
 
 export interface DataTableProps {
     data: UploadDataType;
-    stickyHeader?: boolean | undefined;
+    hideBasel?: boolean | undefined; // Show orange basels on top
+    boldHeader?: boolean | undefined; // Make header bold
+    stickyHeader?: boolean | undefined; // Make header sticky
+    selectableCells?: boolean | undefined; // Allow selection of table cells
     rowCount?: number | undefined;
     pageSize?: number | undefined;
     rowsPerPage?: number | undefined;
@@ -13,8 +16,8 @@ export interface DataTableProps {
 
 export interface DataTableCellProps {
     id: string;
-    selected: boolean;
-    onClick: Function;
+    selected?: boolean;
+    onClick?: Function;
     children?: any;
     defaultColumnWidth?: number | undefined;
 }

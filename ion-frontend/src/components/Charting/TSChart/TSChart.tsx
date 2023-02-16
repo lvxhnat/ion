@@ -49,7 +49,6 @@ export default function TSChart(): React.ReactElement {
 
     return (
         <div>
-            <Header setData={setDataHook} baseId={`svg-container`} />
             {data ? (
                 <BaseLineChart
                     baseId={`svg-container`}
