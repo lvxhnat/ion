@@ -46,17 +46,17 @@ Home Page             |  Available Functions
 
 Status              |     Prompt
 :-------------------------:|:-------------------------:
-Online | <div style="width:10px;height:10px;background-color:green;display:inline-block;"></div> <span> Online </span>
-Work in Progress (WIP) | <div style="width:10px;height:10px;background-color:yellow;display:inline-block;"></div> <span> WIP </span>
-Bug | <div style="width:10px;height:10px;background-color:red;display:inline-block;"></div> <span> Bug </span>
+Online | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png)
+Work in Progress (WIP) | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png)
+Bug | ![#ff0000](https://placehold.co/10x10/ff0000/ff0000.png)
 
 Data Provider              |  Data                       |  Repo                    |  Status                 | Pages Using
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------: | :-------------------------: 
-Open Weather API | Weather | ion-clients | <div style="width:10px;height:10px;background-color:green;display:inline-block;"></div> <span> Online </span> | Home (Widget)
-US Department of Treasury | Treasury Rates | ion-clients | <div style="width:10px;height:10px;background-color:green;display:inline-block;"></div> <span> Online </span> | Home (Widget)
-Oanda API | Live and Historical Forex Data | ion-clients | <div style="width:10px;height:10px;background-color:green;display:inline-block;"></div> <span> Online </span> | Home (Widget)
-Geonames | Geographical Names with Lat and Lon Data | ion-clients | <div style="width:10px;height:10px;background-color:green;display:inline-block;"></div> <span> Online </span> | Home (Weather Widget)
-ETFDB | ETF Metadata and Database | pyETFDB-scraper | <div style="width:10px;height:10px;background-color:green;display:inline-block;"></div> <span> Online </span> | ETF List
+Open Weather API | Weather | ion-clients | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) | Home (Widget)
+US Department of Treasury | Treasury Rates | ion-clients | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) | Home (Widget)
+Oanda API | Live and Historical Forex Data | ion-clients | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) | Home (Widget)
+Geonames | Geographical Names with Lat and Lon Data | ion-clients | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) | Home (Weather Widget)
+ETFDB | ETF Metadata and Database | pyETFDB-scraper | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) | ETF List
 
 ## Contributing
 
