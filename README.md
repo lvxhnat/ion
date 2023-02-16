@@ -36,7 +36,7 @@ yarn start
 
 ---
 
-<img align="left" src="./assets/architecture.drawio.svg" width="500" style="padding-right: 25px">
+<img align="left" src="./assets/architecture.drawio.svg" width="400" style="padding-right: 25px">
 
 * ```polar-frontend``` aims to separate the general data marketplace from the main UI/UX of Ion, which is based around trading/financial/alternative data.
 
@@ -51,8 +51,6 @@ yarn start
 * ```ion-clients``` provides a unified package service that contains all of the code used by ```data-ingestion``` and ```data-engine``` services, including database schemas.
 
 <br clear="left"/>
-<br />
-
 
 ## Features
 
