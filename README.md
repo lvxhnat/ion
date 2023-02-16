@@ -32,7 +32,9 @@ yarn start
 
 ---
 
-![Alt Text](./assets/demo.gif)
+Home Page             |  Available Functions
+:-------------------------:|:-------------------------:
+![](./assets/home.png)  |  ![](./assets/function-explorer.png)
 
 docker-compose to be updated.
 
