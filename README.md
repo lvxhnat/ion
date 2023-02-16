@@ -44,6 +44,12 @@ Home Page             |  Available Functions
 
 ---
 
+Status              |     Prompt
+:-------------------------:|:-------------------------:
+Online | <div style="width:10px;height:10px;background-color:green;display:inline-block;"></div> <span> Online </span>
+Work in Progress (WIP) | <div style="width:10px;height:10px;background-color:yellow;display:inline-block;"></div> <span> WIP </span>
+Bug | <div style="width:10px;height:10px;background-color:red;display:inline-block;"></div> <span> Bug </span>
+
 Data Provider              |  Data                       |  Repo                    |  Status                 | Pages Using
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------: | :-------------------------: 
 Open Weather API | Weather | ion-clients | <div style="width:10px;height:10px;background-color:green;display:inline-block;"></div> <span> Online </span> | Home (Widget)
