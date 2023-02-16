@@ -58,7 +58,11 @@ yarn start
 
 Home Page             |  Available Functions
 :-------------------------:|:-------------------------:
-![](./assets/home.png)  |  ![](./assets/function-explorer.png)
+![](./assets/pages/home.png)  |  ![](./assets/pages/function-explorer.png)
+
+ETF Explorer            |  Chart Explorer
+:-------------------------:|:-------------------------:
+![](./assets/pages/etf-list.png)  | ![](./assets/pages/chart-explorer.png)
 
 ## Data Sources
 
