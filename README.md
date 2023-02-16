@@ -46,7 +46,7 @@ yarn start
 
 * ```data-ingestion``` handles the extraction of data from the database that ```data-engine``` writes to.
 
-* ```data-engine``` handles the scraping of data that otherwise takes a long time to extract. For example, Department of Treasury data. At the moment, this service writes to both MongoDB and PostgresSQL databases.
+* ```data-engine``` handles the scraping of data that otherwise takes a long time to extract. E.g. Treasury data. This service writes to both MongoDB and PostgresSQL databases.
 
 * ```ion-clients``` provides a unified package service that contains all of the code used by ```data-ingestion``` and ```data-engine``` services, including database schemas.
 
