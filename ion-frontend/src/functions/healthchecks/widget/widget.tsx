@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import axios from 'axios';
+
 import { styled } from '@mui/system';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,7 +14,7 @@ import WidgetContainer from 'components/WidgetContainer';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
 import { TEST_ENDPOINTS } from 'common/constant/endpoints';
 import { dataIngestionRequest } from 'services/request';
-import axios from 'axios';
+import { ROUTES } from 'common/constant';
 
 const StyledTableCell = (props: {
     children: any;
@@ -72,7 +74,7 @@ export default function HealthChecks() {
     }, []);
 
     return (
-        <WidgetContainer title="system_checks">
+        <WidgetContainer title="health_checks" fullScreenRedirect={ROUTES.PUBLIC.HEALTHCHECK}>
             <StyledTableContainer>
                 <Table style={{ minWidth: 150 }} aria-label="a dense table">
                     <TableBody>
