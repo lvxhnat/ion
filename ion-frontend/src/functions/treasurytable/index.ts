@@ -1,4 +1,4 @@
-import { default as TreasuryTableWidget } from './widget';
-import { default as TreasuryTablePage } from './page';
+import { TreasuryTableWidget } from './widget';
+import { TreasuryTablePage } from './page';
 
 export { TreasuryTablePage, TreasuryTableWidget };

@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import TreasuryTable from './treasurytable';
+import TreasuryTable from '../treasurytable';
 import WidgetContainer from 'components/WidgetContainer';
-import { allowedTreasuryTables } from './type';
+import { allowedTreasuryTables } from '../type';
 
 import Select from 'components/Select';
 

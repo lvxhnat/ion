@@ -1,4 +1,4 @@
-import { default as ForexTableWidget } from './widget';
-import { default as ForexTablePage } from './page';
+import { ForexTableWidget } from './widget';
+import { ForexTablePage } from './page';
 
 export { ForexTableWidget, ForexTablePage };

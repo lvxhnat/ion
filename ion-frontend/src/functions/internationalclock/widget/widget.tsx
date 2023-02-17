@@ -1,7 +1,7 @@
 import * as React from 'react';
-import * as S from './style';
+import * as S from '../style';
 
-import InternationalClock from './internationalclock';
+import InternationalClock from '../internationalclock';
 import WidgetContainer from 'components/WidgetContainer';
 import Grid from '@mui/material/Grid';
 

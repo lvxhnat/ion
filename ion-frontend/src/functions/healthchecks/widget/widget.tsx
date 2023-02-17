@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 
 import { ColorsEnum } from 'common/theme';
+import WidgetContainer from 'components/WidgetContainer';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
 import { TEST_ENDPOINTS } from 'common/constant/endpoints';
 import { dataIngestionRequest } from 'services/request';
@@ -48,7 +49,7 @@ const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
     '&::-webkit-scrollbar': { width: 0 },
 }));
 
-export default function SystemChecks() {
+export default function HealthChecks() {
     const [status, setStatus] = React.useState<{ [name: string]: number | undefined }>({});
     const [lastUpdated, setLastUpdated] = React.useState<string>();
 
@@ -71,28 +72,33 @@ export default function SystemChecks() {
     }, []);
 
     return (
-        <StyledTableContainer>
-            <Table style={{ minWidth: 150 }} aria-label="a dense table">
-                <TableBody>
-                    {Object.keys(TEST_ENDPOINTS).map((key: string, index: number) => (
-                        <StyledTableRow key={`${key}_${index}`}>
-                            <StyledTableCell key={`${key}_label_${index}`} align="left">
-                                <Typography variant="subtitle2" style={{ paddingLeft: 10 }}>
-                                    {TEST_ENDPOINTS[key as keyof typeof TEST_ENDPOINTS].NAME}
-                                </Typography>
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                <Typography variant="overline" style={{ textTransform: 'none' }}>
-                                    Last Updated: {lastUpdated ? lastUpdated : '-'}
-                                </Typography>
-                            </StyledTableCell>
-                            <StyledTableCell key={`${key}_status_${index}`} align="right">
-                                <StatusDot status={status[key]} />
-                            </StyledTableCell>
-                        </StyledTableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </StyledTableContainer>
+        <WidgetContainer title="system_checks">
+            <StyledTableContainer>
+                <Table style={{ minWidth: 150 }} aria-label="a dense table">
+                    <TableBody>
+                        {Object.keys(TEST_ENDPOINTS).map((key: string, index: number) => (
+                            <StyledTableRow key={`${key}_${index}`}>
+                                <StyledTableCell key={`${key}_label_${index}`} align="left">
+                                    <Typography variant="subtitle2" style={{ paddingLeft: 10 }}>
+                                        {TEST_ENDPOINTS[key as keyof typeof TEST_ENDPOINTS].NAME}
+                                    </Typography>
+                                </StyledTableCell>
+                                <StyledTableCell>
+                                    <Typography
+                                        variant="overline"
+                                        style={{ textTransform: 'none' }}
+                                    >
+                                        Last Updated: {lastUpdated ? lastUpdated : '-'}
+                                    </Typography>
+                                </StyledTableCell>
+                                <StyledTableCell key={`${key}_status_${index}`} align="right">
+                                    <StatusDot status={status[key]} />
+                                </StyledTableCell>
+                            </StyledTableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </StyledTableContainer>
+        </WidgetContainer>
     );
 }
