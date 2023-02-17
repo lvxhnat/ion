@@ -9,6 +9,7 @@ import Explore from 'pages/etfexplorer/etfexplorer';
 import Portfolio from 'pages/portfolio';
 import Landing from 'pages/landing';
 import Function from 'pages/functions/function';
+import { HealthChecksPage } from 'functions/healthchecks/page';
 
 function App() {
     return (
@@ -19,6 +20,8 @@ function App() {
                 <Route path={`${ROUTES.PUBLIC.FOREX}/:symbolId`} element={<Forex />} />
                 <Route path={ROUTES.PUBLIC.PORTFOLIO} element={<Portfolio />} />
                 <Route path={ROUTES.PUBLIC.EXPLORE} element={<Explore />} />
+
+                <Route path={ROUTES.PUBLIC.HEALTHCHECK} element={<HealthChecksPage />} />
             </Routes>
         </Router>
     );

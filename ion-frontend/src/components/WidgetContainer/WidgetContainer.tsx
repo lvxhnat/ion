@@ -8,12 +8,17 @@ import Divider from '@mui/material/Divider';
 import Box from '@mui/system/Box';
 
 import { ColorsEnum } from 'common/theme';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from 'common/constant';
 
 export default function WidgetContainer(props: {
     title: string;
     children: any;
     component?: React.ReactElement;
+    fullScreenRedirect?: string;
 }) {
+    const navigate = useNavigate();
+
     return (
         <Box style={{ width: '100%' }}>
             <S.DividerWrapper>
@@ -34,7 +39,11 @@ export default function WidgetContainer(props: {
                 </S.LeftPanel>
                 <S.RightPanel>
                     {props.component}
-                    <IconButton disableRipple style={{ paddingRight: 0 }}>
+                    <IconButton
+                        disableRipple
+                        style={{ paddingRight: 0 }}
+                        onClick={() => navigate(props.fullScreenRedirect ?? ROUTES.PUBLIC.LANDING)}
+                    >
                         <FullscreenIcon />
                     </IconButton>
                 </S.RightPanel>
