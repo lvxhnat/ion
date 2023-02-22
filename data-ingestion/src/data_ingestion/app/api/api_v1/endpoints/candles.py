@@ -32,7 +32,7 @@ def ping():
 @router.post("/finnhub/candlesHistorical")
 def get_finnhub_historical_candles(params: HistoricalFinhubCandles):
     if not params.from_date:
-        from_date = (datetime.today() - timedelta(days=75)).strftime(
+        from_date = (datetime.today() - timedelta(days=365)).strftime(
             "%Y-%m-%d"
         )
     else:
