@@ -53,8 +53,8 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
             .append('line')
             .attr('class', `${props.baseId}_${CHARTIDS.TOOLTIP_LINE_CLASS}`)
             .style('stroke', ColorsEnum.white)
-            .style('stroke-dasharray', '3,3')
-            .style('stroke-width', 1)
+            .style('stroke-dasharray', '1,1')
+            .style('stroke-width', CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
             .style('opacity', 0.5)
             .attr('y1', CHARTCONFIGS.DEFAULT_MARGIN_BOTTOM)
             .attr('y2', CHARTCONFIGS.DEFAULT_HEIGHT - CHARTCONFIGS.DEFAULT_MARGIN_TOP);

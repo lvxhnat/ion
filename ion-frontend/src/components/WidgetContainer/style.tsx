@@ -1,7 +1,7 @@
 import { styled } from '@mui/system';
 
 export const DividerWrapper = styled('div')(({ theme }) => ({
-    paddingTop: theme.spacing(1.5),
+    paddingTop: theme.spacing(1),
 }));
 
 export const HeaderPanel = styled('div')(({ theme }) => ({

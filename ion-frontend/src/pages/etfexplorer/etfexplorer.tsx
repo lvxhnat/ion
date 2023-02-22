@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as S from './style';
 
 import { CssBaseline, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import Grid from '@mui/material/Grid';
@@ -18,6 +19,7 @@ import { getETFInfo } from 'data/ingestion/etf';
 import { ETFDataSchema } from 'data/schema/etf';
 import { getETFCandles } from 'data/ingestion/candles';
 import { FinnhubCandlesEntrySchema, FinnhubCandlesSchema } from 'data/schema/candles';
+import WidgetContainer from 'components/WidgetContainer';
 
 function ModifiedTable(props: { entry: any; title: string }) {
     return (
@@ -104,6 +106,7 @@ function ModifiedTable(props: { entry: any; title: string }) {
 }
 
 export default function ETFExplorer() {
+    const [ticker, setTicker] = React.useState<string>('QQQ');
     const [etfData, setETFData] = React.useState<ETFDataSchema>();
     const [etfCandlesData, setETFCandlesData] = React.useState<FinnhubCandlesSchema>([]);
     const [categories, setCategories] = React.useState<string[]>([]);
@@ -118,7 +121,6 @@ export default function ETFExplorer() {
     }, []);
 
     React.useEffect(() => {
-        const ticker: string = 'SPY';
         getETFInfo(ticker).then(res => {
             setETFData(res.data);
         });
@@ -189,9 +191,16 @@ export default function ETFExplorer() {
                 <Grid item xs={17} sx={{ paddingRight: 2 }}>
                     {etfData ? (
                         <>
-                            <Typography variant="h2" sx={{ padding: 1 }}>
-                                {etfData.info.vitals.data.Brand.text}
-                            </Typography>
+                            <S.TitleWrapper>
+                                <S.TickerWrapper>
+                                    <Typography variant="subtitle2">
+                                        <b>{ticker}</b>
+                                    </Typography>
+                                </S.TickerWrapper>
+                                <Typography variant="h2" sx={{ padding: 1 }}>
+                                    {etfData.info.vitals.data.Brand.text}
+                                </Typography>
+                            </S.TitleWrapper>
                             <Typography variant="subtitle1" sx={{ padding: 1 }}>
                                 {etfData.info.analyst_report}
                             </Typography>
@@ -205,41 +214,45 @@ export default function ETFExplorer() {
                                 </Grid>
                                 <Grid item xs={16}>
                                     <Grid container columnSpacing={2}>
+                                        <div style={{ width: '100%' }}>
+                                            <WidgetContainer title="past_1y_historical">
+                                                {etfCandlesData.length !== 0 ? (
+                                                    <BaseLineChart
+                                                        showAxis
+                                                        showAverage
+                                                        showTooltip
+                                                        baseId={`svg-container`}
+                                                        width={200}
+                                                        height={30}
+                                                        strokeWidth="0.2px"
+                                                        margin={{
+                                                            top: 2,
+                                                            right: 0,
+                                                            bottom: 2,
+                                                            left: 8,
+                                                        }}
+                                                        defaultData={{
+                                                            id: 'base-line',
+                                                            name: 'Base Line Chart',
+                                                            parent: true,
+                                                            dataX: etfCandlesData.map(
+                                                                (
+                                                                    entry: FinnhubCandlesEntrySchema
+                                                                ) => new Date(entry.date * 1000)
+                                                            ),
+                                                            dataY: etfCandlesData.map(
+                                                                (
+                                                                    entry: FinnhubCandlesEntrySchema
+                                                                ) => entry.close
+                                                            ),
+                                                            color: 'white',
+                                                            type: 'line',
+                                                        }}
+                                                    />
+                                                ) : null}
+                                            </WidgetContainer>
+                                        </div>
                                         <Grid item xs={6}>
-                                            <Typography variant="subtitle1">
-                                                <b> Past 50 days Line Chart </b>
-                                            </Typography>
-                                            {etfCandlesData.length !== 0 ? (
-                                                <BaseLineChart
-                                                    showAxis
-                                                    showAverage
-                                                    baseId={`svg-container`}
-                                                    width={100}
-                                                    height={30}
-                                                    strokeWidth="0.2px"
-                                                    margin={{
-                                                        top: 2,
-                                                        right: 0,
-                                                        bottom: 2,
-                                                        left: 8,
-                                                    }}
-                                                    defaultData={{
-                                                        id: 'base-line',
-                                                        name: 'Base Line Chart',
-                                                        parent: true,
-                                                        dataX: etfCandlesData.map(
-                                                            (entry: FinnhubCandlesEntrySchema) =>
-                                                                new Date(entry.date * 1000)
-                                                        ),
-                                                        dataY: etfCandlesData.map(
-                                                            (entry: FinnhubCandlesEntrySchema) =>
-                                                                entry.close
-                                                        ),
-                                                        color: 'white',
-                                                        type: 'line',
-                                                    }}
-                                                />
-                                            ) : null}
                                             <ModifiedTable
                                                 entry={etfData.info.dbtheme}
                                                 title="Database Theme"

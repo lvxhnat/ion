@@ -53,6 +53,12 @@ export default function BaseChart({
             // Ensure rerender does not duplicate chart
             if (!svg.selectAll('*').empty()) svg.selectAll('*').remove(); // removes any overlapping versions of the svgs
             if (strokeWidth) CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH = strokeWidth;
+            if (margin) {
+                CHARTCONFIGS.DEFAULT_MARGIN_BOTTOM = margin.bottom;
+                CHARTCONFIGS.DEFAULT_MARGIN_TOP = margin.top;
+                CHARTCONFIGS.DEFAULT_MARGIN_LEFT = margin.left;
+                CHARTCONFIGS.DEFAULT_MARGIN_RIGHT = margin.right;
+            }
 
             const dataX = defaultData.dataX;
             const dataY = defaultData.dataY;
