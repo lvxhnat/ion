@@ -37,7 +37,6 @@ export default function HexLayer({ baseId, theme, title }: HexLayerProps): React
                 .classed('svg-content-responsive', true)
                 .attr('stroke-width', 0);
 
-            // console.log(response);
             var x = d3.scaleLinear().domain([0, width]).range([0, width]);
             svg.append('g')
                 .attr('transform', 'translate(0,' + height + ')')

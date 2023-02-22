@@ -107,6 +107,21 @@ export default function DataTable(props: DataTableProps) {
                                         role="checkbox"
                                         tabIndex={-1}
                                         key={`dataTableBody_${row_index}`}
+                                        onClick={
+                                            props.rowOnClickFunctions &&
+                                            props.rowOnClickFunctions[row_index]
+                                                ? props.rowOnClickFunctions[row_index](row.id)
+                                                : null
+                                        }
+                                        sx={{
+                                            '&:hover': {
+                                                cursor:
+                                                    props.rowOnClickFunctions &&
+                                                    props.rowOnClickFunctions[row_index]
+                                                        ? 'pointer'
+                                                        : 'default',
+                                            },
+                                        }}
                                     >
                                         {props.data.content_header.map(
                                             (

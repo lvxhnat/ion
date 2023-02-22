@@ -12,6 +12,7 @@ export interface LineChartProps {
         left: number;
         right: number;
     };
+    strokeWidth?: string;
     zeroAxis?: boolean;
     showAverage?: boolean;
     showLegend?: boolean;

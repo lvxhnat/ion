@@ -4,10 +4,12 @@ export const ENDPOINTS = {
     },
     PRIVATE: {
         INGEST_DATA: 'ingestion/upload',
+        ETF_INFO: 'etf/info',
         QUERY_USER_UPLOADS: 'ingestion/retrieveUserUploads',
         QUERY_TABLE_UPLOADS: 'ingestion/retrieveTable',
         OANDA_FX_STREAMING_ENDPOINT: 'oanda/ws',
         OANDA_FX_HISTORICAL_ENDPOINT: 'candles/oanda/candlesHistorical',
+        FINHUB_FX_HISTORICAL_ENDPOINT: 'candles/finnhub/candlesHistorical',
         DB_QUERY: 'db/query',
         CURRENT_WEATHER_ENDPOINT: 'weather/currentWeather',
         SEARCH_FUNCTIONS: 'autocomplete/securityFunctions',

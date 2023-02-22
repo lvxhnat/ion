@@ -1,7 +1,6 @@
 import * as d3 from 'd3';
 import * as React from 'react';
 
-import Header from './components/Header';
 import BaseLineChart from '../BaseChart';
 import { GeneralTableTypeProp } from './components/Header/IndicatorPopup/ChoiceTable/configs';
 import { DefaultDataProps } from '../BaseChart/schema/schema';
