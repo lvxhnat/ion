@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 
 from fastapi import APIRouter
+from datetime import datetime, timedelta
 
 from ion_clients.clients.oanda import instruments as oanda_instruments
 from ion_clients.clients.finhub import instruments as finnhub_instruments
@@ -30,8 +31,14 @@ def ping():
 
 @router.post("/finnhub/candlesHistorical")
 def get_finnhub_historical_candles(params: HistoricalFinhubCandles):
+    if not params.from_date:
+        from_date = (datetime.today() - timedelta(days=75)).strftime(
+            "%Y-%m-%d"
+        )
+    else:
+        from_date = params.from_date
     return finnhub_instruments.get_finnhub_tickers_hd(
-        params.tickers, params.from_date
+        params.tickers, from_date
     )
 
 

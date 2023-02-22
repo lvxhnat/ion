@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel
 from ion_clients.clients.oanda.types.candles import (
     OandaReqCurrencies,
@@ -31,7 +31,7 @@ class HistoricalOandaCandles(BaseModel):
 
 class HistoricalFinhubCandles(BaseModel):
     tickers: List[str]
-    from_date: str
+    from_date: Optional[str]
 
     class Config:
         schema_extra = {

@@ -162,3 +162,7 @@ def get_finnhub_historical_data(
         raise ValueError(
             f"Unknown status code response of {response.status_code}. Returned error states: {response.text}"
         )
+
+
+if __name__ == "__main__":
+    print(get_finnhub_historical_data(ticker="SPY"))
