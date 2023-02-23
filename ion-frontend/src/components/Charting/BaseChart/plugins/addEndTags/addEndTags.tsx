@@ -10,6 +10,8 @@ export const addEndTags = (props: {
     color: string;
 }): void => {
     const svg = d3.selectAll(`#${props.baseId}`);
+    const scale = 0.3;
+    console.log(props.color, getFontColor(props.color));
 
     svg.append('g').attr('id', `${props.baseId}_${CHARTIDS.ENDTAG_GROUP_ID}`);
 
@@ -17,7 +19,13 @@ export const addEndTags = (props: {
         .selectAll(`path #${props.baseId}_${props.id}`)
         .data(props.dataY)
         .join('path')
-        .attr('d', d => `M ${1} ${props.y(d)} l 6,-6 h 42 v 12 h -16 l -26,0`)
+        .attr(
+            'd',
+            d =>
+                `M ${1} ${props.y(d)} l ${6 * scale},-${6 * scale} h ${42 * scale} v ${
+                    12 * scale
+                } h -${16 * scale} l -${26 * scale},0`
+        )
         .attr(
             'transform',
             `translate(${CHARTCONFIGS.DEFAULT_WIDTH - CHARTCONFIGS.DEFAULT_MARGIN_RIGHT},0)`
@@ -29,10 +37,15 @@ export const addEndTags = (props: {
         .data(props.dataY)
         .join('text')
         .text(d => `$${d < 10 ? d.toFixed(4) : d.toFixed(2)}`)
-        .attr('x', CHARTCONFIGS.DEFAULT_WIDTH - CHARTCONFIGS.DEFAULT_MARGIN_RIGHT + 10)
-        .attr('y', d => +props.y(d) + 3)
+        .attr(
+            'x',
+            CHARTCONFIGS.DEFAULT_WIDTH -
+                CHARTCONFIGS.DEFAULT_MARGIN_RIGHT +
+                CHARTCONFIGS.DEFAULT_MARGIN_LEFT * 0.25
+        )
+        .attr('y', d => +props.y(d) * 1.05)
         .attr('text-anchor', 'start')
-        .attr('font-size', '9px')
+        .attr('font-size', CHARTCONFIGS.DEFAULT_AXIS_FONTSIZE)
         .attr('id', `${props.baseId}_${props.id}`)
         .attr('fill', getFontColor(props.color));
 };

@@ -12,7 +12,7 @@ export interface DataTableProps {
     rowsPerPage?: number | undefined;
     rowHeight?: number | undefined;
     defaultColumnWidth?: number | undefined;
-    rowOnClickFunctions?: Function[];
+    rowOnClickFunctions?: (itemId: string) => void;
 }
 
 export interface DataTableCellProps {

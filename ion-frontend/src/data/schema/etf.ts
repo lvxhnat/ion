@@ -1,6 +1,7 @@
 import { Modify } from 'common/types';
 
 export interface ETFDataSchema {
+    base_info: any;
     info: ETFInfoSchema;
     expense: ETFExpenseSchema;
     holdings: ETFHoldingsSchema;

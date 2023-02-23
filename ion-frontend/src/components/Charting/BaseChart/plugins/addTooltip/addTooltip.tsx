@@ -39,14 +39,14 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
             .append('rect')
             .attr('class', `${props.baseId}_${CHARTIDS.TOOLTIP_RECT_TRACKER_CLASS}`)
             .style('fill', ColorsEnum.white)
-            .attr('width', 80)
-            .attr('height', 20)
+            .attr('width', 'calc(5px + 1vw)')
+            .attr('height', 'calc(0.2vw)')
             .attr('transform', `translate(${CHARTCONFIGS.DEFAULT_MARGIN_LEFT}, 0)`);
         // Append text to the bottom of the chart
         focus
             .append('text')
             .attr('class', `${props.baseId}_${CHARTIDS.TOOLTIP_RECT_TEXT_CLASS}`)
-            .attr('font-size', '10px')
+            .attr('font-size', CHARTCONFIGS.DEFAULT_AXIS_FONTSIZE)
             .attr('transform', `translate(${CHARTCONFIGS.DEFAULT_MARGIN_LEFT}, 0)`);
         // Add the vertical line that tracks all the data points
         focus
@@ -89,12 +89,24 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
 
             focus
                 .selectAll(`.${props.baseId}_${CHARTIDS.TOOLTIP_RECT_TRACKER_CLASS}`)
-                .attr('transform', `translate(${xTranslate}, ${CHARTCONFIGS.DEFAULT_HEIGHT + 5})`);
+                .attr(
+                    'transform',
+                    `translate(${xTranslate}, ${
+                        CHARTCONFIGS.DEFAULT_HEIGHT -
+                        CHARTCONFIGS.DEFAULT_MARGIN_TOP -
+                        CHARTCONFIGS.DEFAULT_MARGIN_BOTTOM
+                    })`
+                );
 
             focus
                 .selectAll(`.${props.baseId}_${CHARTIDS.TOOLTIP_RECT_TEXT_CLASS}`)
-                .text(formatDateString(dates[i]))
-                .attr('transform', `translate(${xTranslate}, ${CHARTCONFIGS.DEFAULT_HEIGHT + 14})`);
+                .text(`$${data[i].toFixed(3)} - ${formatDateString(dates[i])}`)
+                .attr(
+                    'transform',
+                    `translate(${xTranslate}, ${
+                        CHARTCONFIGS.DEFAULT_HEIGHT - CHARTCONFIGS.DEFAULT_MARGIN_TOP
+                    })`
+                );
         }
     }
 

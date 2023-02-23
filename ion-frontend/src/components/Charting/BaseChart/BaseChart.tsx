@@ -59,6 +59,8 @@ export default function BaseChart({
                 CHARTCONFIGS.DEFAULT_MARGIN_LEFT = margin.left;
                 CHARTCONFIGS.DEFAULT_MARGIN_RIGHT = margin.right;
             }
+            if (height) CHARTCONFIGS.DEFAULT_HEIGHT = height;
+            if (width) CHARTCONFIGS.DEFAULT_WIDTH = width;
 
             const dataX = defaultData.dataX;
             const dataY = defaultData.dataY;

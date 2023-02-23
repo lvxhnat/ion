@@ -1,3 +1,4 @@
+import { IconButton } from '@mui/material';
 import { styled } from '@mui/system';
 import { ColorsEnum } from 'common/theme';
 
@@ -16,4 +17,11 @@ export const TitleWrapper = styled('div')(({ theme }) => ({
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
+}));
+
+export const IconButtonWrapper = styled(IconButton)(({ theme }) => ({
+    padding: 0,
+    paddingLeft: 5,
+    paddingRight: 5,
+    borderRadius: 0,
 }));

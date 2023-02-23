@@ -7,6 +7,6 @@ export function getFontColor(bgColor: string): string {
     if (bgColor === '') return ColorsEnum.black;
     else
         return parseInt(bgColor.replace('#', ''), 16) > 0xffffff / 2
-            ? ColorsEnum.black
-            : ColorsEnum.white;
+            ? ColorsEnum.white
+            : ColorsEnum.black;
 }
