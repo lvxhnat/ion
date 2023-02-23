@@ -10,8 +10,6 @@ router = APIRouter(
 
 
 @router.post("/info")
-async def retrieve_files(
-    params: ETFQueryParams
-):
+async def retrieve_files(params: ETFQueryParams):
     etf = ETF(params.ticker)
     return etf.to_dict()
