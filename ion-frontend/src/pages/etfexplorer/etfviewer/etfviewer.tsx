@@ -139,10 +139,7 @@ export default function ETFViewer(props: ETFViewerProps) {
                                     <b>{props.ticker}</b>
                                 </Typography>
                             </S.TickerWrapper>
-                            <Tooltip
-                                sx={{ padding: 1 }}
-                                title={props.etfData.base_info.etf_name}
-                            >
+                            <Tooltip sx={{ padding: 1 }} title={props.etfData.base_info.etf_name}>
                                 <Typography
                                     variant="h2"
                                     component="div"
