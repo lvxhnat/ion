@@ -18,10 +18,11 @@ import { getETFInfo } from 'data/ingestion/etf';
 import { ETFDataSchema } from 'data/schema/etf';
 import { getETFCandles } from 'data/ingestion/candles';
 import { FinnhubCandlesSchema } from 'data/schema/candles';
-import ETFViewer from './etfviewer';
+import ETFViewer from './etfviewer/etfviewer';
 
 export default function ETFExplorer() {
     const [selection, setSelection] = React.useState<string>();
+    const [loadingState, setLoadingState] = React.useState<boolean>(true);
     const [ticker, setTicker] = React.useState<string>('QQQ');
     const [etfData, setETFData] = React.useState<ETFDataSchema>();
     const [etfCandlesData, setETFCandlesData] = React.useState<FinnhubCandlesSchema>([]);
@@ -37,12 +38,14 @@ export default function ETFExplorer() {
     }, []);
 
     React.useEffect(() => {
+        setLoadingState(true);
         getETFInfo(ticker).then(res => {
             setETFData(res.data);
         });
         getETFCandles(ticker).then(res => {
             if (res.data) setETFCandlesData(res.data[0]);
         });
+        setLoadingState(false);
     }, [ticker]);
 
     function getInfos() {
@@ -132,6 +135,7 @@ export default function ETFExplorer() {
                         <ETFViewer
                             ticker={ticker}
                             etfData={etfData}
+                            loading={loadingState}
                             setSelection={setSelection}
                             etfCandlesData={etfCandlesData}
                         />

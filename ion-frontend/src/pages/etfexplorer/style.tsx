@@ -14,9 +14,10 @@ export const TickerWrapper = styled('div')(({ theme }) => ({
 }));
 
 export const TitleWrapper = styled('div')(({ theme }) => ({
+    width: '100%',
     display: 'inline-flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'start',
 }));
 
 export const IconButtonWrapper = styled(IconButton)(({ theme }) => ({

@@ -1,25 +1,32 @@
 import * as React from 'react';
-import * as S from './style';
+import * as S from '../style';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import TableCell from '@mui/material/TableCell';
+import TableBody from '@mui/material/TableBody';
+import Table from '@mui/material/Table';
+import TableRow from '@mui/material/TableRow';
+import TableHead from '@mui/material/TableHead';
+import Tooltip from '@mui/material/Tooltip';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 import BaseLineChart from 'components/Charting/BaseChart';
 import { FinnhubCandlesEntrySchema, FinnhubCandlesSchema } from 'data/schema/candles';
 import WidgetContainer from 'components/WidgetContainer';
 import { ETFDataSchema } from 'data/schema/etf';
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { ColorsEnum } from 'common/theme';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import Info from './info';
+import { Skeleton } from '@mui/material';
 
-function ModifiedTable(props: { entry: any; title: string }) {
+export function ModifiedTable(props: { entry: any; title: string }) {
     return (
-        <div style={{ paddingTop: 10 }}>
+        <div style={{ paddingTop: 10, width: '100%' }}>
             <Typography variant="subtitle1">
                 <b>{props.title}</b>
             </Typography>
-            <Table>
+            <Table style={{ width: '100%' }}>
                 {props.entry.type === 'table-vertical' ? (
                     <TableHead>
                         <TableRow>
@@ -56,12 +63,17 @@ function ModifiedTable(props: { entry: any; title: string }) {
                               return (
                                   <TableRow key={`${props.title}_mainrow_${index}`}>
                                       <TableCell sx={{ padding: 0.5 }} key={cell_id_1}>
-                                          <Typography variant="subtitle2" key={`${cell_id_1}_typo`}>
+                                          <Typography
+                                              noWrap
+                                              variant="subtitle2"
+                                              key={`${cell_id_1}_typo`}
+                                          >
                                               {column}
                                           </Typography>
                                       </TableCell>
                                       <TableCell sx={{ padding: 0.5 }} key={cell_id_2}>
                                           <Typography
+                                              noWrap
                                               variant="subtitle2"
                                               align="right"
                                               key={`${cell_id_2}_typo`}
@@ -97,13 +109,16 @@ function ModifiedTable(props: { entry: any; title: string }) {
     );
 }
 
-export default function ETFViewer(props: {
+export interface ETFViewerProps {
     ticker: string;
+    loading: boolean;
     etfData: ETFDataSchema | undefined;
     setSelection: Function;
     etfCandlesData: FinnhubCandlesSchema | undefined;
-}) {
-    if (props.etfData && props.etfCandlesData) {
+}
+
+export default function ETFViewer(props: ETFViewerProps) {
+    if (props.etfCandlesData && props.etfData && !props.loading) {
         const diff =
             props.etfCandlesData[props.etfCandlesData.length - 1].close -
             props.etfCandlesData[props.etfCandlesData.length - 2].close;
@@ -111,7 +126,7 @@ export default function ETFViewer(props: {
         return (
             <>
                 <Grid container columns={20}>
-                    <Grid item xs={8}>
+                    <Grid item xs={6}>
                         <S.TitleWrapper>
                             <S.IconButtonWrapper
                                 disableRipple
@@ -124,11 +139,20 @@ export default function ETFViewer(props: {
                                     <b>{props.ticker}</b>
                                 </Typography>
                             </S.TickerWrapper>
-                            <Typography variant="h2" sx={{ padding: 1 }} noWrap>
-                                {props.etfData.base_info.etf_name}
-                            </Typography>
+                            <Tooltip
+                                sx={{ padding: 1 }}
+                                title={props.etfData.base_info.etf_name}
+                            >
+                                <Typography
+                                    variant="h2"
+                                    component="div"
+                                    style={{ display: 'inline-block' }}
+                                >
+                                    {props.etfData.base_info.etf_name}
+                                </Typography>
+                            </Tooltip>
                         </S.TitleWrapper>
-                        <div>
+                        <div style={{ width: '100%' }}>
                             <div style={{ display: 'inline-flex', alignItems: 'end', gap: 5 }}>
                                 <Typography variant="h2" component="div">
                                     $
@@ -141,35 +165,41 @@ export default function ETFViewer(props: {
                                     {diff.toFixed(3)}
                                 </Typography>
                                 <Typography variant="subtitle2">{pctDiff.toFixed(2)}%</Typography>
-                                <span
+                                <Typography
+                                    variant="h3"
+                                    component="div"
                                     style={{
                                         color:
                                             pctDiff > 0 ? ColorsEnum.upHint : ColorsEnum.downHint,
                                         transform: pctDiff > 0 ? undefined : 'rotate(180deg)',
                                     }}
                                 >
-                                    <ArrowUpwardIcon fontSize="small" />
-                                </span>
+                                    <ArrowUpwardIcon fontSize="inherit" />
+                                </Typography>
                             </div>
                         </div>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={14}>
                         <Typography variant="subtitle1" sx={{ padding: 1 }}>
                             {props.etfData.info.analyst_report}
                         </Typography>
                     </Grid>
                 </Grid>
 
-                <Grid container columns={20} columnSpacing={2}>
+                <Grid container columns={20} columnSpacing={5}>
                     <Grid item xs={6}>
-                        <ModifiedTable entry={props.etfData.info.vitals} title="Vitals" />
                         <ModifiedTable
                             entry={props.etfData.info.historical_trade_data}
                             title="Historical Trading Data"
                         />
+                        <ModifiedTable
+                            entry={props.etfData.holdings.top_holdings}
+                            title="Top Holdings"
+                        />
+                        <ModifiedTable entry={props.etfData.dividends} title="Dividends" />
                     </Grid>
                     <Grid item xs={14}>
-                        <Grid container columnSpacing={2}>
+                        <Grid container columnSpacing={2} columns={20}>
                             <div style={{ width: '100%' }}>
                                 <WidgetContainer title="past_1y_historical">
                                     {props.etfCandlesData.length !== 0 ? (
@@ -206,30 +236,16 @@ export default function ETFViewer(props: {
                                     ) : null}
                                 </WidgetContainer>
                             </div>
-                            <Grid item xs={6}>
-                                <ModifiedTable
-                                    entry={props.etfData.info.dbtheme}
-                                    title="Database Theme"
-                                />
-                                <ModifiedTable
-                                    entry={props.etfData.info.alternative_etfs}
-                                    title="Alternative ETFs"
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <ModifiedTable
-                                    entry={props.etfData.info.fact_set}
-                                    title="Factset Table"
-                                />
-                                <ModifiedTable
-                                    entry={props.etfData.info.other_alternative_etfs}
-                                    title="Other Alternative ETFs"
-                                />
-                            </Grid>
+                            <Info {...props} />
                         </Grid>
                     </Grid>
                 </Grid>
             </>
         );
-    } else return <></>;
+    } else
+        return (
+            <Grid container columns={20}>
+                <Skeleton variant="rectangular" animation="wave" />
+            </Grid>
+        );
 }
