@@ -80,7 +80,7 @@ export default function ETFExplorer() {
         <>
             <CssBaseline />
             <Navigation />
-            <Grid container columns={20} sx={{ overflowY: 'hidden' }}>
+            <Grid container columns={25}>
                 {categoryData.content_body && !selection ? (
                     <>
                         <Grid item xs={3}>
@@ -113,7 +113,7 @@ export default function ETFExplorer() {
                                 </RadioGroup>
                             </FormControl>
                         </Grid>
-                        <Grid item xs={17} sx={{ paddingRight: 2 }}>
+                        <Grid item xs={22} sx={{ paddingRight: 2 }}>
                             <DataTable
                                 rowOnClickFunctions={(entryId: string) => {
                                     setSelection(entryId);

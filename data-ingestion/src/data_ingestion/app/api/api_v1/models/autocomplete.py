@@ -14,6 +14,8 @@ class TradeableAssets(BaseModel):
     query_type: Optional[str]
     query_tick: Optional[str]
     
+class ETFSearch(BaseModel):
+    query_tick: str
     
 class ETFInfoRequest(BaseModel):
     request: dict

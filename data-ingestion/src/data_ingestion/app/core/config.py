@@ -6,7 +6,9 @@ class Settings(BaseSettings):
     MONGODB_ASSET_INFO_TABLE: str = "asset-infos"
     MONGODB_FUNCTIONS_COLLECTION: str = "main_functions"
     MONGODB_FUNCTIONS_COLLECTION_QUERY_FIELD: str = "name" 
+    
     MONGODB_ETFS_COLLECTION: str = "etf_infos"
+    MONGODB_ETFS_COLLECTION_QUERY_FIELD: str = "ticker"
     
     MONGODB_TICK_INFO_TABLE: str = "tickers"
     MONGODB_TICK_COLLECTION: str = "ticker_infos"

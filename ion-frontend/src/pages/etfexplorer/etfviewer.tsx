@@ -103,7 +103,6 @@ export default function ETFViewer(props: {
     setSelection: Function;
     etfCandlesData: FinnhubCandlesSchema | undefined;
 }) {
-    console.log(props.etfData);
     if (props.etfData && props.etfCandlesData) {
         const diff =
             props.etfCandlesData[props.etfCandlesData.length - 1].close -
@@ -121,11 +120,11 @@ export default function ETFViewer(props: {
                                 <ChevronLeftIcon fontSize="small" />
                             </S.IconButtonWrapper>
                             <S.TickerWrapper>
-                                <Typography variant="subtitle2">
+                                <Typography variant="subtitle2" align="center">
                                     <b>{props.ticker}</b>
                                 </Typography>
                             </S.TickerWrapper>
-                            <Typography variant="h2" sx={{ padding: 1 }}>
+                            <Typography variant="h2" sx={{ padding: 1 }} noWrap>
                                 {props.etfData.base_info.etf_name}
                             </Typography>
                         </S.TitleWrapper>
