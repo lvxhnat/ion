@@ -21,92 +21,94 @@ import Info from './info';
 import { Skeleton } from '@mui/material';
 
 export function ModifiedTable(props: { entry: any; title: string }) {
-    return (
-        <div style={{ paddingTop: 10, width: '100%' }}>
-            <Typography variant="subtitle1">
-                <b>{props.title}</b>
-            </Typography>
-            <Table style={{ width: '100%' }}>
-                {props.entry.type === 'table-vertical' ? (
-                    <TableHead>
-                        <TableRow>
-                            {Object.keys(props.entry.data[0]).map((column: string) => (
-                                <TableCell
-                                    sx={{ padding: 0.5 }}
-                                    key={`${props.title}_header_${column}`}
-                                >
-                                    <Typography
-                                        key={`${props.title}_header_typo_${column}`}
-                                        variant="subtitle2"
+    if (props.entry)
+        return (
+            <div style={{ paddingTop: 10, width: '100%' }}>
+                <Typography variant="subtitle1">
+                    <b>{props.title}</b>
+                </Typography>
+                <Table style={{ width: '100%' }}>
+                    {props.entry.type === 'table-vertical' ? (
+                        <TableHead>
+                            <TableRow>
+                                {Object.keys(props.entry.data[0]).map((column: string) => (
+                                    <TableCell
+                                        sx={{ padding: 0.5 }}
+                                        key={`${props.title}_header_${column}`}
                                     >
-                                        {' '}
-                                        {column}{' '}
-                                    </Typography>
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    </TableHead>
-                ) : null}
-                <TableBody>
-                    {props.entry.type !== 'table-vertical'
-                        ? Object.keys(props.entry.data).map((column: string, index: number) => {
-                              const cell_id_2_content: string | null =
-                                  props.entry.type === 'table-horizontal'
-                                      ? props.entry.data[column][0]
-                                      : props.entry.type === 'list'
-                                      ? props.entry.data[column].text
-                                      : null;
+                                        <Typography
+                                            key={`${props.title}_header_typo_${column}`}
+                                            variant="subtitle2"
+                                        >
+                                            {' '}
+                                            {column}{' '}
+                                        </Typography>
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                    ) : null}
+                    <TableBody>
+                        {props.entry.type !== 'table-vertical'
+                            ? Object.keys(props.entry.data).map((column: string, index: number) => {
+                                  const cell_id_2_content: string | null =
+                                      props.entry.type === 'table-horizontal'
+                                          ? props.entry.data[column][0]
+                                          : props.entry.type === 'list'
+                                          ? props.entry.data[column].text
+                                          : null;
 
-                              const cell_id_1: string = `${props.title}_${column}_${index}`;
-                              const cell_id_2: string = `${cell_id_2_content}_${column}`;
+                                  const cell_id_1: string = `${props.title}_${column}_${index}`;
+                                  const cell_id_2: string = `${cell_id_2_content}_${column}`;
 
-                              return (
-                                  <TableRow key={`${props.title}_mainrow_${index}`}>
-                                      <TableCell sx={{ padding: 0.5 }} key={cell_id_1}>
-                                          <Typography
-                                              noWrap
-                                              variant="subtitle2"
-                                              key={`${cell_id_1}_typo`}
-                                          >
-                                              {column}
-                                          </Typography>
-                                      </TableCell>
-                                      <TableCell sx={{ padding: 0.5 }} key={cell_id_2}>
-                                          <Typography
-                                              noWrap
-                                              variant="subtitle2"
-                                              align="right"
-                                              key={`${cell_id_2}_typo`}
-                                          >
-                                              {cell_id_2_content}
-                                          </Typography>
-                                      </TableCell>
-                                  </TableRow>
-                              );
-                          })
-                        : props.entry.data.map((entry: any, index: number) => {
-                              return (
-                                  <TableRow key={`${props.title}_mainrow_${index}`}>
-                                      {Object.keys(entry).map((column: string) => (
-                                          <TableCell
-                                              sx={{ padding: 0.5 }}
-                                              key={`${column}_${index}`}
-                                          >
+                                  return (
+                                      <TableRow key={`${props.title}_mainrow_${index}`}>
+                                          <TableCell sx={{ padding: 0.5 }} key={cell_id_1}>
                                               <Typography
-                                                  key={`${column}_typo_${index}`}
+                                                  noWrap
                                                   variant="subtitle2"
+                                                  key={`${cell_id_1}_typo`}
                                               >
-                                                  {entry[column]}
+                                                  {column}
                                               </Typography>
                                           </TableCell>
-                                      ))}
-                                  </TableRow>
-                              );
-                          })}
-                </TableBody>
-            </Table>
-        </div>
-    );
+                                          <TableCell sx={{ padding: 0.5 }} key={cell_id_2}>
+                                              <Typography
+                                                  noWrap
+                                                  variant="subtitle2"
+                                                  align="right"
+                                                  key={`${cell_id_2}_typo`}
+                                              >
+                                                  {cell_id_2_content}
+                                              </Typography>
+                                          </TableCell>
+                                      </TableRow>
+                                  );
+                              })
+                            : props.entry.data.map((entry: any, index: number) => {
+                                  return (
+                                      <TableRow key={`${props.title}_mainrow_${index}`}>
+                                          {Object.keys(entry).map((column: string) => (
+                                              <TableCell
+                                                  sx={{ padding: 0.5 }}
+                                                  key={`${column}_${index}`}
+                                              >
+                                                  <Typography
+                                                      key={`${column}_typo_${index}`}
+                                                      variant="subtitle2"
+                                                  >
+                                                      {entry[column]}
+                                                  </Typography>
+                                              </TableCell>
+                                          ))}
+                                      </TableRow>
+                                  );
+                              })}
+                    </TableBody>
+                </Table>
+            </div>
+        );
+    else return <div></div>;
 }
 
 export interface ETFViewerProps {
