@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as S from './style';
 
 import { CssBaseline } from '@mui/material';
 import Grid from '@mui/material/Grid';
@@ -13,11 +14,39 @@ import { getETFAssetTypes, getETFInfos } from 'data/ingestion/autocomplete';
 import { UploadDataType } from 'components/Tables/DataTable/type';
 import { DataTable } from 'components/Tables/DataTable';
 import Navigation from 'components/Navigation';
+import { getETFInfo } from 'data/ingestion/etf';
+import { ETFDataSchema } from 'data/schema/etf';
+import { getETFCandles } from 'data/ingestion/candles';
+import { FinnhubCandlesSchema } from 'data/schema/candles';
+import ETFViewer from './etfviewer/etfviewer';
 
 export default function ETFExplorer() {
+    const [selection, setSelection] = React.useState<string>();
+    const [loadingState, setLoadingState] = React.useState<boolean>(true);
+    const [ticker, setTicker] = React.useState<string>('QQQ');
+    const [etfData, setETFData] = React.useState<ETFDataSchema>();
+    const [etfCandlesData, setETFCandlesData] = React.useState<FinnhubCandlesSchema>([]);
     const [categories, setCategories] = React.useState<string[]>([]);
     const [categoryData, setCategoryData] = React.useState<UploadDataType>({} as UploadDataType);
     const [categorySelected, setCategorySelected] = React.useState<string>('All');
+
+    React.useEffect(() => {
+        getETFAssetTypes().then(res => {
+            setCategories(res.data);
+        });
+        getInfos();
+    }, []);
+
+    React.useEffect(() => {
+        setLoadingState(true);
+        getETFInfo(ticker).then(res => {
+            setETFData(res.data);
+        });
+        getETFCandles(ticker).then(res => {
+            if (res.data) setETFCandlesData(res.data[0]);
+        });
+        setLoadingState(false);
+    }, [ticker]);
 
     function getInfos() {
         getETFInfos({
@@ -31,17 +60,15 @@ export default function ETFExplorer() {
                 content_header: Object.keys(res.data[0]).map((column: string) => {
                     return { id: column, headerName: column };
                 }),
-                content_body: res.data,
+                content_body: res.data.map(entry => {
+                    let newEntry: any = { ...entry };
+                    if (newEntry.id) delete newEntry.id;
+                    newEntry.id = newEntry.ticker;
+                    return newEntry;
+                }),
             });
         });
     }
-
-    React.useEffect(() => {
-        getETFAssetTypes().then(res => {
-            setCategories(res.data);
-        });
-        getInfos();
-    }, []);
 
     const handleClick = (label: string) => {
         setCategorySelected(label);
@@ -56,40 +83,64 @@ export default function ETFExplorer() {
         <>
             <CssBaseline />
             <Navigation />
-            <Grid container>
-                <Grid item xs={2}>
-                    <FormControl sx={{ padding: 2 }}>
-                        <FormLabel id="demo-form-control-label-placement">
-                            <Typography variant="subtitle1">Asset Class</Typography>
-                        </FormLabel>
-                        <RadioGroup
-                            aria-labelledby="demo-form-control-label-placement"
-                            name="position"
-                            value={categorySelected}
-                            onChange={handleChange}
-                        >
-                            <FormControlLabel
-                                value={'All'}
-                                control={<Radio size="small" sx={{ padding: 0.5 }} />}
-                                label={<Typography variant="subtitle2">All</Typography>}
+            <Grid container columns={25}>
+                {categoryData.content_body && !selection ? (
+                    <>
+                        <Grid item xs={3}>
+                            <FormControl sx={{ padding: 2 }}>
+                                <FormLabel id="demo-form-control-label-placement">
+                                    <Typography variant="subtitle1">Asset Class</Typography>
+                                </FormLabel>
+                                <RadioGroup
+                                    aria-labelledby="demo-form-control-label-placement"
+                                    name="position"
+                                    value={categorySelected}
+                                    onChange={handleChange}
+                                >
+                                    <FormControlLabel
+                                        value={'All'}
+                                        control={<Radio size="small" sx={{ padding: 0.5 }} />}
+                                        label={<Typography variant="subtitle2">All</Typography>}
+                                    />
+                                    {categories.map((label: string) => (
+                                        <FormControlLabel
+                                            key={label}
+                                            value={label}
+                                            onClick={() => handleClick(label)}
+                                            control={<Radio size="small" sx={{ padding: 0.5 }} />}
+                                            label={
+                                                <Typography variant="subtitle2">{label}</Typography>
+                                            }
+                                        />
+                                    ))}
+                                </RadioGroup>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={22} sx={{ paddingRight: 2 }}>
+                            <DataTable
+                                rowOnClickFunctions={(entryId: string) => {
+                                    setSelection(entryId);
+                                    setTicker(entryId);
+                                }}
+                                hideBasel
+                                stickyHeader
+                                boldHeader
+                                data={categoryData}
                             />
-                            {categories.map((label: string) => (
-                                <FormControlLabel
-                                    key={label}
-                                    value={label}
-                                    onClick={() => handleClick(label)}
-                                    control={<Radio size="small" sx={{ padding: 0.5 }} />}
-                                    label={<Typography variant="subtitle2">{label}</Typography>}
-                                />
-                            ))}
-                        </RadioGroup>
-                    </FormControl>
-                </Grid>
-                <Grid item xs={10} sx={{ paddingRight: 2 }}>
-                    {categoryData.content_body ? (
-                        <DataTable hideBasel stickyHeader boldHeader data={categoryData} />
-                    ) : null}
-                </Grid>
+                        </Grid>
+                    </>
+                ) : null}
+                {selection ? (
+                    <div style={{ padding: 15, width: '100%' }}>
+                        <ETFViewer
+                            ticker={ticker}
+                            etfData={etfData}
+                            loading={loadingState}
+                            setSelection={setSelection}
+                            etfCandlesData={etfCandlesData}
+                        />
+                    </div>
+                ) : null}
             </Grid>
         </>
     );

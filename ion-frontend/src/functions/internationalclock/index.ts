@@ -1,4 +1,4 @@
-import { default as InternationalClockWidget } from './widget';
-import { default as InternationalClockPage } from './page';
+import { InternationalClockWidget } from './widget';
+import { InternationalClockPage } from './page';
 
 export { InternationalClockPage, InternationalClockWidget };

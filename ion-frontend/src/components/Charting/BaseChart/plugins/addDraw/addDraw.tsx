@@ -30,7 +30,7 @@ export const addDraw = (props: { baseId: string }) => {
             .attr('y1', m[1])
             .attr('x2', m[0])
             .attr('y2', m[1])
-            .attr('stroke-width', 2)
+            .attr('stroke-width', CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
             .attr('stroke', 'green');
         drawContainer.on('mousemove', mousemove);
     }

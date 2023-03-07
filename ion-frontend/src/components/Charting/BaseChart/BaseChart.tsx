@@ -40,6 +40,7 @@ export default function BaseChart({
         bottom: CHARTCONFIGS.DEFAULT_MARGIN_BOTTOM,
         left: CHARTCONFIGS.DEFAULT_MARGIN_LEFT,
     },
+    strokeWidth = CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH,
     zeroAxis = CHARTCONFIGS.DEFAULT_ZERO_AXIS,
     showLegend = CHARTCONFIGS.DEFAULT_SHOW_LEGEND,
     showAverage = CHARTCONFIGS.DEFAULT_SHOW_AVERAGE,
@@ -51,6 +52,15 @@ export default function BaseChart({
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
             // Ensure rerender does not duplicate chart
             if (!svg.selectAll('*').empty()) svg.selectAll('*').remove(); // removes any overlapping versions of the svgs
+            if (strokeWidth) CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH = strokeWidth;
+            if (margin) {
+                CHARTCONFIGS.DEFAULT_MARGIN_BOTTOM = margin.bottom;
+                CHARTCONFIGS.DEFAULT_MARGIN_TOP = margin.top;
+                CHARTCONFIGS.DEFAULT_MARGIN_LEFT = margin.left;
+                CHARTCONFIGS.DEFAULT_MARGIN_RIGHT = margin.right;
+            }
+            if (height) CHARTCONFIGS.DEFAULT_HEIGHT = height;
+            if (width) CHARTCONFIGS.DEFAULT_WIDTH = width;
 
             const dataX = defaultData.dataX;
             const dataY = defaultData.dataY;
@@ -112,18 +122,20 @@ export default function BaseChart({
             if (showAxis) {
                 // Set the number of ticks if we want to show the axis
                 xAxis.ticks(5);
-                yAxis.ticks(10);
+                yAxis.ticks(5);
             }
 
             svg.append('g')
                 .attr('transform', `translate(0,${height - margin.top})`)
                 .attr('id', `${baseId}_${CHARTIDS.XAXIS_ID}`) // Sets a class name for our x axis
-                .call(xAxis);
+                .call(xAxis)
+                .style('font-size', CHARTCONFIGS.DEFAULT_AXIS_FONTSIZE);
 
             svg.append('g')
                 .attr('transform', `translate(${margin.left},0)`)
                 .attr('id', `${baseId}_${CHARTIDS.YAXIS_ID}`) // Set a class name for our y axis
-                .call(yAxis);
+                .call(yAxis)
+                .style('font-size', CHARTCONFIGS.DEFAULT_AXIS_FONTSIZE);
 
             if (showAverage) {
                 // A horizontal line that shows the average
@@ -135,7 +147,7 @@ export default function BaseChart({
                     .attr('y1', y(mean))
                     .attr('x2', width - margin.right)
                     .attr('y2', y(mean))
-                    .attr('stroke-width', 2)
+                    .attr('stroke-width', CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
                     .attr('stroke-dasharray', '2,2')
                     .attr(
                         'stroke',

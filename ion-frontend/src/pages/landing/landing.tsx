@@ -6,7 +6,7 @@ import { TreasuryTableWidget } from 'functions/treasurytable';
 
 import { ForexTableWidget } from 'functions/forextable';
 import { InternationalClockWidget } from 'functions/internationalclock';
-import { SystemCheckWidget } from 'functions/systemchecks';
+import { HealthCheckWidget } from 'functions/healthchecks';
 import Navigation from 'components/Navigation';
 
 export default function Landing() {
@@ -16,7 +16,7 @@ export default function Landing() {
             <Navigation />
             <Grid container columns={25} spacing={1}>
                 <Grid item xs={5}>
-                    <SystemCheckWidget />
+                    <HealthCheckWidget />
                 </Grid>
                 <Grid item xs={14}>
                     <InternationalClockWidget />

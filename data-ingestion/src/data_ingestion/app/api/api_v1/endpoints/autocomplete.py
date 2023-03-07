@@ -7,6 +7,7 @@ from data_ingestion.app.api.api_v1.models.autocomplete import (
     SecurityFunctions,
     TradeableAssets,
     ETFInfoRequest,
+    ETFSearch,
 )
 
 load_dotenv()
@@ -117,6 +118,22 @@ def get_asset_autocomplete_info(params: TradeableAssets):
             ]
             .find()
             .limit(5)
+        )
+
+
+@router.post("/etfSearch")
+def get_etf_search(params: ETFSearch):
+
+    query: str = params.query
+
+    if query:
+        pipeline = query_mongodb(
+            query, settings.MONGODB_ETFS_COLLECTION_QUERY_FIELD
+        )
+        return list(
+            mongodb_client[settings.MONGODB_ASSET_INFO_TABLE][
+                settings.MONGODB_ETFS_COLLECTION
+            ].aggregate(pipeline)
         )
 
 

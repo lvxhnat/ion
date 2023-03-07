@@ -39,22 +39,22 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
             .append('rect')
             .attr('class', `${props.baseId}_${CHARTIDS.TOOLTIP_RECT_TRACKER_CLASS}`)
             .style('fill', ColorsEnum.white)
-            .attr('width', 80)
-            .attr('height', 20)
+            .attr('width', 'calc(5px + 1vw)')
+            .attr('height', 'calc(0.2vw)')
             .attr('transform', `translate(${CHARTCONFIGS.DEFAULT_MARGIN_LEFT}, 0)`);
         // Append text to the bottom of the chart
         focus
             .append('text')
             .attr('class', `${props.baseId}_${CHARTIDS.TOOLTIP_RECT_TEXT_CLASS}`)
-            .attr('font-size', '10px')
+            .attr('font-size', CHARTCONFIGS.DEFAULT_AXIS_FONTSIZE)
             .attr('transform', `translate(${CHARTCONFIGS.DEFAULT_MARGIN_LEFT}, 0)`);
         // Add the vertical line that tracks all the data points
         focus
             .append('line')
             .attr('class', `${props.baseId}_${CHARTIDS.TOOLTIP_LINE_CLASS}`)
             .style('stroke', ColorsEnum.white)
-            .style('stroke-dasharray', '3,3')
-            .style('stroke-width', 1)
+            .style('stroke-dasharray', '1,1')
+            .style('stroke-width', CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
             .style('opacity', 0.5)
             .attr('y1', CHARTCONFIGS.DEFAULT_MARGIN_BOTTOM)
             .attr('y2', CHARTCONFIGS.DEFAULT_HEIGHT - CHARTCONFIGS.DEFAULT_MARGIN_TOP);
@@ -89,12 +89,24 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
 
             focus
                 .selectAll(`.${props.baseId}_${CHARTIDS.TOOLTIP_RECT_TRACKER_CLASS}`)
-                .attr('transform', `translate(${xTranslate}, ${CHARTCONFIGS.DEFAULT_HEIGHT + 5})`);
+                .attr(
+                    'transform',
+                    `translate(${xTranslate}, ${
+                        CHARTCONFIGS.DEFAULT_HEIGHT -
+                        CHARTCONFIGS.DEFAULT_MARGIN_TOP -
+                        CHARTCONFIGS.DEFAULT_MARGIN_BOTTOM
+                    })`
+                );
 
             focus
                 .selectAll(`.${props.baseId}_${CHARTIDS.TOOLTIP_RECT_TEXT_CLASS}`)
-                .text(formatDateString(dates[i]))
-                .attr('transform', `translate(${xTranslate}, ${CHARTCONFIGS.DEFAULT_HEIGHT + 14})`);
+                .text(`$${data[i].toFixed(3)} - ${formatDateString(dates[i])}`)
+                .attr(
+                    'transform',
+                    `translate(${xTranslate}, ${
+                        CHARTCONFIGS.DEFAULT_HEIGHT - CHARTCONFIGS.DEFAULT_MARGIN_TOP
+                    })`
+                );
         }
     }
 
