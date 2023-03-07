@@ -24,6 +24,7 @@
         "jest/no-focused-tests": "off",
         "no-underscore-dangle": "off",
         "jsx-a11y/anchor-is-valid": "off",
+        "no-extra-parens": ["error", "all"],
         "react/require-default-props": [0, { "ignoreFunctionalComponents": true }]
     },
     "extends": ["plugin:testing-library/react", "prettier", "plugin:prettier/recommended"],
