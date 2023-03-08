@@ -1,6 +1,7 @@
 from pydantic import BaseSettings
 
 class Settings(BaseSettings):
+    APP_NAME: str = "data_ingestion"
     API_V1_STR: str = "/api/v1"
     
     MONGODB_ASSET_INFO_TABLE: str = "asset-infos"

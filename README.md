@@ -27,6 +27,7 @@ python -m deployment
 #### Start backend. In `ion/data-ingestion`
 
 ```
+brew services start rabbitmq 
 uvicorn src.data_ingestion.app.main:app --reload --port 1236
 ```
 
