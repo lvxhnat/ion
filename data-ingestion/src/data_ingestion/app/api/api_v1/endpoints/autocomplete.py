@@ -28,9 +28,6 @@ def query_mongodb(query: str, path: str):
                             "autocomplete": {
                                 "query": query,
                                 "path": path,
-                                "fuzzy": {
-                                    "prefixLength": 1,
-                                },
                             },
                         },
                     ],
