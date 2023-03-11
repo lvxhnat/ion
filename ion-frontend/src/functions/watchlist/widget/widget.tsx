@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import BaseLineChart from 'components/Charting/BaseChart';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import WidgetContainer from 'components/WidgetContainer';
-import { StyledTableCell, StyledChartCell } from 'components/Tables/BaseTable/StyledTableCell';
+import { StyledTableCell } from 'components/Tables/BaseTable/StyledTableCell';
 import { TableCellWrapper } from 'components/Tables/BaseTable/style';
 import { ColorsEnum } from 'common/theme';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
@@ -94,6 +94,7 @@ export default function Widget() {
                                 <StyledTableCell>{entry.last_close}</StyledTableCell>
                                 <TableCellWrapper id={`${entry.ticker}_tickerChartWrapper`}>
                                     <BaseLineChart
+                                        showAverage
                                         baseId={`${entry.ticker}_tickerChart`}
                                         defaultData={entry.chartData}
                                         width={100}

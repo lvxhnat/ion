@@ -19,7 +19,11 @@ const GridSelectItem = (props: {
         <div
             style={{
                 border: '1px solid ' + props.borderColor,
-                backgroundColor: props.hovered ? props.gridHoveredColor : (props.selected ? props.gridSelectedColor : ColorsEnum.black),
+                backgroundColor: props.hovered
+                    ? props.gridHoveredColor
+                    : props.selected
+                    ? props.gridSelectedColor
+                    : ColorsEnum.black,
                 width: size,
                 height: size,
             }}
@@ -76,9 +80,10 @@ const GridSelector = (props: {
     gridSelectedColor: string;
     gridContainerColor: string;
     borderColor: string;
+    gridSelector: [[number, number], (coordinates: [number, number]) => void];
 }) => {
     const [hoveredId, setHoveredId] = React.useState<[number, number]>([0, 0]); // x and y coordinates
-    const [selectedId, setSelectedId] = React.useState<[number, number]>([0, 0]);
+    const [selectedId, setSelectedId] = props.gridSelector;
 
     return (
         <>
@@ -125,7 +130,14 @@ const GridSelector = (props: {
     );
 };
 
-export default function Createbar() {
+/**
+ * Creates the grid selection (rows, cols) for page grid layout
+ * @param gridSelector - Takes in [coordinates, grid selection function] passed down from a higher level component.
+ * @returns
+ */
+export default function Createbar(props: {
+    gridSelector: [[number, number], (coordinates: [number, number]) => void];
+}) {
     const { mode } = useThemeStore();
     const hoveredColor = (darkColor: string, lightColor: string) =>
         mode === 'dark' ? darkColor : lightColor;
@@ -154,6 +166,7 @@ export default function Createbar() {
                     gridContainerColor={hoveredColor(ColorsEnum.coolgray1, ColorsEnum.lightLime)}
                     gridHoveredColor={hoveredColor(ColorsEnum.warmgray5, ColorsEnum.lightLime)}
                     gridSelectedColor={hoveredColor(ColorsEnum.darkGrey, ColorsEnum.limeGreen)}
+                    gridSelector={props.gridSelector}
                 />
             </IconButton>
         </div>
