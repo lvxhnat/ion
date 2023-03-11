@@ -10,6 +10,7 @@ import Portfolio from 'pages/portfolio';
 import Landing from 'pages/landing';
 import Function from 'pages/functions/function';
 import { HealthChecksPage } from 'functions/healthchecks/page';
+import { WatchlistPage } from 'functions/watchlist';
 
 function App() {
     return (
@@ -20,7 +21,7 @@ function App() {
                 <Route path={`${ROUTES.PUBLIC.FOREX}/:symbolId`} element={<Forex />} />
                 <Route path={ROUTES.PUBLIC.PORTFOLIO} element={<Portfolio />} />
                 <Route path={ROUTES.PUBLIC.EXPLORE} element={<Explore />} />
-
+                <Route path={ROUTES.PUBLIC.TICKER_WATCHLIST} element={<WatchlistPage />} />
                 <Route path={ROUTES.PUBLIC.HEALTHCHECK} element={<HealthChecksPage />} />
             </Routes>
         </Router>

@@ -8,6 +8,7 @@ import { ForexTableWidget } from 'functions/forextable';
 import { InternationalClockWidget } from 'functions/internationalclock';
 import { HealthCheckWidget } from 'functions/healthchecks';
 import Navigation from 'components/Navigation';
+import { WatchlistWidget } from 'functions/watchlist';
 
 export default function Landing() {
     return (
@@ -17,6 +18,7 @@ export default function Landing() {
             <Grid container columns={25} spacing={1}>
                 <Grid item xs={5}>
                     <HealthCheckWidget />
+                    <WatchlistWidget />
                 </Grid>
                 <Grid item xs={14}>
                     <InternationalClockWidget />

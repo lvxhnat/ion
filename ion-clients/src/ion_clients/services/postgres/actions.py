@@ -55,7 +55,6 @@ def order_search(
     TableSchema: Table = None,
     first: bool = True,
 ) -> dict:
-
     if first:
         return serialize(session.query(TableSchema).filter(*filters).first())
     else:

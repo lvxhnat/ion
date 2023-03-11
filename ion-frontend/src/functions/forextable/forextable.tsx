@@ -91,6 +91,7 @@ function ForexHistoricalCell(props: { forexPair: string }) {
         <TableCellWrapper>
             {data ? (
                 <BaseLineChart
+                    showAverage
                     baseId={`${props.forexPair}_historicalChart`}
                     defaultData={data}
                     width={100}

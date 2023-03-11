@@ -26,7 +26,7 @@ export default function WidgetContainer(props: {
             </S.DividerWrapper>
             <S.HeaderPanel>
                 <S.LeftPanel>
-                    <Typography align="left" variant="h3" sx={{ color: ColorsEnum.warmgray4 }}>
+                    <Typography align="left" variant="h4" sx={{ color: ColorsEnum.warmgray4 }}>
                         {props.title
                             .split('_')
                             .map((s: string) =>

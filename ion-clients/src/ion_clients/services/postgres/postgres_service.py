@@ -29,17 +29,20 @@ class SQLDatabase:
     @contextmanager
     def session_scope(
         self,
+        session: orm.sessionmaker = None,
     ):
         """Provide a transactional scope around a series of operations."""
+        if not session:
+            session = self.session
         try:
-            yield self.session
-            self.session.commit()
+            yield session
+            session.commit()
         except exc.SQLAlchemyError as err:
             logger.error(f"Session rollback because of exception: {err}")
-            self.session.rollback()
+            session.rollback()
             raise
         finally:
-            self.session.close()
+            session.close()
 
     def execute(self, *args, **kwargs):
         try:

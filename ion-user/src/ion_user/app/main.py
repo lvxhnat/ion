@@ -5,7 +5,7 @@ from typing import List
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 
-from data_ingestion.app.core.config import settings
+from data_ingestion.app.configs.base_config import settings
 from data_ingestion.app.api.api_v1 import api
 
 from ion_clients.services.postgres.schemas.base import Base

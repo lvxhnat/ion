@@ -2,6 +2,18 @@
 
 Ion is a web application designed to leverage OSINT and common financial application features to create a centralised information hub for investment and CA decisions.
 
+## Features
+
+---
+
+|          Home Page           |            Available Functions            |
+| :--------------------------: | :---------------------------------------: |
+| ![](./assets/pages/home.png) | ![](./assets/pages/function-explorer.png) |
+
+|           ETF Explorer           |             Chart Explorer             |
+| :------------------------------: | :------------------------------------: |
+| ![](./assets/pages/etf-list.png) | ![](./assets/pages/chart-explorer.png) |
+
 ## Documentation
 
 ---
@@ -27,6 +39,7 @@ python -m deployment
 #### Start backend. In `ion/data-ingestion`
 
 ```
+brew services start rabbitmq
 uvicorn src.data_ingestion.app.main:app --reload --port 1236
 ```
 
@@ -56,18 +69,6 @@ yarn start
 
 <br clear="left"/>
 
-## Features
-
----
-
-|          Home Page           |            Available Functions            |
-| :--------------------------: | :---------------------------------------: |
-| ![](./assets/pages/home.png) | ![](./assets/pages/function-explorer.png) |
-
-|           ETF Explorer           |             Chart Explorer             |
-| :------------------------------: | :------------------------------------: |
-| ![](./assets/pages/etf-list.png) | ![](./assets/pages/chart-explorer.png) |
-
 ## Data Sources
 
 ---
@@ -78,14 +79,14 @@ yarn start
 | Work in Progress (WIP) | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |
 |          Bug           | ![#ff0000](https://placehold.co/10x10/ff0000/ff0000.png) |
 
-|       Data Provider       |                   Data                   |      Repo       |                          Status                          |      Pages Using      |  Retrieval |
+|       Data Provider       |                   Data                   |      Repo       |                          Status                          |      Pages Using      |       Retrieval       |
 | :-----------------------: | :--------------------------------------: | :-------------: | :------------------------------------------------------: | :-------------------: | :-------------------: |
-|     Open Weather API      |                 Weather                  |   ion-clients   | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) |     Home (Widget)     | On-Demand |
-| US Department of Treasury |              Treasury Rates              |   ion-clients   | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) |     Home (Widget)     | Scheduled |
-|         Oanda API         |      Live and Historical Forex Data      |   ion-clients   | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) |     Home (Widget)     | On-Demand |
-|         Geonames          | Geographical Names with Lat and Lon Data |   ion-clients   | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) | Home (Weather Widget) | Scheduled |
+|     Open Weather API      |                 Weather                  |   ion-clients   | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) |     Home (Widget)     |       On-Demand       |
+| US Department of Treasury |              Treasury Rates              |   ion-clients   | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) |     Home (Widget)     |       Scheduled       |
+|         Oanda API         |      Live and Historical Forex Data      |   ion-clients   | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) |     Home (Widget)     |       On-Demand       |
+|         Geonames          | Geographical Names with Lat and Lon Data |   ion-clients   | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) | Home (Weather Widget) |       Scheduled       |
 |           ETFDB           |        ETF Metadata and Database         | pyETFDB-scraper | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) |       ETF List        | Scheduled + On-Demand |
-|      Finnhub API          |        Daily Historical Ticker Prices   | ion-clients | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) |       ETF List        | On-Demand |
+|        Finnhub API        |      Daily Historical Ticker Prices      |   ion-clients   | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) |       ETF List        |       On-Demand       |
 
 ## Contributing
 
