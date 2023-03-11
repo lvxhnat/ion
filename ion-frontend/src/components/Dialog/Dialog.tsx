@@ -7,7 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { ColorsEnum } from 'common/theme';
 import { Typography } from '@mui/material';
 
-export interface DialogTitleProps {
+interface DialogTitleProps {
     id: string;
     children?: React.ReactNode;
     onClose: () => void;

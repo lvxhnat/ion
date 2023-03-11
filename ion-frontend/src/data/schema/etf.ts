@@ -45,7 +45,7 @@ interface ETFBaseDataSchema {
     data: any;
 }
 
-export interface ETFVerticalTableSchema
+interface ETFVerticalTableSchema
     extends Modify<
         ETFBaseDataSchema,
         {
@@ -53,9 +53,9 @@ export interface ETFVerticalTableSchema
             header: string;
             data: { [key: string]: string }[];
         }
-    > {}
+    > { }
 
-export interface ETFHorizontalTableSchema
+interface ETFHorizontalTableSchema
     extends Modify<
         ETFBaseDataSchema,
         {
@@ -63,9 +63,9 @@ export interface ETFHorizontalTableSchema
             header: string;
             data: { [key: string]: string[] };
         }
-    > {}
+    > { }
 
-export interface ETFListSchema
+interface ETFListSchema
     extends Modify<
         ETFBaseDataSchema,
         {
@@ -73,4 +73,4 @@ export interface ETFListSchema
             header: string;
             data: { [key: string]: { text: string; link: string } };
         }
-    > {}
+    > { }

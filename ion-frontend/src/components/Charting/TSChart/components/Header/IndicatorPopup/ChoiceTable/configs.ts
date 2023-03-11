@@ -12,5 +12,3 @@ export interface GeneralTableTypeProp<T> {
     name: string;
     callback: ((arr: T, ...params: any) => T) | ((params: T) => T);
 }
-
-export type GeneralTableActionType = GeneralTableProps<any>[];

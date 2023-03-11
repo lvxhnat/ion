@@ -1,7 +1,7 @@
 import { ForexStreamType, FormattedForexStreamType } from 'functions/forextable/type';
 import create from 'zustand';
 
-export interface ForexStreamStoreTypes {
+interface ForexStreamStoreTypes {
     forexStream: { [ticker: string]: FormattedForexStreamType };
     setForexStream: (config: ForexStreamType) => void;
 }
@@ -23,16 +23,16 @@ export const forexStreamStore = create<ForexStreamStoreTypes>(set => ({
 
             return streamObject
                 ? {
-                      forexStream: {
-                          ...state.forexStream,
-                          [streamObject.instrument]: {
-                              ...omit(streamObject, 'instrument'),
-                              // Compare the previous value with the current value, and return -1, 0 or 1
-                              bid_change: prev ? streamObject.closeoutBid - prev.closeoutBid : 0,
-                              ask_change: prev ? streamObject.closeoutAsk - prev.closeoutAsk : 0,
-                          },
-                      },
-                  }
+                    forexStream: {
+                        ...state.forexStream,
+                        [streamObject.instrument]: {
+                            ...omit(streamObject, 'instrument'),
+                            // Compare the previous value with the current value, and return -1, 0 or 1
+                            bid_change: prev ? streamObject.closeoutBid - prev.closeoutBid : 0,
+                            ask_change: prev ? streamObject.closeoutAsk - prev.closeoutAsk : 0,
+                        },
+                    },
+                }
                 : {};
         }),
 }));

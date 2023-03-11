@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as S from './style';
-import * as RS from '../style';
 
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -14,19 +13,9 @@ import Grid from '@mui/material/Grid';
 import Search from 'components/Search';
 import SidebarPrompt from './SidebarPrompt';
 import ChoiceTable from './ChoiceTable';
-import { ColorsEnum } from 'common/theme';
 import BootstrapDialogFrame from 'components/Dialog';
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-    '& .MuiDialogContent-root': {
-        padding: theme.spacing(2),
-    },
-    '& .MuiDialogActions-root': {
-        padding: theme.spacing(1),
-    },
-}));
-
-export interface DialogTitleProps {
+interface DialogTitleProps {
     id: string;
     children?: React.ReactNode;
     onClose: () => void;

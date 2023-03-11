@@ -55,14 +55,6 @@ export const removeDraw = (props: { baseId: string }): void => {
     ).remove();
 };
 
-export const existDrawnLines = (props: { baseId: string }): boolean => {
-    return !d3
-        .selectAll(
-            `#${props.baseId}-container #${props.baseId} .${props.baseId}_${CHARTIDS.DRAW_LINE_CLASS}`
-        )
-        .empty();
-};
-
 export const removeDrawnLines = (props: { baseId: string }): void => {
     d3.selectAll(
         `#${props.baseId}-container #${props.baseId} .${props.baseId}_${CHARTIDS.DRAW_LINE_CLASS}`

@@ -1,4 +1,3 @@
-import DataTable, { DataTableSkeleton } from './DataTable';
-import DataTableEnhancedHeader from './DataTableEnhancedHeader';
+import DataTable from './DataTable';
 
-export { DataTable, DataTableEnhancedHeader, DataTableSkeleton };
+export { DataTable };

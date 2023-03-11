@@ -9,7 +9,7 @@ export interface FunctionSuggestion {
 
 export type SecuritiesProps = SecuritiesSuggestion[];
 
-export interface SecuritiesSuggestion {}
+export interface SecuritiesSuggestion { }
 
 export interface SearchSuggestions {
     securities: SecuritiesProps;

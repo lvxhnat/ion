@@ -2,7 +2,7 @@ import { ColorsEnum } from 'common/theme';
 import * as React from 'react';
 import * as S from './style';
 
-export interface StyledTableCellProps {
+interface StyledTableCellProps {
     children?: React.ReactNode;
     isHeader?: boolean;
     width?: string;
