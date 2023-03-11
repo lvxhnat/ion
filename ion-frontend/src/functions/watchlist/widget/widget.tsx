@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as d3 from 'd3';
 
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
@@ -15,18 +14,18 @@ import { ColorsEnum } from 'common/theme';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
 import { getETFCandles } from 'data/ingestion/candles';
 import { FinnhubCandlesSchema, FinnhubCandlesEntrySchema } from 'data/schema/candles';
+import { ROUTES } from 'common/constant';
 
 export default function Widget() {
     const tickers = ['SPY', 'GPS', 'BABA', 'AAPL', 'TSLA', 'IAU', 'VGLT'];
-    const [tickerData, setTickerData] =
-        React.useState<
-            {
-                ticker: string;
-                chartData: DefaultDataProps;
-                last_close: string;
-                pct_change: number;
-            }[]
-        >();
+    const [tickerData, setTickerData] = React.useState<
+        {
+            ticker: string;
+            chartData: DefaultDataProps;
+            last_close: string;
+            pct_change: number;
+        }[]
+    >();
 
     React.useEffect(() => {
         getETFCandles(tickers).then(res => {
@@ -47,8 +46,9 @@ export default function Widget() {
                         },
                         last_close: entry[entry.length - 1].close.toFixed(2),
                         pct_change:
-                            (100 * ((entry[entry.length - 1].close - entry[entry.length - 2].close) /
-                            entry[entry.length - 2].close)),
+                            100 *
+                            ((entry[entry.length - 1].close - entry[entry.length - 2].close) /
+                                entry[entry.length - 2].close),
                     };
                 })
             );
@@ -56,7 +56,10 @@ export default function Widget() {
     }, []);
 
     return (
-        <WidgetContainer title="ticker_watchlist">
+        <WidgetContainer
+            title="ticker_watchlist"
+            fullScreenRedirect={ROUTES.PUBLIC.TICKER_WATCHLIST}
+        >
             <Table style={{ minWidth: 150 }} aria-label="a dense table" stickyHeader>
                 <TableHead>
                     <TableRow sx={{ backgroundColor: ColorsEnum.coolgray8 }}>
@@ -79,14 +82,22 @@ export default function Widget() {
                         return (
                             <StyledTableRow>
                                 <StyledTableCell>{entry.ticker}</StyledTableCell>
-                                <StyledTableCell color= {entry.pct_change > 0 ? ColorsEnum.upHint : ColorsEnum.downHint }>{entry.pct_change.toFixed(2)}%</StyledTableCell>
+                                <StyledTableCell
+                                    color={
+                                        entry.pct_change > 0
+                                            ? ColorsEnum.upHint
+                                            : ColorsEnum.downHint
+                                    }
+                                >
+                                    {entry.pct_change.toFixed(2)}%
+                                </StyledTableCell>
                                 <StyledTableCell>{entry.last_close}</StyledTableCell>
                                 <TableCellWrapper id={`${entry.ticker}_tickerChartWrapper`}>
                                     <BaseLineChart
                                         baseId={`${entry.ticker}_tickerChart`}
                                         defaultData={entry.chartData}
                                         width={100}
-                                        height={30}
+                                        height={25}
                                         margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
                                     />
                                 </TableCellWrapper>

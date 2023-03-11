@@ -12,7 +12,12 @@ export interface StyledTableCellProps {
 export function StyledTableCell({ children, isHeader, width, color }: StyledTableCellProps) {
     return (
         <S.TableCellWrapper width={width}>
-            <S.TableCellLabel variant="subtitle2" align="center" isHeader={isHeader} style={{ color: color ? color : ColorsEnum.primary }}>
+            <S.TableCellLabel
+                variant="subtitle2"
+                align="center"
+                isHeader={isHeader}
+                style={{ color: color ? color : ColorsEnum.primary }}
+            >
                 {children}
             </S.TableCellLabel>
         </S.TableCellWrapper>

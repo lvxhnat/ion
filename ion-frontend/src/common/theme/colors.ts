@@ -1,4 +1,5 @@
 // https://colordesigner.io/gradient-generator
+
 export enum ColorsEnum {
     primary = '#ff9b00',
     secondary = '#FFBAAB',
@@ -87,34 +88,33 @@ export enum ColorsEnum {
     naver = '#3EAF0E',
     instagram = '#C13584',
     darkGrey = '#2b2b2b',
+    darkerGrey = '#232323',
     darkMode = '#121212',
     economicBlue = '#01253F',
     limeGreen = '#E4F5D5',
     lightLime = '#F9FFF2',
 }
 
-/*
-COLOR HEX OPACITY
-Opacity %   255 Step        2 digit HEX prefix
-0%          0.00            00
-5%          12.75           0C
-10%         25.50           19
-15%         38.25           26
-20%         51.00           33
-25%         63.75           3F
-30%         76.50           4C
-35%         89.25           59
-40%         102.00          66
-45%         114.75          72
-50%         127.50          7F
-55%         140.25          8C
-60%         153.00          99
-65%         165.75          A5
-70%         178.50          B2
-75%         191.25          BF
-80%         204.00          CC
-85%         216.75          D8
-90%         229.50          E5
-95%         242.25          F2
-100%        255.00          FF
-*/
+enum OpacityEnum {
+    '0%' = '00',
+    '5%' = '0C',
+    '10%' = '19',
+    '15%' = '26',
+    '20%' = '33',
+    '25%' = '3F',
+    '30%' = '4C',
+    '35%' = '59',
+    '40%' = '66',
+    '45%' = '72',
+    '50%' = '80',
+    '55%' = '8C',
+    '60%' = '99',
+    '65%' = 'A6',
+    '70%' = 'B3',
+    '75%' = 'BF',
+    '80%' = 'CC',
+    '85%' = 'D9',
+    '90%' = 'E6',
+    '95%' = 'F2',
+    '100%' = 'FF',
+}
