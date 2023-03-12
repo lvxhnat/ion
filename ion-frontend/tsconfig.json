@@ -17,11 +17,6 @@
         "incremental": true,
         "baseUrl": "./src"
     },
-    "include": [
-        "**/*.ts",
-        "**/*.tsx",
-        "jest.config.js",
-        "src/components/Tables/DataTable/skeleton.tsx"
-    ],
+    "include": ["**/*.ts", "**/*.tsx", "src/static/", "jest.config.js"],
     "exclude": ["node_modules"]
 }

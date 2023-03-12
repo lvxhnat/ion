@@ -49,15 +49,28 @@ export default function BaseChart({
             if (!svg.selectAll('*').empty()) svg.selectAll('*').remove(); // removes any overlapping versions of the svgs
             // Set props settings
             if (margin) {
-                CHARTCONFIGS.DEFAULT_MARGIN.bottom = Math.max(CHARTCONFIGS.DEFAULT_MARGIN.bottom, margin.bottom);
-                CHARTCONFIGS.DEFAULT_MARGIN.top = Math.max(CHARTCONFIGS.DEFAULT_MARGIN.top, margin.top);
-                CHARTCONFIGS.DEFAULT_MARGIN.left = Math.max(CHARTCONFIGS.DEFAULT_MARGIN.left, margin.left);
-                CHARTCONFIGS.DEFAULT_MARGIN.right = Math.max(CHARTCONFIGS.DEFAULT_MARGIN.right, margin.right);   
+                CHARTCONFIGS.DEFAULT_MARGIN.bottom = Math.max(
+                    CHARTCONFIGS.DEFAULT_MARGIN.bottom,
+                    margin.bottom
+                );
+                CHARTCONFIGS.DEFAULT_MARGIN.top = Math.max(
+                    CHARTCONFIGS.DEFAULT_MARGIN.top,
+                    margin.top
+                );
+                CHARTCONFIGS.DEFAULT_MARGIN.left = Math.max(
+                    CHARTCONFIGS.DEFAULT_MARGIN.left,
+                    margin.left
+                );
+                CHARTCONFIGS.DEFAULT_MARGIN.right = Math.max(
+                    CHARTCONFIGS.DEFAULT_MARGIN.right,
+                    margin.right
+                );
             }
-            CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH = strokeWidth ?? CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH;
+            CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH =
+                strokeWidth ?? CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH;
             CHARTCONFIGS.DEFAULT_HEIGHT = height ?? CHARTCONFIGS.DEFAULT_HEIGHT;
             CHARTCONFIGS.DEFAULT_WIDTH = width ?? CHARTCONFIGS.DEFAULT_WIDTH;
-            
+
             const dataX = defaultData.dataX;
             const dataY = defaultData.dataY;
 
@@ -74,8 +87,18 @@ export default function BaseChart({
             const dateTime: number[] = dataX.map((date: Date) => date.getTime());
 
             // Prep and plot the axis
-            const x = d3.scaleTime().range([CHARTCONFIGS.DEFAULT_MARGIN.left, width - CHARTCONFIGS.DEFAULT_MARGIN.right]);
-            const y = d3.scaleLinear().range([height - CHARTCONFIGS.DEFAULT_MARGIN.top, CHARTCONFIGS.DEFAULT_MARGIN.bottom]);
+            const x = d3
+                .scaleTime()
+                .range([
+                    CHARTCONFIGS.DEFAULT_MARGIN.left,
+                    width - CHARTCONFIGS.DEFAULT_MARGIN.right,
+                ]);
+            const y = d3
+                .scaleLinear()
+                .range([
+                    height - CHARTCONFIGS.DEFAULT_MARGIN.top,
+                    CHARTCONFIGS.DEFAULT_MARGIN.bottom,
+                ]);
 
             const minDate = Math.min(...dateTime);
             const maxDate = Math.max(...dateTime);
