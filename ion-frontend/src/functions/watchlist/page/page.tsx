@@ -6,6 +6,7 @@ import Createbar from './createbar';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
+import { useWatchlistStore } from 'store/prices/watchlist';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -16,29 +17,14 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-function FormRow() {
-    return (
-        <React.Fragment>
-            <Grid item xs={4}>
-                <Item>Item</Item>
-            </Grid>
-            <Grid item xs={4}>
-                <Item>Item</Item>
-            </Grid>
-            <Grid item xs={4}>
-                <Item>Item</Item>
-            </Grid>
-        </React.Fragment>
-    );
-}
-
 export default function Page() {
-    const [selectedGridId, setSelectedGridId] = React.useState<[number, number]>([0, 0]);
+    const selectedGridId: [number, number] = useWatchlistStore(store => store.gridSelected);
+    console.log(selectedGridId);
     return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
             <CssBaseline />
             <Navigation />
-            <Createbar gridSelector={[selectedGridId, setSelectedGridId]} />
+            <Createbar />
             <Box sx={{ flexGrow: 1, height: '100%', padding: 1 }}>
                 <Grid container spacing={1} style={{ height: '100%' }}>
                     {[...Array(selectedGridId[0] + 1).keys()].map((_: number, r_index: number) => {

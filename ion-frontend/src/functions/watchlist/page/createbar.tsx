@@ -3,6 +3,7 @@ import * as React from 'react';
 import IconButton from '@mui/material/IconButton';
 import { ColorsEnum } from 'common/theme';
 import { useThemeStore } from 'store/theme';
+import { useWatchlistStore } from 'store/prices/watchlist';
 
 const GridSelectItem = (props: {
     padding: number;
@@ -14,20 +15,21 @@ const GridSelectItem = (props: {
     size: number;
     [key: string]: any;
 }) => {
-    const size = `calc(${props.size} - ${props.padding})`;
+    const {padding, hovered, selected, borderColor, gridHoveredColor, gridSelectedColor, size, ...others} = props;
+
     return (
         <div
             style={{
-                border: '1px solid ' + props.borderColor,
-                backgroundColor: props.hovered
-                    ? props.gridHoveredColor
-                    : props.selected
-                    ? props.gridSelectedColor
+                border: '1px solid ' + borderColor,
+                backgroundColor: hovered
+                    ? gridHoveredColor
+                    : selected
+                    ? gridSelectedColor
                     : ColorsEnum.black,
-                width: size,
-                height: size,
+                width: `calc(${size} - ${padding})`,
+                height: `calc(${size} - ${padding})`,
             }}
-            {...props}
+            {...others}
         />
     );
 };
@@ -80,10 +82,9 @@ const GridSelector = (props: {
     gridSelectedColor: string;
     gridContainerColor: string;
     borderColor: string;
-    gridSelector: [[number, number], (coordinates: [number, number]) => void];
 }) => {
     const [hoveredId, setHoveredId] = React.useState<[number, number]>([0, 0]); // x and y coordinates
-    const [selectedId, setSelectedId] = props.gridSelector;
+    const [selectedId, setSelectedId] = useWatchlistStore(store => [store.gridSelected, store.setGridSelected]);
 
     return (
         <>
@@ -135,9 +136,7 @@ const GridSelector = (props: {
  * @param gridSelector - Takes in [coordinates, grid selection function] passed down from a higher level component.
  * @returns
  */
-export default function Createbar(props: {
-    gridSelector: [[number, number], (coordinates: [number, number]) => void];
-}) {
+export default function Createbar() {
     const { mode } = useThemeStore();
     const hoveredColor = (darkColor: string, lightColor: string) =>
         mode === 'dark' ? darkColor : lightColor;
@@ -166,7 +165,6 @@ export default function Createbar(props: {
                     gridContainerColor={hoveredColor(ColorsEnum.coolgray1, ColorsEnum.lightLime)}
                     gridHoveredColor={hoveredColor(ColorsEnum.warmgray5, ColorsEnum.lightLime)}
                     gridSelectedColor={hoveredColor(ColorsEnum.darkGrey, ColorsEnum.limeGreen)}
-                    gridSelector={props.gridSelector}
                 />
             </IconButton>
         </div>

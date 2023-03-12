@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 
 import { THEME_MODE_KEY } from 'common/constant';
 import { setCookie } from 'common/helper/cookies';
