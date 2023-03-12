@@ -53,7 +53,7 @@ interface ETFVerticalTableSchema
             header: string;
             data: { [key: string]: string }[];
         }
-    > { }
+    > {}
 
 interface ETFHorizontalTableSchema
     extends Modify<
@@ -63,7 +63,7 @@ interface ETFHorizontalTableSchema
             header: string;
             data: { [key: string]: string[] };
         }
-    > { }
+    > {}
 
 interface ETFListSchema
     extends Modify<
@@ -73,4 +73,4 @@ interface ETFListSchema
             header: string;
             data: { [key: string]: { text: string; link: string } };
         }
-    > { }
+    > {}

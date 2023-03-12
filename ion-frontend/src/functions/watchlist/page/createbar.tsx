@@ -15,7 +15,16 @@ const GridSelectItem = (props: {
     size: number;
     [key: string]: any;
 }) => {
-    const {padding, hovered, selected, borderColor, gridHoveredColor, gridSelectedColor, size, ...others} = props;
+    const {
+        padding,
+        hovered,
+        selected,
+        borderColor,
+        gridHoveredColor,
+        gridSelectedColor,
+        size,
+        ...others
+    } = props;
 
     return (
         <div
@@ -84,7 +93,10 @@ const GridSelector = (props: {
     borderColor: string;
 }) => {
     const [hoveredId, setHoveredId] = React.useState<[number, number]>([0, 0]); // x and y coordinates
-    const [selectedId, setSelectedId] = useWatchlistStore(store => [store.gridSelected, store.setGridSelected]);
+    const [selectedId, setSelectedId] = useWatchlistStore(store => [
+        store.gridSelected,
+        store.setGridSelected,
+    ]);
 
     return (
         <>

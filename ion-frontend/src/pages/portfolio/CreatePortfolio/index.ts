@@ -1,3 +1,3 @@
-import CreatePortfolio from "./CreatePortfolio";
+import CreatePortfolio from './CreatePortfolio';
 
-export default CreatePortfolio
+export default CreatePortfolio;

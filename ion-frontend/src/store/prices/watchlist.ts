@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 
 export interface WatchlistStoreTypes {
-    gridSelected: [number, number],
-    setGridSelected: (gridSelected: [number, number]) => void,
+    gridSelected: [number, number];
+    setGridSelected: (gridSelected: [number, number]) => void;
 }
 
 export const useWatchlistStore = create<WatchlistStoreTypes>(set => ({
