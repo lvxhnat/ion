@@ -34,12 +34,7 @@ export default function BaseChart({
     data = CHARTCONFIGS.DEFAULT_DATA,
     width = CHARTCONFIGS.DEFAULT_WIDTH,
     height = CHARTCONFIGS.DEFAULT_HEIGHT,
-    margin = {
-        top: CHARTCONFIGS.DEFAULT_MARGIN_TOP,
-        right: CHARTCONFIGS.DEFAULT_MARGIN_RIGHT,
-        bottom: CHARTCONFIGS.DEFAULT_MARGIN_BOTTOM,
-        left: CHARTCONFIGS.DEFAULT_MARGIN_LEFT,
-    },
+    margin = CHARTCONFIGS.DEFAULT_MARGIN,
     strokeWidth = CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH,
     zeroAxis = CHARTCONFIGS.DEFAULT_ZERO_AXIS,
     showLegend = CHARTCONFIGS.DEFAULT_SHOW_LEGEND,
@@ -52,24 +47,25 @@ export default function BaseChart({
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
             // Ensure rerender does not duplicate chart
             if (!svg.selectAll('*').empty()) svg.selectAll('*').remove(); // removes any overlapping versions of the svgs
-            if (strokeWidth) CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH = strokeWidth;
+            // Set props settings
             if (margin) {
-                CHARTCONFIGS.DEFAULT_MARGIN_BOTTOM = margin.bottom;
-                CHARTCONFIGS.DEFAULT_MARGIN_TOP = margin.top;
-                CHARTCONFIGS.DEFAULT_MARGIN_LEFT = margin.left;
-                CHARTCONFIGS.DEFAULT_MARGIN_RIGHT = margin.right;
+                CHARTCONFIGS.DEFAULT_MARGIN.bottom = Math.max(CHARTCONFIGS.DEFAULT_MARGIN.bottom, margin.bottom);
+                CHARTCONFIGS.DEFAULT_MARGIN.top = Math.max(CHARTCONFIGS.DEFAULT_MARGIN.top, margin.top);
+                CHARTCONFIGS.DEFAULT_MARGIN.left = Math.max(CHARTCONFIGS.DEFAULT_MARGIN.left, margin.left);
+                CHARTCONFIGS.DEFAULT_MARGIN.right = Math.max(CHARTCONFIGS.DEFAULT_MARGIN.right, margin.right);   
             }
-            if (height) CHARTCONFIGS.DEFAULT_HEIGHT = height;
-            if (width) CHARTCONFIGS.DEFAULT_WIDTH = width;
-
+            CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH = strokeWidth ?? CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH;
+            CHARTCONFIGS.DEFAULT_HEIGHT = height ?? CHARTCONFIGS.DEFAULT_HEIGHT;
+            CHARTCONFIGS.DEFAULT_WIDTH = width ?? CHARTCONFIGS.DEFAULT_WIDTH;
+            
             const dataX = defaultData.dataX;
             const dataY = defaultData.dataY;
 
             svg.attr('viewBox', [
                 0,
                 0,
-                width + margin.right + margin.left,
-                height + margin.top * 1.5,
+                width + CHARTCONFIGS.DEFAULT_MARGIN.right + CHARTCONFIGS.DEFAULT_MARGIN.left,
+                height + CHARTCONFIGS.DEFAULT_MARGIN.top * 1.5,
             ])
                 .attr('preserveAspectRatio', 'xMidYMid meet')
                 .classed('svg-content-responsive', true)
@@ -78,8 +74,8 @@ export default function BaseChart({
             const dateTime: number[] = dataX.map((date: Date) => date.getTime());
 
             // Prep and plot the axis
-            const x = d3.scaleTime().range([margin.left, width - margin.right]);
-            const y = d3.scaleLinear().range([height - margin.top, margin.bottom]);
+            const x = d3.scaleTime().range([CHARTCONFIGS.DEFAULT_MARGIN.left, width - CHARTCONFIGS.DEFAULT_MARGIN.right]);
+            const y = d3.scaleLinear().range([height - CHARTCONFIGS.DEFAULT_MARGIN.top, CHARTCONFIGS.DEFAULT_MARGIN.bottom]);
 
             const minDate = Math.min(...dateTime);
             const maxDate = Math.max(...dateTime);

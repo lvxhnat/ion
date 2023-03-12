@@ -12,7 +12,7 @@ import { StyledTableCell } from 'components/Tables/BaseTable/StyledTableCell';
 import { TableCellWrapper } from 'components/Tables/BaseTable/style';
 import { ColorsEnum } from 'common/theme';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
-import { getETFCandles } from 'data/ingestion/candles';
+import { getCandles } from 'data/ingestion/candles';
 import { FinnhubCandlesSchema, FinnhubCandlesEntrySchema } from 'data/schema/candles';
 import { ROUTES } from 'common/constant';
 
@@ -28,7 +28,7 @@ export default function Widget() {
     >();
 
     React.useEffect(() => {
-        getETFCandles(tickers).then(res => {
+        getCandles(tickers).then(res => {
             setTickerData(
                 res.data.map((entry: FinnhubCandlesSchema) => {
                     return {

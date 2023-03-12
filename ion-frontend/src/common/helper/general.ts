@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 export const capitalizeString = (colName: string) =>
     colName
         .split(' ')
@@ -38,4 +40,27 @@ export function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => n
         return a[1] - b[1];
     });
     return stabilizedThis.map(el => el[0]);
+}
+
+function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+        width,
+        height
+    };
+}
+
+export default function useWindowDimensions() {
+    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+
+    useEffect(() => {
+        function handleResize() {
+            setWindowDimensions(getWindowDimensions());
+        }
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    return windowDimensions;
 }

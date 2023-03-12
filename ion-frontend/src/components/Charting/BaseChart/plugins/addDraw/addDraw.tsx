@@ -12,7 +12,7 @@ export const addDraw = (props: { baseId: string }) => {
         .attr('id', `${props.baseId}_${CHARTIDS.DRAW_CONTAINER_ID}`)
         .style('fill', 'none')
         .style('pointer-events', 'all')
-        .attr('width', CHARTCONFIGS.DEFAULT_WIDTH - CHARTCONFIGS.DEFAULT_MARGIN_LEFT)
+        .attr('width', CHARTCONFIGS.DEFAULT_WIDTH - CHARTCONFIGS.DEFAULT_MARGIN.left)
         .attr('height', CHARTCONFIGS.DEFAULT_HEIGHT)
         .on('mousedown', mousedown)
         .on('mouseup', mouseup);
