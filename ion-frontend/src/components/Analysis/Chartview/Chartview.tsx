@@ -6,7 +6,19 @@ import { FinnhubCandlesEntrySchema } from 'data/schema/candles';
 
 import BaseLineChart from 'components/Charting/BaseChart';
 import useWindowDimensions from 'common/helper/general';
-import { Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
+import { TickerSearch } from 'components/Search/Search';
+
+const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    height: '100%',
+    color: theme.palette.text.secondary,
+}));
+
 /**
  * Provides a historical chart view of a single security selected.
  * @returns
@@ -32,36 +44,37 @@ export default function Chartview(props: { ticker?: string }) {
         }
     }, []);
 
-    if (props.ticker) {
-        return (
-            <div>
-                {chartData ? (
-                    <BaseLineChart
-                        showLegend
-                        showAxis
-                        showTooltip
-                        showAverage
-                        baseId={`${props.ticker}_tickerChart`}
-                        defaultData={chartData}
-                        width={width}
-                        height={height / 1.5}
-                        margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-                    />
-                ) : null}
-            </div>
-        );
-    } else {
-        return (
-            <div
-                style={{
-                    display: 'flex',
-                    height: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <img src={Logo} style={{ width: '7vw', opacity: 0.5 }} />
-            </div>
-        );
-    }
+    return (
+        <Item>
+            <TickerSearch />
+            {props.ticker ? (
+                <div>
+                    {chartData ? (
+                        <BaseLineChart
+                            showLegend
+                            showAxis
+                            showTooltip
+                            showAverage
+                            baseId={`${props.ticker}_tickerChart`}
+                            defaultData={chartData}
+                            width={width}
+                            height={height / 1.5}
+                            margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+                        />
+                    ) : null}
+                </div>
+            ) : (
+                <div
+                    style={{
+                        display: 'flex',
+                        height: '100%',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <img src={Logo} style={{ width: '7vw', opacity: 0.5 }} />
+                </div>
+            )}
+        </Item>
+    );
 }

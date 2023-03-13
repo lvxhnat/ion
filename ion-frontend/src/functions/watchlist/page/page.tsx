@@ -3,20 +3,9 @@ import * as React from 'react';
 import { CssBaseline, Grid } from '@mui/material';
 import Navigation from 'components/Navigation';
 import Createbar from './createbar';
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import { useWatchlistStore } from 'store/prices/watchlist';
 import Chartview from 'components/Analysis/Chartview';
-
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    height: '100%',
-    color: theme.palette.text.secondary,
-}));
 
 export default function Page() {
     const selectedGridId: [number, number] = useWatchlistStore(store => store.gridSelected);
@@ -41,9 +30,7 @@ export default function Page() {
                                     (_: number, c_index: number) => {
                                         return (
                                             <Grid item xs={4} key={`containerGridItem_${c_index}`}>
-                                                <Item>
-                                                    <Chartview />
-                                                </Item>
+                                                <Chartview />
                                             </Grid>
                                         );
                                     }

@@ -176,7 +176,7 @@ export default function Createbar() {
                     borderColor={hoveredColor(ColorsEnum.white, ColorsEnum.black)}
                     gridContainerColor={hoveredColor(ColorsEnum.coolgray1, ColorsEnum.lightLime)}
                     gridHoveredColor={hoveredColor(ColorsEnum.warmgray5, ColorsEnum.lightLime)}
-                    gridSelectedColor={hoveredColor(ColorsEnum.darkGrey, ColorsEnum.limeGreen)}
+                    gridSelectedColor={hoveredColor(ColorsEnum.coolgray1, ColorsEnum.limeGreen)}
                 />
             </IconButton>
         </div>
