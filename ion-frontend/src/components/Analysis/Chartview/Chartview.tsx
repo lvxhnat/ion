@@ -9,15 +9,23 @@ import useWindowDimensions from 'common/helper/general';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import { TickerSearch } from 'components/Search/Search';
+import { ColorsEnum } from 'common/theme';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
-    padding: theme.spacing(1),
     textAlign: 'center',
     height: '100%',
     color: theme.palette.text.secondary,
 }));
+
+const IntegratedToolbar = () => {
+    return (
+        <div style={{ width: '100%', backgroundColor: ColorsEnum.warmgray1, padding: '2px' }}>
+            <TickerSearch />
+        </div>
+    )
+}
 
 /**
  * Provides a historical chart view of a single security selected.
@@ -46,7 +54,7 @@ export default function Chartview(props: { ticker?: string }) {
 
     return (
         <Item>
-            <TickerSearch />
+            <IntegratedToolbar />
             {props.ticker ? (
                 <div>
                     {chartData ? (

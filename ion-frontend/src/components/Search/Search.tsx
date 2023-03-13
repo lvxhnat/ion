@@ -26,8 +26,9 @@ const SelectArrowWrapper = styled('div')(({ theme }) => ({
     justifyContent: 'center',
     width: 20,
     '&:hover': {
-        backgroundColor: ColorsEnum.warmgray1,
+        backgroundColor: ColorsEnum.warmgray3,
     },
+    cursor: 'pointer',
 }));
 
 const TableRowItemWrapper = styled('div')(({ theme }) => ({
@@ -55,41 +56,50 @@ const TableRowWrapper = styled('div')<TableRowInputProps>(({ theme, overtColors,
     },
 }));
 
+const TickerSearchInput = styled('input')(({ theme }) => ({
+    width: '100%',
+    backgroundColor: theme.palette.mode === 'dark' ? ColorsEnum.black : ColorsEnum.white,
+    border: 'none',
+    outline: 'none',
+    padding: `${theme.spacing(0.4)} ${theme.spacing(1)}`,
+    color: theme.palette.mode === 'dark' ? ColorsEnum.white : ColorsEnum.white,
+    fontSize: typographyTheme.subtitle2.fontSize,
+}))
+
 export function TickerSearch() {
+    const ref = React.useRef<HTMLInputElement>(null);
     const { mode } = useThemeStore();
     const [showMenu, setShowMenu] = React.useState<boolean>(false);
 
     const primaryColor: string = mode === 'dark' ? ColorsEnum.black : ColorsEnum.white;
 
+    const closeOpenMenu = (e: any) => {
+        if(ref.current && showMenu && !ref.current.contains(e.target)){
+            setShowMenu(false)
+        }
+    }
+
+    document.addEventListener('mousedown', closeOpenMenu)
+
     return (
         <>
             <div
                 style={{
-                    width: 'max(100px, 20%)',
+                    width: 'max(120px, 20%)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     border: '1px solid ' + primaryColor,
+                    borderRadius: '2px',
                 }}
             >
-                <input
-                    type="text"
-                    placeholder="Enter Symbol"
-                    style={{
-                        width: '100%',
-                        backgroundColor: primaryColor,
-                        border: 'none',
-                        outline: 'none',
-                        padding: 5,
-                        color: mode === 'dark' ? ColorsEnum.white : ColorsEnum.white,
-                        fontSize: typographyTheme.subtitle2.fontSize,
-                    }}
-                />
+                <TickerSearchInput type="text" placeholder="Enter Symbol" />
                 <SelectArrowWrapper onClick={() => setShowMenu(!showMenu)}>
                     <ArrowDropDownIcon fontSize="small" />
                 </SelectArrowWrapper>
             </div>
             <div
+                ref={ref}
                 style={{
                     display: showMenu ? 'block' : 'none',
                     backgroundColor: ColorsEnum.darkGrey,
@@ -117,6 +127,7 @@ export function TickerSearch() {
 }
 
 const Search: React.FC<SearchProps> = ({ callback, placeholder, fullWidth }) => {
+
     const [search, setSearch] = React.useState<string>('');
 
     const searchDebounce = useDebounce(search);
