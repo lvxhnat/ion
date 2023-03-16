@@ -14,7 +14,7 @@ export default function Page() {
             <CssBaseline />
             <Navigation />
             <Createbar />
-            <Box sx={{ flexGrow: 1, height: '100%', padding: 1 }}>
+            <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={1} style={{ height: '100%' }}>
                     {[...Array(selectedGridId[0] + 1).keys()].map((_: number, r_index: number) => {
                         // This maps over the number of rows, followed by the number of columns required to generate the grid boxes.
@@ -30,7 +30,11 @@ export default function Page() {
                                     (_: number, c_index: number) => {
                                         return (
                                             <Grid item xs={4} key={`containerGridItem_${c_index}`}>
-                                                <Chartview />
+                                                {c_index === 1 ? (
+                                                    <Chartview ticker="SPY" />
+                                                ) : (
+                                                    <Chartview />
+                                                )}
                                             </Grid>
                                         );
                                     }

@@ -1,31 +1,38 @@
 import * as React from 'react';
 
-import Logo from 'static/logo.png';
+import { Box, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
 import { getCandles } from 'data/ingestion/candles';
 import { FinnhubCandlesEntrySchema } from 'data/schema/candles';
-
 import BaseLineChart from 'components/Charting/BaseChart';
 import useWindowDimensions from 'common/helper/general';
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
 import { TickerSearch } from 'components/Search/Search';
 import { ColorsEnum } from 'common/theme';
 
-const Item = styled(Paper)(({ theme }) => ({
+import { MdWater, MdWaterfallChart } from 'react-icons/md';
+import { useThemeStore } from 'store/theme';
+
+const Item = styled(Box)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    textAlign: 'center',
     height: '100%',
     color: theme.palette.text.secondary,
 }));
 
 const IntegratedToolbar = () => {
+    const { mode } = useThemeStore();
     return (
-        <div style={{ width: '100%', backgroundColor: ColorsEnum.warmgray1, padding: '2px' }}>
+        <div
+            style={{
+                width: '100%',
+                backgroundColor: mode === 'dark' ? ColorsEnum.warmgray1 : ColorsEnum.coolgray4,
+                padding: '2px',
+            }}
+        >
             <TickerSearch />
         </div>
-    )
-}
+    );
+};
 
 /**
  * Provides a historical chart view of a single security selected.
@@ -51,36 +58,42 @@ export default function Chartview(props: { ticker?: string }) {
             });
         }
     }, []);
-
+    // <img src={Logo} style={{ width: '7vw', opacity: 0.5 }} />
     return (
-        <Item>
+        <Item sx={{ flexGrow: 1 }}>
             <IntegratedToolbar />
             {props.ticker ? (
-                <div>
-                    {chartData ? (
-                        <BaseLineChart
-                            showLegend
-                            showAxis
-                            showTooltip
-                            showAverage
-                            baseId={`${props.ticker}_tickerChart`}
-                            defaultData={chartData}
-                            width={width}
-                            height={height / 1.5}
-                            margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-                        />
-                    ) : null}
-                </div>
+                chartData ? (
+                    <BaseLineChart
+                        showLegend
+                        showAxis
+                        showTooltip
+                        showAverage
+                        baseId={`${props.ticker}_tickerChart`}
+                        defaultData={chartData}
+                        width={1000}
+                        height={300}
+                        margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+                    />
+                ) : null
             ) : (
                 <div
                     style={{
                         display: 'flex',
-                        height: '100%',
+                        flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        height: '80%',
+                        opacity: 0.5,
                     }}
                 >
-                    <img src={Logo} style={{ width: '7vw', opacity: 0.5 }} />
+                    <MdWaterfallChart
+                        style={{ width: 'calc(25px + 0.5vw)', height: 'calc(25px + 0.5vw)' }}
+                    />
+                    <Typography variant="subtitle2" component="div">
+                        {' '}
+                        Enter a symbol{' '}
+                    </Typography>
                 </div>
             )}
         </Item>

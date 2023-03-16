@@ -42,29 +42,33 @@ const TableRowItemWrapper = styled('div')(({ theme }) => ({
 type TableRowInputProps = {
     overtColors: boolean;
     disableHover?: boolean;
-    theme?: any,
-}
-  
-const TableRowWrapper = styled('div')<TableRowInputProps>(({ theme, overtColors, disableHover }) => ({
-    display: 'flex',
-    width: '100%',
-    padding: 2,
-    backgroundColor: overtColors ? ColorsEnum.warmgray1 : ColorsEnum.darkGrey,
-    '&:hover': disableHover ? undefined : {
-        backgroundColor: ColorsEnum.beer,
-        color: ColorsEnum.black,
-    },
-}));
+    theme?: any;
+};
+
+const TableRowWrapper = styled('div')<TableRowInputProps>(
+    ({ theme, overtColors, disableHover }) => ({
+        display: 'flex',
+        width: '100%',
+        padding: 2,
+        backgroundColor: overtColors ? ColorsEnum.warmgray1 : ColorsEnum.darkGrey,
+        '&:hover': disableHover
+            ? undefined
+            : {
+                  backgroundColor: ColorsEnum.beer,
+                  color: ColorsEnum.black,
+              },
+    })
+);
 
 const TickerSearchInput = styled('input')(({ theme }) => ({
     width: '100%',
     backgroundColor: theme.palette.mode === 'dark' ? ColorsEnum.black : ColorsEnum.white,
     border: 'none',
     outline: 'none',
-    padding: `${theme.spacing(0.4)} ${theme.spacing(1)}`,
+    padding: `${theme.spacing(0.5)} ${theme.spacing(1)}`,
     color: theme.palette.mode === 'dark' ? ColorsEnum.white : ColorsEnum.white,
     fontSize: typographyTheme.subtitle2.fontSize,
-}))
+}));
 
 export function TickerSearch() {
     const ref = React.useRef<HTMLInputElement>(null);
@@ -74,12 +78,12 @@ export function TickerSearch() {
     const primaryColor: string = mode === 'dark' ? ColorsEnum.black : ColorsEnum.white;
 
     const closeOpenMenu = (e: any) => {
-        if(ref.current && showMenu && !ref.current.contains(e.target)){
-            setShowMenu(false)
+        if (ref.current && showMenu && !ref.current.contains(e.target)) {
+            setShowMenu(false);
         }
-    }
+    };
 
-    document.addEventListener('mousedown', closeOpenMenu)
+    document.addEventListener('mousedown', closeOpenMenu);
 
     return (
         <>
@@ -110,8 +114,12 @@ export function TickerSearch() {
                 }}
             >
                 <TableRowWrapper overtColors={false} disableHover={true}>
-                    <TableRowItemWrapper style={{ width: '15%', fontWeight: 'bold' }}>Symbol</TableRowItemWrapper>
-                    <TableRowItemWrapper style={{ width: '85%', fontWeight: 'bold' }}>Description</TableRowItemWrapper>
+                    <TableRowItemWrapper style={{ width: '15%', fontWeight: 'bold' }}>
+                        Symbol
+                    </TableRowItemWrapper>
+                    <TableRowItemWrapper style={{ width: '85%', fontWeight: 'bold' }}>
+                        Description
+                    </TableRowItemWrapper>
                 </TableRowWrapper>
                 {[...Array(8).keys()].map((_, index: number) => (
                     <TableRowWrapper overtColors={index % 2 === 0}>
@@ -127,7 +135,6 @@ export function TickerSearch() {
 }
 
 const Search: React.FC<SearchProps> = ({ callback, placeholder, fullWidth }) => {
-
     const [search, setSearch] = React.useState<string>('');
 
     const searchDebounce = useDebounce(search);
