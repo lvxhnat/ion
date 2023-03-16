@@ -41,13 +41,13 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
             .style('fill', ColorsEnum.white)
             .attr('width', 'calc(5px + 1vw)')
             .attr('height', 'calc(0.2vw)')
-            .attr('transform', `translate(${CHARTCONFIGS.DEFAULT_MARGIN_LEFT}, 0)`);
+            .attr('transform', `translate(${CHARTCONFIGS.DEFAULT_MARGIN.left}, 0)`);
         // Append text to the bottom of the chart
         focus
             .append('text')
             .attr('class', `${props.baseId}_${CHARTIDS.TOOLTIP_RECT_TEXT_CLASS}`)
             .attr('font-size', CHARTCONFIGS.DEFAULT_AXIS_FONTSIZE)
-            .attr('transform', `translate(${CHARTCONFIGS.DEFAULT_MARGIN_LEFT}, 0)`);
+            .attr('transform', `translate(${CHARTCONFIGS.DEFAULT_MARGIN.left}, 0)`);
         // Add the vertical line that tracks all the data points
         focus
             .append('line')
@@ -56,14 +56,14 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
             .style('stroke-dasharray', '1,1')
             .style('stroke-width', CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
             .style('opacity', 0.5)
-            .attr('y1', CHARTCONFIGS.DEFAULT_MARGIN_BOTTOM)
-            .attr('y2', CHARTCONFIGS.DEFAULT_HEIGHT - CHARTCONFIGS.DEFAULT_MARGIN_TOP);
+            .attr('y1', CHARTCONFIGS.DEFAULT_MARGIN.bottom)
+            .attr('y2', CHARTCONFIGS.DEFAULT_HEIGHT - CHARTCONFIGS.DEFAULT_MARGIN.top);
         // Create a rect on top of the svg area: this rectangle recovers mouse position
         svg.append('rect')
             .attr('class', `${props.baseId}_${CHARTIDS.TOOLTIP_ENCOMPASSING_RECT_CLASS}`)
             .style('fill', 'none')
             .style('pointer-events', 'all')
-            .attr('width', CHARTCONFIGS.DEFAULT_WIDTH - CHARTCONFIGS.DEFAULT_MARGIN_LEFT)
+            .attr('width', CHARTCONFIGS.DEFAULT_WIDTH - CHARTCONFIGS.DEFAULT_MARGIN.left)
             .attr('height', CHARTCONFIGS.DEFAULT_HEIGHT)
             .on('mouseover', mouseover)
             .on('mousemove', mousemove)
@@ -93,8 +93,8 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
                     'transform',
                     `translate(${xTranslate}, ${
                         CHARTCONFIGS.DEFAULT_HEIGHT -
-                        CHARTCONFIGS.DEFAULT_MARGIN_TOP -
-                        CHARTCONFIGS.DEFAULT_MARGIN_BOTTOM
+                        CHARTCONFIGS.DEFAULT_MARGIN.top -
+                        CHARTCONFIGS.DEFAULT_MARGIN.bottom
                     })`
                 );
 
@@ -104,7 +104,7 @@ export const addToolTip = (props: { x: any; y: any; baseId: string; data: Defaul
                 .attr(
                     'transform',
                     `translate(${xTranslate}, ${
-                        CHARTCONFIGS.DEFAULT_HEIGHT - CHARTCONFIGS.DEFAULT_MARGIN_TOP
+                        CHARTCONFIGS.DEFAULT_HEIGHT - CHARTCONFIGS.DEFAULT_MARGIN.top
                     })`
                 );
         }

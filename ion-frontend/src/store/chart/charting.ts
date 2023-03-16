@@ -1,5 +1,5 @@
 import { AllowedLineTypes } from 'components/Charting/BaseChart/schema/schema';
-import create from 'zustand';
+import { create } from 'zustand';
 
 interface ChartStoreTypes {
     chartType: AllowedLineTypes;

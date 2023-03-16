@@ -16,7 +16,7 @@ import { DataTable } from 'components/Tables/DataTable';
 import Navigation from 'components/Navigation';
 import { getETFInfo } from 'data/ingestion/etf';
 import { ETFDataSchema } from 'data/schema/etf';
-import { getETFCandles } from 'data/ingestion/candles';
+import { getCandles } from 'data/ingestion/candles';
 import { FinnhubCandlesSchema } from 'data/schema/candles';
 import ETFViewer from './etfviewer/etfviewer';
 
@@ -42,7 +42,7 @@ export default function ETFExplorer() {
         getETFInfo(ticker).then(res => {
             setETFData(res.data);
         });
-        getETFCandles(ticker).then(res => {
+        getCandles(ticker).then(res => {
             if (res.data) setETFCandlesData(res.data[0]);
         });
         setLoadingState(false);

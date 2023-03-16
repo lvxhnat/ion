@@ -30,7 +30,7 @@ export default function Select(props: SelectProps) {
             >
                 {props.options.map((entry: SelectOptions, index: number) => (
                     <option value={entry.value} key={`${entry.value}_${index}`}>
-                        <Typography variant="subtitle2">{entry.name}</Typography>
+                        {entry.name}
                     </option>
                 ))}
             </select>

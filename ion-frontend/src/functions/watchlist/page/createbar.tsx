@@ -1,8 +1,10 @@
 import * as React from 'react';
+import * as S from './style';
 
 import IconButton from '@mui/material/IconButton';
 import { ColorsEnum } from 'common/theme';
 import { useThemeStore } from 'store/theme';
+import { useWatchlistStore } from 'store/prices/watchlist';
 
 const GridSelectItem = (props: {
     padding: number;
@@ -14,20 +16,30 @@ const GridSelectItem = (props: {
     size: number;
     [key: string]: any;
 }) => {
-    const size = `calc(${props.size} - ${props.padding})`;
+    const {
+        padding,
+        hovered,
+        selected,
+        borderColor,
+        gridHoveredColor,
+        gridSelectedColor,
+        size,
+        ...others
+    } = props;
+
     return (
         <div
             style={{
-                border: '1px solid ' + props.borderColor,
-                backgroundColor: props.hovered
-                    ? props.gridHoveredColor
-                    : props.selected
-                    ? props.gridSelectedColor
+                border: '1px solid ' + borderColor,
+                backgroundColor: hovered
+                    ? gridHoveredColor
+                    : selected
+                    ? gridSelectedColor
                     : ColorsEnum.black,
-                width: size,
-                height: size,
+                width: `calc(${size} - ${padding})`,
+                height: `calc(${size} - ${padding})`,
             }}
-            {...props}
+            {...others}
         />
     );
 };
@@ -75,24 +87,40 @@ const GridSelector = (props: {
     ncols: number;
     padding: number;
     gridSize: number;
-    hovered: boolean;
     gridHoveredColor: string;
     gridSelectedColor: string;
     gridContainerColor: string;
     borderColor: string;
-    gridSelector: [[number, number], (coordinates: [number, number]) => void];
 }) => {
+    const ref = React.useRef<HTMLInputElement>(null);
     const [hoveredId, setHoveredId] = React.useState<[number, number]>([0, 0]); // x and y coordinates
-    const [selectedId, setSelectedId] = props.gridSelector;
+    const [selectedId, setSelectedId] = useWatchlistStore(store => [
+        store.gridSelected,
+        store.setGridSelected,
+    ]);
+    const [opened, setOpened] = React.useState<boolean>(false);
+
+    const closeOpenMenu = (e: any) => {
+        if (ref.current && opened && !ref.current.contains(e.target)) {
+            setOpened(false);
+        }
+    };
+    document.addEventListener('mousedown', closeOpenMenu);
 
     return (
-        <>
-            <GridIcon ncols={selectedId[1] + 1} nrows={selectedId[0] + 1} size={30} />
+        <IconButton>
+            <GridIcon
+                ncols={selectedId[1] + 1}
+                nrows={selectedId[0] + 1}
+                size={25}
+                onClick={() => setOpened(true)}
+            />
             <div
+                ref={ref}
                 onMouseLeave={() => setHoveredId([0, 0])}
                 style={{
+                    display: opened ? 'grid' : 'none',
                     position: 'absolute',
-                    display: props.hovered ? 'grid' : 'none',
                     gridTemplateColumns: [...Array(props.ncols)].map(() => 'auto').join(' '),
                     alignItems: 'middle',
                     justifyContent: 'middle',
@@ -104,6 +132,7 @@ const GridSelector = (props: {
                     border: '1px solid ' + ColorsEnum.black,
                     gap: props.padding,
                     padding: props.padding * 2,
+                    zIndex: 10,
                 }}
             >
                 {[...Array(props.nrows).keys()].map((_: number, r_index: number) => {
@@ -126,7 +155,7 @@ const GridSelector = (props: {
                     });
                 })}
             </div>
-        </>
+        </IconButton>
     );
 };
 
@@ -135,40 +164,23 @@ const GridSelector = (props: {
  * @param gridSelector - Takes in [coordinates, grid selection function] passed down from a higher level component.
  * @returns
  */
-export default function Createbar(props: {
-    gridSelector: [[number, number], (coordinates: [number, number]) => void];
-}) {
+export default function Createbar() {
     const { mode } = useThemeStore();
-    const hoveredColor = (darkColor: string, lightColor: string) =>
-        mode === 'dark' ? darkColor : lightColor;
-    const [hovered, setHovered] = React.useState<boolean>(false);
+    const hoveredColor = (darkC: string, lightC: string) =>
+        mode === 'dark' ? darkC : lightC;
 
     return (
-        <div
-            style={{
-                backgroundColor: hovered
-                    ? hoveredColor(ColorsEnum.darkGrey, ColorsEnum.lightLime)
-                    : 'transparent',
-            }}
-        >
-            <IconButton
-                disableRipple
-                onMouseOver={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
-            >
-                <GridSelector
-                    nrows={4}
-                    ncols={6}
-                    padding={3}
-                    gridSize={25}
-                    hovered={hovered}
-                    borderColor={hoveredColor(ColorsEnum.white, ColorsEnum.black)}
-                    gridContainerColor={hoveredColor(ColorsEnum.coolgray1, ColorsEnum.lightLime)}
-                    gridHoveredColor={hoveredColor(ColorsEnum.warmgray5, ColorsEnum.lightLime)}
-                    gridSelectedColor={hoveredColor(ColorsEnum.darkGrey, ColorsEnum.limeGreen)}
-                    gridSelector={props.gridSelector}
-                />
-            </IconButton>
-        </div>
+        <S.GridSelectorContainer>
+            <GridSelector
+                nrows={4}
+                ncols={6}
+                padding={3}
+                gridSize={25}
+                borderColor={hoveredColor(ColorsEnum.white, ColorsEnum.black)}
+                gridContainerColor={hoveredColor(ColorsEnum.coolgray1, ColorsEnum.lightLime)}
+                gridHoveredColor={hoveredColor(ColorsEnum.warmgray5, ColorsEnum.lightLime)}
+                gridSelectedColor={hoveredColor(ColorsEnum.coolgray1, ColorsEnum.limeGreen)}
+            />
+        </S.GridSelectorContainer>
     );
 }

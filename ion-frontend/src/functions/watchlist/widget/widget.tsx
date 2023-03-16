@@ -12,7 +12,7 @@ import { StyledTableCell } from 'components/Tables/BaseTable/StyledTableCell';
 import { TableCellWrapper } from 'components/Tables/BaseTable/style';
 import { ColorsEnum } from 'common/theme';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
-import { getETFCandles } from 'data/ingestion/candles';
+import { getCandles } from 'data/ingestion/candles';
 import { FinnhubCandlesSchema, FinnhubCandlesEntrySchema } from 'data/schema/candles';
 import { ROUTES } from 'common/constant';
 
@@ -28,7 +28,7 @@ export default function Widget() {
     >();
 
     React.useEffect(() => {
-        getETFCandles(tickers).then(res => {
+        getCandles(tickers).then(res => {
             setTickerData(
                 res.data.map((entry: FinnhubCandlesSchema) => {
                     return {
@@ -63,24 +63,24 @@ export default function Widget() {
             <Table style={{ minWidth: 150 }} aria-label="a dense table" stickyHeader>
                 <TableHead>
                     <TableRow sx={{ backgroundColor: ColorsEnum.coolgray8 }}>
-                        <StyledTableCell isHeader key={`ticker_header_0`}>
+                        <StyledTableCell isHeader key={`tickerTableHeader_0`}>
                             Ticker
                         </StyledTableCell>
-                        <StyledTableCell isHeader key={`ticker_header_1`}>
+                        <StyledTableCell isHeader key={`tickerTableHeader_1`}>
                             Change (%)
                         </StyledTableCell>
-                        <StyledTableCell isHeader key={`ticker_header_2`}>
+                        <StyledTableCell isHeader key={`tickerTableHeader_2`}>
                             Last Close
                         </StyledTableCell>
-                        <StyledTableCell width="30%" isHeader key={`ticker_header_2`}>
+                        <StyledTableCell width="30%" isHeader key={`tickerTableHeader_3`}>
                             Chart
                         </StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {tickerData?.map(entry => {
+                    {tickerData?.map((entry, index: number) => {
                         return (
-                            <StyledTableRow>
+                            <StyledTableRow key={`tickerTableBody_${index}`}>
                                 <StyledTableCell>{entry.ticker}</StyledTableCell>
                                 <StyledTableCell
                                     color={

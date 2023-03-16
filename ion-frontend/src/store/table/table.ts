@@ -1,5 +1,5 @@
 import { UploadDataType } from 'components/Tables/DataTable/type';
-import create from 'zustand';
+import { create } from 'zustand';
 
 interface FieldsDeclaredType {
     rows: Set<number>;

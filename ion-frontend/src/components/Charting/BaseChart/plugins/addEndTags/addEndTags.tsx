@@ -11,7 +11,6 @@ export const addEndTags = (props: {
 }): void => {
     const svg = d3.selectAll(`#${props.baseId}`);
     const scale = 0.3;
-    console.log(props.color, getFontColor(props.color));
 
     svg.append('g').attr('id', `${props.baseId}_${CHARTIDS.ENDTAG_GROUP_ID}`);
 
@@ -28,7 +27,7 @@ export const addEndTags = (props: {
         )
         .attr(
             'transform',
-            `translate(${CHARTCONFIGS.DEFAULT_WIDTH - CHARTCONFIGS.DEFAULT_MARGIN_RIGHT},0)`
+            `translate(${CHARTCONFIGS.DEFAULT_WIDTH - CHARTCONFIGS.DEFAULT_MARGIN.right},0)`
         )
         .attr('fill', props.color);
 
@@ -40,8 +39,8 @@ export const addEndTags = (props: {
         .attr(
             'x',
             CHARTCONFIGS.DEFAULT_WIDTH -
-                CHARTCONFIGS.DEFAULT_MARGIN_RIGHT +
-                CHARTCONFIGS.DEFAULT_MARGIN_LEFT * 0.25
+                CHARTCONFIGS.DEFAULT_MARGIN.right +
+                CHARTCONFIGS.DEFAULT_MARGIN.left * 0.25
         )
         .attr('y', d => +props.y(d) * 1.05)
         .attr('text-anchor', 'start')

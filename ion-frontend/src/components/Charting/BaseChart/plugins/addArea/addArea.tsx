@@ -20,7 +20,7 @@ export const addArea = (props: {
         .defined((_, i: number) => defined[i])
         .curve(d3.curveLinear)
         .x((_, i: number) => props.x(props.dataX[i]))
-        .y0(CHARTCONFIGS.DEFAULT_HEIGHT - CHARTCONFIGS.DEFAULT_MARGIN_TOP)
+        .y0(CHARTCONFIGS.DEFAULT_HEIGHT - CHARTCONFIGS.DEFAULT_MARGIN.top)
         .y1((_, i: number) => props.y(props.dataY[i]));
 
     svg.append('path')
