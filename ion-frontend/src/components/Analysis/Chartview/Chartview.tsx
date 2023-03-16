@@ -6,11 +6,10 @@ import { styled } from '@mui/material/styles';
 import { getCandles } from 'data/ingestion/candles';
 import { FinnhubCandlesEntrySchema } from 'data/schema/candles';
 import BaseLineChart from 'components/Charting/BaseChart';
-import useWindowDimensions from 'common/helper/general';
 import { TickerSearch } from 'components/Search/Search';
 import { ColorsEnum } from 'common/theme';
 
-import { MdWater, MdWaterfallChart } from 'react-icons/md';
+import { MdWaterfallChart } from 'react-icons/md';
 import { useThemeStore } from 'store/theme';
 
 const Item = styled(Box)(({ theme }) => ({
@@ -39,7 +38,6 @@ const IntegratedToolbar = () => {
  * @returns
  */
 export default function Chartview(props: { ticker?: string }) {
-    const { height, width } = useWindowDimensions();
     const [chartData, setChartData] = React.useState<any>();
 
     React.useEffect(() => {

@@ -112,7 +112,7 @@ const GridSelector = (props: {
             <GridIcon
                 ncols={selectedId[1] + 1}
                 nrows={selectedId[0] + 1}
-                size={30}
+                size={25}
                 onClick={() => setOpened(true)}
             />
             <div
