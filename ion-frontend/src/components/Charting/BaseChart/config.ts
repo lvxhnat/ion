@@ -35,6 +35,7 @@ export const CHARTCONFIGS = {
     DEFAULT_DATA: [], // No additional data, plot only one line
     DEFAULT_CHART_FONTSIZE: 'calc(0.5rem + 0.3vw)',
     DEFAULT_AXIS_FONTSIZE: 'calc(0.15vw)',
+    DEFAULT_SHOW_PRICING: false,
     DEFAULT_SHOW_AVERAGE: false,
     DEFAULT_SHOW_GRID: false,
     DEFAULT_SHOW_AXIS: false,

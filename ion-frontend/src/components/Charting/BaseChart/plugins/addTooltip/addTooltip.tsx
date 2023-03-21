@@ -11,8 +11,16 @@ function formatDateString(d: Date) {
     )}:${zeroPad(d.getMinutes())}`;
 }
 
+/**
+ * Add a hover listener to the chart we wish to track
+ * @param props
+ */
+export const addChartHoverListener = (props: { baseId: string }) => {
+    const svg = d3.selectAll(props.baseId);
+};
+
 export const addToolTip = (props: { x: any; y: any; baseId: string; data: DefaultDataProps[] }) => {
-    const svg = d3.selectAll(`#${props.baseId} `);
+    const svg = d3.selectAll(props.baseId);
     const dates = props.data[0].dataX;
     const bisect = d3.bisector((d: any) => d).left;
     // If OHLC Data, we pick close

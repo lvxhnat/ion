@@ -166,8 +166,7 @@ const GridSelector = (props: {
  */
 export default function Createbar() {
     const { mode } = useThemeStore();
-    const hoveredColor = (darkC: string, lightC: string) =>
-        mode === 'dark' ? darkC : lightC;
+    const hoveredColor = (darkC: string, lightC: string) => (mode === 'dark' ? darkC : lightC);
 
     return (
         <S.GridSelectorContainer>

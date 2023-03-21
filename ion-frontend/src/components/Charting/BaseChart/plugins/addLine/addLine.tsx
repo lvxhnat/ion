@@ -1,6 +1,12 @@
 import * as d3 from 'd3';
 import { CHARTCONFIGS } from '../../config';
 
+/**
+ * Add a line to a BaseLineChart object. The line ID will be denoted by {BaseLineChartID_AssignedLineID}.
+ * @param id the ID we wish to assign to the line we will be appending on to the chart. This will be AssignedLineID stated in the desc above.
+ * @param baseId the ID of the BaseLineChart component we created.
+ * @param ...
+ */
 export const addLine = (props: {
     x: d3.ScaleTime<number, number, never>;
     y: d3.ScaleLinear<number, number, never>;

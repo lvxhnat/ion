@@ -70,7 +70,7 @@ const TickerSearchInput = styled('input')(({ theme }) => ({
     fontSize: typographyTheme.subtitle2.fontSize,
 }));
 
-export function TickerSearch() {
+export function TickerSearch(props: { selectedTicker?: string }) {
     const ref = React.useRef<HTMLInputElement>(null);
     const { mode } = useThemeStore();
     const [showMenu, setShowMenu] = React.useState<boolean>(false);
@@ -89,7 +89,7 @@ export function TickerSearch() {
         <>
             <div
                 style={{
-                    width: 'max(120px, 20%)',
+                    width: '100%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -97,7 +97,10 @@ export function TickerSearch() {
                     borderRadius: '2px',
                 }}
             >
-                <TickerSearchInput type="text" placeholder="Enter Symbol" />
+                <TickerSearchInput
+                    type="text"
+                    placeholder={props.selectedTicker ?? 'Enter Symbol'}
+                />
                 <SelectArrowWrapper onClick={() => setShowMenu(!showMenu)}>
                     <ArrowDropDownIcon fontSize="small" />
                 </SelectArrowWrapper>

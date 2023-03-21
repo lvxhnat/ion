@@ -29,7 +29,7 @@ export enum ColorsEnum {
     beer21 = '#1f1f1f',
     beer22 = '#191919',
     beer23 = '#171717',
-    upHint = 'green',
+    upHint = '#00DD00',
     downHint = 'red',
     error = '#F5734D',
     sunshine = '#FFDA00',

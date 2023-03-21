@@ -14,6 +14,7 @@ export interface LineChartProps {
     };
     strokeWidth?: string;
     zeroAxis?: boolean;
+    showPricing?: boolean;
     showAverage?: boolean;
     showLegend?: boolean;
     showGrid?: boolean;

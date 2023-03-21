@@ -15,7 +15,11 @@ export default function Page() {
             <Navigation />
             <Createbar />
             <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={1} style={{ height: '100%' }}>
+                <Grid
+                    container
+                    spacing={1}
+                    style={{ height: '100%', paddingLeft: 10, paddingRight: 10 }}
+                >
                     {[...Array(selectedGridId[0] + 1).keys()].map((_: number, r_index: number) => {
                         // This maps over the number of rows, followed by the number of columns required to generate the grid boxes.
                         return (
@@ -30,7 +34,7 @@ export default function Page() {
                                     (_: number, c_index: number) => {
                                         return (
                                             <Grid item xs={4} key={`containerGridItem_${c_index}`}>
-                                                {c_index === 1 ? (
+                                                {c_index === 0 ? (
                                                     <Chartview ticker="SPY" />
                                                 ) : (
                                                     <Chartview />

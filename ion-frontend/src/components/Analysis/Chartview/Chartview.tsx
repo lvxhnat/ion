@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { getCandles } from 'data/ingestion/candles';
@@ -18,26 +18,12 @@ const Item = styled(Box)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-const IntegratedToolbar = () => {
-    const { mode } = useThemeStore();
-    return (
-        <div
-            style={{
-                width: '100%',
-                backgroundColor: mode === 'dark' ? ColorsEnum.warmgray1 : ColorsEnum.coolgray4,
-                padding: '2px',
-            }}
-        >
-            <TickerSearch />
-        </div>
-    );
-};
-
 /**
  * Provides a historical chart view of a single security selected.
  * @returns
  */
 export default function Chartview(props: { ticker?: string }) {
+    const { mode } = useThemeStore();
     const [chartData, setChartData] = React.useState<any>();
 
     React.useEffect(() => {
@@ -59,7 +45,66 @@ export default function Chartview(props: { ticker?: string }) {
     // <img src={Logo} style={{ width: '7vw', opacity: 0.5 }} />
     return (
         <Item sx={{ flexGrow: 1 }}>
-            <IntegratedToolbar />
+            <Grid container
+                style={{
+                    width: '100%',
+                    backgroundColor: mode === 'dark' ? ColorsEnum.warmgray1 : ColorsEnum.coolgray4,
+                    padding: '2px',
+                }}
+                columns={15}
+            >
+                <Grid item xs={3}>
+                    <TickerSearch selectedTicker={props.ticker} />
+                </Grid>
+                <Grid item xs={11}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    {chartData ? (
+                        <>
+                            <Typography
+                                variant="subtitle1"
+                                component="div"
+                                style={{ paddingLeft: 10, paddingRight: 10 }}
+                            >
+                                {props.ticker}
+                            </Typography>
+                            <Typography
+                                variant="subtitle1"
+                                component="div"
+                                style={{
+                                    paddingLeft: 10,
+                                    paddingRight: 10,
+                                    color: 'white',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                {chartData.dataY[chartData.dataY.length - 1].toFixed(2)}
+                            </Typography>
+                            <Typography
+                                variant="subtitle2"
+                                component="div"
+                                style={{
+                                    paddingLeft: 10,
+                                    paddingRight: 10,
+                                    color:
+                                        chartData.dataY[chartData.dataY.length - 1] >
+                                        chartData.dataY[chartData.dataY.length - 2]
+                                            ? ColorsEnum.upHint
+                                            : ColorsEnum.downHint,
+                                }}
+                            >
+                                {(
+                                    (100 *
+                                        (chartData.dataY[chartData.dataY.length - 1] -
+                                            chartData.dataY[chartData.dataY.length - 2])) /
+                                    chartData.dataY[chartData.dataY.length - 2]
+                                ).toFixed(2)}
+                                %
+                            </Typography>
+                        </>
+                    ) : undefined}
+                </div>
+                </Grid>
+            </Grid>
             {props.ticker ? (
                 chartData ? (
                     <BaseLineChart

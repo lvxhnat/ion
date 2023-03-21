@@ -38,6 +38,7 @@ export default function BaseChart({
     strokeWidth = CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH,
     zeroAxis = CHARTCONFIGS.DEFAULT_ZERO_AXIS,
     showLegend = CHARTCONFIGS.DEFAULT_SHOW_LEGEND,
+    showPricing = CHARTCONFIGS.DEFAULT_SHOW_PRICING,
     showAverage = CHARTCONFIGS.DEFAULT_SHOW_AVERAGE,
     showGrid = CHARTCONFIGS.DEFAULT_SHOW_GRID,
     showAxis = CHARTCONFIGS.DEFAULT_SHOW_AXIS,
@@ -47,6 +48,10 @@ export default function BaseChart({
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
             // Ensure rerender does not duplicate chart
             if (!svg.selectAll('*').empty()) svg.selectAll('*').remove(); // removes any overlapping versions of the svgs
+
+            if (showLegend && showTooltip && showPricing) {
+                throw new Error('Pick either show legend and tooltips or pricing only.');
+            }
             // Set props settings
             if (margin) {
                 CHARTCONFIGS.DEFAULT_MARGIN.bottom = Math.max(
@@ -218,6 +223,8 @@ export default function BaseChart({
                     baseId: baseId,
                     data: [defaultData, ...data],
                 });
+            }
+            if (showPricing) {
             }
         },
         [data.length, defaultData]
