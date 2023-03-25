@@ -78,7 +78,7 @@ export default function TreasuryTable(props: TreasuryTableProps) {
                                     </StyledTableCell>
                                     <StyledChartCell key={`tChart_${index}`}>
                                         {index !== 0 ? (
-                                            <div style={{ height: '25px'}}>
+                                            <div style={{ height: '25px' }}>
                                                 <BaseLineChart
                                                     baseId={`${column}_treasury_chart`}
                                                     defaultData={{

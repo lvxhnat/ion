@@ -26,7 +26,7 @@ const Item = styled(Box)(({ theme }) => ({
  */
 export default function Chartview(props: { ticker?: string }) {
     const { mode } = useThemeStore();
-    const [data, setData] = useTickerDataStore((state) => [state.data, state.setData]);
+    const [data, setData] = useTickerDataStore(state => [state.data, state.setData]);
 
     React.useEffect(() => {
         if (props.ticker) {
@@ -34,7 +34,7 @@ export default function Chartview(props: { ticker?: string }) {
             getCandles(props.ticker).then(res => {
                 const data = res.data[0];
                 setData({
-                    ticker: ticker, 
+                    ticker: ticker,
                     data: {
                         id: props.ticker,
                         name: props.ticker,
@@ -42,7 +42,7 @@ export default function Chartview(props: { ticker?: string }) {
                         dataX: data.map((obj: FinnhubCandlesEntrySchema) => new Date(obj.date)),
                         dataY: data.map((obj: FinnhubCandlesEntrySchema) => obj.close),
                         color: 'white',
-                        type: 'pureLine'
+                        type: 'pureLine',
                     } as DefaultDataProps,
                 });
             });
@@ -65,8 +65,7 @@ export default function Chartview(props: { ticker?: string }) {
                 </Grid>
                 <Grid item xs={11}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        {(props.ticker && data[props.ticker]) ?
-                            (
+                        {props.ticker && data[props.ticker] ? (
                             <>
                                 <Typography
                                     variant="subtitle1"
@@ -85,7 +84,9 @@ export default function Chartview(props: { ticker?: string }) {
                                         fontWeight: 'bold',
                                     }}
                                 >
-                                    {data[props.ticker].dataY[data[props.ticker].dataY.length - 1].toFixed(2)}
+                                    {data[props.ticker].dataY[
+                                        data[props.ticker].dataY.length - 1
+                                    ].toFixed(2)}
                                 </Typography>
                                 <Typography
                                     variant="subtitle2"
@@ -94,17 +95,27 @@ export default function Chartview(props: { ticker?: string }) {
                                         paddingLeft: 10,
                                         paddingRight: 10,
                                         color:
-                                            data[props.ticker].dataY[data[props.ticker].dataY.length - 1] >
-                                            data[props.ticker].dataY[data[props.ticker].dataY.length - 2]
+                                            data[props.ticker].dataY[
+                                                data[props.ticker].dataY.length - 1
+                                            ] >
+                                            data[props.ticker].dataY[
+                                                data[props.ticker].dataY.length - 2
+                                            ]
                                                 ? ColorsEnum.upHint
                                                 : ColorsEnum.downHint,
                                     }}
                                 >
                                     {(
                                         (100 *
-                                            (data[props.ticker].dataY[data[props.ticker].dataY.length - 1] -
-                                                data[props.ticker].dataY[data[props.ticker].dataY.length - 2])) /
-                                        data[props.ticker].dataY[data[props.ticker].dataY.length - 2]
+                                            (data[props.ticker].dataY[
+                                                data[props.ticker].dataY.length - 1
+                                            ] -
+                                                data[props.ticker].dataY[
+                                                    data[props.ticker].dataY.length - 2
+                                                ])) /
+                                        data[props.ticker].dataY[
+                                            data[props.ticker].dataY.length - 2
+                                        ]
                                     ).toFixed(2)}
                                     %
                                 </Typography>
@@ -113,20 +124,17 @@ export default function Chartview(props: { ticker?: string }) {
                     </div>
                 </Grid>
             </Grid>
-            {(props.ticker && data[props.ticker]) ? (
-                    <div style={{ height: '90%' }}>
-                        <BaseLineChart
-                            showAxis
-                            showGrid
-                            showAverage
-                            baseId={`${props.ticker}_tickerChart`}
-                            defaultData={data[props.ticker]}
-                            width={1000}
-                            height={450}
-                            margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-                        />
-                    </div>
-                ) :
+            {props.ticker && data[props.ticker] ? (
+                <div style={{ height: '90%', display: 'flex' }}>
+                    <BaseLineChart
+                        showAxis
+                        showGrid
+                        showAverage
+                        baseId={`${props.ticker}_tickerChart`}
+                        defaultData={data[props.ticker]}
+                    />
+                </div>
+            ) : (
                 <div
                     style={{
                         display: 'flex',
@@ -145,7 +153,7 @@ export default function Chartview(props: { ticker?: string }) {
                         Enter a symbol{' '}
                     </Typography>
                 </div>
-            }
+            )}
         </Item>
     );
 }

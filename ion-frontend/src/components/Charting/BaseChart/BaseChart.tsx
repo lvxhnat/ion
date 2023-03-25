@@ -22,12 +22,12 @@ function determineEndY(minValue: number, maxValue: number) {
 }
 
 function determineDatetimeFormat(startDate: Date, endDate: Date) {
-    const timeDifference: number = Math.abs(endDate.getTime() - startDate.getTime())/1000
-    if (timeDifference <= 60 * 60) return "%H:%M";
-    if (timeDifference <= 60 * 60 * 3) return "%d:%H";
-    if (timeDifference <= 60 * 60 * 24 * 28) return "%m:%d";
-    if (timeDifference <= 60 * 60 * 24 * 365) return "%Y:%m";
-    else return "%Y";
+    const timeDifference: number = Math.abs(endDate.getTime() - startDate.getTime()) / 1000;
+    if (timeDifference <= 60 * 60) return '%H:%M';
+    if (timeDifference <= 60 * 60 * 3) return '%d:%H';
+    if (timeDifference <= 60 * 60 * 24 * 28) return '%m:%d';
+    if (timeDifference <= 60 * 60 * 24 * 365) return '%Y:%m';
+    else return '%Y';
 }
 
 /**
@@ -58,22 +58,21 @@ export default function BaseChart({
             if (showLegend && showTooltip && showPricing) {
                 throw new Error('Pick either show legend and tooltips or pricing only.');
             }
-           
+
             CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH =
                 strokeWidth ?? CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH;
 
             const dataX = defaultData.dataX;
             const dataY = defaultData.dataY;
-            
-            const width = document.getElementById(baseId)!.parentNode!.parentElement!.clientWidth
-            const height = document.getElementById(baseId)!.parentNode!.parentElement!.clientHeight 
-            console.log(width, height)
+
+            const width = document.getElementById(baseId)!.parentNode!.parentElement!.clientWidth;
+            const height = document.getElementById(baseId)!.parentNode!.parentElement!.clientHeight;
 
             svg.attr('viewBox', [
                 0,
                 0,
-                width * 1.03,
-                height * 1,
+                width + 30, // Fixed sizing seems to work better than scaling with multiplication
+                height,
             ])
                 .attr('preserveAspectRatio', 'xMidYMid meet')
                 .classed('svg-content-responsive', true)
@@ -81,37 +80,25 @@ export default function BaseChart({
 
             const dateTime: number[] = dataX.map((date: Date) => date.getTime());
 
-            // Prep and plot the axis
-            const x = d3
-                .scaleTime()
-                .range([0, width]);
-            const y = d3
-                .scaleLinear()
-                .range([height, 0]);
-
             const minDate = Math.min(...dateTime);
             const maxDate = Math.max(...dateTime);
 
             let dataYc: number[] = [];
 
-            // if (dataY[0] !== null && typeof dataY[0] === 'object') {
-            //     dataYc = (dataY as OHLCDataSchema[]).map((d: OHLCDataSchema) => d.high);
-            // } else {
-            //     dataYc = dataY as number[];
-            // }
             const minValue = Math.min(...dataY);
             const maxValue = Math.max(...dataY);
 
-            x.domain([minDate, maxDate]);
-            y.domain([
-                determineStartY(zeroAxis, minValue, maxValue),
-                determineEndY(minValue, maxValue),
-            ]);
+            // Prep and plot the axis
+            const x = d3.scaleTime().range([0, width]).domain([minDate, maxDate]);
+            const y = d3
+                .scaleLinear()
+                .range([height, 0])
+                .domain([
+                    determineStartY(zeroAxis, minValue, maxValue),
+                    determineEndY(minValue, maxValue),
+                ]);
 
-            const yAxis = d3
-                .axisRight(y)
-                .tickSize(width)
-                .ticks(0);
+            const yAxis = d3.axisRight(y).tickSize(width).ticks(0);
 
             const xAxis = d3
                 .axisBottom(x)
@@ -137,19 +124,16 @@ export default function BaseChart({
                 .attr('transform', `translate(0, -10)`)
                 .attr('id', `${baseId}_${CHARTIDS.XAXIS_ID}`) // Sets a class name for our x axis
                 .call(xAxis)
-                .style('font-size', CHARTCONFIGS.DEFAULT_AXIS_FONTSIZE)
-                .style('stroke', 'white');
+                .style('font-size', CHARTCONFIGS.DEFAULT_AXIS_FONTSIZE);
 
             svg.append('g')
-                .attr('transform', `translate(${1},0)`)
                 .attr('id', `${baseId}_${CHARTIDS.YAXIS_ID}`) // Set a class name for our y axis
                 .call(yAxis)
                 .style('font-size', CHARTCONFIGS.DEFAULT_AXIS_FONTSIZE);
 
             if (showAverage) {
                 // A horizontal line that shows the average
-                const mean =
-                    dataY.reduce((a: number, b: number) => a + b) / dataYc.length;
+                const mean = dataY.reduce((a: number, b: number) => a + b) / dataYc.length;
                 svg.append('line')
                     .attr('class', `${baseId}_${CHARTIDS.DRAW_LINE_CLASS}`)
                     .attr('x1', 1)
@@ -217,7 +201,7 @@ export default function BaseChart({
 
     return (
         <div id={`${baseId}-container`} style={{ height: '100%' }}>
-            <svg ref={ref} id={baseId} style={{ height: '100%', width: '100%' }}/>
+            <svg ref={ref} id={baseId} style={{ height: '100%', width: '100%' }} />
         </div>
     );
 }

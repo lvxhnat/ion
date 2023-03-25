@@ -1,6 +1,6 @@
 # Ion
 
-Ion is a web application designed to leverage OSINT and APIs to create a centralised information hub for data driven trading/market intelligence. It is powered by powerful charting systems (d3 charting written in a plugin architecture to allow customisability) and comes with its own ETL Prefect pipeline that schedules data extraction for larger data sources. 
+Ion is a web application designed to leverage OSINT and APIs to create a centralised information hub for data driven trading/market intelligence. It is powered by powerful charting systems (d3 charting written in a plugin architecture to allow customisability) and comes with its own ETL Prefect pipeline that schedules data extraction for larger data sources.
 
 ## Features
 
@@ -14,8 +14,8 @@ Ion is a web application designed to leverage OSINT and APIs to create a central
 | :------------------------------: | :------------------------------------: |
 | ![](./assets/pages/etf-list.png) | ![](./assets/pages/chart-explorer.png) |
 
-|           Grid Explorer           |             More Coming..             |
-| :------------------------------: | :------------------------------------: |
+|             Grid Explorer             |             More Coming..             |
+| :-----------------------------------: | :-----------------------------------: |
 | ![](./assets/pages/grid-explorer.png) | ![](./assets/pages/grid-explorer.png) |
 
 ## Documentation

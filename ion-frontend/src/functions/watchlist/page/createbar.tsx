@@ -109,11 +109,7 @@ const GridSelector = (props: {
 
     return (
         <IconButton onClick={() => setOpened(true)}>
-            <GridIcon
-                ncols={selectedId[1] + 1}
-                nrows={selectedId[0] + 1}
-                size={25}
-            />
+            <GridIcon ncols={selectedId[1] + 1} nrows={selectedId[0] + 1} size={25} />
             <div
                 ref={ref}
                 onMouseLeave={() => setHoveredId([0, 0])}

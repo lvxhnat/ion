@@ -30,6 +30,7 @@ export default function Page() {
                         >
                             {[...Array(selectedGridId[1] + 1).keys()].map(
                                 (_: number, c_index: number) => {
+                                    console.log(c_index, r_index);
                                     return (
                                         <Grid
                                             item

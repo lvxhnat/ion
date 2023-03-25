@@ -13,23 +13,20 @@ export const useWatchlistStore = create<WatchlistStoreTypes>(set => ({
 
 export interface TickerDataStoreTypes {
     data: {
-        [ticker: string]: DefaultDataProps
+        [ticker: string]: DefaultDataProps;
     };
-    setData: (props: { ticker: string, data: DefaultDataProps }) => void;
+    setData: (props: { ticker: string; data: DefaultDataProps }) => void;
 }
 
 export const useTickerDataStore = create<TickerDataStoreTypes>(set => ({
     data: {},
-    setData: (props: {
-        ticker: string,
-        data: DefaultDataProps
-    }) => set((state: TickerDataStoreTypes) => {
-        return {
-            data: {
-                ...state.data,
-                [props.ticker]: props.data
-            }
-        }
-    }),
+    setData: (props: { ticker: string; data: DefaultDataProps }) =>
+        set((state: TickerDataStoreTypes) => {
+            return {
+                data: {
+                    ...state.data,
+                    [props.ticker]: props.data,
+                },
+            };
+        }),
 }));
-

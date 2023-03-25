@@ -89,7 +89,7 @@ function ForexHistoricalCell(props: { forexPair: string }) {
 
     return (
         <TableCellWrapper>
-            <div style={{ height: '25px'}}>
+            <div style={{ height: '25px' }}>
                 {data ? (
                     <BaseLineChart
                         showAverage

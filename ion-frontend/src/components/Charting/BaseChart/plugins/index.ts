@@ -8,10 +8,4 @@ import styleGrid from './styleGrid';
 import addDrag from './addDrag';
 import addLegend from './addLegend';
 
-export {
-    addLine,
-    addOHLC,
-    addDrag,
-    addLegend,
-    styleGrid,
-};
+export { addLine, addOHLC, addDrag, addLegend, styleGrid };
