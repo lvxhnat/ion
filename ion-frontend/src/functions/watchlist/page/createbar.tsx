@@ -171,7 +171,7 @@ export default function Createbar() {
     return (
         <S.GridSelectorContainer>
             <GridSelector
-                nrows={4}
+                nrows={3}
                 ncols={6}
                 padding={3}
                 gridSize={25}

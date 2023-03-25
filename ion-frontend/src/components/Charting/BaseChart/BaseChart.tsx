@@ -231,8 +231,8 @@ export default function BaseChart({
     );
 
     return (
-        <div id={`${baseId}-container`}>
-            <svg ref={ref} id={baseId} />
+        <div id={`${baseId}-container`} style={{ height: '100%' }}>
+            <svg ref={ref} id={baseId} style={{ height: '100%', width: '100%' }}/>
         </div>
     );
 }

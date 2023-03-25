@@ -14,40 +14,39 @@ export default function Page() {
             <CssBaseline />
             <Navigation />
             <Createbar />
-            <Box sx={{ flexGrow: 1 }}>
-                <Grid
-                    container
-                    spacing={1}
-                    style={{ height: '100%', paddingLeft: 10, paddingRight: 10 }}
-                >
-                    {[...Array(selectedGridId[0] + 1).keys()].map((_: number, r_index: number) => {
-                        // This maps over the number of rows, followed by the number of columns required to generate the grid boxes.
-                        return (
-                            <Grid
-                                container
-                                item
-                                spacing={1}
-                                key={`containerGrid_${r_index}`}
-                                columns={4 * (selectedGridId[1] + 1)}
-                            >
-                                {[...Array(selectedGridId[1] + 1).keys()].map(
-                                    (_: number, c_index: number) => {
-                                        return (
-                                            <Grid item xs={4} key={`containerGridItem_${c_index}`}>
-                                                {c_index === 0 ? (
-                                                    <Chartview ticker="SPY" />
-                                                ) : (
-                                                    <Chartview />
-                                                )}
-                                            </Grid>
-                                        );
-                                    }
-                                )}
-                            </Grid>
-                        );
-                    })}
-                </Grid>
-            </Box>
+            <Grid
+                container
+                spacing={1}
+                style={{ height: '75vh', paddingLeft: 10, paddingRight: 10 }}
+            >
+                {[...Array(selectedGridId[0] + 1).keys()].map((_: number, r_index: number) => {
+                    // This maps over the number of rows, followed by the number of columns required to generate the grid boxes.
+                    return (
+                        <Grid
+                            container
+                            item
+                            spacing={1}
+                            key={`containerGrid_${r_index}`}
+                            columns={4 * (selectedGridId[1] + 1)}
+                        >
+                            {[...Array(selectedGridId[1] + 1).keys()].map(
+                                (_: number, c_index: number) => {
+                                    return (
+                                        <Grid item xs={4} key={`containerGridItem_${c_index}`} 
+                                        style={{ height: `${90/(selectedGridId[0] + 1)}vh`}}>
+                                            {c_index === 0 ? (
+                                                <Chartview ticker="SPY" />
+                                            ) : (
+                                                <Chartview />
+                                            )}
+                                        </Grid>
+                                    );
+                                }
+                            )}
+                        </Grid>
+                    );
+                })}
+            </Grid>
         </div>
     );
 }

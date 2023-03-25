@@ -13,8 +13,8 @@ import { MdWaterfallChart } from 'react-icons/md';
 import { useThemeStore } from 'store/theme';
 
 const Item = styled(Box)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     height: '100%',
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     color: theme.palette.text.secondary,
 }));
 
@@ -44,7 +44,7 @@ export default function Chartview(props: { ticker?: string }) {
     }, []);
     // <img src={Logo} style={{ width: '7vw', opacity: 0.5 }} />
     return (
-        <Item sx={{ flexGrow: 1 }}>
+        <Item>
             <Grid container
                 style={{
                     width: '100%',
@@ -107,17 +107,17 @@ export default function Chartview(props: { ticker?: string }) {
             </Grid>
             {props.ticker ? (
                 chartData ? (
+                    <div style={{ height: '90%'}}>
                     <BaseLineChart
-                        showLegend
                         showAxis
-                        showTooltip
                         showAverage
                         baseId={`${props.ticker}_tickerChart`}
                         defaultData={chartData}
                         width={1000}
-                        height={300}
+                        height={450}
                         margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
                     />
+                    </div>
                 ) : null
             ) : (
                 <div
