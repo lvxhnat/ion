@@ -9,7 +9,6 @@ import { useD3 } from 'common/hooks/useD3';
 import { ColorsEnum } from 'common/theme';
 
 import { CHARTCONFIGS, CHARTIDS } from './config';
-import { OHLCDataSchema } from 'data/schema/common';
 
 function determineStartY(zeroAxis: boolean, minValue: number, maxValue: number) {
     const minBoundary = (maxValue - minValue) * 0.3;
@@ -30,6 +29,34 @@ function determineDatetimeFormat(startDate: Date, endDate: Date) {
     else return '%Y';
 }
 
+export function returnChartAxis(props: {
+    baseId: string;
+    dataX: Date[];
+    dataY: number[];
+    zeroAxis: boolean;
+}) {
+    const dateTime: number[] = props.dataX.map((date: Date) => date.getTime());
+    const width = document.getElementById(props.baseId)!.parentNode!.parentElement!.clientWidth;
+    const height = document.getElementById(props.baseId)!.parentNode!.parentElement!.clientHeight;
+
+    const minDate = Math.min(...dateTime);
+    const maxDate = Math.max(...dateTime);
+    const minValue = Math.min(...props.dataY);
+    const maxValue = Math.max(...props.dataY);
+    // Prep and plot the axis
+    const x = d3.scaleTime().range([0, width]).domain([minDate, maxDate]);
+    const y = d3
+        .scaleLinear()
+        .range([height, 0])
+        .domain([
+            determineStartY(props.zeroAxis, minValue, maxValue),
+            determineEndY(minValue, maxValue),
+        ]);
+    return {
+        x: x, 
+        y: y,
+    }
+}
 /**
  * A generalised line chart, taking date as its x-axis and numerical value on its y-axis. Supports currently the following:
  * 1. Normalisation of y-axis
@@ -50,6 +77,7 @@ export default function BaseChart({
     showAxis = CHARTCONFIGS.DEFAULT_SHOW_AXIS,
     showTooltip = CHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
 }: LineChartProps): React.ReactElement {
+
     const ref = useD3(
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
             // Ensure rerender does not duplicate chart
@@ -71,32 +99,19 @@ export default function BaseChart({
             svg.attr('viewBox', [
                 0,
                 0,
-                width + 30, // Fixed sizing seems to work better than scaling with multiplication
+                width + (showAxis ? 30 : 0), // Fixed sizing seems to work better than scaling with multiplication for showing of axis
                 height,
             ])
                 .attr('preserveAspectRatio', 'xMidYMid meet')
                 .classed('svg-content-responsive', true)
                 .attr('stroke-width', 0);
-
-            const dateTime: number[] = dataX.map((date: Date) => date.getTime());
-
-            const minDate = Math.min(...dateTime);
-            const maxDate = Math.max(...dateTime);
-
-            let dataYc: number[] = [];
-
-            const minValue = Math.min(...dataY);
-            const maxValue = Math.max(...dataY);
-
-            // Prep and plot the axis
-            const x = d3.scaleTime().range([0, width]).domain([minDate, maxDate]);
-            const y = d3
-                .scaleLinear()
-                .range([height, 0])
-                .domain([
-                    determineStartY(zeroAxis, minValue, maxValue),
-                    determineEndY(minValue, maxValue),
-                ]);
+            
+            const { x, y } = returnChartAxis({
+                baseId: baseId, 
+                dataX: dataX, 
+                dataY: dataY, 
+                zeroAxis: zeroAxis,
+            });
 
             const yAxis = d3.axisRight(y).tickSize(width).ticks(0);
 
@@ -133,7 +148,7 @@ export default function BaseChart({
 
             if (showAverage) {
                 // A horizontal line that shows the average
-                const mean = dataY.reduce((a: number, b: number) => a + b) / dataYc.length;
+                const mean = dataY.reduce((a: number, b: number) => a + b) / dataY.length;
                 svg.append('line')
                     .attr('class', `${baseId}_${CHARTIDS.DRAW_LINE_CLASS}`)
                     .attr('x1', 1)
@@ -144,7 +159,7 @@ export default function BaseChart({
                     .attr('stroke-dasharray', '2,2')
                     .attr(
                         'stroke',
-                        dataYc[dataYc.length - 1] > mean ? ColorsEnum.upHint : ColorsEnum.downHint
+                        dataY[dataY.length - 1] > mean ? ColorsEnum.upHint : ColorsEnum.downHint
                     );
             }
 
@@ -193,8 +208,7 @@ export default function BaseChart({
             //         data: [defaultData, ...data],
             //     });
             // }
-            if (showPricing) {
-            }
+
         },
         [data.length, defaultData]
     );

@@ -1,3 +1,12 @@
+import { addChart } from "components/Charting/BaseChart/actions";
+
+export function addSimpleMovingAverage(
+    arr: number[],
+    baseId: string,
+    window: number = 9
+) {
+}
+
 /**
  * Finds simple moving average, where the last element of the array is the most recent value.
  * @param arr The array containing the prices/time series

@@ -48,7 +48,7 @@ export default function Chartview(props: { ticker?: string }) {
             });
         }
     }, []);
-    // <img src={Logo} style={{ width: '7vw', opacity: 0.5 }} />
+
     return (
         <Item>
             <Grid
