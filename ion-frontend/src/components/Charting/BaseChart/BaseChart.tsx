@@ -3,7 +3,6 @@ import * as React from 'react';
 import * as C from './plugins';
 import * as A from './actions';
 import { LineChartProps } from './type';
-import { DefaultDataProps } from './schema/schema';
 
 import { useD3 } from 'common/hooks/useD3';
 import { ColorsEnum } from 'common/theme';
@@ -67,7 +66,6 @@ export function returnChartAxis(props: {
 export default function BaseChart({
     defaultData,
     baseId,
-    data = CHARTCONFIGS.DEFAULT_DATA,
     strokeWidth = CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH,
     zeroAxis = CHARTCONFIGS.DEFAULT_ZERO_AXIS,
     showLegend = CHARTCONFIGS.DEFAULT_SHOW_LEGEND,
@@ -100,7 +98,7 @@ export default function BaseChart({
                 0,
                 0,
                 width + (showAxis ? 30 : 0), // Fixed sizing seems to work better than scaling with multiplication for showing of axis
-                height,
+                height + (showAxis ? 15 : 0),
             ])
                 .attr('preserveAspectRatio', 'xMidYMid meet')
                 .classed('svg-content-responsive', true)
@@ -136,7 +134,6 @@ export default function BaseChart({
             }
 
             svg.append('g')
-                .attr('transform', `translate(0, -10)`)
                 .attr('id', `${baseId}_${CHARTIDS.XAXIS_ID}`) // Sets a class name for our x axis
                 .call(xAxis)
                 .style('font-size', CHARTCONFIGS.DEFAULT_AXIS_FONTSIZE);
@@ -180,37 +177,16 @@ export default function BaseChart({
                 dataY: dataY,
             });
 
-            data.map((d: DefaultDataProps) => {
-                A.addChart({
-                    x: x,
-                    y: y,
+            if (showTooltip) {
+                C.addToolTip({
                     baseId: baseId,
-                    type: d.type,
-                    color: d.color,
-                    id: d.id,
-                    dataX: d.dataX,
-                    dataY: d.dataY,
-                });
-            });
-
-            if (showLegend) {
-                C.addLegend({
-                    baseId: baseId,
-                    legend: [defaultData, ...data],
+                    tooltipId: baseId,
+                    data: defaultData,
                 });
             }
 
-            // if (showTooltip) {
-            //     C.addToolTip({
-            //         x: x,
-            //         y: y,
-            //         baseId: baseId,
-            //         data: [defaultData, ...data],
-            //     });
-            // }
-
         },
-        [data.length, defaultData]
+        [defaultData]
     );
 
     return (

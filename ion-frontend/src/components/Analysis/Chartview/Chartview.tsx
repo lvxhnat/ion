@@ -13,6 +13,7 @@ import { MdWaterfallChart } from 'react-icons/md';
 import { useThemeStore } from 'store/theme';
 import { useTickerDataStore } from 'store/prices/watchlist';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
+import { addToolTip } from 'components/Charting/BaseChart/plugins/addTooltip/addTooltip';
 
 const Item = styled(Box)(({ theme }) => ({
     height: '100%',
@@ -28,23 +29,25 @@ export default function Chartview(props: { ticker?: string }) {
     const { mode } = useThemeStore();
     const [data, setData] = useTickerDataStore(state => [state.data, state.setData]);
 
+    const baseLineChartId: string = `${props.ticker}_tickerChart`
+
     React.useEffect(() => {
         if (props.ticker) {
             const ticker: string = props.ticker;
             getCandles(props.ticker).then(res => {
-                const data = res.data[0];
-                setData({
+                const tickerData = {
                     ticker: ticker,
                     data: {
                         id: props.ticker,
                         name: props.ticker,
                         parent: true,
-                        dataX: data.map((obj: FinnhubCandlesEntrySchema) => new Date(obj.date)),
-                        dataY: data.map((obj: FinnhubCandlesEntrySchema) => obj.close),
+                        dataX: res.data[0].map((obj: FinnhubCandlesEntrySchema) => new Date(obj.date)),
+                        dataY: res.data[0].map((obj: FinnhubCandlesEntrySchema) => obj.close),
                         color: 'white',
                         type: 'pureLine',
                     } as DefaultDataProps,
-                });
+                };
+                setData(tickerData)
             });
         }
     }, []);
@@ -130,7 +133,8 @@ export default function Chartview(props: { ticker?: string }) {
                         showAxis
                         showGrid
                         showAverage
-                        baseId={`${props.ticker}_tickerChart`}
+                        showTooltip
+                        baseId={baseLineChartId}
                         defaultData={data[props.ticker]}
                     />
                 </div>

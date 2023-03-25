@@ -207,15 +207,7 @@ export default function ETFViewer(props: ETFViewerProps) {
                                             showAverage
                                             showTooltip
                                             baseId={`svg-container`}
-                                            width={200}
-                                            height={30}
                                             strokeWidth="0.2px"
-                                            margin={{
-                                                top: 2,
-                                                right: 1,
-                                                bottom: 2,
-                                                left: 8,
-                                            }}
                                             defaultData={{
                                                 id: 'base-line',
                                                 name: 'Base Line Chart',
