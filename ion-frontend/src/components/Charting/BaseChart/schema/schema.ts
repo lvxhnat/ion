@@ -5,7 +5,7 @@ export interface DefaultDataProps {
     name: string;
     parent: boolean;
     dataX: Date[];
-    dataY: number[] | OHLCDataSchema[];
+    dataY: number[];
     color: string;
     type: AllowedLineTypes;
 }

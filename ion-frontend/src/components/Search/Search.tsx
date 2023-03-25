@@ -125,7 +125,7 @@ export function TickerSearch(props: { selectedTicker?: string }) {
                     </TableRowItemWrapper>
                 </TableRowWrapper>
                 {[...Array(8).keys()].map((_, index: number) => (
-                    <TableRowWrapper overtColors={index % 2 === 0}>
+                    <TableRowWrapper overtColors={index % 2 === 0} key={`tickerSearch_TableRowWrapper_${index}`}>
                         <TableRowItemWrapper style={{ width: '15%' }}>/ETF</TableRowItemWrapper>
                         <TableRowItemWrapper style={{ width: '85%' }}>
                             This is an ETF that focuses.

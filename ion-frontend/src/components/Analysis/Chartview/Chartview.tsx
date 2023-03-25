@@ -11,6 +11,8 @@ import { ColorsEnum } from 'common/theme';
 
 import { MdWaterfallChart } from 'react-icons/md';
 import { useThemeStore } from 'store/theme';
+import { useTickerDataStore } from 'store/prices/watchlist';
+import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 
 const Item = styled(Box)(({ theme }) => ({
     height: '100%',
@@ -24,20 +26,24 @@ const Item = styled(Box)(({ theme }) => ({
  */
 export default function Chartview(props: { ticker?: string }) {
     const { mode } = useThemeStore();
-    const [chartData, setChartData] = React.useState<any>();
+    const [data, setData] = useTickerDataStore((state) => [state.data, state.setData]);
 
     React.useEffect(() => {
         if (props.ticker) {
+            const ticker: string = props.ticker;
             getCandles(props.ticker).then(res => {
                 const data = res.data[0];
-                setChartData({
-                    id: props.ticker,
-                    name: props.ticker,
-                    parent: true,
-                    dataX: data.map((obj: FinnhubCandlesEntrySchema) => new Date(obj.date)),
-                    dataY: data.map((obj: FinnhubCandlesEntrySchema) => obj.close),
-                    color: 'white',
-                    type: 'pureLine',
+                setData({
+                    ticker: ticker, 
+                    data: {
+                        id: props.ticker,
+                        name: props.ticker,
+                        parent: true,
+                        dataX: data.map((obj: FinnhubCandlesEntrySchema) => new Date(obj.date)),
+                        dataY: data.map((obj: FinnhubCandlesEntrySchema) => obj.close),
+                        color: 'white',
+                        type: 'pureLine'
+                    } as DefaultDataProps,
                 });
             });
         }
@@ -45,7 +51,8 @@ export default function Chartview(props: { ticker?: string }) {
     // <img src={Logo} style={{ width: '7vw', opacity: 0.5 }} />
     return (
         <Item>
-            <Grid container
+            <Grid
+                container
                 style={{
                     width: '100%',
                     backgroundColor: mode === 'dark' ? ColorsEnum.warmgray1 : ColorsEnum.coolgray4,
@@ -57,69 +64,69 @@ export default function Chartview(props: { ticker?: string }) {
                     <TickerSearch selectedTicker={props.ticker} />
                 </Grid>
                 <Grid item xs={11}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    {chartData ? (
-                        <>
-                            <Typography
-                                variant="subtitle1"
-                                component="div"
-                                style={{ paddingLeft: 10, paddingRight: 10 }}
-                            >
-                                {props.ticker}
-                            </Typography>
-                            <Typography
-                                variant="subtitle1"
-                                component="div"
-                                style={{
-                                    paddingLeft: 10,
-                                    paddingRight: 10,
-                                    color: 'white',
-                                    fontWeight: 'bold',
-                                }}
-                            >
-                                {chartData.dataY[chartData.dataY.length - 1].toFixed(2)}
-                            </Typography>
-                            <Typography
-                                variant="subtitle2"
-                                component="div"
-                                style={{
-                                    paddingLeft: 10,
-                                    paddingRight: 10,
-                                    color:
-                                        chartData.dataY[chartData.dataY.length - 1] >
-                                        chartData.dataY[chartData.dataY.length - 2]
-                                            ? ColorsEnum.upHint
-                                            : ColorsEnum.downHint,
-                                }}
-                            >
-                                {(
-                                    (100 *
-                                        (chartData.dataY[chartData.dataY.length - 1] -
-                                            chartData.dataY[chartData.dataY.length - 2])) /
-                                    chartData.dataY[chartData.dataY.length - 2]
-                                ).toFixed(2)}
-                                %
-                            </Typography>
-                        </>
-                    ) : undefined}
-                </div>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        {(props.ticker && data[props.ticker]) ?
+                            (
+                            <>
+                                <Typography
+                                    variant="subtitle1"
+                                    component="div"
+                                    style={{ paddingLeft: 10, paddingRight: 10 }}
+                                >
+                                    {props.ticker}
+                                </Typography>
+                                <Typography
+                                    variant="subtitle1"
+                                    component="div"
+                                    style={{
+                                        paddingLeft: 10,
+                                        paddingRight: 10,
+                                        color: 'white',
+                                        fontWeight: 'bold',
+                                    }}
+                                >
+                                    {data[props.ticker].dataY[data[props.ticker].dataY.length - 1].toFixed(2)}
+                                </Typography>
+                                <Typography
+                                    variant="subtitle2"
+                                    component="div"
+                                    style={{
+                                        paddingLeft: 10,
+                                        paddingRight: 10,
+                                        color:
+                                            data[props.ticker].dataY[data[props.ticker].dataY.length - 1] >
+                                            data[props.ticker].dataY[data[props.ticker].dataY.length - 2]
+                                                ? ColorsEnum.upHint
+                                                : ColorsEnum.downHint,
+                                    }}
+                                >
+                                    {(
+                                        (100 *
+                                            (data[props.ticker].dataY[data[props.ticker].dataY.length - 1] -
+                                                data[props.ticker].dataY[data[props.ticker].dataY.length - 2])) /
+                                        data[props.ticker].dataY[data[props.ticker].dataY.length - 2]
+                                    ).toFixed(2)}
+                                    %
+                                </Typography>
+                            </>
+                        ) : undefined}
+                    </div>
                 </Grid>
             </Grid>
-            {props.ticker ? (
-                chartData ? (
-                    <div style={{ height: '90%'}}>
-                    <BaseLineChart
-                        showAxis
-                        showAverage
-                        baseId={`${props.ticker}_tickerChart`}
-                        defaultData={chartData}
-                        width={1000}
-                        height={450}
-                        margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-                    />
+            {(props.ticker && data[props.ticker]) ? (
+                    <div style={{ height: '90%' }}>
+                        <BaseLineChart
+                            showAxis
+                            showGrid
+                            showAverage
+                            baseId={`${props.ticker}_tickerChart`}
+                            defaultData={data[props.ticker]}
+                            width={1000}
+                            height={450}
+                            margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+                        />
                     </div>
-                ) : null
-            ) : (
+                ) :
                 <div
                     style={{
                         display: 'flex',
@@ -138,7 +145,7 @@ export default function Chartview(props: { ticker?: string }) {
                         Enter a symbol{' '}
                     </Typography>
                 </div>
-            )}
+            }
         </Item>
     );
 }

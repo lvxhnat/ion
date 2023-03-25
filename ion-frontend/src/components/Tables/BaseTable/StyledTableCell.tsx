@@ -26,4 +26,5 @@ export function StyledTableCell({ children, isHeader, width, color }: StyledTabl
 
 export function StyledChartCell({ children, width }: StyledTableCellProps) {
     return <S.TableCellWrapper width={width}>{children}</S.TableCellWrapper>;
+
 }

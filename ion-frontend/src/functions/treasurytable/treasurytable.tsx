@@ -78,26 +78,20 @@ export default function TreasuryTable(props: TreasuryTableProps) {
                                     </StyledTableCell>
                                     <StyledChartCell key={`tChart_${index}`}>
                                         {index !== 0 ? (
-                                            <BaseLineChart
-                                                baseId={`${column}_treasury_chart`}
-                                                defaultData={{
-                                                    id: column,
-                                                    name: column,
-                                                    parent: true,
-                                                    dataX: data._date,
-                                                    dataY: data[column],
-                                                    color: 'white',
-                                                    type: 'pureLine',
-                                                }}
-                                                width={120}
-                                                height={20}
-                                                margin={{
-                                                    top: 0,
-                                                    right: 0,
-                                                    bottom: 0,
-                                                    left: 0,
-                                                }}
-                                            />
+                                            <div style={{ height: '25px'}}>
+                                                <BaseLineChart
+                                                    baseId={`${column}_treasury_chart`}
+                                                    defaultData={{
+                                                        id: column,
+                                                        name: column,
+                                                        parent: true,
+                                                        dataX: data._date,
+                                                        dataY: data[column],
+                                                        color: 'white',
+                                                        type: 'pureLine',
+                                                    }}
+                                                />
+                                            </div>
                                         ) : null}
                                     </StyledChartCell>
                                 </StyledTableRow>

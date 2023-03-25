@@ -21,6 +21,15 @@ function determineEndY(minValue: number, maxValue: number) {
     return maxValue + minBoundary;
 }
 
+function determineDatetimeFormat(startDate: Date, endDate: Date) {
+    const timeDifference: number = Math.abs(endDate.getTime() - startDate.getTime())/1000
+    if (timeDifference <= 60 * 60) return "%H:%M";
+    if (timeDifference <= 60 * 60 * 3) return "%d:%H";
+    if (timeDifference <= 60 * 60 * 24 * 28) return "%m:%d";
+    if (timeDifference <= 60 * 60 * 24 * 365) return "%Y:%m";
+    else return "%Y";
+}
+
 /**
  * A generalised line chart, taking date as its x-axis and numerical value on its y-axis. Supports currently the following:
  * 1. Normalisation of y-axis
@@ -32,9 +41,6 @@ export default function BaseChart({
     defaultData,
     baseId,
     data = CHARTCONFIGS.DEFAULT_DATA,
-    width = CHARTCONFIGS.DEFAULT_WIDTH,
-    height = CHARTCONFIGS.DEFAULT_HEIGHT,
-    margin = CHARTCONFIGS.DEFAULT_MARGIN,
     strokeWidth = CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH,
     zeroAxis = CHARTCONFIGS.DEFAULT_ZERO_AXIS,
     showLegend = CHARTCONFIGS.DEFAULT_SHOW_LEGEND,
@@ -52,38 +58,22 @@ export default function BaseChart({
             if (showLegend && showTooltip && showPricing) {
                 throw new Error('Pick either show legend and tooltips or pricing only.');
             }
-            // Set props settings
-            if (margin) {
-                CHARTCONFIGS.DEFAULT_MARGIN.bottom = Math.max(
-                    CHARTCONFIGS.DEFAULT_MARGIN.bottom,
-                    margin.bottom
-                );
-                CHARTCONFIGS.DEFAULT_MARGIN.top = Math.max(
-                    CHARTCONFIGS.DEFAULT_MARGIN.top,
-                    margin.top
-                );
-                CHARTCONFIGS.DEFAULT_MARGIN.left = Math.max(
-                    CHARTCONFIGS.DEFAULT_MARGIN.left,
-                    margin.left
-                );
-                CHARTCONFIGS.DEFAULT_MARGIN.right = Math.max(
-                    CHARTCONFIGS.DEFAULT_MARGIN.right,
-                    margin.right
-                );
-            }
+           
             CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH =
                 strokeWidth ?? CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH;
-            CHARTCONFIGS.DEFAULT_HEIGHT = height ?? CHARTCONFIGS.DEFAULT_HEIGHT;
-            CHARTCONFIGS.DEFAULT_WIDTH = width ?? CHARTCONFIGS.DEFAULT_WIDTH;
 
             const dataX = defaultData.dataX;
             const dataY = defaultData.dataY;
+            
+            const width = document.getElementById(baseId)!.parentNode!.parentElement!.clientWidth
+            const height = document.getElementById(baseId)!.parentNode!.parentElement!.clientHeight 
+            console.log(width, height)
 
             svg.attr('viewBox', [
                 0,
                 0,
-                width + CHARTCONFIGS.DEFAULT_MARGIN.right + CHARTCONFIGS.DEFAULT_MARGIN.left,
-                height + CHARTCONFIGS.DEFAULT_MARGIN.top * 1.5,
+                width * 1.03,
+                height * 1,
             ])
                 .attr('preserveAspectRatio', 'xMidYMid meet')
                 .classed('svg-content-responsive', true)
@@ -94,29 +84,23 @@ export default function BaseChart({
             // Prep and plot the axis
             const x = d3
                 .scaleTime()
-                .range([
-                    CHARTCONFIGS.DEFAULT_MARGIN.left,
-                    width - CHARTCONFIGS.DEFAULT_MARGIN.right,
-                ]);
+                .range([0, width]);
             const y = d3
                 .scaleLinear()
-                .range([
-                    height - CHARTCONFIGS.DEFAULT_MARGIN.top,
-                    CHARTCONFIGS.DEFAULT_MARGIN.bottom,
-                ]);
+                .range([height, 0]);
 
             const minDate = Math.min(...dateTime);
             const maxDate = Math.max(...dateTime);
 
             let dataYc: number[] = [];
 
-            if (dataY[0] !== null && typeof dataY[0] === 'object') {
-                dataYc = (dataY as OHLCDataSchema[]).map((d: OHLCDataSchema) => d.high);
-            } else {
-                dataYc = dataY as number[];
-            }
-            const minValue = Math.min(...dataYc);
-            const maxValue = Math.max(...dataYc);
+            // if (dataY[0] !== null && typeof dataY[0] === 'object') {
+            //     dataYc = (dataY as OHLCDataSchema[]).map((d: OHLCDataSchema) => d.high);
+            // } else {
+            //     dataYc = dataY as number[];
+            // }
+            const minValue = Math.min(...dataY);
+            const maxValue = Math.max(...dataY);
 
             x.domain([minDate, maxDate]);
             y.domain([
@@ -125,8 +109,8 @@ export default function BaseChart({
             ]);
 
             const yAxis = d3
-                .axisLeft(y)
-                .tickSize(margin.left + margin.right - width)
+                .axisRight(y)
+                .tickSize(width)
                 .ticks(0);
 
             const xAxis = d3
@@ -138,25 +122,26 @@ export default function BaseChart({
                     } else {
                         dateItem = date;
                     }
-                    return d3.timeFormat('%m %b %H:%M')(dateItem);
+                    return d3.timeFormat(determineDatetimeFormat(dataX[0], dataX[1]))(dateItem);
                 })
-                .tickSize(margin.bottom + margin.top - height)
+                .tickSize(height)
                 .ticks(0);
 
             if (showAxis) {
                 // Set the number of ticks if we want to show the axis
-                xAxis.ticks(5);
-                yAxis.ticks(5);
+                xAxis.ticks(10);
+                yAxis.ticks(10);
             }
 
             svg.append('g')
-                .attr('transform', `translate(0,${height - margin.top})`)
+                .attr('transform', `translate(0, -10)`)
                 .attr('id', `${baseId}_${CHARTIDS.XAXIS_ID}`) // Sets a class name for our x axis
                 .call(xAxis)
-                .style('font-size', CHARTCONFIGS.DEFAULT_AXIS_FONTSIZE);
+                .style('font-size', CHARTCONFIGS.DEFAULT_AXIS_FONTSIZE)
+                .style('stroke', 'white');
 
             svg.append('g')
-                .attr('transform', `translate(${margin.left},0)`)
+                .attr('transform', `translate(${1},0)`)
                 .attr('id', `${baseId}_${CHARTIDS.YAXIS_ID}`) // Set a class name for our y axis
                 .call(yAxis)
                 .style('font-size', CHARTCONFIGS.DEFAULT_AXIS_FONTSIZE);
@@ -164,12 +149,12 @@ export default function BaseChart({
             if (showAverage) {
                 // A horizontal line that shows the average
                 const mean =
-                    (dataYc as number[]).reduce((a: number, b: number) => a + b) / dataYc.length;
+                    dataY.reduce((a: number, b: number) => a + b) / dataYc.length;
                 svg.append('line')
                     .attr('class', `${baseId}_${CHARTIDS.DRAW_LINE_CLASS}`)
-                    .attr('x1', margin.left)
+                    .attr('x1', 1)
                     .attr('y1', y(mean))
-                    .attr('x2', width - margin.right)
+                    .attr('x2', 1)
                     .attr('y2', y(mean))
                     .attr('stroke-width', CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
                     .attr('stroke-dasharray', '2,2')
@@ -216,14 +201,14 @@ export default function BaseChart({
                 });
             }
 
-            if (showTooltip) {
-                C.addToolTip({
-                    x: x,
-                    y: y,
-                    baseId: baseId,
-                    data: [defaultData, ...data],
-                });
-            }
+            // if (showTooltip) {
+            //     C.addToolTip({
+            //         x: x,
+            //         y: y,
+            //         baseId: baseId,
+            //         data: [defaultData, ...data],
+            //     });
+            // }
             if (showPricing) {
             }
         },

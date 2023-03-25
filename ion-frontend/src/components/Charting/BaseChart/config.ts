@@ -24,8 +24,6 @@ export const CHARTIDS = {
 };
 
 export const CHARTCONFIGS = {
-    DEFAULT_WIDTH: 1200,
-    DEFAULT_HEIGHT: 600,
     DEFAULT_MARGIN: {
         left: 0.05,
         right: 0.05,
@@ -34,7 +32,7 @@ export const CHARTCONFIGS = {
     },
     DEFAULT_DATA: [], // No additional data, plot only one line
     DEFAULT_CHART_FONTSIZE: 'calc(0.5rem + 0.3vw)',
-    DEFAULT_AXIS_FONTSIZE: 'calc(0.15vw)',
+    DEFAULT_AXIS_FONTSIZE: '10px',
     DEFAULT_SHOW_PRICING: false,
     DEFAULT_SHOW_AVERAGE: false,
     DEFAULT_SHOW_GRID: false,

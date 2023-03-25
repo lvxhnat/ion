@@ -108,12 +108,11 @@ const GridSelector = (props: {
     document.addEventListener('mousedown', closeOpenMenu);
 
     return (
-        <IconButton>
+        <IconButton onClick={() => setOpened(true)}>
             <GridIcon
                 ncols={selectedId[1] + 1}
                 nrows={selectedId[0] + 1}
                 size={25}
-                onClick={() => setOpened(true)}
             />
             <div
                 ref={ref}

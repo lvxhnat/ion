@@ -20,8 +20,8 @@ export const TableCellLabel = styled(Typography, {
         isHeader
             ? ColorsEnum.white
             : theme.palette.mode === 'light'
-            ? ColorsEnum.black
-            : ColorsEnum.beer,
+                ? ColorsEnum.black
+                : ColorsEnum.beer,
         1
     ),
 }));

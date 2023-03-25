@@ -89,16 +89,18 @@ function ForexHistoricalCell(props: { forexPair: string }) {
 
     return (
         <TableCellWrapper>
-            {data ? (
-                <BaseLineChart
-                    showAverage
-                    baseId={`${props.forexPair}_historicalChart`}
-                    defaultData={data}
-                    width={100}
-                    height={30}
-                    margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-                />
-            ) : null}
+            <div style={{ height: '25px'}}>
+                {data ? (
+                    <BaseLineChart
+                        showAverage
+                        baseId={`${props.forexPair}_historicalChart`}
+                        defaultData={data}
+                        width={100}
+                        height={30}
+                        margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+                    />
+                ) : null}
+            </div>
         </TableCellWrapper>
     );
 }

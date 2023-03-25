@@ -3,7 +3,6 @@ import * as React from 'react';
 import { CssBaseline, Grid } from '@mui/material';
 import Navigation from 'components/Navigation';
 import Createbar from './createbar';
-import Box from '@mui/material/Box';
 import { useWatchlistStore } from 'store/prices/watchlist';
 import Chartview from 'components/Analysis/Chartview';
 
@@ -32,8 +31,12 @@ export default function Page() {
                             {[...Array(selectedGridId[1] + 1).keys()].map(
                                 (_: number, c_index: number) => {
                                     return (
-                                        <Grid item xs={4} key={`containerGridItem_${c_index}`} 
-                                        style={{ height: `${90/(selectedGridId[0] + 1)}vh`}}>
+                                        <Grid
+                                            item
+                                            xs={4}
+                                            key={`containerGridItem_${c_index}`}
+                                            style={{ height: `${90 / (selectedGridId[0] + 1)}vh` }}
+                                        >
                                             {c_index === 0 ? (
                                                 <Chartview ticker="SPY" />
                                             ) : (

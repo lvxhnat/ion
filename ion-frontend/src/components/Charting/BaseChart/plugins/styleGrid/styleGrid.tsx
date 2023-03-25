@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { CHARTIDS } from '../../config';
+import { CHARTCONFIGS, CHARTIDS } from '../../config';
 /**
  *
  * @param svg
@@ -21,8 +21,8 @@ export const styleGrid = (props: { baseId: string }) => {
                         isFirst ? 'first-of-type' : 'not(:first-of-type)'
                     } line`
                 )
-                .attr('stroke-opacity', 0.1)
-                .attr('stroke-width', 1)
+                .attr('stroke-opacity', 0.3)
+                .attr('stroke-width', CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
                 .attr('stroke-dasharray', '2,2');
     };
 

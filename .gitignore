@@ -6,6 +6,7 @@
 *.ipynb
 *.ipynb_checkpoints
 
+bin/
 research-notebooks/
 
 .vscode/
