@@ -23,6 +23,7 @@ export const addToolTip = (props: {
     baseId: string;
     tooltipId: string;
     data: DefaultDataProps;
+    setDataListeners?: (x: Date, y: number) => void;
 }) => {
     const svg = d3.selectAll(`#${props.baseId}`);
     const bisect = d3.bisector((d: any) => d).left;
@@ -82,18 +83,14 @@ export const addToolTip = (props: {
     function mousemove(e: MouseEvent) {
         const x0 = x.invert(d3.pointer(e, svg.node())[0]);
         const i = bisect(dates, x0, 1);
-
         if (dates[i]) {
-            const xTranslate = x(dates[i]);
-            const yTranslate = y(props.data.dataY[i])
-
+            if (props.setDataListeners) props.setDataListeners(props.data.dataX[i], props.data.dataY[i]);
             focus
                 .selectAll(`.${lineClassname}_y`)
-                .attr("transform", `translate(${xTranslate}, 0)`);
-
+                .attr("transform", `translate(${x(dates[i])}, 0)`);
             focus
                 .selectAll(`.${lineClassname}_x`)
-                .attr("transform", `translate(0, ${yTranslate})`);
+                .attr("transform", `translate(0, ${y(props.data.dataY[i])})`);
         }
     }
 }
