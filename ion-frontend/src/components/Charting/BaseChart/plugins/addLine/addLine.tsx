@@ -19,16 +19,27 @@ export const addLine = (props: {
     const svg = d3.selectAll(`#${props.baseId}`);
 
     const dataX = props.dataX.filter((_, i) => props.dataY[i]);
+    const lineIdComposed: string = `${props.baseId}_${props.id}`
 
     const valueLine: any = d3
         .line()
         .x((_, i: number) => props.x(dataX[i]))
-        .y((_, i: number) => props.y(props.dataY[i]));
+        .y((_, i: number) => props.y(props.dataY[i]))
+        .defined((_, i) => !!(props.dataY[i]));
 
     svg.append('path')
-        .attr('id', `${props.baseId}_${props.id}`)
+        .attr('id', lineIdComposed)
         .attr('fill', 'none')
         .attr('stroke', props.color)
         .attr('stroke-width', CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
         .attr('d', valueLine(d3.range(dataX.length)));
 };
+
+
+export const removeLine = (props: {
+    id: string;
+    baseId: string;
+}): void => {
+    const lineIdComposed: string = `${props.baseId}_${props.id}`
+    d3.select(lineIdComposed).remove();
+}
