@@ -1,6 +1,4 @@
-import { ColorsEnum } from 'common/theme';
 import * as d3 from 'd3';
-import { OHLCDataSchema } from 'data/schema/common';
 import * as C from '../plugins';
 import { DefaultDataProps } from '../schema/schema';
 

@@ -86,10 +86,9 @@ export function TickerSearch(props: { selectedTicker?: string }) {
     document.addEventListener('mousedown', closeOpenMenu);
 
     return (
-        <>
+        <div style={{ width: '100%', maxWidth: '450px' }}>
             <div
                 style={{
-                    width: '100%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -110,7 +109,7 @@ export function TickerSearch(props: { selectedTicker?: string }) {
                 style={{
                     display: showMenu ? 'block' : 'none',
                     backgroundColor: ColorsEnum.darkGrey,
-                    width: 450,
+                    width: '450px',
                     padding: 5,
                     position: 'absolute',
                     zIndex: 10,
@@ -136,7 +135,7 @@ export function TickerSearch(props: { selectedTicker?: string }) {
                     </TableRowWrapper>
                 ))}
             </div>
-        </>
+        </div>
     );
 }
 

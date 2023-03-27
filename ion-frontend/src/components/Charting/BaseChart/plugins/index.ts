@@ -4,8 +4,8 @@ import styleGrid from './styleGrid';
 // import addArea from './addArea';
 // import addEndTags from './addEndTags';
 // import { addDraw, removeDraw } from './addDraw';
-import addToolTip from './addTooltip';
+import addLineTracker from './addLineTracker';
 import addDrag from './addDrag';
 import addLegend from './addLegend';
 
-export { addLine, addOHLC, addDrag, addLegend, styleGrid, addToolTip };
+export { addLine, addOHLC, addDrag, addLegend, styleGrid, addLineTracker };
