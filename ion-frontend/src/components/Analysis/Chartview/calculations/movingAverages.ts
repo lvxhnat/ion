@@ -1,11 +1,11 @@
-import { returnChartAxis } from "components/Charting/BaseChart";
-import { addChart } from "components/Charting/BaseChart/actions";
+import { returnChartAxis } from 'components/Charting/BaseChart';
+import { addChart } from 'components/Charting/BaseChart/actions';
 
 export function addSimpleMovingAverage(props: {
-    baseId: string,
-    dataX: Date[],
-    dataY: number[],
-    window: number,
+    baseId: string;
+    dataX: Date[];
+    dataY: number[];
+    window: number;
 }) {
     const { x, y } = returnChartAxis({
         baseId: props.baseId,
@@ -17,12 +17,12 @@ export function addSimpleMovingAverage(props: {
     addChart({
         x: x,
         y: y,
-        id: "movingAverage",
+        id: 'movingAverage',
         baseId: props.baseId,
         dataX: props.dataX,
         dataY: calcSimpleMovingAverage(props.dataY),
-        color: "red",
-        type: "line",
+        color: 'red',
+        type: 'line',
     });
 }
 

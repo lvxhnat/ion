@@ -9,7 +9,6 @@ import { FinnhubCandlesEntrySchema } from 'data/schema/candles';
 import BaseLineChart from 'components/Charting/BaseChart';
 
 import { MdWaterfallChart } from 'react-icons/md';
-import { useThemeStore } from 'store/theme';
 import { useTickerDataStore } from 'store/prices/watchlist';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { addSimpleMovingAverage } from './calculations/movingAverages';
@@ -28,7 +27,7 @@ const Item = styled(Box)(({ theme }) => ({
 export default function Chartview(props: { ticker?: string }) {
     const [data, setData] = useTickerDataStore(state => [state.data, state.setData]);
 
-    const baseLineChartId: string = `${props.ticker}_tickerChart`
+    const baseLineChartId: string = `${props.ticker}_tickerChart`;
 
     React.useEffect(() => {
         if (props.ticker) {
@@ -40,13 +39,15 @@ export default function Chartview(props: { ticker?: string }) {
                         id: props.ticker,
                         name: props.ticker,
                         parent: true,
-                        dataX: res.data[0].map((obj: FinnhubCandlesEntrySchema) => new Date(obj.date)),
+                        dataX: res.data[0].map(
+                            (obj: FinnhubCandlesEntrySchema) => new Date(obj.date)
+                        ),
                         dataY: res.data[0].map((obj: FinnhubCandlesEntrySchema) => obj.close),
                         color: 'white',
                         type: 'pureLine',
                     } as DefaultDataProps,
                 };
-                setData(tickerData)
+                setData(tickerData);
             });
         }
     }, []);

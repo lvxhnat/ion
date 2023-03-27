@@ -52,9 +52,9 @@ export function returnChartAxis(props: {
             determineEndY(minValue, maxValue),
         ]);
     return {
-        x: x, 
+        x: x,
         y: y,
-    }
+    };
 }
 /**
  * A generalised line chart, taking date as its x-axis and numerical value on its y-axis. Supports currently the following:
@@ -75,7 +75,6 @@ export default function BaseChart({
     showAxis = CHARTCONFIGS.DEFAULT_SHOW_AXIS,
     showTooltip = CHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
 }: LineChartProps): React.ReactElement {
-
     const ref = useD3(
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
             // Ensure rerender does not duplicate chart
@@ -103,11 +102,11 @@ export default function BaseChart({
                 .attr('preserveAspectRatio', 'xMidYMid meet')
                 .classed('svg-content-responsive', true)
                 .attr('stroke-width', 0);
-            
+
             const { x, y } = returnChartAxis({
-                baseId: baseId, 
-                dataX: dataX, 
-                dataY: dataY, 
+                baseId: baseId,
+                dataX: dataX,
+                dataY: dataY,
                 zeroAxis: zeroAxis,
             });
 
@@ -178,13 +177,12 @@ export default function BaseChart({
             });
 
             if (showTooltip) {
-                C.addToolTip({
+                C.addLineTracker({
                     baseId: baseId,
                     tooltipId: baseId,
                     data: defaultData,
                 });
             }
-
         },
         [defaultData]
     );
