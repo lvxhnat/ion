@@ -4,13 +4,6 @@ import { CHARTCONFIGS, CHARTIDS } from '../../config';
 import { DefaultDataProps } from '../../schema/schema';
 import { returnChartAxis } from '../../BaseChart';
 
-function formatDateString(d: Date) {
-    const zeroPad = (n: number) => `${`0${n + 1}`.slice(-2)}`;
-    return `${zeroPad(d.getDate())}/${zeroPad(d.getMonth())}/${d.getFullYear()} ${zeroPad(
-        d.getHours()
-    )}:${zeroPad(d.getMinutes())}`;
-}
-
 /**
  * Add a hover listener to the chart we wish to track
  * @param props

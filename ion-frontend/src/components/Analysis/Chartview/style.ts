@@ -33,23 +33,22 @@ export const LabContainerMetricTableRow = styled('div')(({ theme }) => ({
     padding: `${theme.spacing(0.2)} ${theme.spacing(1)}`,
     '&:hover': {
         backgroundColor: ColorsEnum.geekBlue,
+        cursor: 'pointer',
     },
 }));
 
-type LabContainerStrategyRowProps = {
+type LabPopupStrategyRowProps = {
     header?: boolean;
     theme?: any;
 };
 
-export const LabContainerStrategyRow = styled('div')<LabContainerStrategyRowProps>(
-    ({ theme, header }) => ({
-        padding: theme.spacing(1),
-        display: 'flex',
-        backgroundColor: header ? ColorsEnum.darkGrey : 'transparent',
-    })
-);
+export const LabPopupStrategyRow = styled('div')<LabPopupStrategyRowProps>(({ theme, header }) => ({
+    padding: theme.spacing(1),
+    display: 'flex',
+    backgroundColor: header ? ColorsEnum.darkGrey : 'transparent',
+}));
 
-export const LabContainerMetricsTableWrapper = styled('div')(({ theme }) => ({
+export const LabPopupMetricsTableWrapper = styled('div')(({ theme }) => ({
     width: '30%',
     paddingTop: 10,
     display: 'flex',
