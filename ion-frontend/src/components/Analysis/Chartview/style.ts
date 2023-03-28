@@ -33,23 +33,39 @@ export const LabContainerMetricTableRow = styled('div')(({ theme }) => ({
     padding: `${theme.spacing(0.2)} ${theme.spacing(1)}`,
     '&:hover': {
         backgroundColor: ColorsEnum.geekBlue,
+        cursor: 'pointer',
     },
 }));
 
-type LabContainerStrategyRowProps = {
+type LabPopupStrategyRowProps = {
     header?: boolean;
     theme?: any;
 };
 
-export const LabContainerStrategyRow = styled('div')<LabContainerStrategyRowProps>(
+export const LabPopupStrategyRow = styled('div')(({ theme }) => ({
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: `1px solid ${ColorsEnum.warmgray1}`,
+    borderTop: 0,
+    borderRight: 0,
+    '&:hover': {
+        backgroundColor: ColorsEnum.geekBlue,
+    },
+}));
+
+export const LabPopupStrategyRowCell = styled('div')<LabPopupStrategyRowProps>(
     ({ theme, header }) => ({
         padding: theme.spacing(1),
         display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: header ? ColorsEnum.darkGrey : 'transparent',
     })
 );
 
-export const LabContainerMetricsTableWrapper = styled('div')(({ theme }) => ({
+export const LabPopupMetricsTableWrapper = styled('div')(({ theme }) => ({
     width: '30%',
     paddingTop: 10,
     display: 'flex',
@@ -58,4 +74,14 @@ export const LabContainerMetricsTableWrapper = styled('div')(({ theme }) => ({
     overflowY: 'scroll',
     border: '1px solid ' + ColorsEnum.warmgray1,
     '&::-webkit-scrollbar': { width: 0 },
+}));
+
+export const CloseIconWrapper = styled('div')(({ theme }) => ({
+    padding: 0,
+    fontSize: 15,
+    display: 'flex',
+    alignItems: 'center',
+    '&:hover': {
+        cursor: 'pointer',
+    },
 }));
