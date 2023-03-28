@@ -1,6 +1,6 @@
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { create } from 'zustand';
-
+import { technicalIndicators } from 'components/Analysis/Chartview/calculations/metrics';
 /**
  * This interface and the const function below controls the grid view (how many grids u are able to see on screen)
  */
@@ -41,6 +41,13 @@ export const useTickerDataStore = create<TickerDataStoreTypes>(set => ({
  * Controls the metrics that is able to be seen on the grid view on each ticker
  */
 export type AllowedMetricCategories = 'price' | 'lower' | 'volume';
+interface EditMetricPropType {
+    ticker: string;
+    metrics: {
+        type: AllowedMetricCategories;
+        metric: keyof typeof technicalIndicators;
+    } | null;
+}
 export interface MetricStoreTypes {
     metrics: {
         [ticker: string]: {
@@ -49,24 +56,24 @@ export interface MetricStoreTypes {
             lower: string[];
         };
     };
-    setMetrics: (props: {
-        ticker: string;
-        metrics: {
-            type: AllowedMetricCategories;
-            metric: string;
-        } | null;
-    }) => void;
+    removeMetric: (props: EditMetricPropType) => void;
+    addMetric: (props: EditMetricPropType) => void;
 }
 
 export const useMetricStore = create<MetricStoreTypes>(set => ({
     metrics: {},
-    setMetrics: (props: {
-        ticker: string;
-        metrics: {
-            type: AllowedMetricCategories;
-            metric: string;
-        } | null;
-    }) =>
+    removeMetric: (props: EditMetricPropType) => {
+        set((state: MetricStoreTypes) => {
+            const newMetrics = { ...state.metrics };
+            if (props.metrics) {
+                newMetrics[props.ticker][props.metrics.type] = newMetrics[props.ticker][
+                    props.metrics.type
+                ].filter(indicator => indicator !== props.metrics!.metric);
+            }
+            return { metrics: newMetrics };
+        });
+    },
+    addMetric: (props: EditMetricPropType) => {
         set((state: MetricStoreTypes) => {
             if ((props.ticker && props.metrics === null) || !state.metrics[props.ticker]) {
                 state.metrics[props.ticker] = {
@@ -74,15 +81,16 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
                     volume: [],
                     lower: [],
                 };
+                return { metrics: { ...state.metrics } };
             } else {
-                state.metrics[props.ticker][props.metrics!.type] = [
-                    ...state.metrics[props.ticker][props.metrics!.type],
+                // Deep copy nested object
+                const newMetrics = { ...state.metrics };
+                newMetrics[props.ticker][props.metrics!.type] = [
+                    ...newMetrics[props.ticker][props.metrics!.type],
                     props.metrics!.metric,
                 ];
+                return { metrics: newMetrics };
             }
-
-            return {
-                metrics: { ...state.metrics },
-            };
-        }),
+        });
+    },
 }));

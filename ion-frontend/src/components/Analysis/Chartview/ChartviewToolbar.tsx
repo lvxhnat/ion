@@ -17,6 +17,7 @@ import {
 import { useThemeStore } from 'store/theme';
 import { TickerSearch } from 'components/Search/Search';
 import { technicalIndicators } from './calculations/metrics';
+import { removeLine } from 'components/Charting/BaseChart/plugins/addLine/addLine';
 
 const ModifiedStudiesButton = (props: { [others: string]: any }) => {
     return (
@@ -38,17 +39,25 @@ const LabPopupMetricRow = (props: {
     indicator: keyof typeof technicalIndicators;
 }) => {
     const data = useTickerDataStore(state => state.data);
+    const addMetric = useMetricStore(state => state.addMetric);
 
     return (
         <S.LabContainerMetricTableRow
-            onClick={() =>
+            onClick={() => {
+                addMetric({
+                    ticker: props.ticker,
+                    metrics: {
+                        metric: props.indicator,
+                        type: 'price',
+                    },
+                });
                 technicalIndicators[props.indicator]({
                     baseId: props.baseId,
                     dataX: data[props.ticker].dataX,
                     dataY: data[props.ticker].dataY,
                     window: 9,
-                })
-            }
+                });
+            }}
         >
             <div
                 style={{
@@ -81,32 +90,60 @@ const LabPopupMetricRow = (props: {
  * @param props
  * @returns
  */
-const LabPopupStrategyRow = (props: { ticker: string; metricType: AllowedMetricCategories }) => {
-    const metrics = useMetricStore(state => state.metrics)[props.ticker];
+const LabPopupStrategyRow = (props: {
+    baseId: string;
+    ticker: string;
+    metricType: AllowedMetricCategories;
+}) => {
+    const [metrics, removeMetric] = useMetricStore(state => [
+        state.metrics[props.ticker],
+        state.removeMetric,
+    ]);
 
     return (
-        <div
-            style={{
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: `1px solid ${ColorsEnum.warmgray1}`,
-                borderTop: 0,
-                borderRight: 0,
-            }}
-        >
-            <S.LabPopupStrategyRow header style={{ width: '20%' }}>
+        <S.LabPopupStrategyRow>
+            <S.LabPopupStrategyRowCell header style={{ width: '20%' }}>
                 <Typography variant="subtitle2">
                     {props.metricType.charAt(0).toUpperCase() + props.metricType.slice(1)}
                 </Typography>
-            </S.LabPopupStrategyRow>
-            <S.LabPopupStrategyRow style={{ width: '80%' }}>
-                <Typography variant="subtitle2">
-                    {metrics ? metrics[props.metricType].join(' *') : null}
-                </Typography>
-            </S.LabPopupStrategyRow>
-        </div>
+            </S.LabPopupStrategyRowCell>
+            {metrics && metrics[props.metricType].length !== 0 ? (
+                metrics[props.metricType].map((metricName: string) => {
+                    return (
+                        <React.Fragment>
+                            <S.LabPopupStrategyRowCell
+                                style={{ width: '60%', justifyContent: 'flex-start' }}
+                            >
+                                <Typography variant="subtitle2">{metricName}</Typography>
+                            </S.LabPopupStrategyRowCell>
+                            <S.LabPopupStrategyRowCell
+                                style={{ width: '20%', justifyContent: 'flex-end' }}
+                            >
+                                <S.CloseIconWrapper
+                                    onClick={() => {
+                                        removeMetric({
+                                            ticker: props.ticker,
+                                            metrics: {
+                                                type: props.metricType,
+                                                metric: metricName as keyof typeof technicalIndicators,
+                                            },
+                                        });
+                                        removeLine({
+                                            baseId: props.baseId,
+                                            id: metricName,
+                                        });
+                                    }}
+                                >
+                                    <CloseIcon fontSize="inherit" />
+                                </S.CloseIconWrapper>
+                            </S.LabPopupStrategyRowCell>
+                        </React.Fragment>
+                    );
+                })
+            ) : (
+                <S.LabPopupStrategyRowCell style={{ width: '80%' }} />
+            )}
+        </S.LabPopupStrategyRow>
     );
 };
 
@@ -117,10 +154,10 @@ const LabPopup = (props: {
     setShow: (show: boolean) => void;
 }) => {
     const [showCancel, setShowCancel] = React.useState<boolean>(false);
-    const setMetrics = useMetricStore(state => state.setMetrics);
+    const addMetric = useMetricStore(state => state.addMetric);
 
     React.useEffect(() => {
-        setMetrics({ ticker: props.ticker, metrics: null });
+        addMetric({ ticker: props.ticker, metrics: null });
     }, []);
 
     return (
@@ -128,7 +165,8 @@ const LabPopup = (props: {
             style={{
                 display: props.show ? 'block' : 'none',
                 position: 'absolute',
-                marginTop: '5%',
+                margin: '0 auto',
+                top: '25%',
                 width: 'calc(550px + 5vw)',
                 height: 'calc(350px + 5vh)',
                 maxWidth: 700,
@@ -177,6 +215,7 @@ const LabPopup = (props: {
                 <S.LabPopupMetricsTableWrapper>
                     {Object.keys(technicalIndicators).map((indicator: string) => (
                         <LabPopupMetricRow
+                            key={`${props.ticker}_${indicator}_labPopupMetricRow`}
                             ticker={props.ticker}
                             baseId={props.baseId}
                             indicator={indicator as keyof typeof technicalIndicators}
@@ -193,9 +232,21 @@ const LabPopup = (props: {
                     >
                         <Typography variant="subtitle2"> Added studies and strategies </Typography>
                     </div>
-                    <LabPopupStrategyRow ticker={props.ticker} metricType="price" />
-                    <LabPopupStrategyRow ticker={props.ticker} metricType="volume" />
-                    <LabPopupStrategyRow ticker={props.ticker} metricType="lower" />
+                    <LabPopupStrategyRow
+                        baseId={props.baseId}
+                        ticker={props.ticker}
+                        metricType="price"
+                    />
+                    <LabPopupStrategyRow
+                        baseId={props.baseId}
+                        ticker={props.ticker}
+                        metricType="volume"
+                    />
+                    <LabPopupStrategyRow
+                        baseId={props.baseId}
+                        ticker={props.ticker}
+                        metricType="lower"
+                    />
                 </div>
             </div>
         </div>
@@ -212,9 +263,10 @@ export default function ChartviewToolbar(props: { ticker: undefined | string; ba
             style={{
                 width: '100%',
                 backgroundColor: mode === 'dark' ? ColorsEnum.warmgray1 : ColorsEnum.coolgray4,
-                padding: '2px',
+                padding: '1px',
                 display: 'flex',
                 justifyContent: 'center',
+                alignItems: 'center',
             }}
         >
             {props.ticker ? (

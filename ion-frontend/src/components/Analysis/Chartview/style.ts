@@ -42,11 +42,28 @@ type LabPopupStrategyRowProps = {
     theme?: any;
 };
 
-export const LabPopupStrategyRow = styled('div')<LabPopupStrategyRowProps>(({ theme, header }) => ({
-    padding: theme.spacing(1),
+export const LabPopupStrategyRow = styled('div')(({ theme }) => ({
+    width: '100%',
     display: 'flex',
-    backgroundColor: header ? ColorsEnum.darkGrey : 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: `1px solid ${ColorsEnum.warmgray1}`,
+    borderTop: 0,
+    borderRight: 0,
+    '&:hover': {
+        backgroundColor: ColorsEnum.geekBlue,
+    },
 }));
+
+export const LabPopupStrategyRowCell = styled('div')<LabPopupStrategyRowProps>(
+    ({ theme, header }) => ({
+        padding: theme.spacing(1),
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: header ? ColorsEnum.darkGrey : 'transparent',
+    })
+);
 
 export const LabPopupMetricsTableWrapper = styled('div')(({ theme }) => ({
     width: '30%',
@@ -57,4 +74,14 @@ export const LabPopupMetricsTableWrapper = styled('div')(({ theme }) => ({
     overflowY: 'scroll',
     border: '1px solid ' + ColorsEnum.warmgray1,
     '&::-webkit-scrollbar': { width: 0 },
+}));
+
+export const CloseIconWrapper = styled('div')(({ theme }) => ({
+    padding: 0,
+    fontSize: 15,
+    display: 'flex',
+    alignItems: 'center',
+    '&:hover': {
+        cursor: 'pointer',
+    },
 }));

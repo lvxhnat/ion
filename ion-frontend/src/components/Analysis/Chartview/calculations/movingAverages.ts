@@ -17,7 +17,7 @@ export function addSimpleMovingAverage(props: {
     addChart({
         x: x,
         y: y,
-        id: 'movingAverage',
+        id: 'SimpleMovingAverage',
         baseId: props.baseId,
         dataX: props.dataX,
         dataY: calcSimpleMovingAverage(props.dataY),
@@ -31,7 +31,7 @@ export function addSimpleMovingAverage(props: {
  * @param arr The array containing the prices/time series
  * @param window The window we want to calculate simple moving average for
  */
-export function calcSimpleMovingAverage(arr: number[], window: number = 9) {
+function calcSimpleMovingAverage(arr: number[], window: number = 9) {
     let accumulator = 0;
     return new Array(arr.length).fill(null).map((u, i) => {
         if (i == window - 1) {
