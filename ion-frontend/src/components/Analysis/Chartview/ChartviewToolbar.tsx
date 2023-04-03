@@ -51,7 +51,8 @@ const LabPopupMetricRow = (props: {
                         type: 'price',
                     },
                 });
-                technicalIndicators[props.indicator]({
+                const indicator = technicalIndicators[props.indicator]
+                indicator({
                     baseId: props.baseId,
                     dataX: data[props.ticker].dataX,
                     dataY: data[props.ticker].dataY,

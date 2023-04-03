@@ -33,6 +33,9 @@ export default function Chartview(props: { ticker?: string }) {
         if (props.ticker) {
             const ticker: string = props.ticker;
             getCandles(props.ticker).then(res => {
+                console.log(res.data[0].map(
+                    (obj: FinnhubCandlesEntrySchema) => new Date(obj.date * 1000)
+                ));
                 const tickerData = {
                     ticker: ticker,
                     data: {
@@ -40,7 +43,7 @@ export default function Chartview(props: { ticker?: string }) {
                         name: props.ticker,
                         parent: true,
                         dataX: res.data[0].map(
-                            (obj: FinnhubCandlesEntrySchema) => new Date(obj.date)
+                            (obj: FinnhubCandlesEntrySchema) => new Date(obj.date * 1000)
                         ),
                         dataY: res.data[0].map((obj: FinnhubCandlesEntrySchema) => obj.close),
                         color: 'white',
