@@ -21,7 +21,7 @@ function determineEndY(minValue: number, maxValue: number) {
 
 function determineDatetimeFormat(startDate: Date, endDate: Date) {
     const timeDifference: number = Math.abs(endDate.getTime() - startDate.getTime()) / 1000;
-    let format: string = "%Y";
+    let format: string = '%Y';
     if (timeDifference <= 60 * 60) format = '%H:%M';
     if (timeDifference <= 60 * 60 * 3) format = '%d/%H';
     if (timeDifference <= 60 * 60 * 24 * 28) format = '%m/%d';
@@ -76,7 +76,6 @@ export default function BaseChart({
     showAxis = CHARTCONFIGS.DEFAULT_SHOW_AXIS,
     showTooltip = CHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
 }: LineChartProps): React.ReactElement {
-    
     const ref = useD3(
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
             // Ensure rerender does not duplicate chart

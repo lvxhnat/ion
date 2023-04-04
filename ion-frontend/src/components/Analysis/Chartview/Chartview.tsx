@@ -31,13 +31,9 @@ export default function Chartview(props: { ticker?: string }) {
 
     React.useEffect(() => {
         if (props.ticker) {
-            const ticker: string = props.ticker;
             getCandles(props.ticker).then(res => {
-                console.log(res.data[0].map(
-                    (obj: FinnhubCandlesEntrySchema) => new Date(obj.date * 1000)
-                ));
-                const tickerData = {
-                    ticker: ticker,
+                setData({
+                    ticker: props.ticker as string,
                     data: {
                         id: props.ticker,
                         name: props.ticker,
@@ -49,8 +45,7 @@ export default function Chartview(props: { ticker?: string }) {
                         color: 'white',
                         type: 'pureLine',
                     } as DefaultDataProps,
-                };
-                setData(tickerData);
+                });
             });
         }
     }, []);

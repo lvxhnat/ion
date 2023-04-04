@@ -52,7 +52,7 @@ interface EditMetricListenerPropType {
     ticker: string;
     metrics: {
         [metric in keyof typeof technicalIndicators]: number;
-    }
+    };
 }
 
 export interface MetricStoreTypes {
