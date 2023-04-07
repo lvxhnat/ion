@@ -1,11 +1,13 @@
 FROM python:3.9.16-buster
 
+COPY ../../ion-clients/ /external/ion-clients
+RUN pip install -e /external/ion-clients
+
+COPY ../../data-ingestion/ /app
+RUN pip install -e /app
+
 WORKDIR /app
 
-COPY ../../data-ingestion/ ./
-COPY ../../ion-clients/ /external/ion-clients
-
-RUN pip install -e . && pip install -e /external/ion-clients
 RUN rm -rf /external/ion-clients
 
 # start app
