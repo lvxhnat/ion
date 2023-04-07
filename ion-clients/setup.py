@@ -56,6 +56,14 @@ dev_requirements = {
     "vulture==2.7",
 }
 
+scrape_requirements = {
+    "pyetfdb-scraper==0.1.8",
+    "pandas==2.0.0",
+    "SQLAlchemy==2.0.9",
+    "pymongo==4.3.3",
+    "psycopg2-binary",
+}
+
 setup(
     name=name,
     version=version,
@@ -69,6 +77,8 @@ setup(
     package_data={"ion_clients": ["*.txt", "*.json", "*.preamble", "*.sql"]},
     entry_points={"console_scripts": [f"{name}=ion_clients.entrypoints:main"]},
     python_requires=">=3.9",
-    install_requires=list(base_requirements | framework_common),
+    install_requires=list(
+        base_requirements | scrape_requirements | framework_common
+    ),
     extras_require={"dev": [*dev_requirements]},
 )

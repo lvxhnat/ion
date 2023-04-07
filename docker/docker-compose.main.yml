@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: ../
+      dockerfile: docker/main-services/frontend/Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      NODE_ENV: development
+      REACT_APP_DATA_INGESTION_BASE_URL: http://backend:1236/api/v1/
+      REACT_APP_WEBSOCKET_URL: ws://backend:1236/
+    depends_on: 
+      backend:
+        condition: service_started
+    networks: 
+      - main-network
+  backend:
+    container_name: backend
+    build: 
+      context: ../
+      dockerfile: docker/main-services/backend/Dockerfile
+    ports:
+      - 1236:1236
+    environment:
+      POSTGRES_URI: postgresql://guest:guest@postgres-database:5432/postgres
+    networks: 
+      - main-network
+networks:
+  main-network:
+    driver: bridge
