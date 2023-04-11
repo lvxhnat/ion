@@ -13,7 +13,7 @@ from typing import List, Dict, Optional, Union
 
 from ion_clients.core.utils.scraper.retry_handler import retry
 
-env_loaded = load_dotenv()
+env_loaded = load_dotenv(".env.credentials")
 logger = logging.getLogger(__name__)
 BASE_LOGGING_FORMAT = (
     "[%(asctime)s] %(levelname)-8s {%(name)s:%(lineno)d} - %(message)s"
@@ -29,6 +29,7 @@ class AssetHistoricalData(BaseModel):
     date: int
     volume: int
     symbol: str
+
 
 class CompanyOverview(BaseModel):
     Symbol: str
@@ -70,13 +71,14 @@ class CompanyOverview(BaseModel):
     EVToRevenue: float
     EVToEBITDA: float
     Beta: float
-    "52WeekHigh": float
-    "52WeekLow": float
-    "50DayMovingAverage": float
-    "200DayMovingAverage": float
+    _52WeekHigh: float
+    _52WeekLow: float
+    _50DayMovingAverage: float
+    _200DayMovingAverage: float
     SharesOutstanding: int
     DividendDate: Optional[str]
     ExDividendDate: Optional[str]
+
 
 base_ticker_mapping: Dict[str, str] = {
     "Symbol": "symbol",
@@ -93,24 +95,24 @@ equity_ticker_mapping: Dict[str, str] = {
     "Industry": "industry",
 }
 
+
 class AlphaVantageClient:
     def __init__(
         self,
         api_keys: List[str] = None,
     ):
         """Keys has a rate limit of 500 per day"""
-        self.num_api_keys = len(api_keys)
         if api_keys:
+            self.num_api_keys = len(api_keys)
             self.APIKEYS = cycle(api_keys)
         else:
-            self.APIKEYS = cycle(
-                [
-                    os.environ[key]
-                    for key in [*os.environ.keys()]
-                    if "ALPHA_VANTAGE" in key
-                ]
-            )
-            self.APIKEYS = cycle()
+            api_keys: List[str] = [
+                os.environ[key]
+                for key in [*os.environ.keys()]
+                if "ALPHA_VANTAGE" in key
+            ]
+            self.num_api_keys = len(api_keys)
+            self.APIKEYS = cycle(api_keys)
 
         self.APIKEY = next(self.APIKEYS)
 
@@ -199,16 +201,18 @@ class AlphaVantageClient:
         )
         self.APIKEY = next(self.APIKEYS)
         r_json: CompanyOverview = r.json()
-        return pd.DataFrame.from_dict(r_json, orient = "index").T
+        return pd.DataFrame.from_dict(r_json, orient="index").T
 
-    @retry(retries=10)
-    def get_ticker_listings(
-        self,
-    ) -> pd.DataFrame:
 
-        url = f"https://www.alphavantage.co/query?function=LISTING_STATUS&apikey={self.APIKEY}"
-        r = requests.get(url)
-        self.APIKEY = next(self.APIKEYS)
+def get_alphavantage_ticker_listings() -> pd.DataFrame:
+    url = f"https://www.alphavantage.co/query?function=LISTING_STATUS&apikey=I9PL1QLNCBPW0Q1H"
+    r = requests.get(url)
 
-        data = [i.split(",") for i in r.text.split("\r\n")]
-        return pd.DataFrame(data[1:], columns=data[0]).dropna()
+    data = [i.split(",") for i in r.text.split("\r\n")]
+    df: pd.DataFrame = pd.DataFrame(data[1:], columns=data[0]).dropna()
+    return (df
+            .assign(ipoDate=df["ipoDate"].apply(lambda x: datetime.strptime(x, "%Y-%m-%d")))
+            [df["name"].apply(lambda x: x.strip() != "")]
+            [["symbol", "name", "exchange", "assetType", "ipoDate"]]
+            .rename(columns={"assetType": "asset_class", "ipoDate": "ipo_date"})
+    )

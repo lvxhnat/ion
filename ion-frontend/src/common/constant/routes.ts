@@ -6,8 +6,8 @@ export const ROUTES = {
         FUNCTION: '/function/function-list',
         PORTFOLIO: '/function/portfolio-administration',
         EXPLORE: '/function/etf-explore',
-        HEALTHCHECK: '/check/health',
         TICKER_WATCHLIST: '/function/ticker-watchlist',
+        HEALTHCHECK: '/function/health',
     },
     PUBLIC_REQUIRED_TOKEN: {},
 };

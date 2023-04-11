@@ -5,7 +5,7 @@ from prefect.orion.schemas.schedules import CronSchedule
 
 from data_engine.flows.treasury.usgov import treasury_ingestion_flow
 from data_engine.flows.common.area_latlon import geonames_ingestion_flow
-
+from data_engine.flows.tickers.tickers import asset_ingestion_flow
 
 config_file_path = "./src/data_engine/request_configs/"
 
@@ -60,7 +60,28 @@ def execute_geonames_deployment(config: DictConfig):
         work_queue_name="common",
     ).apply()
 
+@hydra.main(
+    version_base=None,
+    config_path=config_file_path,
+    config_name="common-configs",
+)
+def execute_asset_deployment(config: DictConfig):
+    Deployment.build_from_flow(
+        flow=asset_ingestion_flow,
+        name="Ingest Asset Data",
+        version="1",
+        tags=["common"],
+        parameters={},
+        schedule=(
+            CronSchedule(
+                cron=config.scrapers.common.assetes.schedule.cron,
+                timezone=config.scrapers.common.assets.schedule.timezone,
+            )
+        ),
+        work_queue_name="common",
+    ).apply()
 
 if __name__ == "__main__":
     execute_us_treasury_deployment()
     execute_geonames_deployment()
+    execute_asset_deployment()

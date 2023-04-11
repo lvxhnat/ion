@@ -63,9 +63,9 @@ export default function TreasuryTable(props: TreasuryTableProps) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {Object.keys(data).map((column: string, index: number) => {
+                    {Object.keys(data).slice(2, Object.keys(data).length).map((column: string, index: number) => {
                         // Set size ensures that the array does not consist of all nulls
-                        if (column !== '_date' && new Set(data[column]).size !== 1) {
+                        if (new Set(data[column]).size !== 1) {
                             return (
                                 <StyledTableRow key={`treasury_row_${index}`}>
                                     <StyledTableCell key={`tLabel_${index}`}>

@@ -4,3 +4,7 @@ scrapers:
       schedule:
         cron: "01 00 * * *"
         timezone: Asia/Singapore
+    assets:
+      schedule:
+        cron: "01 00 * * *"
+        timezone: Asia/Singapore

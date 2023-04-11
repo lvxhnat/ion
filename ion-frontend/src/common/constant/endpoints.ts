@@ -3,10 +3,7 @@ export const ENDPOINTS = {
         DATA_INGESTION: process.env.REACT_APP_DATA_INGESTION_BASE_URL,
     },
     PRIVATE: {
-        INGEST_DATA: 'ingestion/upload',
         ETF_INFO: 'etf/info',
-        QUERY_USER_UPLOADS: 'ingestion/retrieveUserUploads',
-        QUERY_TABLE_UPLOADS: 'ingestion/retrieveTable',
         OANDA_FX_STREAMING_ENDPOINT: 'oanda/ws',
         OANDA_FX_HISTORICAL_ENDPOINT: 'candles/oanda/candlesHistorical',
         FINHUB_FX_HISTORICAL_ENDPOINT: 'candles/finnhub/candlesHistorical',

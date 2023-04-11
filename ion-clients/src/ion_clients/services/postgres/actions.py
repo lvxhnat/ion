@@ -175,11 +175,6 @@ def bulk_upsert(
             WriteObject = WriteObject.iterrows()
 
         for object in WriteObject:
-            # If id column exists, and uuid is not in table schema, then we pass
-            if "uuid" in object:
-                del object["uuid"]
-            else:
-                object["uuid"] = str(uuid.uuid4())
             objects.append(TableSchema(**object))
 
     else:

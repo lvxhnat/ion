@@ -9,7 +9,6 @@ export default function Page() {
         <>
             <CssBaseline />
             <Navigation />
-            <div> Jello </div>
         </>
     );
 }
