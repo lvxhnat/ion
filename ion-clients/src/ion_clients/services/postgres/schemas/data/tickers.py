@@ -23,7 +23,6 @@ class EquityMetaData(Base):
     )
     sector: str = Column(String, nullable=False)
     industry: str = Column(String, nullable=False)
-    exchange: str = Column(String, nullable=False)
 
 
 class ETFMetaData(Base):

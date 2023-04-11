@@ -8,15 +8,18 @@ from ion_clients.services.postgres.schemas.data.tickers import AssetMetaData
 
 @task
 def ingest_ticker_metadata():
-    ...
+    """Use AlphaVantage for Ticker Metadata for base ticker data"""
+
 
 @task
 def ingest_etf_metadata():
     ...
-    
+
+
 @task
 def ingest_option_metadata():
     ...
+
 
 @flow(
     task_runner=ConcurrentTaskRunner(),

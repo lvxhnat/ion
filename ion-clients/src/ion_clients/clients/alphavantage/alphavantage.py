@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from itertools import cycle
 from dotenv import load_dotenv
 from datetime import datetime
-from typing import Union, List, Optional
+from typing import List, Dict, Optional, Union
 
 from ion_clients.core.utils.scraper.retry_handler import retry
 
@@ -77,7 +77,22 @@ class CompanyOverview(BaseModel):
     SharesOutstanding: int
     DividendDate: Optional[str]
     ExDividendDate: Optional[str]
-  
+
+base_ticker_mapping: Dict[str, str] = {
+    "Symbol": "symbol",
+    "Name": "name",
+    "Description": "description",
+    "Exchange": "exchange",
+    "Currency": "currency",
+    "Country": "country",
+}
+
+equity_ticker_mapping: Dict[str, str] = {
+    "Symbol": "symbol",
+    "Sector": "sector",
+    "Industry": "industry",
+}
+
 class AlphaVantageClient:
     def __init__(
         self,
