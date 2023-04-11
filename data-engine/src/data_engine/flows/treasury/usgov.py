@@ -4,15 +4,12 @@ from datetime import datetime
 from prefect import task, flow
 from prefect.task_runners import ConcurrentTaskRunner
 
-from data_engine.flows.shared import refresh_table, write_table
+from data_engine.flows.shared import refresh_table
 
 from ion_clients.clients.usdept.treasury import treasury_info
 from ion_clients.clients.usdept.types.treasury import (
     TreasuryYears,
     TreasuryTypes,
-)
-from ion_clients.services.postgres.actions import (
-    table_exists,
 )
 from ion_clients.services.postgres.schemas.data.treasury import (
     USTreasuryYield,
@@ -43,18 +40,11 @@ def treasury_ingestion_flow(years: List[int], types: List[str]):
     ]
 
     for treasury_type, table_name in zip(types, table_names):
-        if not table_exists(table_name):
-            for year in years:
-                treasury_item = ingest_treasury.submit(
-                    year, treasury_type
-                ).result()
-                refresh_table.submit(table_name, treasury_item).result()
-        else:
-            year = datetime.now().year
+        for year in years:
             treasury_item = ingest_treasury.submit(
                 year, treasury_type
             ).result()
-            write_table.submit(table_name, treasury_item).result()
+            refresh_table.submit(table_name, treasury_item).result()
 
 
 if __name__ == "__main__":

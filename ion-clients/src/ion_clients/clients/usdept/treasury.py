@@ -40,14 +40,14 @@ def treasury_info(year: str, treasury_type: TreasuryTypes) -> TreasuryInfoDTO:
         )
     ]
 
-    d = []
+    d: TreasuryInfoDTO = []
     for row in data[1:]:
-        d.append(
-            {
-                k: cast(v, i)
-                for i, (k, v) in enumerate(zip(cols, row.split(",")))
-            }
-        )
+        d_item = {
+            k: cast(v, i) for i, (k, v) in enumerate(zip(cols, row.split(",")))
+        }
+        # Get the current date extracted
+        d_item["_last_updated"] = datetime.today()
+        d.append(d_item)
 
     return d
 

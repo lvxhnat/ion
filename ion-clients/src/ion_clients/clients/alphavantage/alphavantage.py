@@ -9,9 +9,9 @@ from pydantic import BaseModel
 from itertools import cycle
 from dotenv import load_dotenv
 from datetime import datetime
-from typing import Union, List
+from typing import Union, List, Optional
 
-from ion_clients.core.exceptions.api import RateLimitException
+from ion_clients.core.utils.scraper.retry_handler import retry
 
 env_loaded = load_dotenv()
 logger = logging.getLogger(__name__)
@@ -30,13 +30,84 @@ class AssetHistoricalData(BaseModel):
     volume: int
     symbol: str
 
-
+class CompanyOverview(BaseModel):
+    Symbol: str
+    AssetType: str
+    Name: str
+    Description: str
+    CIK: int
+    Exchange: str
+    Currency: str
+    Country: str
+    Sector: str
+    Industry: str
+    Address: str
+    FiscalYearEnd: str
+    LatestQuarter: str
+    MarketCapitalization: int
+    EBITDA: int
+    PERatio: float
+    PEGRatio: float
+    BookValue: float
+    DividendPerShare: int
+    DividendYield: int
+    EPS: float
+    RevenuePerShareTTM: float
+    ProfitMargin: float
+    OperatingMarginTTM: float
+    ReturnOnAssetsTTM: float
+    ReturnOnEquityTTM: float
+    RevenueTTM: int
+    GrossProfitTTM: int
+    DilutedEPSTTM: float
+    QuarterlyEarningsGrowthYOY: float
+    QuarterlyRevenueGrowthYOY: float
+    AnalystTargetPrice: float
+    TrailingPE: float
+    ForwardPE: float
+    PriceToSalesRatioTTM: float
+    PriceToBookRatio: float
+    EVToRevenue: float
+    EVToEBITDA: float
+    Beta: float
+    "52WeekHigh": float
+    "52WeekLow": float
+    "50DayMovingAverage": float
+    "200DayMovingAverage": float
+    SharesOutstanding: int
+    DividendDate: Optional[str]
+    ExDividendDate: Optional[str]
+  
 class AlphaVantageClient:
-    def __init__(self, api_keys: List[str]):
+    def __init__(
+        self,
+        api_keys: List[str] = None,
+    ):
         """Keys has a rate limit of 500 per day"""
-        self.APIKEYS = cycle(api_keys)
+        self.num_api_keys = len(api_keys)
+        if api_keys:
+            self.APIKEYS = cycle(api_keys)
+        else:
+            self.APIKEYS = cycle(
+                [
+                    os.environ[key]
+                    for key in [*os.environ.keys()]
+                    if "ALPHA_VANTAGE" in key
+                ]
+            )
+            self.APIKEYS = cycle()
+
         self.APIKEY = next(self.APIKEYS)
 
+    def get_date_range(self, from_date: str):
+        days = max(
+            13 * 28,
+            (datetime.today() - datetime.strptime(from_date, "%Y-%m-%d")).days,
+        )
+        months = np.ceil(days / 28).astype(int)
+        return "year" + str(months // 12) + "month" + str(months % 12)
+
+    @retry(retries=10)
     def get_historical_data(
         self,
         ticker: str,
@@ -73,61 +144,56 @@ class AlphaVantageClient:
         if retries is None:
             retries = self.keys_to_use
 
-        def get_date_range(from_date: str):
-            days = max(
-                13 * 28,
-                (
-                    datetime.today() - datetime.strptime(from_date, "%Y-%m-%d")
-                ).days,
-            )
-            months = np.ceil(days / 28).astype(int)
-            return "year" + str(months // 12) + "month" + str(months % 12)
-
         resolution = resolution.strip(" ").lower()
 
-        try:
-            if "-" in from_date:
-                date_range = get_date_range(from_date)
-            else:
-                date_range = from_date
+        if "-" in from_date:
+            date_range = self.get_date_range(from_date)
+        else:
+            date_range = from_date
 
-            base_endpoint = "https://www.alphavantage.co/query?"
-            endpoint = f"function=TIME_SERIES_INTRADAY_EXTENDED&symbol={ticker}&interval={resolution}&slice={date_range}&apikey={self.APIKEY}"
+        base_endpoint = "https://www.alphavantage.co/query?"
+        endpoint = f"function=TIME_SERIES_INTRADAY_EXTENDED&symbol={ticker}&interval={resolution}&slice={date_range}&apikey={self.APIKEY}"
 
-            url = base_endpoint + endpoint
+        url = base_endpoint + endpoint
 
-            with requests.Session() as s:
-                download = s.get(url)
-                decoded_content = download.content.decode("utf-8")
-                cr = csv.reader(decoded_content.splitlines(), delimiter=",")
-                my_list = list(cr)
+        with requests.Session() as s:
+            download = s.get(url)
+            decoded_content = download.content.decode("utf-8")
+            cr = csv.reader(decoded_content.splitlines(), delimiter=",")
+            my_list = list(cr)
 
-            df = pd.DataFrame(my_list[1:], columns=my_list[0]).rename(
-                columns={"time": "date"}
-            )
-            df["symbol"] = ticker
+        self.APIKEY = next(self.APIKEYS)
 
-            assert df.shape[0] > 0, "Empty dataframe"
+        df = pd.DataFrame(my_list[1:], columns=my_list[0]).rename(
+            columns={"time": "date"}
+        )
+        df["symbol"] = ticker
 
-            if data_format == "json":
-                return eval(df.to_json(orient="table", index=False))["data"]
+        assert df.shape[0] > 0, "Empty dataframe"
 
-            elif data_format == "csv":
-                return df
+        if data_format == "json":
+            return eval(df.to_json(orient="table", index=False))["data"]
 
-        except Exception as e:
-            if retries == 0:
-                raise RateLimitException
+        elif data_format == "csv":
+            return df
 
-            else:
-                logging.error(
-                    "Rate limit reached on API Key. Rotating to next available key... ..."
-                )
-                self.APIKEY = next(self.APIKEYS)
-                self.get_historical_data(
-                    ticker=ticker,
-                    resolution=resolution,
-                    from_date=date_range,
-                    data_format=data_format,
-                    retries=retries - 1,
-                )
+    @retry(retries=10)
+    def get_company_overview(self, ticker: str):
+        r = requests.get(
+            f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={ticker}&apikey={self.APIKEY}"
+        )
+        self.APIKEY = next(self.APIKEYS)
+        r_json: CompanyOverview = r.json()
+        return pd.DataFrame.from_dict(r_json, orient = "index").T
+
+    @retry(retries=10)
+    def get_ticker_listings(
+        self,
+    ) -> pd.DataFrame:
+
+        url = f"https://www.alphavantage.co/query?function=LISTING_STATUS&apikey={self.APIKEY}"
+        r = requests.get(url)
+        self.APIKEY = next(self.APIKEYS)
+
+        data = [i.split(",") for i in r.text.split("\r\n")]
+        return pd.DataFrame(data[1:], columns=data[0]).dropna()

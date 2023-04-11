@@ -122,7 +122,9 @@ def drop_table(TableSchema):
         except sqlalchemyExcs.UnboundExecutionError:
             TableSchema.__table__.drop(postgres_engine)
     else:
-        logger.error(f"No {TableSchema.__tablename__} to drop.")
+        logger.warning(
+            f"No {TableSchema.__tablename__} to drop. Skipping drop_table action."
+        )
 
 
 def bulk_upsert(
@@ -160,7 +162,7 @@ def bulk_upsert(
         WriteObject[0], dict
     ):
         raise TypeError(
-            "You entered WriteObject of type {str(type(WriteObject))} which is not supported. Please Enter WriteObject of type List[dict] or pd.DataFrame!"
+            f"You entered WriteObject of type {str(type(WriteObject))} which is not supported. Please Enter WriteObject of type List[dict] or pd.DataFrame!"
         )
 
     if not table_exists(TableSchema):
@@ -181,6 +183,9 @@ def bulk_upsert(
             objects.append(TableSchema(**object))
 
     else:
+
+        if upsert_key is None:
+            raise ValueError(f"Upsert Key cannot be None.")
 
         if upsert_key == "uuid":
             logger.info(
