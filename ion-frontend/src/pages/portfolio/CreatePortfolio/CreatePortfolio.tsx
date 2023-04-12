@@ -75,10 +75,7 @@ export default function CreatePortfolio() {
             </DialogContent>
             <Divider />
             <DialogActions>
-                <Button disableRipple onClick={handlePortfolioCreate}>
-                    {' '}
-                    Create{' '}
-                </Button>
+                <S.IconButtonWrapper onClick={handlePortfolioCreate}> Create </S.IconButtonWrapper>
             </DialogActions>
         </BootstrapDialogFrame>
     );

@@ -1,6 +1,7 @@
 import re
 import certifi
 import requests
+from uuid import uuid4
 from datetime import datetime
 from ion_clients.clients.usdept.types.treasury import (
     TreasuryTypes,
@@ -46,6 +47,7 @@ def treasury_info(year: str, treasury_type: TreasuryTypes) -> TreasuryInfoDTO:
             k: cast(v, i) for i, (k, v) in enumerate(zip(cols, row.split(",")))
         }
         # Get the current date extracted
+        d_item["uuid"] = str(uuid4())
         d_item["_last_updated"] = datetime.today()
         d.append(d_item)
 

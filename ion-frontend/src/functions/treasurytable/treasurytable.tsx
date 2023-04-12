@@ -63,41 +63,43 @@ export default function TreasuryTable(props: TreasuryTableProps) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {Object.keys(data).slice(2, Object.keys(data).length).map((column: string, index: number) => {
-                        // Set size ensures that the array does not consist of all nulls
-                        if (new Set(data[column]).size !== 1) {
-                            return (
-                                <StyledTableRow key={`treasury_row_${index}`}>
-                                    <StyledTableCell key={`tLabel_${index}`}>
-                                        {' '}
-                                        {processString(column)}{' '}
-                                    </StyledTableCell>
-                                    <StyledTableCell key={`tRate_${index}`}>
-                                        {' '}
-                                        {data[column][0]}%{' '}
-                                    </StyledTableCell>
-                                    <StyledChartCell key={`tChart_${index}`}>
-                                        {index !== 0 ? (
-                                            <div style={{ height: '25px' }}>
-                                                <BaseLineChart
-                                                    baseId={`${column}_treasury_chart`}
-                                                    defaultData={{
-                                                        id: column,
-                                                        name: column,
-                                                        parent: true,
-                                                        dataX: data._date,
-                                                        dataY: data[column],
-                                                        color: 'white',
-                                                        type: 'pureLine',
-                                                    }}
-                                                />
-                                            </div>
-                                        ) : null}
-                                    </StyledChartCell>
-                                </StyledTableRow>
-                            );
-                        }
-                    })}
+                    {Object.keys(data)
+                        .slice(2, Object.keys(data).length)
+                        .map((column: string, index: number) => {
+                            // Set size ensures that the array does not consist of all nulls
+                            if (new Set(data[column]).size !== 1) {
+                                return (
+                                    <StyledTableRow key={`treasury_row_${index}`}>
+                                        <StyledTableCell key={`tLabel_${index}`}>
+                                            {' '}
+                                            {processString(column)}{' '}
+                                        </StyledTableCell>
+                                        <StyledTableCell key={`tRate_${index}`}>
+                                            {' '}
+                                            {data[column][0]}%{' '}
+                                        </StyledTableCell>
+                                        <StyledChartCell key={`tChart_${index}`}>
+                                            {index !== 0 ? (
+                                                <div style={{ height: '25px' }}>
+                                                    <BaseLineChart
+                                                        baseId={`${column}_treasury_chart`}
+                                                        defaultData={{
+                                                            id: column,
+                                                            name: column,
+                                                            parent: true,
+                                                            dataX: data._date,
+                                                            dataY: data[column],
+                                                            color: 'white',
+                                                            type: 'pureLine',
+                                                        }}
+                                                    />
+                                                </div>
+                                            ) : null}
+                                        </StyledChartCell>
+                                    </StyledTableRow>
+                                );
+                            }
+                        })}
                 </TableBody>
             </Table>
         </S.StyledTableContainer>

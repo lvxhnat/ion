@@ -60,6 +60,7 @@ def execute_geonames_deployment(config: DictConfig):
         work_queue_name="common",
     ).apply()
 
+
 @hydra.main(
     version_base=None,
     config_path=config_file_path,
@@ -74,12 +75,13 @@ def execute_asset_deployment(config: DictConfig):
         parameters={},
         schedule=(
             CronSchedule(
-                cron=config.scrapers.common.assetes.schedule.cron,
+                cron=config.scrapers.common.assets.schedule.cron,
                 timezone=config.scrapers.common.assets.schedule.timezone,
             )
         ),
         work_queue_name="common",
     ).apply()
+
 
 if __name__ == "__main__":
     execute_us_treasury_deployment()

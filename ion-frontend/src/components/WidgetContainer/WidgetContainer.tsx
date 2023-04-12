@@ -20,7 +20,7 @@ export default function WidgetContainer(props: {
     const navigate = useNavigate();
 
     return (
-        <Box style={{ width: '100%', paddingLeft: 10, paddingRight: 10 }}>
+        <Box style={{ width: '100%', paddingLeft: 5, paddingRight: 5 }}>
             <S.DividerWrapper>
                 <Divider />
             </S.DividerWrapper>

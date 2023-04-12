@@ -13,13 +13,14 @@ import { Modify } from 'common/types';
 import { ColorsEnum } from 'common/theme';
 import { ForexStreamType, ForexTableHeaderType, FormattedForexStreamType } from './type';
 import { forexStreamStore } from 'store/prices/prices';
-import { getWebsocketForex } from 'data/ingestion/forex';
+import { getHistoricalForex, getWebsocketForex } from 'data/ingestion/forex';
 import { StyledTableCell } from 'components/Tables/BaseTable/StyledTableCell';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
-import { dataIngestionRequest } from 'services/request';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { TableCellWrapper } from 'components/Tables/BaseTable/style';
 import { ENDPOINTS } from 'common/constant/endpoints';
+import { useNavigate } from 'react-router-dom';
+import { ASSET_TYPES, ROUTES } from 'common/constant';
 
 function ForexTableCellGroup(props: { tableHeaders: ForexTableHeaderType[]; forexPair: string }) {
     const forexStream: FormattedForexStreamType = forexStreamStore(
@@ -69,22 +70,17 @@ function ForexHistoricalCell(props: { forexPair: string }) {
     React.useEffect(() => {
         const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
 
-        dataIngestionRequest
-            .post(ENDPOINTS.PRIVATE.OANDA_FX_HISTORICAL_ENDPOINT, {
-                symbol: props.forexPair,
-                period: '1M_S',
-            })
-            .then(data => {
-                setData({
-                    id: props.forexPair,
-                    name: props.forexPair,
-                    parent: true,
-                    dataX: data.data.data.map((d: any) => parseTime(d.date)),
-                    dataY: data.data.data.map((d: any) => d.mid_close),
-                    color: 'white',
-                    type: 'pureLine',
-                });
+        getHistoricalForex(props.forexPair, '1M_S').then(data => {
+            setData({
+                id: props.forexPair,
+                name: props.forexPair,
+                parent: true,
+                dataX: data.data.data.map((d: any) => parseTime(d.date)),
+                dataY: data.data.data.map((d: any) => d.mid_close),
+                color: 'white',
+                type: 'pureLine',
             });
+        });
     }, []);
 
     return (
@@ -103,6 +99,7 @@ function ForexHistoricalCell(props: { forexPair: string }) {
 }
 
 export default function ForexTable() {
+    const navigate = useNavigate();
     const setForexStream = forexStreamStore((store: any) => store.setForexStream);
     const subscribedForexPairs = [
         'EUR_USD',
@@ -154,7 +151,14 @@ export default function ForexTable() {
                 </TableHead>
                 <TableBody>
                     {subscribedForexPairs.map((forexPair: string, index: number) => (
-                        <StyledTableRow key={`${forexPair}_row`}>
+                        <StyledTableRow
+                            key={`${forexPair}_row`}
+                            onClick={() =>
+                                navigate(
+                                    `${ROUTES.PUBLIC.ANALYSIS}/${ASSET_TYPES.FOREX}/${forexPair}`
+                                )
+                            }
+                        >
                             <StyledTableCell key={`${forexPair}_label_${index}`}>
                                 <label>{forexPair}</label>
                             </StyledTableCell>
