@@ -22,10 +22,10 @@ function determineEndY(minValue: number, maxValue: number) {
 function determineDatetimeFormat(startDate: Date, endDate: Date) {
     const timeDifference: number = Math.abs(endDate.getTime() - startDate.getTime()) / 1000;
     let format: string = '%Y';
-    if (timeDifference <= 60 * 60) format = '%H:%M';
-    if (timeDifference <= 60 * 60 * 3) format = '%d/%H';
-    if (timeDifference <= 60 * 60 * 24 * 28) format = '%m/%d';
-    if (timeDifference <= 60 * 60 * 24 * 365) format = '%Y/%m';
+    if (timeDifference >= 60 * 60 * 24 * 365) format = '%Y/%m';
+    else if (timeDifference >= 60 * 60 * 24 * 31) format = '%m/%d';
+    else if (timeDifference >= 60 * 60) format = '%m/%d %H:%M';
+    else format = '%M:%S'
     return format;
 }
 

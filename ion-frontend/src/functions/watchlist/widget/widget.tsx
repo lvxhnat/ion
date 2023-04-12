@@ -14,9 +14,11 @@ import { ColorsEnum } from 'common/theme';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
 import { getCandles } from 'data/ingestion/candles';
 import { FinnhubCandlesSchema, FinnhubCandlesEntrySchema } from 'data/schema/candles';
-import { ROUTES } from 'common/constant';
+import { ASSET_TYPES, ROUTES } from 'common/constant';
+import { useNavigate } from 'react-router-dom';
 
 export default function Widget() {
+    const navigate = useNavigate();
     const tickers = ['SPY', 'GPS', 'BABA', 'AAPL', 'TSLA', 'IAU', 'VGLT'];
     const [tickerData, setTickerData] = React.useState<
         {
@@ -80,7 +82,9 @@ export default function Widget() {
                 <TableBody>
                     {tickerData?.map((entry, index: number) => {
                         return (
-                            <StyledTableRow key={`tickerTableBody_${index}`}>
+                            <StyledTableRow key={`tickerTableBody_${index}`} onClick={() => navigate(
+                                `${ROUTES.PUBLIC.ANALYSIS}/${ASSET_TYPES.EQUITY}/${entry.ticker}`
+                            )}>
                                 <StyledTableCell>{entry.ticker}</StyledTableCell>
                                 <StyledTableCell
                                     color={
