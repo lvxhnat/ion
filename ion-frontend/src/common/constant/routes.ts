@@ -15,4 +15,5 @@ export const ROUTES = {
 export const ASSET_TYPES = {
     FOREX: 'forex',
     EQUITY: 'equity',
+    ETF: 'etf',
 };

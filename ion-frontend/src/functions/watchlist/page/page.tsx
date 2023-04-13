@@ -5,6 +5,7 @@ import Navigation from 'components/Navigation';
 import Createbar from './createbar';
 import { useWatchlistStore } from 'store/prices/watchlist';
 import Chartview from 'components/Analysis/Chartview';
+import { ASSET_TYPES } from 'common/constant';
 
 export default function Page() {
     const selectedGridId: [number, number] = useWatchlistStore(store => store.gridSelected);
@@ -38,7 +39,7 @@ export default function Page() {
                                             style={{ height: `${90 / (selectedGridId[0] + 1)}vh` }}
                                         >
                                             {c_index === 0 ? (
-                                                <Chartview ticker="SPY" />
+                                                <Chartview ticker="SPY" assetType={ASSET_TYPES.ETF as keyof typeof ASSET_TYPES}/>
                                             ) : (
                                                 <Chartview />
                                             )}

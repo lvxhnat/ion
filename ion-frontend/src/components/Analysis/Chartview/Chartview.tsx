@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as d3 from 'd3';
 
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -13,6 +14,8 @@ import { useTickerDataStore } from 'store/prices/watchlist';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { addSimpleMovingAverage } from './calculations/movingAverages';
 import ChartviewToolbar from './ChartviewToolbar';
+import { ASSET_TYPES } from 'common/constant';
+import { getHistoricalForex } from 'data/ingestion/forex';
 
 const Item = styled(Box)(({ theme }) => ({
     height: '100%',
@@ -24,19 +27,37 @@ const Item = styled(Box)(({ theme }) => ({
  * Provides a historical chart view of a single security selected.
  * @returns
  */
-export default function Chartview(props: { ticker?: string }) {
+export default function Chartview(props: { assetType?: keyof typeof ASSET_TYPES, ticker?: string }) {
     const [data, setData] = useTickerDataStore(state => [state.data, state.setData]);
 
     const baseLineChartId: string = `${props.ticker}_tickerChart`;
 
     React.useEffect(() => {
-        if (props.ticker) {
-            getCandles(props.ticker).then(res => {
+        const ticker = props.ticker ? props.ticker : 'SPY';
+        const assetType: keyof typeof ASSET_TYPES = props.assetType ? props.assetType : ASSET_TYPES.ETF as keyof typeof ASSET_TYPES;
+        if (assetType === ASSET_TYPES.FOREX) {
+            getHistoricalForex(ticker, '1M_S').then(res => {
+                const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
                 setData({
-                    ticker: props.ticker as string,
+                    ticker: ticker as string,
                     data: {
-                        id: props.ticker,
-                        name: props.ticker,
+                        id: ticker,
+                        name: ticker,
+                        parent: true,
+                        dataX: res.data.data.map((d: any) => parseTime(d.date)),
+                        dataY: res.data.data.map((d: any) => d.mid_close),
+                        color: 'white',
+                        type: 'pureLine',
+                    } as DefaultDataProps,
+                });
+            });
+        } else if (assetType === ASSET_TYPES.EQUITY) {
+            getCandles(ticker).then(res => {
+                setData({
+                    ticker: ticker as string,
+                    data: {
+                        id: ticker,
+                        name: ticker,
                         parent: true,
                         dataX: res.data[0].map(
                             (obj: FinnhubCandlesEntrySchema) => new Date(obj.date * 1000)
@@ -47,7 +68,7 @@ export default function Chartview(props: { ticker?: string }) {
                     } as DefaultDataProps,
                 });
             });
-        }
+        } 
     }, []);
 
     return (
