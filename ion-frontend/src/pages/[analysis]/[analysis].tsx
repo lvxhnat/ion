@@ -20,13 +20,16 @@ interface ForexConfigProps {
 
 export default function Analysis(): React.ReactElement {
     const params = useParams();
-    console.log(params)
+    console.log(params);
     return (
         <>
             <CssBaseline />
             <Navigation />
             <div style={{ height: 700, width: '100%' }}>
-                <Chartview ticker={params.symbolId} assetType={params.assetType as keyof typeof ASSET_TYPES}/>
+                <Chartview
+                    ticker={params.symbolId}
+                    assetType={params.assetType as keyof typeof ASSET_TYPES}
+                />
             </div>
         </>
     );

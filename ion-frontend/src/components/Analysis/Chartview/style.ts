@@ -85,3 +85,16 @@ export const CloseIconWrapper = styled('div')(({ theme }) => ({
         cursor: 'pointer',
     },
 }));
+
+export const LabPopupContainerWrapper = styled('div')(({ theme }) => ({
+    height: 25,
+    width: '100%',
+    display: 'flex',
+    padding: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    backgroundColor: ColorsEnum.coolgray6,
+    color: ColorsEnum.black,
+}));

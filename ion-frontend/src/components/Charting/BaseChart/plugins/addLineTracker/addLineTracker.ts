@@ -4,66 +4,6 @@ import { CHARTCONFIGS, CHARTIDS } from '../../config';
 import { DefaultDataProps } from '../../schema/schema';
 import { returnChartAxis } from '../../BaseChart';
 
-/**
- * Add a hover listener to the chart we wish to track
- * @param props
- */
-export const addChartHoverListener = (props: {
-    id: string;
-    baseId: string;
-    dataX: Date[];
-    dataY: number[][];
-    setDataListeners?: ((x: Date, y: number) => void)[];
-}) => {
-    const svg = d3.selectAll(props.baseId);
-    const bisect = d3.bisector((d: any) => d).left;
-
-    if (
-        (props.setDataListeners && props.dataY.length !== props.setDataListeners.length) ||
-        (!props.setDataListeners && props.dataY.length > 1)
-    )
-        throw Error('Number of listeners must match the number of available strings!');
-
-    if (!svg.selectAll(`${props.baseId}_${props.id}_rectMouseTracker`).empty()) {
-        svg.selectAll(`${props.baseId}_${props.id}_rectMouseTracker`).remove();
-    }
-
-    const width: number = document.getElementById(props.baseId)!.parentNode!.parentElement!
-        .clientWidth;
-    const height: number = document.getElementById(props.baseId)!.parentNode!.parentElement!
-        .clientHeight;
-    const dates: Date[] = props.dataX;
-
-    const { x } = returnChartAxis({
-        baseId: props.baseId,
-        dataX: props.dataX,
-        dataY: props.dataY[0], // Proxy. We just require the X axis.
-        zeroAxis: false,
-    });
-
-    svg.append('rect')
-        .attr('class', `${props.baseId}_${props.id}_mousetracker`)
-        .style('fill', 'transparent')
-        .style('pointer-events', 'all')
-        .attr('width', width)
-        .attr('height', height)
-        .on('mouseover', mouseover)
-        .on('mousemove', mousemove)
-        .on('mouseout', mouseout);
-
-    function mouseover() {}
-    function mouseout() {}
-    function mousemove(e: MouseEvent) {
-        const x0 = x.invert(d3.pointer(e, svg.node())[0]);
-        const i = bisect(dates, x0, 1);
-        if (dates[i] && props.setDataListeners) {
-            props.dataY.map((data: number[], index: number) => {
-                props.setDataListeners![index]!(dates[i], data[i]);
-            });
-        }
-    }
-};
-
 export const addLineTracker = (props: {
     baseId: string;
     tooltipId: string;

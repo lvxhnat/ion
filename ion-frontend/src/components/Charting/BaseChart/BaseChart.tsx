@@ -25,7 +25,7 @@ function determineDatetimeFormat(startDate: Date, endDate: Date) {
     if (timeDifference >= 60 * 60 * 24 * 365) format = '%Y/%m';
     else if (timeDifference >= 60 * 60 * 24 * 31) format = '%m/%d';
     else if (timeDifference >= 60 * 60) format = '%m/%d %H:%M';
-    else format = '%M:%S'
+    else format = '%M:%S';
     return format;
 }
 
@@ -167,8 +167,6 @@ export default function BaseChart({
             }
 
             A.addChart({
-                x: x,
-                y: y,
                 baseId: baseId,
                 type: defaultData.type,
                 color: defaultData.color,

@@ -16,8 +16,10 @@ import {
 } from 'store/prices/watchlist';
 import { useThemeStore } from 'store/theme';
 import { TickerSearch } from 'components/Search/Search';
-import { technicalIndicators } from './calculations/metrics';
 import { removeLine } from 'components/Charting/BaseChart/plugins/addLine/addLine';
+import { technicalIndicators } from './calculations/metrics';
+import { addChart } from 'components/Charting/BaseChart/actions';
+import { useLiveMovesStore } from 'store/prices/watchlist';
 
 const ModifiedStudiesButton = (props: { [others: string]: any }) => {
     return (
@@ -38,8 +40,13 @@ const LabPopupMetricRow = (props: {
     ticker: string;
     indicator: keyof typeof technicalIndicators;
 }) => {
+    const [currPrice, setCurrPrice] = React.useState<number>();
+    const setLiveMoves = useLiveMovesStore(state => state.setLiveMoves);
+
     const data = useTickerDataStore(state => state.data);
     const addMetric = useMetricStore(state => state.addMetric);
+    const windowSize = 9;
+    const indicatorId = `${props.indicator}_${windowSize}`;
 
     return (
         <S.LabContainerMetricTableRow
@@ -47,16 +54,17 @@ const LabPopupMetricRow = (props: {
                 addMetric({
                     ticker: props.ticker,
                     metrics: {
-                        metric: props.indicator,
+                        metric: indicatorId,
                         type: 'price',
                     },
                 });
-                const indicator = technicalIndicators[props.indicator];
-                indicator({
+                addChart({
+                    id: indicatorId,
                     baseId: props.baseId,
                     dataX: data[props.ticker].dataX,
-                    dataY: data[props.ticker].dataY,
-                    window: 9,
+                    dataY: technicalIndicators[props.indicator](data[props.ticker].dataY),
+                    color: 'red',
+                    type: 'pureLine',
                 });
             }}
         >
@@ -111,7 +119,7 @@ const LabPopupStrategyRow = (props: {
             {metrics && metrics[props.metricType].length !== 0 ? (
                 metrics[props.metricType].map((metricName: string) => {
                     return (
-                        <React.Fragment>
+                        <React.Fragment key={`${metricName}_labPopupStrategyRow`}>
                             <S.LabPopupStrategyRowCell
                                 style={{ width: '60%', justifyContent: 'flex-start' }}
                             >
@@ -126,7 +134,7 @@ const LabPopupStrategyRow = (props: {
                                             ticker: props.ticker,
                                             metrics: {
                                                 type: props.metricType,
-                                                metric: metricName as keyof typeof technicalIndicators,
+                                                metric: metricName,
                                             },
                                         });
                                         removeLine({
@@ -176,20 +184,7 @@ const LabPopup = (props: {
                 backgroundColor: ColorsEnum.black,
             }}
         >
-            <div
-                style={{
-                    height: 25,
-                    width: '100%',
-                    display: 'flex',
-                    padding: 2,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderTopLeftRadius: 10,
-                    borderTopRightRadius: 10,
-                    backgroundColor: ColorsEnum.coolgray6,
-                    color: ColorsEnum.black,
-                }}
-            >
+            <S.LabPopupContainerWrapper>
                 <div style={{ gap: 2, display: 'flex', width: '33%', paddingLeft: 5 }}>
                     <S.LabOpenButtonWrapper
                         onMouseOver={() => setShowCancel(true)}
@@ -210,7 +205,7 @@ const LabPopup = (props: {
                         Edit Studies and Strategies
                     </Typography>
                 </div>
-            </div>
+            </S.LabPopupContainerWrapper>
 
             <div style={{ display: 'flex', maxHeight: 500, overflowY: 'hidden' }}>
                 <S.LabPopupMetricsTableWrapper>

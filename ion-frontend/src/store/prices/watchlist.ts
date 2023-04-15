@@ -15,7 +15,7 @@ export const useWatchlistStore = create<WatchlistStoreTypes>(set => ({
 }));
 
 /**
- * Stores the ticker data that is shown on the grid
+ * Stores the ticker data that is shown on the grid (i.e. The ticker time series)
  */
 export interface TickerDataStoreTypes {
     data: {
@@ -38,6 +38,37 @@ export const useTickerDataStore = create<TickerDataStoreTypes>(set => ({
 }));
 
 /**
+ * Stores the live data as the cursor is moving around the chart, to be able to show as some form of tooltip
+ */
+interface EditLiveMovePropTypes {
+    ticker: string;
+    metric: string;
+    value: number | null;
+}
+
+export interface EditLiveMoveTypes {
+    liveMoves: {
+        [ticker: string]: {
+            [metric: string]: number | null;
+        };
+    };
+    setLiveMoves: (props: EditLiveMovePropTypes) => void;
+}
+export const useLiveMovesStore = create<EditLiveMoveTypes>(set => ({
+    liveMoves: {},
+    setLiveMoves: (props: EditLiveMovePropTypes) =>
+        set((state: EditLiveMoveTypes) => {
+            const newLiveMoves = { ...state.liveMoves };
+            // Initialise an empty object for the ticker to add in metrics
+            if (!Object.keys(state.liveMoves).includes(props.ticker)) {
+                newLiveMoves[props.ticker] = {};
+            }
+            newLiveMoves[props.ticker][props.metric] = props.value;
+            return { liveMoves: newLiveMoves };
+        }),
+}));
+
+/**
  * Controls the metrics that is able to be seen on the grid view on each ticker
  */
 export type AllowedMetricCategories = 'price' | 'lower' | 'volume';
@@ -45,14 +76,8 @@ interface EditMetricPropType {
     ticker: string;
     metrics: {
         type: AllowedMetricCategories;
-        metric: keyof typeof technicalIndicators;
+        metric: string; // Format is technicalIndicators_PARAMS
     } | null;
-}
-interface EditMetricListenerPropType {
-    ticker: string;
-    metrics: {
-        [metric in keyof typeof technicalIndicators]: number;
-    };
 }
 
 export interface MetricStoreTypes {

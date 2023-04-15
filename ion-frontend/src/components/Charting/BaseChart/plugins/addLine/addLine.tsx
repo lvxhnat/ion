@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import { CHARTCONFIGS } from '../../config';
+import { returnChartAxis } from '../../BaseChart';
 
 /**
  * Add a line to a BaseLineChart object. The line ID will be denoted by {BaseLineChartID_AssignedLineID}.
@@ -8,8 +9,6 @@ import { CHARTCONFIGS } from '../../config';
  * @param ...
  */
 export const addLine = (props: {
-    x: d3.ScaleTime<number, number, never>;
-    y: d3.ScaleLinear<number, number, never>;
     id: string;
     baseId: string;
     color: string;
@@ -18,13 +17,20 @@ export const addLine = (props: {
 }): void => {
     const svg = d3.selectAll(`#${props.baseId}`);
 
+    const { x, y } = returnChartAxis({
+        baseId: props.baseId,
+        dataX: props.dataX,
+        dataY: props.dataY,
+        zeroAxis: false,
+    });
+
     const dataX = props.dataX.filter((_, i) => props.dataY[i]);
     const lineIdComposed: string = `${props.baseId}_${props.id}`;
 
     const valueLine: any = d3
         .line()
-        .x((_, i: number) => props.x(dataX[i]))
-        .y((_, i: number) => props.y(props.dataY[i]))
+        .x((_, i: number) => x(dataX[i]))
+        .y((_, i: number) => y(props.dataY[i]))
         .defined((_, i) => !!props.dataY[i]);
 
     svg.append('path')

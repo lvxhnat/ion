@@ -1,5 +1,5 @@
-import { addSimpleMovingAverage } from './movingAverages';
+import { calcSimpleMovingAverage } from './movingAverages';
 
 export const technicalIndicators = {
-    SimpleMovingAverage: addSimpleMovingAverage,
+    SimpleMovingAverage: calcSimpleMovingAverage,
 };
