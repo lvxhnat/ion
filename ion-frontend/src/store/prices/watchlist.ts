@@ -1,6 +1,5 @@
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { create } from 'zustand';
-import { technicalIndicators } from 'components/Analysis/Chartview/calculations/metrics';
 /**
  * This interface and the const function below controls the grid view (how many grids u are able to see on screen)
  */
@@ -38,7 +37,7 @@ export const useTickerDataStore = create<TickerDataStoreTypes>(set => ({
 }));
 
 /**
- * Stores the live data as the cursor is moving around the chart, to be able to show as some form of tooltip
+ * Stores the data point the cursor is currently on as it is moving around the chart, to be able to show as some form of tooltip
  */
 interface EditLiveMovePropTypes {
     ticker: string;
@@ -69,60 +68,63 @@ export const useLiveMovesStore = create<EditLiveMoveTypes>(set => ({
 }));
 
 /**
- * Controls the metrics that is able to be seen on the grid view on each ticker
+ * Controls the metrics that is currently chosen by the selected grid view (on each ticker)
+ * ------------------
+ * Naming Conventions
+ * ------------------
+ * ticker: The unique ticker symbol.
+ * metric: The unique metric id that we are currently using. Together with ticker, this creates a unique key that we are able to delete the entry of.
+ * field: The data field belonging to the ticker that we will use to calculate the metric on. Must be a continuous time series of number[].
+ * values: The calculated array of __field__ that we have calculated the metric on.
  */
-export type AllowedMetricCategories = 'price' | 'lower' | 'volume';
-interface EditMetricPropType {
-    ticker: string;
-    metrics: {
-        type: AllowedMetricCategories;
-        metric: string; // Format is technicalIndicators_PARAMS
-    } | null;
+export type MetricCalculableFields = 'price' | 'lower' | 'volume';
+export interface TickerMetricStoreFormat {
+    metric: string;
+    field: MetricCalculableFields;
+    value: number[];
 }
-
+interface AddMetricPropType {
+    ticker: string;
+    value: TickerMetricStoreFormat;
+}
+interface RemoveMetricPropType {
+    ticker: string;
+    metric: string;
+}
+interface RemoveTickerPropType {
+    ticker: string;
+}
 export interface MetricStoreTypes {
     metrics: {
-        [ticker: string]: {
-            price: string[];
-            volume: string[];
-            lower: string[];
-        };
+        [ticker: string]: TickerMetricStoreFormat[];
     };
-    removeMetric: (props: EditMetricPropType) => void;
-    addMetric: (props: EditMetricPropType) => void;
+    addMetric: (props: AddMetricPropType) => void;
+    removeMetric: (props: RemoveMetricPropType) => void;
+    removeTicker: (props: RemoveTickerPropType) => void;
 }
-
 export const useMetricStore = create<MetricStoreTypes>(set => ({
     metrics: {},
-    removeMetric: (props: EditMetricPropType) => {
+    addMetric: (props: AddMetricPropType) =>
+        set((state: MetricStoreTypes) => {
+            const newMetrics = { ...state.metrics }; // Create a new metric object
+            if (!Object.keys(newMetrics).includes(props.ticker)) {
+                newMetrics[props.ticker] = [];
+            }
+            newMetrics[props.ticker].push(props.value);
+            return { metrics: newMetrics };
+        }),
+    removeMetric: (props: RemoveMetricPropType) =>
         set((state: MetricStoreTypes) => {
             const newMetrics = { ...state.metrics };
-            if (props.metrics) {
-                newMetrics[props.ticker][props.metrics.type] = newMetrics[props.ticker][
-                    props.metrics.type
-                ].filter(indicator => indicator !== props.metrics!.metric);
-            }
+            newMetrics[props.ticker] = newMetrics[props.ticker].filter(
+                (entry: TickerMetricStoreFormat) => entry.metric !== props.metric
+            );
             return { metrics: newMetrics };
-        });
-    },
-    addMetric: (props: EditMetricPropType) => {
+        }),
+    removeTicker: (props: RemoveTickerPropType) =>
         set((state: MetricStoreTypes) => {
-            if ((props.ticker && props.metrics === null) || !state.metrics[props.ticker]) {
-                state.metrics[props.ticker] = {
-                    price: [],
-                    volume: [],
-                    lower: [],
-                };
-                return { metrics: { ...state.metrics } };
-            } else {
-                // Deep copy nested object
-                const newMetrics = { ...state.metrics };
-                newMetrics[props.ticker][props.metrics!.type] = [
-                    ...newMetrics[props.ticker][props.metrics!.type],
-                    props.metrics!.metric,
-                ];
-                return { metrics: newMetrics };
-            }
-        });
-    },
+            const newMetrics = { ...state.metrics };
+            delete newMetrics[props.ticker];
+            return { metrics: newMetrics };
+        }),
 }));

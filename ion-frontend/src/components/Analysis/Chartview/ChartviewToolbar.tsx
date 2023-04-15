@@ -10,7 +10,8 @@ import { TbMathIntegralX } from 'react-icons/tb';
 
 import { ColorsEnum } from 'common/theme';
 import {
-    AllowedMetricCategories,
+    MetricCalculableFields,
+    TickerMetricStoreFormat,
     useMetricStore,
     useTickerDataStore,
 } from 'store/prices/watchlist';
@@ -51,18 +52,22 @@ const LabPopupMetricRow = (props: {
     return (
         <S.LabContainerMetricTableRow
             onClick={() => {
+                const movingAverage: number[] = technicalIndicators[props.indicator](
+                    data[props.ticker].dataY
+                );
                 addMetric({
                     ticker: props.ticker,
-                    metrics: {
+                    value: {
                         metric: indicatorId,
-                        type: 'price',
+                        field: 'price',
+                        value: movingAverage,
                     },
                 });
                 addChart({
                     id: indicatorId,
                     baseId: props.baseId,
                     dataX: data[props.ticker].dataX,
-                    dataY: technicalIndicators[props.indicator](data[props.ticker].dataY),
+                    dataY: movingAverage,
                     color: 'red',
                     type: 'pureLine',
                 });
@@ -102,7 +107,7 @@ const LabPopupMetricRow = (props: {
 const LabPopupStrategyRow = (props: {
     baseId: string;
     ticker: string;
-    metricType: AllowedMetricCategories;
+    fieldType: MetricCalculableFields;
 }) => {
     const [metrics, removeMetric] = useMetricStore(state => [
         state.metrics[props.ticker],
@@ -113,38 +118,40 @@ const LabPopupStrategyRow = (props: {
         <S.LabPopupStrategyRow>
             <S.LabPopupStrategyRowCell header style={{ width: '20%' }}>
                 <Typography variant="subtitle2">
-                    {props.metricType.charAt(0).toUpperCase() + props.metricType.slice(1)}
+                    {props.fieldType.charAt(0).toUpperCase() + props.fieldType.slice(1)}
                 </Typography>
             </S.LabPopupStrategyRowCell>
-            {metrics && metrics[props.metricType].length !== 0 ? (
-                metrics[props.metricType].map((metricName: string) => {
+            {metrics && metrics.length !== 0 ? (
+                metrics.map((entry: TickerMetricStoreFormat) => {
+                    const indicatorId: string = entry.metric;
                     return (
-                        <React.Fragment key={`${metricName}_labPopupStrategyRow`}>
+                        <React.Fragment key={`${indicatorId}_labPopupStrategyRow`}>
                             <S.LabPopupStrategyRowCell
                                 style={{ width: '60%', justifyContent: 'flex-start' }}
                             >
-                                <Typography variant="subtitle2">{metricName}</Typography>
+                                <Typography variant="subtitle2">
+                                    {entry.field === props.fieldType ? indicatorId : null}
+                                </Typography>
                             </S.LabPopupStrategyRowCell>
                             <S.LabPopupStrategyRowCell
                                 style={{ width: '20%', justifyContent: 'flex-end' }}
                             >
-                                <S.CloseIconWrapper
-                                    onClick={() => {
-                                        removeMetric({
-                                            ticker: props.ticker,
-                                            metrics: {
-                                                type: props.metricType,
-                                                metric: metricName,
-                                            },
-                                        });
-                                        removeLine({
-                                            baseId: props.baseId,
-                                            id: metricName,
-                                        });
-                                    }}
-                                >
-                                    <CloseIcon fontSize="inherit" />
-                                </S.CloseIconWrapper>
+                                {entry.field === props.fieldType ? (
+                                    <S.CloseIconWrapper
+                                        onClick={() => {
+                                            removeMetric({
+                                                ticker: props.ticker,
+                                                metric: indicatorId,
+                                            });
+                                            removeLine({
+                                                baseId: props.baseId,
+                                                id: indicatorId,
+                                            });
+                                        }}
+                                    >
+                                        <CloseIcon fontSize="inherit" />
+                                    </S.CloseIconWrapper>
+                                ) : null}
                             </S.LabPopupStrategyRowCell>
                         </React.Fragment>
                     );
@@ -163,11 +170,6 @@ const LabPopup = (props: {
     setShow: (show: boolean) => void;
 }) => {
     const [showCancel, setShowCancel] = React.useState<boolean>(false);
-    const addMetric = useMetricStore(state => state.addMetric);
-
-    React.useEffect(() => {
-        addMetric({ ticker: props.ticker, metrics: null });
-    }, []);
 
     return (
         <div
@@ -231,17 +233,17 @@ const LabPopup = (props: {
                     <LabPopupStrategyRow
                         baseId={props.baseId}
                         ticker={props.ticker}
-                        metricType="price"
+                        fieldType="price"
                     />
                     <LabPopupStrategyRow
                         baseId={props.baseId}
                         ticker={props.ticker}
-                        metricType="volume"
+                        fieldType="volume"
                     />
                     <LabPopupStrategyRow
                         baseId={props.baseId}
                         ticker={props.ticker}
-                        metricType="lower"
+                        fieldType="lower"
                     />
                 </div>
             </div>
