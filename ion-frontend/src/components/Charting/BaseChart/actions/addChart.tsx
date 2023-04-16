@@ -1,10 +1,11 @@
 import * as d3 from 'd3';
 import * as C from '../plugins';
 import { DefaultDataProps } from '../schema/schema';
-import { returnChartAxis } from '../BaseChart';
 
 interface addChartProps extends Omit<DefaultDataProps, 'name' | 'parent'> {
     baseId: string;
+    x: d3.ScaleTime<number, number, never>;
+    y: d3.ScaleLinear<number, number, never>;
 }
 
 export default function addChart(props: addChartProps) {
@@ -17,10 +18,11 @@ export default function addChart(props: addChartProps) {
     //         color: color === undefined ? props.color : color,
     //     });
     // };
-
     const addLine = (data: number[]) => {
         return C.addLine({
             id: props.id,
+            x: props.x,
+            y: props.y,
             baseId: props.baseId,
             color: props.color,
             dataX: props.dataX,

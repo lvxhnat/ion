@@ -12,4 +12,5 @@ export interface LineChartProps {
     showAxis?: boolean;
     showNormalised?: boolean;
     showTooltip?: boolean;
+    showMetrics?: boolean;
 }

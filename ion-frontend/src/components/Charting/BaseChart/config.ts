@@ -41,6 +41,7 @@ export const CHARTCONFIGS = {
     DEFAULT_SHOW_LEGEND: false,
     DEFAULT_SHOW_TOOLTIP: false,
     DEFAULT_ZERO_AXIS: false,
+    DEFAULT_SHOW_METRICS: false,
     DEFAULT_DARKMODE_LINE_COLOR: ColorsEnum.white,
     DEFAULT_LIGHTMODE_LINE_COLOR: ColorsEnum.black,
     DEFAULT_LINE_AREA_COLOR: 'steelblue',

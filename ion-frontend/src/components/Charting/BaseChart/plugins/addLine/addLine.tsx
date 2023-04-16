@@ -10,6 +10,8 @@ import { returnChartAxis } from '../../BaseChart';
  */
 export const addLine = (props: {
     id: string;
+    x: d3.ScaleTime<number, number, never>;
+    y: d3.ScaleLinear<number, number, never>;
     baseId: string;
     color: string;
     dataX: Date[];
@@ -17,20 +19,12 @@ export const addLine = (props: {
 }): void => {
     const svg = d3.selectAll(`#${props.baseId}`);
 
-    const { x, y } = returnChartAxis({
-        baseId: props.baseId,
-        dataX: props.dataX,
-        dataY: props.dataY,
-        zeroAxis: false,
-    });
-
-    const dataX = props.dataX.filter((_, i) => props.dataY[i]);
     const lineIdComposed: string = `${props.baseId}_${props.id}`;
 
     const valueLine: any = d3
         .line()
-        .x((_, i: number) => x(dataX[i]))
-        .y((_, i: number) => y(props.dataY[i]))
+        .x((_, i: number) => props.x(props.dataX[i]))
+        .y((_, i: number) => props.y(props.dataY[i]))
         .defined((_, i) => !!props.dataY[i]);
 
     svg.append('path')
@@ -38,7 +32,7 @@ export const addLine = (props: {
         .attr('fill', 'none')
         .attr('stroke', props.color)
         .attr('stroke-width', CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
-        .attr('d', valueLine(d3.range(dataX.length)));
+        .attr('d', valueLine(d3.range(props.dataX.length)));
 };
 
 export const removeLine = (props: { id: string; baseId: string }): void => {

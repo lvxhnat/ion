@@ -8,6 +8,8 @@ import { useD3 } from 'common/hooks/useD3';
 import { ColorsEnum } from 'common/theme';
 
 import { CHARTCONFIGS, CHARTIDS } from './config';
+import { TickerMetricStoreFormat, useLiveMovesStore, useMetricStore } from 'store/prices/watchlist';
+import { stringToColour } from 'common/helper/general';
 
 function determineStartY(zeroAxis: boolean, minValue: number, maxValue: number) {
     const minBoundary = (maxValue - minValue) * 0.3;
@@ -75,7 +77,11 @@ export default function BaseChart({
     showGrid = CHARTCONFIGS.DEFAULT_SHOW_GRID,
     showAxis = CHARTCONFIGS.DEFAULT_SHOW_AXIS,
     showTooltip = CHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
+    showMetrics = CHARTCONFIGS.DEFAULT_SHOW_METRICS,
 }: LineChartProps): React.ReactElement {
+    const tickerSymbol: string = baseId.split('_')[0];
+    const setLiveMoves = useLiveMovesStore(state => state.setLiveMoves);
+    const metrics = useMetricStore(state => state.metrics[tickerSymbol]);
     const ref = useD3(
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
             // Ensure rerender does not duplicate chart
@@ -167,23 +173,42 @@ export default function BaseChart({
             }
 
             A.addChart({
+                x: x,
+                y: y,
+                id: defaultData.id,
                 baseId: baseId,
                 type: defaultData.type,
                 color: defaultData.color,
-                id: defaultData.id,
                 dataX: dataX,
                 dataY: dataY,
             });
+
+            if (showMetrics && metrics && metrics.length !== 0) {
+                metrics.map((entry: TickerMetricStoreFormat) => {
+                    A.addChart({
+                        x: x,
+                        y: y,
+                        id: entry.metric,
+                        baseId: baseId,
+                        dataX: dataX,
+                        dataY: entry.value,
+                        color: stringToColour(`${tickerSymbol}_${entry.metric}`),
+                        type: 'pureLine',
+                    });
+                });
+            }
 
             if (showTooltip) {
                 C.addLineTracker({
                     baseId: baseId,
                     tooltipId: baseId,
                     data: defaultData,
+                    metrics: metrics,
+                    setLiveMoves: setLiveMoves,
                 });
             }
         },
-        [defaultData]
+        [defaultData, showMetrics ? metrics : undefined]
     );
 
     return (

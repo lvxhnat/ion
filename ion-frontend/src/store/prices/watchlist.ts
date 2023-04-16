@@ -39,7 +39,7 @@ export const useTickerDataStore = create<TickerDataStoreTypes>(set => ({
 /**
  * Stores the data point the cursor is currently on as it is moving around the chart, to be able to show as some form of tooltip
  */
-interface EditLiveMovePropTypes {
+export interface EditLiveMovePropTypes {
     ticker: string;
     metric: string;
     value: number | null;
@@ -110,7 +110,14 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
             if (!Object.keys(newMetrics).includes(props.ticker)) {
                 newMetrics[props.ticker] = [];
             }
-            newMetrics[props.ticker].push(props.value);
+            let metricExists = false;
+            newMetrics[props.ticker].map(entry => {
+                if (entry.metric === props.value.metric) {
+                    metricExists = true;
+                    return;
+                }
+            });
+            if (!metricExists) newMetrics[props.ticker].push(props.value);
             return { metrics: newMetrics };
         }),
     removeMetric: (props: RemoveMetricPropType) =>

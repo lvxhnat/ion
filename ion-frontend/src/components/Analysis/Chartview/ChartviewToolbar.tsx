@@ -19,8 +19,6 @@ import { useThemeStore } from 'store/theme';
 import { TickerSearch } from 'components/Search/Search';
 import { removeLine } from 'components/Charting/BaseChart/plugins/addLine/addLine';
 import { technicalIndicators } from './calculations/metrics';
-import { addChart } from 'components/Charting/BaseChart/actions';
-import { useLiveMovesStore } from 'store/prices/watchlist';
 
 const ModifiedStudiesButton = (props: { [others: string]: any }) => {
     return (
@@ -41,11 +39,9 @@ const LabPopupMetricRow = (props: {
     ticker: string;
     indicator: keyof typeof technicalIndicators;
 }) => {
-    const [currPrice, setCurrPrice] = React.useState<number>();
-    const setLiveMoves = useLiveMovesStore(state => state.setLiveMoves);
-
     const data = useTickerDataStore(state => state.data);
     const addMetric = useMetricStore(state => state.addMetric);
+
     const windowSize = 9;
     const indicatorId = `${props.indicator}_${windowSize}`;
 
@@ -62,14 +58,6 @@ const LabPopupMetricRow = (props: {
                         field: 'price',
                         value: movingAverage,
                     },
-                });
-                addChart({
-                    id: indicatorId,
-                    baseId: props.baseId,
-                    dataX: data[props.ticker].dataX,
-                    dataY: movingAverage,
-                    color: 'red',
-                    type: 'pureLine',
                 });
             }}
         >
@@ -251,7 +239,7 @@ const LabPopup = (props: {
     );
 };
 
-export default function ChartviewToolbar(props: { ticker: undefined | string; baseId: string }) {
+export default function ChartviewToolbar(props: { ticker: string | undefined; baseId: string }) {
     const { mode } = useThemeStore();
     const data = useTickerDataStore(state => state.data);
     const [showLab, setShowLab] = React.useState<boolean>(false);
@@ -333,6 +321,7 @@ export default function ChartviewToolbar(props: { ticker: undefined | string; ba
                     </>
                 ) : undefined}
             </div>
+            <div></div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                 <ModifiedStudiesButton onClick={() => setShowLab(true)} />
             </div>

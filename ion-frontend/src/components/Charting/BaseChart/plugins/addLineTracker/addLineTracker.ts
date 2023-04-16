@@ -3,13 +3,18 @@ import { ColorsEnum } from 'common/theme';
 import { CHARTCONFIGS, CHARTIDS } from '../../config';
 import { DefaultDataProps } from '../../schema/schema';
 import { returnChartAxis } from '../../BaseChart';
+import { EditLiveMovePropTypes, TickerMetricStoreFormat } from 'store/prices/watchlist';
 
 export const addLineTracker = (props: {
     baseId: string;
     tooltipId: string;
-    data: DefaultDataProps;
+    data: DefaultDataProps; // The base data tracker
+    metrics: TickerMetricStoreFormat[];
+    setLiveMoves: (props: EditLiveMovePropTypes) => void;
 }) => {
     const svg = d3.selectAll(`#${props.baseId}`);
+    const tickerSymbol: string = props.baseId.split('_')[0];
+
     const bisect = d3.bisector((d: any) => d).left;
 
     const nameWrapper = (name: string) => `${props.baseId}_${name}_${props.tooltipId}`;
@@ -73,6 +78,20 @@ export const addLineTracker = (props: {
         const x0 = x.invert(d3.pointer(e, svg.node())[0]);
         const i = bisect(dates, x0, 1);
         if (dates[i]) {
+            props.setLiveMoves({
+                ticker: tickerSymbol,
+                metric: 'price',
+                value: props.data.dataY[i],
+            });
+            if (props.metrics) {
+                props.metrics.map((entry: TickerMetricStoreFormat) => {
+                    props.setLiveMoves({
+                        ticker: tickerSymbol,
+                        metric: entry.metric,
+                        value: entry.value[i],
+                    });
+                });
+            }
             focus
                 .selectAll(`.${lineClassname}_y`)
                 .attr('transform', `translate(${x(dates[i])}, 0)`);

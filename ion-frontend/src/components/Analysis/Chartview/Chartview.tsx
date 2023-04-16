@@ -15,6 +15,7 @@ import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import ChartviewToolbar from './ChartviewToolbar';
 import { ASSET_TYPES } from 'common/constant';
 import { getHistoricalForex } from 'data/ingestion/forex';
+import ChartviewPriceShower from './ChartviewPriceShower';
 
 const Item = styled(Box)(({ theme }) => ({
     height: '100%',
@@ -79,12 +80,14 @@ export default function Chartview(props: {
         <Item>
             <ChartviewToolbar ticker={props.ticker} baseId={baseLineChartId} />
             {props.ticker && data[props.ticker] ? (
-                <div style={{ height: '90%', display: 'flex' }}>
+                <div style={{ height: '90%' }}>
+                    <ChartviewPriceShower ticker={props.ticker} />
                     <BaseLineChart
                         showAxis
                         showGrid
                         showAverage
                         showTooltip
+                        showMetrics
                         baseId={baseLineChartId}
                         defaultData={data[props.ticker]}
                     />
