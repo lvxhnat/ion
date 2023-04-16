@@ -1,5 +1,5 @@
-import uuid
 import pandas as pd
+from uuid import uuid4
 from typing import List, Union
 
 import psycopg2
@@ -171,11 +171,21 @@ def bulk_upsert(
 
         objects: List[TableSchema] = []
 
+        table_names: List[str] = [
+            col.name for col in TableSchema.__table__.columns
+        ]
+        create_default_uuid: bool = False
+        if "uuid" in table_names:
+            create_default_uuid = True
+
         if isinstance(WriteObject, pd.DataFrame):
             WriteObject = WriteObject.iterrows()
 
         for object in WriteObject:
-            objects.append(TableSchema(**object))
+            if create_default_uuid:
+                objects.append(TableSchema(uuid=str(uuid4()), **object))
+            else:
+                objects.append(TableSchema(**object))
 
     else:
 

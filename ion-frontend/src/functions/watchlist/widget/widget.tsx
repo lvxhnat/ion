@@ -82,9 +82,14 @@ export default function Widget() {
                 <TableBody>
                     {tickerData?.map((entry, index: number) => {
                         return (
-                            <StyledTableRow key={`tickerTableBody_${index}`} onClick={() => navigate(
-                                `${ROUTES.PUBLIC.ANALYSIS}/${ASSET_TYPES.EQUITY}/${entry.ticker}`
-                            )}>
+                            <StyledTableRow
+                                key={`tickerTableBody_${index}`}
+                                onClick={() =>
+                                    navigate(
+                                        `${ROUTES.PUBLIC.ANALYSIS}/${ASSET_TYPES.EQUITY}/${entry.ticker}`
+                                    )
+                                }
+                            >
                                 <StyledTableCell>{entry.ticker}</StyledTableCell>
                                 <StyledTableCell
                                     color={

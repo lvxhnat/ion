@@ -10,14 +10,15 @@ import { TbMathIntegralX } from 'react-icons/tb';
 
 import { ColorsEnum } from 'common/theme';
 import {
-    AllowedMetricCategories,
+    MetricCalculableFields,
+    TickerMetricStoreFormat,
     useMetricStore,
     useTickerDataStore,
 } from 'store/prices/watchlist';
 import { useThemeStore } from 'store/theme';
 import { TickerSearch } from 'components/Search/Search';
-import { technicalIndicators } from './calculations/metrics';
 import { removeLine } from 'components/Charting/BaseChart/plugins/addLine/addLine';
+import { technicalIndicators } from './calculations/metrics';
 
 const ModifiedStudiesButton = (props: { [others: string]: any }) => {
     return (
@@ -41,22 +42,22 @@ const LabPopupMetricRow = (props: {
     const data = useTickerDataStore(state => state.data);
     const addMetric = useMetricStore(state => state.addMetric);
 
+    const windowSize = 9;
+    const indicatorId = `${props.indicator}_${windowSize}`;
+
     return (
         <S.LabContainerMetricTableRow
             onClick={() => {
+                const movingAverage: number[] = technicalIndicators[props.indicator](
+                    data[props.ticker].dataY
+                );
                 addMetric({
                     ticker: props.ticker,
-                    metrics: {
-                        metric: props.indicator,
-                        type: 'price',
+                    value: {
+                        metric: indicatorId,
+                        field: 'price',
+                        value: movingAverage,
                     },
-                });
-                const indicator = technicalIndicators[props.indicator];
-                indicator({
-                    baseId: props.baseId,
-                    dataX: data[props.ticker].dataX,
-                    dataY: data[props.ticker].dataY,
-                    window: 9,
                 });
             }}
         >
@@ -94,7 +95,7 @@ const LabPopupMetricRow = (props: {
 const LabPopupStrategyRow = (props: {
     baseId: string;
     ticker: string;
-    metricType: AllowedMetricCategories;
+    fieldType: MetricCalculableFields;
 }) => {
     const [metrics, removeMetric] = useMetricStore(state => [
         state.metrics[props.ticker],
@@ -105,38 +106,40 @@ const LabPopupStrategyRow = (props: {
         <S.LabPopupStrategyRow>
             <S.LabPopupStrategyRowCell header style={{ width: '20%' }}>
                 <Typography variant="subtitle2">
-                    {props.metricType.charAt(0).toUpperCase() + props.metricType.slice(1)}
+                    {props.fieldType.charAt(0).toUpperCase() + props.fieldType.slice(1)}
                 </Typography>
             </S.LabPopupStrategyRowCell>
-            {metrics && metrics[props.metricType].length !== 0 ? (
-                metrics[props.metricType].map((metricName: string) => {
+            {metrics && metrics.length !== 0 ? (
+                metrics.map((entry: TickerMetricStoreFormat) => {
+                    const indicatorId: string = entry.metric;
                     return (
-                        <React.Fragment>
+                        <React.Fragment key={`${indicatorId}_labPopupStrategyRow`}>
                             <S.LabPopupStrategyRowCell
                                 style={{ width: '60%', justifyContent: 'flex-start' }}
                             >
-                                <Typography variant="subtitle2">{metricName}</Typography>
+                                <Typography variant="subtitle2">
+                                    {entry.field === props.fieldType ? indicatorId : null}
+                                </Typography>
                             </S.LabPopupStrategyRowCell>
                             <S.LabPopupStrategyRowCell
                                 style={{ width: '20%', justifyContent: 'flex-end' }}
                             >
-                                <S.CloseIconWrapper
-                                    onClick={() => {
-                                        removeMetric({
-                                            ticker: props.ticker,
-                                            metrics: {
-                                                type: props.metricType,
-                                                metric: metricName as keyof typeof technicalIndicators,
-                                            },
-                                        });
-                                        removeLine({
-                                            baseId: props.baseId,
-                                            id: metricName,
-                                        });
-                                    }}
-                                >
-                                    <CloseIcon fontSize="inherit" />
-                                </S.CloseIconWrapper>
+                                {entry.field === props.fieldType ? (
+                                    <S.CloseIconWrapper
+                                        onClick={() => {
+                                            removeMetric({
+                                                ticker: props.ticker,
+                                                metric: indicatorId,
+                                            });
+                                            removeLine({
+                                                baseId: props.baseId,
+                                                id: indicatorId,
+                                            });
+                                        }}
+                                    >
+                                        <CloseIcon fontSize="inherit" />
+                                    </S.CloseIconWrapper>
+                                ) : null}
                             </S.LabPopupStrategyRowCell>
                         </React.Fragment>
                     );
@@ -155,11 +158,6 @@ const LabPopup = (props: {
     setShow: (show: boolean) => void;
 }) => {
     const [showCancel, setShowCancel] = React.useState<boolean>(false);
-    const addMetric = useMetricStore(state => state.addMetric);
-
-    React.useEffect(() => {
-        addMetric({ ticker: props.ticker, metrics: null });
-    }, []);
 
     return (
         <div
@@ -176,20 +174,7 @@ const LabPopup = (props: {
                 backgroundColor: ColorsEnum.black,
             }}
         >
-            <div
-                style={{
-                    height: 25,
-                    width: '100%',
-                    display: 'flex',
-                    padding: 2,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderTopLeftRadius: 10,
-                    borderTopRightRadius: 10,
-                    backgroundColor: ColorsEnum.coolgray6,
-                    color: ColorsEnum.black,
-                }}
-            >
+            <S.LabPopupContainerWrapper>
                 <div style={{ gap: 2, display: 'flex', width: '33%', paddingLeft: 5 }}>
                     <S.LabOpenButtonWrapper
                         onMouseOver={() => setShowCancel(true)}
@@ -210,7 +195,7 @@ const LabPopup = (props: {
                         Edit Studies and Strategies
                     </Typography>
                 </div>
-            </div>
+            </S.LabPopupContainerWrapper>
 
             <div style={{ display: 'flex', maxHeight: 500, overflowY: 'hidden' }}>
                 <S.LabPopupMetricsTableWrapper>
@@ -236,17 +221,17 @@ const LabPopup = (props: {
                     <LabPopupStrategyRow
                         baseId={props.baseId}
                         ticker={props.ticker}
-                        metricType="price"
+                        fieldType="price"
                     />
                     <LabPopupStrategyRow
                         baseId={props.baseId}
                         ticker={props.ticker}
-                        metricType="volume"
+                        fieldType="volume"
                     />
                     <LabPopupStrategyRow
                         baseId={props.baseId}
                         ticker={props.ticker}
-                        metricType="lower"
+                        fieldType="lower"
                     />
                 </div>
             </div>
@@ -254,7 +239,7 @@ const LabPopup = (props: {
     );
 };
 
-export default function ChartviewToolbar(props: { ticker: undefined | string; baseId: string }) {
+export default function ChartviewToolbar(props: { ticker: string | undefined; baseId: string }) {
     const { mode } = useThemeStore();
     const data = useTickerDataStore(state => state.data);
     const [showLab, setShowLab] = React.useState<boolean>(false);
@@ -336,6 +321,7 @@ export default function ChartviewToolbar(props: { ticker: undefined | string; ba
                     </>
                 ) : undefined}
             </div>
+            <div></div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                 <ModifiedStudiesButton onClick={() => setShowLab(true)} />
             </div>

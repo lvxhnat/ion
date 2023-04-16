@@ -21,11 +21,11 @@ def clean_geonames(data: GeoNamesData):
     required_columns = [
         col.name for col in AreaLatLon.__table__.columns if col.name != "uuid"
     ]
-    data = pd.DataFrame(
-        data, columns=GeoNamesData.__fields__.keys()
-    ).drop_duplicates()
-    data = data[required_columns]
-    return data.dropna()
+    return (
+        pd.DataFrame(data, columns=GeoNamesData.__fields__.keys())
+        .drop_duplicates()[required_columns]
+        .dropna()
+    )
 
 
 @task

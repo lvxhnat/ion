@@ -3,9 +3,9 @@ import * as C from '../plugins';
 import { DefaultDataProps } from '../schema/schema';
 
 interface addChartProps extends Omit<DefaultDataProps, 'name' | 'parent'> {
+    baseId: string;
     x: d3.ScaleTime<number, number, never>;
     y: d3.ScaleLinear<number, number, never>;
-    baseId: string;
 }
 
 export default function addChart(props: addChartProps) {
@@ -18,12 +18,11 @@ export default function addChart(props: addChartProps) {
     //         color: color === undefined ? props.color : color,
     //     });
     // };
-
     const addLine = (data: number[]) => {
         return C.addLine({
+            id: props.id,
             x: props.x,
             y: props.y,
-            id: props.id,
             baseId: props.baseId,
             color: props.color,
             dataX: props.dataX,

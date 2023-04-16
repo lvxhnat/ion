@@ -12,10 +12,10 @@ import BaseLineChart from 'components/Charting/BaseChart';
 import { MdWaterfallChart } from 'react-icons/md';
 import { useTickerDataStore } from 'store/prices/watchlist';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
-import { addSimpleMovingAverage } from './calculations/movingAverages';
 import ChartviewToolbar from './ChartviewToolbar';
 import { ASSET_TYPES } from 'common/constant';
 import { getHistoricalForex } from 'data/ingestion/forex';
+import ChartviewPriceShower from './ChartviewPriceShower';
 
 const Item = styled(Box)(({ theme }) => ({
     height: '100%',
@@ -27,14 +27,19 @@ const Item = styled(Box)(({ theme }) => ({
  * Provides a historical chart view of a single security selected.
  * @returns
  */
-export default function Chartview(props: { assetType?: keyof typeof ASSET_TYPES, ticker?: string }) {
+export default function Chartview(props: {
+    assetType?: keyof typeof ASSET_TYPES;
+    ticker?: string;
+}) {
     const [data, setData] = useTickerDataStore(state => [state.data, state.setData]);
 
     const baseLineChartId: string = `${props.ticker}_tickerChart`;
 
     React.useEffect(() => {
         const ticker = props.ticker ? props.ticker : 'SPY';
-        const assetType: keyof typeof ASSET_TYPES = props.assetType ? props.assetType : ASSET_TYPES.ETF as keyof typeof ASSET_TYPES;
+        const assetType: keyof typeof ASSET_TYPES = props.assetType
+            ? props.assetType
+            : (ASSET_TYPES.ETF as keyof typeof ASSET_TYPES);
         if (assetType === ASSET_TYPES.FOREX) {
             getHistoricalForex(ticker, '1M_S').then(res => {
                 const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
@@ -68,19 +73,21 @@ export default function Chartview(props: { assetType?: keyof typeof ASSET_TYPES,
                     } as DefaultDataProps,
                 });
             });
-        } 
+        }
     }, []);
 
     return (
         <Item>
             <ChartviewToolbar ticker={props.ticker} baseId={baseLineChartId} />
             {props.ticker && data[props.ticker] ? (
-                <div style={{ height: '90%', display: 'flex' }}>
+                <div style={{ height: '90%' }}>
+                    <ChartviewPriceShower ticker={props.ticker} />
                     <BaseLineChart
                         showAxis
                         showGrid
                         showAverage
                         showTooltip
+                        showMetrics
                         baseId={baseLineChartId}
                         defaultData={data[props.ticker]}
                     />

@@ -13,6 +13,6 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
     '&:hover': {
         cursor: 'pointer',
-        backgroundColor: ColorsEnum.coolgray1
-    }
+        backgroundColor: ColorsEnum.coolgray1,
+    },
 }));

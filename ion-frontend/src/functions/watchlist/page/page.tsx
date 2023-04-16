@@ -39,7 +39,12 @@ export default function Page() {
                                             style={{ height: `${90 / (selectedGridId[0] + 1)}vh` }}
                                         >
                                             {c_index === 0 ? (
-                                                <Chartview ticker="SPY" assetType={ASSET_TYPES.ETF as keyof typeof ASSET_TYPES}/>
+                                                <Chartview
+                                                    ticker="SPY"
+                                                    assetType={
+                                                        ASSET_TYPES.ETF as keyof typeof ASSET_TYPES
+                                                    }
+                                                />
                                             ) : (
                                                 <Chartview />
                                             )}
