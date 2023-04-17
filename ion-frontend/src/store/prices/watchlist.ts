@@ -44,6 +44,7 @@ export interface EditLiveMovePropTypes {
     metric: string;
     value: number | null;
 }
+export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> {}
 
 export interface EditLiveMoveTypes {
     liveMoves: {
@@ -52,6 +53,7 @@ export interface EditLiveMoveTypes {
         };
     };
     setLiveMoves: (props: EditLiveMovePropTypes) => void;
+    removeLiveMovesMetric: (props: RemoveLiveMoveMetricPropTypes) => void;
 }
 export const useLiveMovesStore = create<EditLiveMoveTypes>(set => ({
     liveMoves: {},
@@ -63,6 +65,12 @@ export const useLiveMovesStore = create<EditLiveMoveTypes>(set => ({
                 newLiveMoves[props.ticker] = {};
             }
             newLiveMoves[props.ticker][props.metric] = props.value;
+            return { liveMoves: newLiveMoves };
+        }),
+    removeLiveMovesMetric: (props: RemoveLiveMoveMetricPropTypes) =>
+        set((state: EditLiveMoveTypes) => {
+            const newLiveMoves = { ...state.liveMoves };
+            delete newLiveMoves[props.ticker][props.metric];
             return { liveMoves: newLiveMoves };
         }),
 }));

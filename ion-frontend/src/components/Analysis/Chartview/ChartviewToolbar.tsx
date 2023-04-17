@@ -12,6 +12,7 @@ import { ColorsEnum } from 'common/theme';
 import {
     MetricCalculableFields,
     TickerMetricStoreFormat,
+    useLiveMovesStore,
     useMetricStore,
     useTickerDataStore,
 } from 'store/prices/watchlist';
@@ -101,6 +102,7 @@ const LabPopupStrategyRow = (props: {
         state.metrics[props.ticker],
         state.removeMetric,
     ]);
+    const removeLiveMovesMetric = useLiveMovesStore(state => state.removeLiveMovesMetric);
 
     return (
         <S.LabPopupStrategyRow>
@@ -127,10 +129,12 @@ const LabPopupStrategyRow = (props: {
                                 {entry.field === props.fieldType ? (
                                     <S.CloseIconWrapper
                                         onClick={() => {
-                                            removeMetric({
+                                            const removeProps = {
                                                 ticker: props.ticker,
                                                 metric: indicatorId,
-                                            });
+                                            };
+                                            removeMetric(removeProps);
+                                            removeLiveMovesMetric(removeProps);
                                             removeLine({
                                                 baseId: props.baseId,
                                                 id: indicatorId,
@@ -267,8 +271,8 @@ export default function ChartviewToolbar(props: { ticker: string | undefined; ba
             <div
                 style={{
                     display: 'flex',
-                    alignItems: 'center',
                     width: '100%',
+                    alignItems: 'center',
                     justifyContent: 'flex-start',
                 }}
             >
@@ -296,7 +300,7 @@ export default function ChartviewToolbar(props: { ticker: string | undefined; ba
                             )}
                         </Typography>
                         <Typography
-                            variant="subtitle2"
+                            variant="subtitle1"
                             component="div"
                             style={{
                                 paddingLeft: 10,
