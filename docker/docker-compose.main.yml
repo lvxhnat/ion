@@ -1,6 +1,7 @@
 version: "3"
 
 services:
+
   frontend:
     container_name: frontend
     build:
@@ -15,8 +16,7 @@ services:
     depends_on: 
       backend:
         condition: service_started
-    networks: 
-      - main-network
+
   backend:
     container_name: backend
     build: 
@@ -26,8 +26,68 @@ services:
       - 1236:1236
     environment:
       POSTGRES_URI: postgresql://guest:guest@postgres-database:5432/postgres
-    networks: 
-      - main-network
-networks:
-  main-network:
-    driver: bridge
+    depends_on: 
+      postgres-database:
+        condition: service_started
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    env_file: ./zookeeper/env/docker.env
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - ${ION_MAPPED_ZK_PORT:-2181}:2181
+
+  broker:
+    image: confluentinc/cp-kafka:5.4.0
+    env_file: ./broker/env/docker.env
+    hostname: broker
+    container_name: broker
+    depends_on:
+      - zookeeper
+    ports:
+      - ${ION_MAPPED_KAFKA_BROKER_PORT:-9092}:9092
+
+  postgres-database:
+    container_name: postgres-database
+    image: postgres:12.3
+    env_file: ./postgres/env/docker.env
+    hostname: postgres
+    ports:
+      - "5432:5432"
+
+  prefect-server:
+    container_name: prefect-server
+    build:
+      context: ../
+      dockerfile: docker/prefect/Dockerfile
+    command:
+      - prefect
+      - orion
+      - start
+    ports:
+      - 4200:4200
+    environment:
+      PREFECT_ORION_ANALYTICS_ENABLED: "false"
+      PREFECT_LOGGING_SERVER_LEVEL: WARNING
+    depends_on:
+      postgres-database:
+        condition: service_started
+
+  prefect-agent:
+    container_name: prefect-agent
+    image: prefecthq/prefect:2.7-python3.9
+    command:
+      - prefect
+      - agent
+      - start
+      - -q
+      - treasury
+      - common
+    environment:
+      PREFECT_LOGGING_LEVEL: DEBUG
+      DOCKER_HOST: unix://var/run/docker.sock
+      PREFECT_API_URL: http://prefect-server:4200/api
+    depends_on:
+      prefect-server:
+        condition: service_started
