@@ -16,51 +16,16 @@ logger = get_logger("WARNING")
 
 class AssetHistoricalData(BaseModel):
     # Data Returned directly from the scrapers
+    symbol: str
+    date: int
+    volume: int
     close: float
     high: float
     open: float
     low: float
-    date: int
-    volume: int
-    symbol: str
 
 
 def get_finnhub_historical_data(
-    tickers: List[str],
-    from_date: str,
-) -> List[AssetHistoricalData]:
-
-    promise = partial(_get_finnhub_historical_data, from_date=from_date)
-    data = []
-
-    with ThreadPoolExecutor(
-        max_workers=min(os.cpu_count() - 1, len(tickers))
-    ) as executor:
-
-        future_promise = {
-            executor.submit(promise, blob): blob for blob in tickers
-        }
-
-        for future in as_completed(future_promise):
-            response = future.result()
-            data.append(response)
-
-    return data
-
-
-def date_to_unixtime(date, datetime_format) -> int:
-    """Return UNIX Time Stamp give a date and datetime format
-    Parameters
-    =============
-    date -> [str]               : date string
-    datetime_format -> [str]    : date string date format
-    """
-    d = datetime.strptime(date, datetime_format)
-    unixtime = time.mktime(d.timetuple())
-    return int(unixtime)
-
-
-def _get_finnhub_historical_data(
     ticker: str,
     api_key: str = ingestion_settings.FINNHUB_API_KEY,
     from_date: str = "2022-02-20",
@@ -135,12 +100,11 @@ def _get_finnhub_historical_data(
                 )
                 .drop(columns=["status"])
             )
+            historical["date"] = pd.to_datetime(historical["date"], unit="s")
             historical["symbol"] = ticker
 
             if data_format == "json":
-                historical = eval(
-                    historical.to_json(orient="table", index=False)
-                )["data"]
+                historical = [*historical.to_dict(orient="index").values()]
 
             elif data_format == "csv":
                 historical.date = historical.date.apply(
@@ -164,5 +128,40 @@ def _get_finnhub_historical_data(
         )
 
 
+def _get_finnhub_historical_data(
+    tickers: List[str],
+    from_date: str,
+) -> List[List[AssetHistoricalData]]:
+
+    promise = partial(get_finnhub_historical_data, from_date=from_date)
+    data = []
+
+    with ThreadPoolExecutor(
+        max_workers=min(os.cpu_count() - 1, len(tickers))
+    ) as executor:
+
+        future_promise = {
+            executor.submit(promise, blob): blob for blob in tickers
+        }
+
+        for future in as_completed(future_promise):
+            response = future.result()
+            data.append(response)
+
+    return data
+
+
+def date_to_unixtime(date, datetime_format) -> int:
+    """Return UNIX Time Stamp give a date and datetime format
+    Parameters
+    =============
+    date -> [str]               : date string
+    datetime_format -> [str]    : date string date format
+    """
+    d = datetime.strptime(date, datetime_format)
+    unixtime = time.mktime(d.timetuple())
+    return int(unixtime)
+
+
 if __name__ == "__main__":
-    print(_get_finnhub_historical_data(ticker="SPY"))
+    print(get_finnhub_historical_data(ticker="SPY"))

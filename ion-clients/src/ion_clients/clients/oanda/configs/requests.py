@@ -148,7 +148,6 @@ HISTORICAL_GRANULARITY = {
     "6M": "H12",
     "3M": "H6",
     "1M": "M15",
-    "1M_S": "D",
     "1W": "M10",
     "1D": "M1",
 }

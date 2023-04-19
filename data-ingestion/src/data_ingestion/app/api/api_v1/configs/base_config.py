@@ -3,7 +3,7 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     APP_NAME: str = "data_ingestion"
-    API_V1_STR: str = "/api/v1"
+    API_VERSION_STRING: str = "/api/v1"
     BASE_ENDPOINT_PREFIX: str = ""
     MASK_ENDPOINT_PREFIX: str = ""
     PREFIX_ALLOCATION: dict = {

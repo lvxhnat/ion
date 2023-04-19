@@ -1,11 +1,17 @@
 from datetime import datetime
 from pydantic import BaseModel
 
-
-class HistoricalForexDTO(BaseModel):
+class HistoricalCandlesDTO(BaseModel):
+    symbol: str
     date: datetime
-    vol: int
+    volume: int
     open: float
     high: float
     low: float
     close: float
+
+class HistoricalForexDTO(HistoricalCandlesDTO):
+    pass
+
+class HistoricalEquityDTO(HistoricalCandlesDTO): 
+    pass

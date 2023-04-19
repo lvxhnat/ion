@@ -71,7 +71,7 @@ def get_oanda_historical_data(
     granularity: Optional[OandaReqGranularities] = "S5",
 ):
 
-    if count <= 5000:
+    if count and count <= 5000:
         return _get_oanda_historical_single_request_data(
             count=count,
             symbol=symbol,

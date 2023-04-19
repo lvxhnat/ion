@@ -2,30 +2,19 @@ import uvicorn
 import inspect
 from typing import List
 
-from celery import Celery, current_app
-
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 
-from data_ingestion.app.api.api_v1.configs.base_config import (
-    settings as base_settings,
+from data_ingestion.app.api.api_v2 import api
+from data_ingestion.app.api.api_v2.configs.base_config import (
+    configs as base_configs,
 )
-from data_ingestion.app.api.api_v1.configs.celery_config import (
-    settings as celery_settings,
-)
-from data_ingestion.app.api.api_v1 import api
 
 from ion_clients.services.postgres.schemas.base import Base
 from ion_clients.services.postgres.schemas.infra import ingestion
 from ion_clients.services.postgres.actions import initialise_table
 
 from ion_clients.clients.oanda.instruments import stream_oanda_live_data
-
-
-def create_celery() -> Celery:
-    celery_app: Celery = current_app
-    celery_app.config_from_object(celery_settings, namespace="CELERY")
-    return celery_app
 
 
 def create_app() -> FastAPI:
@@ -37,8 +26,7 @@ def create_app() -> FastAPI:
         root_path="/",
         contact={"name": "Yi Kuang", "email": "yikuang5@gmail.com"},
     )
-    app.celery_app = create_celery()
-    app.include_router(api.api_router, prefix=base_settings.API_V1_STR)
+    app.include_router(api.api_router, prefix=base_configs.API_VERSION_STRING)
 
     origins = [
         "http://localhost:*",

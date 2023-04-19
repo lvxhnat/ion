@@ -10,14 +10,14 @@ from ion_clients.clients.oanda.types.candles import (
 
 class HistoricalEquityParams(BaseModel):
 
-    tickers: List[str]
+    tickers: str
     from_date: Optional[str]
     to_date: Optional[str]
 
     class Config:
         schema_extra = {
             "example": {
-                "tickers": ["AAPL"],
+                "tickers": "AAPL",
                 "from_date": "2023-01-01",
             }
         }
@@ -25,7 +25,7 @@ class HistoricalEquityParams(BaseModel):
 
 class HistoricalForexParams(BaseModel):
     symbol: OandaReqCurrencies
-    count: Optional[int] = 5000
+    count: Optional[int]
     to_date: Optional[datetime]
     from_date: Optional[datetime]
     period: Optional[OandaReqIntervals]
