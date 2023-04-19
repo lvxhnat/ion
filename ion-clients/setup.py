@@ -4,7 +4,7 @@ import pathlib
 import setuptools
 from setuptools import setup
 
-name = "ion_client"
+name = "ion_clients"
 here = pathlib.Path.absolute(pathlib.Path(__file__).resolve().parent)
 
 # get package version

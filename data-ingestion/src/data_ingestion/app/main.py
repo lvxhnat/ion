@@ -7,8 +7,10 @@ from celery import Celery, current_app
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 
-from data_ingestion.app.configs.base_config import settings as base_settings
-from data_ingestion.app.configs.celery_config import (
+from data_ingestion.app.api.api_v1.configs.base_config import (
+    settings as base_settings,
+)
+from data_ingestion.app.api.api_v1.configs.celery_config import (
     settings as celery_settings,
 )
 from data_ingestion.app.api.api_v1 import api

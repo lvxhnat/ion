@@ -25,12 +25,12 @@ class AssetHistoricalData(BaseModel):
     symbol: str
 
 
-def get_finnhub_tickers_hd(
+def get_finnhub_historical_data(
     tickers: List[str],
     from_date: str,
-):
+) -> List[AssetHistoricalData]:
 
-    promise = partial(get_finnhub_historical_data, from_date=from_date)
+    promise = partial(_get_finnhub_historical_data, from_date=from_date)
     data = []
 
     with ThreadPoolExecutor(
@@ -60,7 +60,7 @@ def date_to_unixtime(date, datetime_format) -> int:
     return int(unixtime)
 
 
-def get_finnhub_historical_data(
+def _get_finnhub_historical_data(
     ticker: str,
     api_key: str = ingestion_settings.FINNHUB_API_KEY,
     from_date: str = "2022-02-20",
@@ -110,7 +110,7 @@ def get_finnhub_historical_data(
     if response.status_code == 429:
         logger.warning("Too many requests. Sleeping...")
         time.sleep(30)
-        return get_finnhub_historical_data(
+        return _get_finnhub_historical_data(
             ticker,
             api_key=api_key,
             from_date=from_date,
@@ -165,4 +165,4 @@ def get_finnhub_historical_data(
 
 
 if __name__ == "__main__":
-    print(get_finnhub_historical_data(ticker="SPY"))
+    print(_get_finnhub_historical_data(ticker="SPY"))

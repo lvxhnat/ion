@@ -1,6 +1,6 @@
 from typing import Literal
 
-OandaReqIntervals = Literal["5Y", "1Y", "6M", "3M", "1M", "1M_S", "1W", "1D"]
+OandaReqIntervals = Literal["5Y", "1Y", "6M", "3M", "1M", "1W", "1D"]
 
 OandaReqCurrencies = Literal[
     "AUD_CAD",

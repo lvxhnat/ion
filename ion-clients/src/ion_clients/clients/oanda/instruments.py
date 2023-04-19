@@ -6,7 +6,7 @@ import asyncio
 import warnings
 import requests
 import numpy as np
-from typing import Callable, List, Iterator
+from typing import Callable, List, Iterator, Optional
 from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor
 
@@ -32,6 +32,7 @@ from ion_clients.clients.oanda.types.candles import (
 )
 
 from ion_clients.clients.oanda.helpers.time import clean_time
+
 
 async def stream_oanda_live_data(
     symbols: List[OandaReqCurrencies], callback: Callable
@@ -61,17 +62,53 @@ async def stream_oanda_live_data(
                     )
 
 
+def get_oanda_historical_data(
+    symbol: OandaReqCurrencies,
+    to_date: str = None,
+    from_date: str = None,
+    count: Optional[int] = None,
+    period: Optional[OandaReqIntervals] = None,
+    granularity: Optional[OandaReqGranularities] = "S5",
+):
+
+    if count <= 5000:
+        return _get_oanda_historical_single_request_data(
+            count=count,
+            symbol=symbol,
+            to_date=to_date,
+            from_date=from_date,
+            granularity=granularity,
+        )
+
+    if period:
+        return _get_oanda_historical_single_request_data(
+            symbol=symbol,
+            granularity=HISTORICAL_GRANULARITY[period],
+            from_date=datetime.utcnow()
+            - Intervals[INTERVAL_NAMING[period]].value,
+            to_date=datetime.utcnow(),
+        )
+
+    else:
+        return _get_oanda_historical_data(
+            symbol=symbol,
+            to_date=to_date,
+            from_date=from_date,
+            granularity=granularity,
+        )
+
+
 def historical(symbol: OandaReqCurrencies, period: OandaReqIntervals):
 
     if period == "1M_S":
-        return __get_oanda_base_data(
+        return _get_oanda_historical_single_request_data(
             symbol=symbol,
             granularity=HISTORICAL_GRANULARITY[period],
             count=50,
         )
 
     else:
-        return __get_oanda_base_data(
+        return _get_oanda_historical_single_request_data(
             symbol=symbol,
             granularity=HISTORICAL_GRANULARITY[period],
             from_date=datetime.utcnow()
@@ -80,21 +117,14 @@ def historical(symbol: OandaReqCurrencies, period: OandaReqIntervals):
         )
 
 
-def get_oanda_historical_data(
+def _get_oanda_historical_data(
     symbol: OandaReqCurrencies,
     from_date: str,
     to_date: str,
     granularity: OandaReqGranularities,
     parallelize: bool = False,
-):
-    """_summary_
-
-    Args:
-        symbol (str): _description_
-        from_date (str): In %Y-%m-%d
-        to_date (str): _description_
-        granularity (str): _description_
-    """
+) -> OandaBaseDataResponse:
+    """Parallelised for multiple calls when the request boundaries fall out of the range accepted by the API parameters."""
     try:
         from_date: datetime = datetime.strptime(from_date, "%Y-%m-%d")
         to_date: datetime = datetime.strptime(to_date, "%Y-%m-%d")
@@ -138,7 +168,7 @@ def get_oanda_historical_data(
     if request_chunks > 1 and parallelize:
         with ThreadPoolExecutor(max_workers=os.cpu_count() - 1) as executor:
             results: Iterator = executor.map(
-                lambda x, y: __get_oanda_base_data(
+                lambda x, y: _get_oanda_historical_single_request_data(
                     symbol=symbol,
                     granularity=granularity,
                     from_date=x,
@@ -159,7 +189,7 @@ def get_oanda_historical_data(
             result = []
             for f_date, t_date in zip(from_date_requests, to_date_requests):
                 result.append(
-                    __get_oanda_base_data(
+                    _get_oanda_historical_single_request_data(
                         symbol=symbol,
                         from_date=f_date,
                         to_date=t_date,
@@ -168,7 +198,7 @@ def get_oanda_historical_data(
                 )
             return result
 
-        return __get_oanda_base_data(
+        return _get_oanda_historical_single_request_data(
             symbol=symbol,
             from_date=from_date,
             to_date=to_date,
@@ -176,14 +206,17 @@ def get_oanda_historical_data(
         )
 
 
-def __get_oanda_base_data(
+def _get_oanda_historical_single_request_data(
     symbol: OandaReqCurrencies,
     count: int = 5000,
     from_date: datetime = None,
     to_date: datetime = None,
     granularity: OandaReqGranularities = "S5",
-    price_type: str = "M",
 ) -> OandaBaseDataResponse:
+    
+    """Get data based on the limits of a single request"""    
+    
+    price_type: str = "M"
 
     if count is None and from_date is None and to_date is None:
         raise ValueError(
@@ -279,18 +312,11 @@ def __unpack_oanda_base_data(
 
 if __name__ == "__main__":
 
-    print("__get_oanda_base_data")
-    a = __get_oanda_base_data(
-        symbol="EUR_USD",
-        from_date=datetime(2021, 1, 1, 0, 0),
-        to_date=datetime(2021, 1, 1, 16, 40),
-        granularity="M1",
-    )
-
-    print("get_oanda_historical_data")
-    b = get_oanda_historical_data(
+    print("_get_oanda_historical_data")
+    b = _get_oanda_historical_data(
         "EUR_USD",
         from_date="2021-01-01",
         to_date="2021-02-02",
         granularity="M1",
     )
+    print(b)

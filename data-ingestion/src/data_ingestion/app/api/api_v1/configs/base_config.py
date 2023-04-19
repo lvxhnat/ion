@@ -4,8 +4,8 @@ from pydantic import BaseSettings
 class Settings(BaseSettings):
     APP_NAME: str = "data_ingestion"
     API_V1_STR: str = "/api/v1"
-    BASE_ENDPOINT_PREFIX: str = "/base"
-    MASK_ENDPOINT_PREFIX: str = "/aggr"
+    BASE_ENDPOINT_PREFIX: str = ""
+    MASK_ENDPOINT_PREFIX: str = ""
     PREFIX_ALLOCATION: dict = {
         "AUTOCOMPLETE": BASE_ENDPOINT_PREFIX,
         "CANDLES": BASE_ENDPOINT_PREFIX,
