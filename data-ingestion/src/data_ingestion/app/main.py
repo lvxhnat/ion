@@ -2,7 +2,6 @@ import uvicorn
 import inspect
 from typing import List
 
-from kombu import Queue
 from celery import Celery, current_app
 
 from fastapi import FastAPI, WebSocket
@@ -11,7 +10,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from data_ingestion.app.configs.base_config import settings as base_settings
 from data_ingestion.app.configs.celery_config import (
     settings as celery_settings,
-    celery_config,
 )
 from data_ingestion.app.api.api_v1 import api
 

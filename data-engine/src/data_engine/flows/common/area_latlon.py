@@ -12,18 +12,17 @@ from ion_clients.services.postgres.schemas.data.area_latlon import AreaLatLon
 
 
 @task
-def ingest_geonames():
-    return geonames_info()
+def ingest_geonames() -> pd.DataFrame:
 
-
-@task
-def clean_geonames(data: GeoNamesData):
-    required_columns = [
-        col.name for col in AreaLatLon.__table__.columns if col.name != "uuid"
-    ]
     return (
-        pd.DataFrame(data, columns=GeoNamesData.__fields__.keys())
-        .drop_duplicates()[required_columns]
+        geonames_info()
+        .drop_duplicates()[
+            [
+                col.name
+                for col in AreaLatLon.__table__.columns
+                if col.name != "uuid"
+            ]
+        ]
         .dropna()
     )
 
@@ -45,7 +44,6 @@ def typecast_geonames(data: pd.DataFrame):
 )
 def geonames_ingestion_flow():
     geonames = ingest_geonames.submit().result()
-    geonames = clean_geonames.submit(geonames).result()
     geonames = typecast_geonames.submit(geonames).result()
     refresh_table.submit(AreaLatLon, geonames).result()
 

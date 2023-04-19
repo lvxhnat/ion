@@ -1,11 +1,11 @@
 import zipfile
+import pandas as pd
 import urllib.request
-from typing import List
 
 from ion_clients.clients.common.types.area_latlon import GeoNamesData
 
 
-def geonames_info() -> List[GeoNamesData]:
+def geonames_info() -> pd.DataFrame:
     url = "http://download.geonames.org/export/dump/cities15000.zip"
 
     filehandle, _ = urllib.request.urlretrieve(url)
@@ -15,5 +15,8 @@ def geonames_info() -> List[GeoNamesData]:
     file = zip_file_object.open(first_file)
 
     content = file.read().decode("utf-8")
-
-    return [*map(lambda x: x.split("\t"), content.split("\n"))]
+    
+    return pd.DataFrame(
+        [*map(lambda x: x.split("\t"), content.split("\n"))],
+        columns=GeoNamesData.__fields__.keys()
+    )

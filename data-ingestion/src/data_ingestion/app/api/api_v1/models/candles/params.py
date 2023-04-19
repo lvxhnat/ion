@@ -7,12 +7,12 @@ from ion_clients.clients.oanda.types.candles import (
 )
 
 
-class LiveCandles(BaseModel):
+class OandaCandlesBounded(BaseModel):
     symbol: OandaReqCurrencies
     period: OandaReqIntervals
 
 
-class HistoricalOandaCandles(BaseModel):
+class OandaCandlesUnbounded(BaseModel):
     symbol: OandaReqCurrencies
     from_date: str
     to_date: str
@@ -29,7 +29,7 @@ class HistoricalOandaCandles(BaseModel):
         }
 
 
-class HistoricalFinhubCandles(BaseModel):
+class FinhubCandlesUnbounded(BaseModel):
     tickers: List[str]
     from_date: Optional[str]
 

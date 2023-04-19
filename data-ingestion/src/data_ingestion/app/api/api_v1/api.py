@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from data_ingestion.app.api.api_v1.endpoints import (
+from data_ingestion.app.api.api_v1.base_endpoints import (
     etf,
     candles,
     postgres,

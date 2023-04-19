@@ -1,11 +1,5 @@
 from pydantic import BaseModel
 
-
-class CurrentWeatherProps(BaseModel):
-    city: str
-    country_code: str
-
-
 class CurrentWeatherDTO(BaseModel):
     city: str
     sunrise: int 

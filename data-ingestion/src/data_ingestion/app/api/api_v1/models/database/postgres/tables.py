@@ -1,13 +1,7 @@
-from pydantic import BaseModel
 from ion_clients.services.postgres.schemas.data import (
     treasury,
     area_latlon,
 )
-
-
-class TableQueryParams(BaseModel):
-    table: str
-
 
 tables = {
     treasury.USBillRates.__tablename__: treasury.USBillRates,

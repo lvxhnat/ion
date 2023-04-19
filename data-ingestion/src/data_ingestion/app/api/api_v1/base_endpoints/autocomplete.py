@@ -1,21 +1,15 @@
-from dotenv import load_dotenv
 from fastapi import APIRouter
 
-from data_ingestion.app.configs.base_config import settings
+from data_ingestion.app.configs.base_config import settings as base_settings
 from data_ingestion.app.singleton import mongodb_client, test_connection
-from data_ingestion.app.api.api_v1.models.autocomplete import (
-    SecurityFunctions,
-    TradeableAssets,
-    ETFInfoRequest,
+from data_ingestion.app.api.api_v1.models.database.mongodb.params import (
+    SecurityFunctionsParams,
+    TradeableAssetsParams,
+    ETFInfoRequestParams,
 )
 
-from ion_clients.services.postgres.actions import order_query, get_session
-from ion_clients.services.postgres.schemas.data.tickers import AssetMetaData
-
-load_dotenv()
-
 router = APIRouter(
-    prefix="/autocomplete",
+    prefix=f"{base_settings.BASE_ENDPOINT_PREFIX}/autocomplete",
     tags=["autocomplete"],
 )
 
@@ -54,31 +48,31 @@ def ping():
 @router.get("/allFunctions")
 def get_all_functions():
     return list(
-        mongodb_client[settings.MONGODB_ASSET_INFO_TABLE][
-            settings.MONGODB_FUNCTIONS_COLLECTION
+        mongodb_client[base_settings.MONGODB_ASSET_INFO_TABLE][
+            base_settings.MONGODB_FUNCTIONS_COLLECTION
         ].find({}, {"_id": 0})
     )
 
 
 @router.post("/securityFunctions")
-def get_function_autocomplete_info(params: SecurityFunctions):
+def get_function_autocomplete_info(params: SecurityFunctionsParams):
 
     query: str = params.query
 
     if query:
         pipeline = query_mongodb(
-            query, settings.MONGODB_FUNCTIONS_COLLECTION_QUERY_FIELD
+            query, base_settings.MONGODB_FUNCTIONS_COLLECTION_QUERY_FIELD
         )
         return list(
-            mongodb_client[settings.MONGODB_ASSET_INFO_TABLE][
-                settings.MONGODB_FUNCTIONS_COLLECTION
+            mongodb_client[base_settings.MONGODB_ASSET_INFO_TABLE][
+                base_settings.MONGODB_FUNCTIONS_COLLECTION
             ].aggregate(pipeline)
         )
 
     else:
         return list(
-            mongodb_client[settings.MONGODB_ASSET_INFO_TABLE][
-                settings.MONGODB_FUNCTIONS_COLLECTION
+            mongodb_client[base_settings.MONGODB_ASSET_INFO_TABLE][
+                base_settings.MONGODB_FUNCTIONS_COLLECTION
             ]
             .find()
             .limit(5)
@@ -86,34 +80,34 @@ def get_function_autocomplete_info(params: SecurityFunctions):
 
 
 @router.post("/tradeableAssets")
-def get_asset_autocomplete_info(params: TradeableAssets):
+def get_asset_autocomplete_info(params: TradeableAssetsParams):
 
     if not params.query_type and not params.query_tick:
         raise ValueError("Need to contain query_type or query_tick.")
 
     if params.query_tick:
         query = (
-            settings.MONGODB_TICK_COLLECTION_QUERY_TICK,
+            base_settings.MONGODB_TICK_COLLECTION_QUERY_TICK,
             params.query_tick,
         )
     else:
         query = (
-            settings.MONGODB_FUNCTIONS_COLLECTION_QUERY_FIELD,
+            base_settings.MONGODB_FUNCTIONS_COLLECTION_QUERY_FIELD,
             params.query_type,
         )
 
     if query:
         pipeline = query_mongodb(query[1], query[0])
         return list(
-            mongodb_client[settings.MONGODB_TICK_INFO_TABLE][
-                settings.MONGODB_TICK_COLLECTION
+            mongodb_client[base_settings.MONGODB_TICK_INFO_TABLE][
+                base_settings.MONGODB_TICK_COLLECTION
             ].aggregate(pipeline)
         )
 
     else:
         return list(
-            mongodb_client[settings.MONGODB_TICK_INFO_TABLE][
-                settings.MONGODB_TICK_COLLECTION
+            mongodb_client[base_settings.MONGODB_TICK_INFO_TABLE][
+                base_settings.MONGODB_TICK_COLLECTION
             ]
             .find()
             .limit(5)
@@ -123,14 +117,14 @@ def get_asset_autocomplete_info(params: TradeableAssets):
 @router.get("/etfAssetTypes")
 def get_etf_asset_types():
     return [
-        *mongodb_client[settings.MONGODB_ASSET_INFO_TABLE][
-            settings.MONGODB_ETFS_COLLECTION
+        *mongodb_client[base_settings.MONGODB_ASSET_INFO_TABLE][
+            base_settings.MONGODB_ETFS_COLLECTION
         ].distinct("asset_class")
     ]
 
 
 @router.post("/etfInfos")
-def get_etf_info(params: ETFInfoRequest):
+def get_etf_info(params: ETFInfoRequestParams):
 
     try:
 
@@ -157,8 +151,8 @@ def get_etf_info(params: ETFInfoRequest):
             )
 
         request_info = (
-            mongodb_client[settings.MONGODB_ASSET_INFO_TABLE][
-                settings.MONGODB_ETFS_COLLECTION
+            mongodb_client[base_settings.MONGODB_ASSET_INFO_TABLE][
+                base_settings.MONGODB_ETFS_COLLECTION
             ]
             .find(*find_kwargs)
             .sort(

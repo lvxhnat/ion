@@ -10,12 +10,19 @@ from ion_clients.clients.weather.types import (
 )
 from ion_clients.services.postgres.actions import order_search, get_session
 
-from data_ingestion.app.api.api_v1.models import weather, postgres
+from data_ingestion.app.configs.base_config import settings as base_settings
+from data_ingestion.app.api.api_v1.models.weather.params import (
+    CurrentWeatherParams,
+)
+from data_ingestion.app.api.api_v1.models.weather.dtos import CurrentWeatherDTO
+from data_ingestion.app.api.api_v1.models.database.postgres.dtos import (
+    tables as postgres_tables,
+)
 
 from fastapi import APIRouter, Depends
 
 router = APIRouter(
-    prefix="/weather",
+    prefix=f"{base_settings.BASE_ENDPOINT_PREFIX}/weather",
     tags=["weather"],
 )
 
@@ -27,7 +34,7 @@ def ping():
 
 @router.post("/currentWeather")
 def get_current_weather_conditions(
-    params: weather.CurrentWeatherProps,
+    params: CurrentWeatherParams,
     session: Session = Depends(get_session),
 ):
     return get_openweather_weather_data(
@@ -37,8 +44,8 @@ def get_current_weather_conditions(
 
 def get_openweather_weather_data(
     session, city: str, country_code
-) -> weather.CurrentWeatherDTO:
-    postgres_table = postgres.tables["global_area_latlon"]
+) -> CurrentWeatherDTO:
+    postgres_table = postgres_tables["global_area_latlon"]
     query = order_search(
         TableSchema=postgres_table,
         session=session,
@@ -67,7 +74,7 @@ def get_openweather_weather_data(
     }
 
 
-def get_wttr_weather_data(locale: str) -> weather.CurrentWeatherDTO:
+def get_wttr_weather_data(locale: str) -> CurrentWeatherDTO:
     data: wttrTypes.WttrBaseWeatherObject = wttrAPI.get_wttr_weather_data(
         locale
     )
