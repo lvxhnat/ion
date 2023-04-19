@@ -1,12 +1,10 @@
 import { ENDPOINTS } from 'common/constant/endpoints';
-import { FinnhubCandlesSchema } from 'data/schema/candles';
+import { EquityHistoricalDTO } from 'data/schema/tickers';
 import { dataIngestionRequest } from 'services/request';
 
 export const getCandles = (ticker: string | string[]) => {
-    return dataIngestionRequest.post<FinnhubCandlesSchema[]>(
-        ENDPOINTS.PRIVATE.FINHUB_FX_HISTORICAL_ENDPOINT,
-        {
-            tickers: typeof ticker === 'string' ? [ticker] : ticker,
-        }
+    return dataIngestionRequest.post<EquityHistoricalDTO[]>(
+        ENDPOINTS.PRIVATE.EQUITY_HISTORICAL_ENDPOINT,
+        { tickers: ticker }
     );
 };

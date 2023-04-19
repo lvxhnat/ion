@@ -13,7 +13,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 import BaseLineChart from 'components/Charting/BaseChart';
-import { FinnhubCandlesEntrySchema, FinnhubCandlesSchema } from 'data/schema/candles';
+import { EquityHistoricalDTO } from 'data/schema/tickers';
 import WidgetContainer from 'components/WidgetContainer';
 import { ETFDataSchema } from 'data/schema/etf';
 import { ColorsEnum } from 'common/theme';
@@ -116,7 +116,7 @@ export interface ETFViewerProps {
     loading: boolean;
     etfData: ETFDataSchema | undefined;
     setSelection: Function;
-    etfCandlesData: FinnhubCandlesSchema | undefined;
+    etfCandlesData: EquityHistoricalDTO | undefined;
 }
 
 export default function ETFViewer(props: ETFViewerProps) {
@@ -213,12 +213,11 @@ export default function ETFViewer(props: ETFViewerProps) {
                                                 name: 'Base Line Chart',
                                                 parent: true,
                                                 dataX: props.etfCandlesData.map(
-                                                    (entry: FinnhubCandlesEntrySchema) =>
+                                                    (entry: EquityHistoricalDTO) =>
                                                         new Date(entry.date * 1000)
                                                 ),
                                                 dataY: props.etfCandlesData.map(
-                                                    (entry: FinnhubCandlesEntrySchema) =>
-                                                        entry.close
+                                                    (entry: EquityHistoricalDTO) => entry.close
                                                 ),
                                                 color: 'white',
                                                 type: 'line',

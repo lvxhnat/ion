@@ -3,12 +3,13 @@ export const ENDPOINTS = {
         DATA_INGESTION: process.env.REACT_APP_DATA_INGESTION_BASE_URL,
     },
     PRIVATE: {
+        FOREX_STREAMING_ENDPOINT: 'oanda/ws',
+        FOREX_HISTORICAL_ENDPOINT: 'forex/historical',
+        EQUITY_HISTORICAL_ENDPOINT: 'equity/historical',
+        CURRENT_WEATHER_ENDPOINT: 'weather/current',
+
         ETF_INFO: 'etf/info',
-        OANDA_FX_STREAMING_ENDPOINT: 'oanda/ws',
-        OANDA_FX_HISTORICAL_ENDPOINT: 'candles/oanda/candlesHistorical',
-        FINHUB_FX_HISTORICAL_ENDPOINT: 'candles/finnhub/candlesHistorical',
         DB_QUERY: 'db/query',
-        CURRENT_WEATHER_ENDPOINT: 'weather/currentWeather',
         SEARCH_FUNCTIONS: 'autocomplete/securityFunctions',
         SEARCH_ASSETS: 'autocomplete/tradeableAssets',
         ALL_FUNCTIONS: 'autocomplete/allFunctions',
@@ -24,18 +25,18 @@ export const ENDPOINTS = {
 export const TEST_ENDPOINTS = {
     SEARCH_FUNCTIONS: {
         NAME: 'Autocomplete',
-        ENDPOINT: 'autocomplete/ping',
+        ENDPOINT: 'autocomplete/health',
     },
     OANDA_FUNCTIONS: {
         NAME: 'Candles',
-        ENDPOINT: 'candles/ping',
+        ENDPOINT: 'candles/health',
     },
     DB_FUNCTIONS: {
         NAME: 'Database',
-        ENDPOINT: 'db/ping',
+        ENDPOINT: 'db/health',
     },
     WEATHER_FUNCTIONS: {
         NAME: 'Weather',
-        ENDPOINT: 'weather/ping',
+        ENDPOINT: 'weather/health',
     },
 } as const;

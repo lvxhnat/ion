@@ -5,6 +5,8 @@ import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 
+import { useNavigate } from 'react-router-dom';
+
 import BaseLineChart from 'components/Charting/BaseChart';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import WidgetContainer from 'components/WidgetContainer';
@@ -13,9 +15,8 @@ import { TableCellWrapper } from 'components/Tables/BaseTable/style';
 import { ColorsEnum } from 'common/theme';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
 import { getCandles } from 'data/ingestion/candles';
-import { FinnhubCandlesSchema, FinnhubCandlesEntrySchema } from 'data/schema/candles';
 import { ASSET_TYPES, ROUTES } from 'common/constant';
-import { useNavigate } from 'react-router-dom';
+import { EquityHistoricalDTO } from 'data/schema/tickers';
 
 export default function Widget() {
     const navigate = useNavigate();
@@ -27,33 +28,32 @@ export default function Widget() {
             last_close: string;
             pct_change: number;
         }[]
-    >();
+    >([]);
 
     React.useEffect(() => {
-        getCandles(tickers).then(res => {
-            setTickerData(
-                res.data.map((entry: FinnhubCandlesSchema) => {
-                    return {
-                        ticker: entry[0].symbol,
-                        chartData: {
-                            id: entry[0].symbol,
-                            name: entry[0].symbol,
-                            parent: true,
-                            dataX: entry.map(
-                                (obj: FinnhubCandlesEntrySchema) => new Date(obj.date)
-                            ),
-                            dataY: entry.map((obj: FinnhubCandlesEntrySchema) => obj.close),
-                            color: 'white',
-                            type: 'pureLine',
-                        },
-                        last_close: entry[entry.length - 1].close.toFixed(2),
-                        pct_change:
-                            100 *
-                            ((entry[entry.length - 1].close - entry[entry.length - 2].close) /
-                                entry[entry.length - 2].close),
-                    };
-                })
-            );
+        tickers.map((ticker: string) => {
+            getCandles(ticker).then(res => {
+                const entry = res.data;
+                const newTickerData = [...tickerData];
+                newTickerData.push({
+                    ticker: ticker,
+                    chartData: {
+                        id: ticker,
+                        name: ticker,
+                        parent: true,
+                        dataX: res.data.map((obj: EquityHistoricalDTO) => new Date(obj.date)),
+                        dataY: res.data.map((obj: EquityHistoricalDTO) => obj.close),
+                        color: 'white',
+                        type: 'pureLine',
+                    },
+                    last_close: res.data[res.data.length - 1].close.toFixed(2),
+                    pct_change:
+                        100 *
+                        ((entry[entry.length - 1].close - entry[entry.length - 2].close) /
+                            entry[entry.length - 2].close),
+                });
+                setTickerData(newTickerData);
+            });
         });
     }, []);
 

@@ -1,5 +1,3 @@
-import { OHLCDataSchema } from 'data/schema/forex';
-
 export interface DefaultDataProps {
     id: string;
     name: string;
