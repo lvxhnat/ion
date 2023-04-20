@@ -25,7 +25,7 @@ export default function ETFExplorer() {
     const [loadingState, setLoadingState] = React.useState<boolean>(true);
     const [ticker, setTicker] = React.useState<string>('QQQ');
     const [etfData, setETFData] = React.useState<ETFDataSchema>();
-    const [etfCandlesData, setETFCandlesData] = React.useState<EquityHistoricalDTO>([]);
+    const [etfCandlesData, setETFCandlesData] = React.useState<EquityHistoricalDTO[]>([]);
     const [categories, setCategories] = React.useState<string[]>([]);
     const [categoryData, setCategoryData] = React.useState<UploadDataType>({} as UploadDataType);
     const [categorySelected, setCategorySelected] = React.useState<string>('All');
@@ -43,7 +43,7 @@ export default function ETFExplorer() {
             setETFData(res.data);
         });
         getCandles(ticker).then(res => {
-            if (res.data) setETFCandlesData(res.data[0]);
+            if (res.data) setETFCandlesData(res.data);
         });
         setLoadingState(false);
     }, [ticker]);

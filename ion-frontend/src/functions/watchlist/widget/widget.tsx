@@ -18,44 +18,66 @@ import { getCandles } from 'data/ingestion/candles';
 import { ASSET_TYPES, ROUTES } from 'common/constant';
 import { EquityHistoricalDTO } from 'data/schema/tickers';
 
-export default function Widget() {
+function WidgetTickerRow(props: { ticker: string }) {
+    const [data, setData] = React.useState<{
+        ticker: string;
+        chartData: DefaultDataProps;
+        last_close: string;
+        pct_change: number;
+    }>();
     const navigate = useNavigate();
-    const tickers = ['SPY', 'GPS', 'BABA', 'AAPL', 'TSLA', 'IAU', 'VGLT'];
-    const [tickerData, setTickerData] = React.useState<
-        {
-            ticker: string;
-            chartData: DefaultDataProps;
-            last_close: string;
-            pct_change: number;
-        }[]
-    >([]);
 
     React.useEffect(() => {
-        tickers.map((ticker: string) => {
-            getCandles(ticker).then(res => {
-                const entry = res.data;
-                const newTickerData = [...tickerData];
-                newTickerData.push({
-                    ticker: ticker,
-                    chartData: {
-                        id: ticker,
-                        name: ticker,
-                        parent: true,
-                        dataX: res.data.map((obj: EquityHistoricalDTO) => new Date(obj.date)),
-                        dataY: res.data.map((obj: EquityHistoricalDTO) => obj.close),
-                        color: 'white',
-                        type: 'pureLine',
-                    },
-                    last_close: res.data[res.data.length - 1].close.toFixed(2),
-                    pct_change:
-                        100 *
-                        ((entry[entry.length - 1].close - entry[entry.length - 2].close) /
-                            entry[entry.length - 2].close),
-                });
-                setTickerData(newTickerData);
+        getCandles(props.ticker).then(res => {
+            const entry = res.data;
+            setData({
+                ticker: props.ticker,
+                chartData: {
+                    id: props.ticker,
+                    name: props.ticker,
+                    parent: true,
+                    dataX: res.data.map((obj: EquityHistoricalDTO) => new Date(obj.date)),
+                    dataY: res.data.map((obj: EquityHistoricalDTO) => obj.close),
+                    color: 'white',
+                    type: 'pureLine',
+                },
+                last_close: res.data[res.data.length - 1].close.toFixed(2),
+                pct_change:
+                    100 *
+                    ((entry[entry.length - 1].close - entry[entry.length - 2].close) /
+                        entry[entry.length - 2].close),
             });
         });
     }, []);
+
+    return data ? (
+        <StyledTableRow
+            key={`tickerTableBody_${data.ticker}`}
+            onClick={() =>
+                navigate(`${ROUTES.PUBLIC.ANALYSIS}/${ASSET_TYPES.EQUITY}/${data.ticker}`)
+            }
+        >
+            <StyledTableCell>{data.ticker}</StyledTableCell>
+            <StyledTableCell color={data.pct_change > 0 ? ColorsEnum.upHint : ColorsEnum.downHint}>
+                {data.pct_change.toFixed(2)}%
+            </StyledTableCell>
+            <StyledTableCell>{data.last_close}</StyledTableCell>
+            <TableCellWrapper id={`${data.ticker}_tickerChartWrapper`}>
+                <div style={{ height: '25px' }}>
+                    <BaseLineChart
+                        showAverage
+                        baseId={`${data.ticker}_tickerChart`}
+                        defaultData={data.chartData}
+                    />
+                </div>
+            </TableCellWrapper>
+        </StyledTableRow>
+    ) : (
+        <></>
+    );
+}
+export default function Widget() {
+    const tickers = ['SPY', 'GPS', 'BABA', 'AAPL', 'TSLA', 'IAU', 'VGLT'];
 
     return (
         <WidgetContainer
@@ -80,39 +102,9 @@ export default function Widget() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {tickerData?.map((entry, index: number) => {
-                        return (
-                            <StyledTableRow
-                                key={`tickerTableBody_${index}`}
-                                onClick={() =>
-                                    navigate(
-                                        `${ROUTES.PUBLIC.ANALYSIS}/${ASSET_TYPES.EQUITY}/${entry.ticker}`
-                                    )
-                                }
-                            >
-                                <StyledTableCell>{entry.ticker}</StyledTableCell>
-                                <StyledTableCell
-                                    color={
-                                        entry.pct_change > 0
-                                            ? ColorsEnum.upHint
-                                            : ColorsEnum.downHint
-                                    }
-                                >
-                                    {entry.pct_change.toFixed(2)}%
-                                </StyledTableCell>
-                                <StyledTableCell>{entry.last_close}</StyledTableCell>
-                                <TableCellWrapper id={`${entry.ticker}_tickerChartWrapper`}>
-                                    <div style={{ height: '25px' }}>
-                                        <BaseLineChart
-                                            showAverage
-                                            baseId={`${entry.ticker}_tickerChart`}
-                                            defaultData={entry.chartData}
-                                        />
-                                    </div>
-                                </TableCellWrapper>
-                            </StyledTableRow>
-                        );
-                    })}
+                    {tickers.map((ticker: string) => (
+                        <WidgetTickerRow key={`WidgetTickerRow_${ticker}`} ticker={ticker} />
+                    ))}
                 </TableBody>
             </Table>
         </WidgetContainer>

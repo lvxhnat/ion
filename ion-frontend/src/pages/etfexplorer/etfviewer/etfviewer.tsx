@@ -1,3 +1,4 @@
+import * as d3 from 'd3';
 import * as React from 'react';
 import * as S from '../style';
 
@@ -116,7 +117,7 @@ export interface ETFViewerProps {
     loading: boolean;
     etfData: ETFDataSchema | undefined;
     setSelection: Function;
-    etfCandlesData: EquityHistoricalDTO | undefined;
+    etfCandlesData: EquityHistoricalDTO[] | undefined;
 }
 
 export default function ETFViewer(props: ETFViewerProps) {
@@ -125,6 +126,7 @@ export default function ETFViewer(props: ETFViewerProps) {
             props.etfCandlesData[props.etfCandlesData.length - 1].close -
             props.etfCandlesData[props.etfCandlesData.length - 2].close;
         const pctDiff = (100 * diff) / props.etfCandlesData[props.etfCandlesData.length - 2].close;
+        const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
         return (
             <>
                 <Grid container columns={20}>
@@ -214,7 +216,7 @@ export default function ETFViewer(props: ETFViewerProps) {
                                                 parent: true,
                                                 dataX: props.etfCandlesData.map(
                                                     (entry: EquityHistoricalDTO) =>
-                                                        new Date(entry.date * 1000)
+                                                        parseTime(entry.date) as Date
                                                 ),
                                                 dataY: props.etfCandlesData.map(
                                                     (entry: EquityHistoricalDTO) => entry.close

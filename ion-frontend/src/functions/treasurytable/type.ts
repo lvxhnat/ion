@@ -8,4 +8,5 @@ export const allowedTreasuryTables = [
 
 export interface TreasuryTableProps {
     table: typeof allowedTreasuryTables[number];
+    height?: string;
 }

@@ -5,6 +5,6 @@ import { dataIngestionRequest } from 'services/request';
 export const getCandles = (ticker: string | string[]) => {
     return dataIngestionRequest.post<EquityHistoricalDTO[]>(
         ENDPOINTS.PRIVATE.EQUITY_HISTORICAL_ENDPOINT,
-        { tickers: ticker }
+        { ticker: ticker }
     );
 };

@@ -70,7 +70,6 @@ function ForexHistoricalCell(props: { forexPair: string }) {
         const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
 
         getHistoricalForex(props.forexPair, '1M', 'D').then(res => {
-            console.log(res);
             setData({
                 id: props.forexPair,
                 name: props.forexPair,
@@ -98,7 +97,7 @@ function ForexHistoricalCell(props: { forexPair: string }) {
     );
 }
 
-export default function ForexTable() {
+export default function ForexTable(props: { height?: string }) {
     const navigate = useNavigate();
     const setForexStream = forexStreamStore((store: any) => store.setForexStream);
     const subscribedForexPairs = [
@@ -128,7 +127,7 @@ export default function ForexTable() {
     ];
 
     return (
-        <TableContainer style={{ width: '100%' }}>
+        <TableContainer style={{ width: '100%', height: props.height ?? 'auto' }}>
             <Table style={{ minWidth: 150 }} aria-label="a dense table">
                 <TableHead>
                     <TableRow

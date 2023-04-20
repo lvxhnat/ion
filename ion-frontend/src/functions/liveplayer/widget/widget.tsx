@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-import ForexTable from '../forextable';
+import LivePlayer from '../liveplayer';
 import WidgetContainer from 'components/WidgetContainer';
 
 export default function Widget() {
     return (
-        <WidgetContainer title="Forex Summary">
-            <ForexTable height="200px" />
+        <WidgetContainer title="Live News Player">
+            <LivePlayer />
         </WidgetContainer>
     );
 }
