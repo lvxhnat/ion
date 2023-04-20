@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from typing import List
+from datetime import datetime
 
 from ion_clients.core.configuration.candles import (
     BaseCandlesResponseModel,
@@ -50,21 +51,18 @@ class OandaCandlesResponse(BaseModel):
 
 class FormattedOandaCandles(BaseCandlesDataModel):
     """The formatted response returned from instrument candles endpoint"""
-
-    bid_open: Optional[float]
-    bid_high: Optional[float]
-    bid_low: Optional[float]
-    bid_close: Optional[float]
-    ask_open: Optional[float]
-    ask_high: Optional[float]
-    ask_low: Optional[float]
-    ask_close: Optional[float]
+    date: datetime
+    vol: int
+    mid_open: float
+    mid_high: float
+    mid_low: float
+    mid_close: float
 
 
 class OandaBaseDataResponse(BaseCandlesResponseModel):
     """The response the function will return, together with metadata"""
 
-    data: Optional[FormattedOandaCandles]
+    data: Optional[List[FormattedOandaCandles]]
     response_code: Literal[200]
     symbol: CurrencyPairs
     granularity: Granularities

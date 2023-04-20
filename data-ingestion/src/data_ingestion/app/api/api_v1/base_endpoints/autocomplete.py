@@ -1,6 +1,8 @@
 from fastapi import APIRouter
 
-from data_ingestion.app.configs.base_config import settings as base_settings
+from data_ingestion.app.api.api_v1.configs.base_config import (
+    settings as base_settings,
+)
 from data_ingestion.app.singleton import mongodb_client, test_connection
 from data_ingestion.app.api.api_v1.models.database.mongodb.params import (
     SecurityFunctionsParams,

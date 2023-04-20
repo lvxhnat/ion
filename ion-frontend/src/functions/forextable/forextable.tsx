@@ -18,7 +18,6 @@ import { StyledTableCell } from 'components/Tables/BaseTable/StyledTableCell';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { TableCellWrapper } from 'components/Tables/BaseTable/style';
-import { ENDPOINTS } from 'common/constant/endpoints';
 import { useNavigate } from 'react-router-dom';
 import { ASSET_TYPES, ROUTES } from 'common/constant';
 
@@ -70,13 +69,13 @@ function ForexHistoricalCell(props: { forexPair: string }) {
     React.useEffect(() => {
         const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
 
-        getHistoricalForex(props.forexPair, '1M_S').then(data => {
+        getHistoricalForex(props.forexPair, '1M', 'D').then(res => {
             setData({
                 id: props.forexPair,
                 name: props.forexPair,
                 parent: true,
-                dataX: data.data.data.map((d: any) => parseTime(d.date)),
-                dataY: data.data.data.map((d: any) => d.mid_close),
+                dataX: res.data.map((d: any) => parseTime(d.date) as Date),
+                dataY: res.data.map((d: any) => d.close),
                 color: 'white',
                 type: 'pureLine',
             });
@@ -98,7 +97,7 @@ function ForexHistoricalCell(props: { forexPair: string }) {
     );
 }
 
-export default function ForexTable() {
+export default function ForexTable(props: { height?: string }) {
     const navigate = useNavigate();
     const setForexStream = forexStreamStore((store: any) => store.setForexStream);
     const subscribedForexPairs = [
@@ -128,7 +127,7 @@ export default function ForexTable() {
     ];
 
     return (
-        <TableContainer style={{ width: '100%' }}>
+        <TableContainer style={{ width: '100%', height: props.height ?? 'auto' }}>
             <Table style={{ minWidth: 150 }} aria-label="a dense table">
                 <TableHead>
                     <TableRow

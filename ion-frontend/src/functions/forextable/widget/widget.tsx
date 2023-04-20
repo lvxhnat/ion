@@ -6,7 +6,7 @@ import WidgetContainer from 'components/WidgetContainer';
 export default function Widget() {
     return (
         <WidgetContainer title="Forex Summary">
-            <ForexTable />
+            <ForexTable height="200px" />
         </WidgetContainer>
     );
 }

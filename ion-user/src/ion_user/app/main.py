@@ -5,7 +5,7 @@ from typing import List
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 
-from data_ingestion.app.configs.base_config import settings
+from data_ingestion.app.api.api_v1.configs.base_config import settings
 from data_ingestion.app.api.api_v1 import api
 
 from ion_clients.services.postgres.schemas.base import Base
@@ -76,7 +76,7 @@ async def stream_oanda_live_prices(websocket: WebSocket):
     await stream_oanda_live_data(forex_subscriptions, callback)
 
 
-app.include_router(api.api_router, prefix=settings.API_V1_STR)
+app.include_router(api.api_router, prefix=settings.API_VERSION_STRING)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=1236, reload=True)

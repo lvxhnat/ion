@@ -47,7 +47,7 @@ export default function TreasuryTable(props: TreasuryTableProps) {
     }, [props.table]);
 
     return (
-        <S.StyledTableContainer style={{ width: '100%' }}>
+        <S.StyledTableContainer style={{ width: '100%', height: props.height ?? 'auto' }}>
             <Table style={{ minWidth: 150 }} aria-label="a dense table" stickyHeader>
                 <TableHead>
                     <TableRow sx={{ backgroundColor: ColorsEnum.coolgray8 }}>

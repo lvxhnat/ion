@@ -17,7 +17,7 @@ import Navigation from 'components/Navigation';
 import { getETFInfo } from 'data/ingestion/etf';
 import { ETFDataSchema } from 'data/schema/etf';
 import { getCandles } from 'data/ingestion/candles';
-import { FinnhubCandlesSchema } from 'data/schema/candles';
+import { EquityHistoricalDTO } from 'data/schema/tickers';
 import ETFViewer from './etfviewer/etfviewer';
 
 export default function ETFExplorer() {
@@ -25,7 +25,7 @@ export default function ETFExplorer() {
     const [loadingState, setLoadingState] = React.useState<boolean>(true);
     const [ticker, setTicker] = React.useState<string>('QQQ');
     const [etfData, setETFData] = React.useState<ETFDataSchema>();
-    const [etfCandlesData, setETFCandlesData] = React.useState<FinnhubCandlesSchema>([]);
+    const [etfCandlesData, setETFCandlesData] = React.useState<EquityHistoricalDTO[]>([]);
     const [categories, setCategories] = React.useState<string[]>([]);
     const [categoryData, setCategoryData] = React.useState<UploadDataType>({} as UploadDataType);
     const [categorySelected, setCategorySelected] = React.useState<string>('All');
@@ -43,7 +43,7 @@ export default function ETFExplorer() {
             setETFData(res.data);
         });
         getCandles(ticker).then(res => {
-            if (res.data) setETFCandlesData(res.data[0]);
+            if (res.data) setETFCandlesData(res.data);
         });
         setLoadingState(false);
     }, [ticker]);

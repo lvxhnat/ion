@@ -1,7 +1,9 @@
 from fastapi import APIRouter
 from pyetfdb_scraper.etf import ETF
 
-from data_ingestion.app.configs.base_config import settings as base_settings
+from data_ingestion.app.api.api_v1.configs.base_config import (
+    settings as base_settings,
+)
 from data_ingestion.app.api.api_v1.models.metadata.etf.params import (
     ETFQueryParams,
 )

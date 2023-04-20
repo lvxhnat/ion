@@ -23,7 +23,7 @@ export default function Widget() {
                 />
             }
         >
-            <TreasuryTable table={table} />
+            <TreasuryTable height="200px" table={table} />
         </WidgetContainer>
     );
 }

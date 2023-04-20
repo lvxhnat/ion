@@ -1,3 +1,4 @@
+from uuid import uuid4
 import pandas as pd
 import numpy as np
 
@@ -34,6 +35,7 @@ def typecast_geonames(data: pd.DataFrame):
     data.longitude = data.longitude.astype(np.float32)
     data.population = data.population.astype(np.int32)
     data.dem = data.dem.astype(np.int16)
+    data["uuid"] = [str(uuid4()) for _ in range(len(data))]
     return data.to_dict("records")
 
 

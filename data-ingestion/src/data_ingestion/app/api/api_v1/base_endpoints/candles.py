@@ -4,9 +4,11 @@ from datetime import datetime, timedelta
 from ion_clients.clients.oanda import instruments as oanda_instruments
 from ion_clients.clients.finhub import instruments as finnhub_instruments
 
-from data_ingestion.app.configs.base_config import settings as base_settings
+from data_ingestion.app.api.api_v1.configs.base_config import (
+    settings as base_settings,
+)
 from data_ingestion.app.api.api_v1.models.candles.params import (
-    OandaCandlesBounded, 
+    OandaCandlesBounded,
     OandaCandlesUnbounded,
     FinhubCandlesUnbounded,
 )
@@ -34,7 +36,7 @@ def get_finnhub_historical_candles(params: FinhubCandlesUnbounded):
         )
     else:
         from_date = params.from_date
-    return finnhub_instruments.get_finnhub_tickers_hd(
+    return finnhub_instruments.get_finnhub_historical_data(
         params.tickers, from_date
     )
 
@@ -47,7 +49,7 @@ def get_oanda_historical_candles(params: OandaCandlesBounded):
 @router.post("/oanda/unboundedCandlesHistorical")
 def get_oanda_unbounded_historical_candles(params: OandaCandlesUnbounded):
     """Research endpoint allowing for multithreaded extractions of long time ranges that oanda do not allow"""
-    return oanda_instruments.get_oanda_historical_data(
+    return oanda_instruments._get_oanda_historical_data(
         symbol=params.symbol,
         from_date=params.from_date,
         to_date=params.to_date,

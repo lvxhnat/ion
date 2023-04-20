@@ -10,15 +10,16 @@ from ion_clients.clients.weather.types import (
 )
 from ion_clients.services.postgres.actions import order_search, get_session
 
-from data_ingestion.app.configs.base_config import settings as base_settings
+from data_ingestion.app.api.api_v1.configs.base_config import (
+    settings as base_settings,
+)
 from data_ingestion.app.api.api_v1.models.weather.params import (
     CurrentWeatherParams,
 )
 from data_ingestion.app.api.api_v1.models.weather.dtos import CurrentWeatherDTO
-from data_ingestion.app.api.api_v1.models.database.postgres.dtos import (
+from data_ingestion.app.api.api_v1.models.database.postgres.tables import (
     tables as postgres_tables,
 )
-
 from fastapi import APIRouter, Depends
 
 router = APIRouter(

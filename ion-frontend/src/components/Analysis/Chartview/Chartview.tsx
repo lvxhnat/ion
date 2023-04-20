@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
 import { getCandles } from 'data/ingestion/candles';
-import { FinnhubCandlesEntrySchema } from 'data/schema/candles';
+import { EquityHistoricalDTO, ForexHistoricalDTO } from 'data/schema/tickers';
 import BaseLineChart from 'components/Charting/BaseChart';
 
 import { MdWaterfallChart } from 'react-icons/md';
@@ -40,17 +40,18 @@ export default function Chartview(props: {
         const assetType: keyof typeof ASSET_TYPES = props.assetType
             ? props.assetType
             : (ASSET_TYPES.ETF as keyof typeof ASSET_TYPES);
+        const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
+
         if (assetType === ASSET_TYPES.FOREX) {
-            getHistoricalForex(ticker, '1M_S').then(res => {
-                const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
+            getHistoricalForex(ticker, '1M', 'D').then(res => {
                 setData({
                     ticker: ticker as string,
                     data: {
                         id: ticker,
                         name: ticker,
                         parent: true,
-                        dataX: res.data.data.map((d: any) => parseTime(d.date)),
-                        dataY: res.data.data.map((d: any) => d.mid_close),
+                        dataX: res.data.map((d: ForexHistoricalDTO) => parseTime(d.date)),
+                        dataY: res.data.map((d: ForexHistoricalDTO) => d.close),
                         color: 'white',
                         type: 'pureLine',
                     } as DefaultDataProps,
@@ -64,10 +65,8 @@ export default function Chartview(props: {
                         id: ticker,
                         name: ticker,
                         parent: true,
-                        dataX: res.data[0].map(
-                            (obj: FinnhubCandlesEntrySchema) => new Date(obj.date * 1000)
-                        ),
-                        dataY: res.data[0].map((obj: FinnhubCandlesEntrySchema) => obj.close),
+                        dataX: res.data.map((d: EquityHistoricalDTO) => parseTime(d.date)),
+                        dataY: res.data.map((d: EquityHistoricalDTO) => d.close),
                         color: 'white',
                         type: 'pureLine',
                     } as DefaultDataProps,

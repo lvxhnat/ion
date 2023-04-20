@@ -1,6 +1,6 @@
 import { ColorsEnum } from 'common/theme';
 import * as d3 from 'd3';
-import { OHLCDataSchema } from 'data/schema/common';
+import { OHLCHistoricalDTO } from 'data/schema/tickers';
 import { CHARTIDS } from '../../config';
 
 export const addOHLC = (props: {
@@ -8,7 +8,7 @@ export const addOHLC = (props: {
     y: d3.ScaleLinear<number, number, never>;
     baseId: string;
     dataX: Date[];
-    dataY: OHLCDataSchema[];
+    dataY: OHLCHistoricalDTO[];
     variation: 'candleStick' | 'barStick';
 }): void => {
     const svg = d3.selectAll(`#${props.baseId}`);

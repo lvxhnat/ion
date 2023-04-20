@@ -1,14 +1,16 @@
 import * as React from 'react';
 
+import Grid from '@mui/material/Grid';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Grid } from '@mui/material';
-import { TreasuryTableWidget } from 'functions/treasurytable';
 
+import Navigation from 'components/Navigation';
+
+import { TreasuryTableWidget } from 'functions/treasurytable';
 import { ForexTableWidget } from 'functions/forextable';
 import { InternationalClockWidget } from 'functions/internationalclock';
 import { HealthCheckWidget } from 'functions/healthchecks';
-import Navigation from 'components/Navigation';
 import { WatchlistWidget } from 'functions/watchlist';
+import { LivePlayerWidget } from 'functions/liveplayer/widget';
 
 export default function Landing() {
     return (
@@ -24,6 +26,7 @@ export default function Landing() {
                     <InternationalClockWidget />
                 </Grid>
                 <Grid item xs={6}>
+                    <LivePlayerWidget />
                     <ForexTableWidget />
                     <TreasuryTableWidget />
                 </Grid>
