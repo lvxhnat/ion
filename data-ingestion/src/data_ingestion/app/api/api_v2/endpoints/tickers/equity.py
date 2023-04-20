@@ -53,5 +53,5 @@ def get_historical_equity_data(
         from_date = params.from_date
 
     return get_finnhub_historical_data(
-        tickers=params.tickers, from_date=from_date
+        ticker=params.ticker, from_date=from_date
     )

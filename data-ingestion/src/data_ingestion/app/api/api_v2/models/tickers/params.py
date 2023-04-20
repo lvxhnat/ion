@@ -1,16 +1,19 @@
 from datetime import datetime
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import Optional
 from ion_clients.clients.oanda.types.candles import (
     OandaReqCurrencies,
     OandaReqIntervals,
     OandaReqGranularities,
 )
 
+class InfoETFParams(BaseModel):
+    ticker: str
+
 
 class HistoricalEquityParams(BaseModel):
 
-    tickers: str
+    ticker: str
     from_date: Optional[str]
     to_date: Optional[str]
 
