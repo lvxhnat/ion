@@ -5,7 +5,7 @@ from typing import List
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 
-from data_ingestion.app.api.api_v2 import api
+from data_ingestion.app.api.api_v2.api import api_router
 from data_ingestion.app.api.api_v2.configs.base_config import (
     configs as base_configs,
 )
@@ -26,7 +26,7 @@ def create_app() -> FastAPI:
         root_path="/",
         contact={"name": "Yi Kuang", "email": "yikuang5@gmail.com"},
     )
-    app.include_router(api.api_router, prefix=base_configs.API_VERSION_STRING)
+    app.include_router(api_router, prefix=base_configs.API_VERSION_STRING)
 
     origins = [
         "http://localhost:*",
