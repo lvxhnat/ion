@@ -34,7 +34,7 @@ export default function ChartviewPriceShower(props: { ticker: string }) {
                 ${liveMoves['price']?.toFixed(2)}
             </Typography>
             {Object.keys(liveMoves).map((metricName: string) => {
-                const metricNameArr = metricName.split('_');
+                const metricNameArr = metricName.split('__');
                 const idString = `${props.ticker}_${metricName}`;
                 if (metricName !== 'price')
                     return (

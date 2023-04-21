@@ -131,7 +131,7 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
                 newMetrics[props.ticker] = [];
             }
             if (!props.value.metricParams) {
-                const metricName = props.value.metric.split('_')[0];
+                const metricName = props.value.metric.split('__')[0];
                 props.value.metricParams = technicalIndicatorsParams[metricName];
             }
             let metricExists = false;
@@ -147,6 +147,7 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
                     ...newMetrics[props.ticker],
                     props.value as TickerMetricStoreFormat,
                 ];
+
             return { metrics: newMetrics };
         }),
     removeMetric: (props: RemoveMetricPropType) =>

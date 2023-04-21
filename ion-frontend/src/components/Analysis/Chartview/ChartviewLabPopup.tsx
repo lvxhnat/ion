@@ -15,7 +15,7 @@ import {
     useTickerDataStore,
 } from 'store/prices/watchlist';
 import { removeLine } from 'components/Charting/BaseChart/plugins/addLine/addLine';
-import { technicalIndicators, technicalIndicatorsParams } from './calculations/metrics';
+import { technicalIndicators } from './calculations/metrics';
 
 const LabPopupMetricParams = (props: { ticker: string }) => {
     const [selectedMetricId, metrics] = useMetricStore(state => [
@@ -66,7 +66,7 @@ const LabPopupMetricRow = (props: {
     const addMetric = useMetricStore(state => state.addMetric);
 
     const windowSize = 9;
-    const indicatorId = `${props.indicator}_${windowSize}`;
+    const indicatorId = `${props.indicator}__${windowSize}`;
 
     return (
         <S.LabContainerMetricTableRow
@@ -132,6 +132,9 @@ const LabPopupStrategyRow = (props: {
             {metrics && metrics.length !== 0 ? (
                 metrics.map((entry: TickerMetricStoreFormat) => {
                     const indicatorId: string = entry.metric;
+                    const formattedIndicatorString: string = `${
+                        indicatorId.split('__')[0]
+                    }(${indicatorId.split('__').slice(1).join(', ')})`;
                     return entry.field === props.fieldType ? (
                         <S.LabPopupStrategyRow
                             key={`${entry.field}_${entry.metric}`}
@@ -148,7 +151,9 @@ const LabPopupStrategyRow = (props: {
                                     style={{ width: '60%', justifyContent: 'flex-start' }}
                                 >
                                     <Typography variant="subtitle2">
-                                        {entry.field === props.fieldType ? indicatorId : null}
+                                        {entry.field === props.fieldType
+                                            ? formattedIndicatorString
+                                            : null}
                                     </Typography>
                                 </S.LabPopupStrategyRowCell>
                                 <S.LabPopupStrategyRowCell

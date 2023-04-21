@@ -33,7 +33,7 @@ export default function Chartview(props: {
 }) {
     const [data, setData] = useTickerDataStore(state => [state.data, state.setData]);
 
-    const baseLineChartId: string = `${props.ticker}_tickerChart`;
+    const baseLineChartId: string = `${props.ticker}__tickerChart`;
 
     React.useEffect(() => {
         const ticker = props.ticker ? props.ticker : 'SPY';

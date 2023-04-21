@@ -13,7 +13,7 @@ export const addLineTracker = (props: {
     setLiveMoves: (props: EditLiveMovePropTypes) => void;
 }) => {
     const svg = d3.selectAll(`#${props.baseId}`);
-    const tickerSymbol: string = props.baseId.split('_')[0];
+    const tickerSymbol: string = props.baseId.split('__')[0];
 
     const bisect = d3.bisector((d: any) => d).left;
 

@@ -22,7 +22,7 @@ export default function TreasuryTable(props: TreasuryTableProps) {
     const processString = (colName: string) =>
         colName
             .slice(1, colName.length)
-            .split('_')
+            .split('__')
             .map((token: string) => token.charAt(0).toUpperCase() + token.slice(1))
             .join(' ');
 
