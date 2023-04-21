@@ -17,38 +17,40 @@ import {
 import { removeLine } from 'components/Charting/BaseChart/plugins/addLine/addLine';
 import { technicalIndicators, technicalIndicatorsParams } from './calculations/metrics';
 
-const LabPopupMetricParams = (props: {ticker: string}) => {
-    
-    const [selectedMetricId, metrics] = useMetricStore(state => [state.selectedMetricId, state.metrics])
+const LabPopupMetricParams = (props: { ticker: string }) => {
+    const [selectedMetricId, metrics] = useMetricStore(state => [
+        state.selectedMetricId,
+        state.metrics,
+    ]);
     const [view, setView] = React.useState<any>({});
 
     React.useEffect(() => {
         if (selectedMetricId && metrics[props.ticker]) {
-            const availableMetrics = metrics[props.ticker].filter(entry => entry.metric === selectedMetricId)[0]
+            const availableMetrics = metrics[props.ticker].filter(
+                entry => entry.metric === selectedMetricId
+            )[0];
             if (availableMetrics) {
                 setView(availableMetrics.metricParams);
             } else {
-                setView({})
+                setView({});
             }
         }
-    }, [selectedMetricId])
-    
+    }, [selectedMetricId]);
+
     return (
         <>
-            {
-                (view) ? 
-                    Object.keys(view).map((indicator: string) => {
-                        return (
-                            <div key={`LabPopupMetricParams_${indicator}`}>
-                                {indicator} : {view[indicator]}
-                            </div>
-                        )
-                    })
-                 : null
-            }
+            {view
+                ? Object.keys(view).map((indicator: string) => {
+                      return (
+                          <div key={`LabPopupMetricParams_${indicator}`}>
+                              {indicator} : {view[indicator]}
+                          </div>
+                      );
+                  })
+                : null}
         </>
-    )
-}
+    );
+};
 
 /**
  * This component represents a row in the metric table that can be used to add metrics into the chart.
@@ -70,7 +72,7 @@ const LabPopupMetricRow = (props: {
         <S.LabContainerMetricTableRow
             onClick={() => {
                 const movingAverage: number[] = technicalIndicators[props.indicator]({
-                    arr: data[props.ticker].dataY
+                    arr: data[props.ticker].dataY,
                 });
                 addMetric({
                     ticker: props.ticker,
@@ -131,8 +133,8 @@ const LabPopupStrategyRow = (props: {
                 metrics.map((entry: TickerMetricStoreFormat) => {
                     const indicatorId: string = entry.metric;
                     return entry.field === props.fieldType ? (
-                        <S.LabPopupStrategyRow 
-                            key={`${entry.field}_${entry.metric}`} 
+                        <S.LabPopupStrategyRow
+                            key={`${entry.field}_${entry.metric}`}
                             onClick={() => setselectedMetricId({ metric: indicatorId })}
                         >
                             <S.LabPopupStrategyRowCell header style={{ width: '20%' }}>
@@ -159,7 +161,7 @@ const LabPopupStrategyRow = (props: {
                                                     ticker: props.ticker,
                                                     metric: indicatorId,
                                                 };
-                                                setselectedMetricId({ metric: "" })
+                                                setselectedMetricId({ metric: '' });
                                                 removeMetric(removeProps);
                                                 removeLiveMovesMetric(removeProps);
                                                 removeLine({
@@ -174,9 +176,7 @@ const LabPopupStrategyRow = (props: {
                                 </S.LabPopupStrategyRowCell>
                             </React.Fragment>
                         </S.LabPopupStrategyRow>
-                    ) : (
-                        undefined
-                    );
+                    ) : undefined;
                 })
             ) : (
                 <S.LabPopupStrategyRowCell style={{ width: '80%' }} />
@@ -269,11 +269,19 @@ export function LabPopup(props: {
                     />
                 </div>
                 <div style={{ width: '30%' }}>
-                    <LabPopupMetricParams ticker={props.ticker}/> 
+                    <LabPopupMetricParams ticker={props.ticker} />
                 </div>
             </div>
-            <div style={{ width: "100%", bottom: 0, position: 'absolute', backgroundColor: ColorsEnum.darkGrey, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
-            </div>
+            <div
+                style={{
+                    width: '100%',
+                    bottom: 0,
+                    position: 'absolute',
+                    backgroundColor: ColorsEnum.darkGrey,
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                }}
+            ></div>
         </div>
     );
-};
+}

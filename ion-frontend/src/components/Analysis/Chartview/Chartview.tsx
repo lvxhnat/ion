@@ -77,7 +77,11 @@ export default function Chartview(props: {
 
     return (
         <Item>
-            <ChartviewToolbar ticker={props.ticker} baseId={baseLineChartId} />
+            <ChartviewToolbar
+                baseId={baseLineChartId}
+                assetType={props.assetType}
+                ticker={props.ticker}
+            />
             {props.ticker && data[props.ticker] ? (
                 <div style={{ height: '90%' }}>
                     <ChartviewPriceShower ticker={props.ticker} />

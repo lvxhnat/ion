@@ -1,4 +1,4 @@
-import { ExponentialMovingAverageProps, SimpleMovingAverageProps } from "./types/movingAverages";
+import { ExponentialMovingAverageProps, SimpleMovingAverageProps } from './types/movingAverages';
 /**
  * Finds simple moving average, where the last element of the array is the most recent value.
  * @param arr The array containing the prices/time series
@@ -38,7 +38,8 @@ export function calcExponentialMovingAverage(props: ExponentialMovingAverageProp
             return accumulator;
         } else if (i > window - 1) {
             accumulator =
-                props.arr[i] * (smoothing / (1 + window)) + accumulator * (1 - smoothing / (1 + window));
+                props.arr[i] * (smoothing / (1 + window)) +
+                accumulator * (1 - smoothing / (1 + window));
             return accumulator;
         } else {
             accumulator += props.arr[i];

@@ -1,7 +1,7 @@
-import { MovingAverageProps, SimpleMovingAverageProps, ExponentialMovingAverageProps } from "./movingAverages";
-
-export type {
+import {
     MovingAverageProps,
     SimpleMovingAverageProps,
-    ExponentialMovingAverageProps
-}
+    ExponentialMovingAverageProps,
+} from './movingAverages';
+
+export type { MovingAverageProps, SimpleMovingAverageProps, ExponentialMovingAverageProps };

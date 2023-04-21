@@ -2,8 +2,9 @@ interface BaseCalculationProps {
     arr: number[];
 }
 
-export type MovingAverageProps = Omit<SimpleMovingAverageProps, "arr"> | Omit<ExponentialMovingAverageProps, "arr">
-
+export type MovingAverageProps =
+    | Omit<SimpleMovingAverageProps, 'arr'>
+    | Omit<ExponentialMovingAverageProps, 'arr'>;
 
 export interface SimpleMovingAverageProps extends BaseCalculationProps {
     window?: number;

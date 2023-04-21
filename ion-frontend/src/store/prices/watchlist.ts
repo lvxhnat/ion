@@ -46,7 +46,7 @@ export interface EditLiveMovePropTypes {
     metric: string;
     value: number | null;
 }
-export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> { }
+export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> {}
 
 export interface EditLiveMoveTypes {
     liveMoves: {
@@ -94,10 +94,12 @@ export interface TickerMetricStoreFormat {
     value: number[];
     metricParams: MovingAverageProps;
 }
-interface AddMetricValueType extends Omit<TickerMetricStoreFormat, "metricParams"> { metricParams?: MovingAverageProps };
+interface AddMetricValueType extends Omit<TickerMetricStoreFormat, 'metricParams'> {
+    metricParams?: MovingAverageProps;
+}
 interface AddMetricPropType {
     ticker: string;
-    value: AddMetricValueType
+    value: AddMetricValueType;
 }
 interface RemoveMetricPropType {
     ticker: string;
@@ -129,8 +131,8 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
                 newMetrics[props.ticker] = [];
             }
             if (!props.value.metricParams) {
-                const metricName = props.value.metric.split("_")[0]
-                props.value.metricParams = technicalIndicatorsParams[metricName]
+                const metricName = props.value.metric.split('_')[0];
+                props.value.metricParams = technicalIndicatorsParams[metricName];
             }
             let metricExists = false;
             newMetrics[props.ticker].map(entry => {
@@ -141,7 +143,10 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
             });
             if (!metricExists)
                 // Cast to value since the field will now be filled in
-                newMetrics[props.ticker] = [...newMetrics[props.ticker], props.value as TickerMetricStoreFormat];
+                newMetrics[props.ticker] = [
+                    ...newMetrics[props.ticker],
+                    props.value as TickerMetricStoreFormat,
+                ];
             return { metrics: newMetrics };
         }),
     removeMetric: (props: RemoveMetricPropType) =>
@@ -160,6 +165,6 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
         }),
     setselectedMetricId: (props: EditselectedMetricIdPropType) =>
         set((_: MetricStoreTypes) => {
-            return { selectedMetricId: props.metric }
-        })
+            return { selectedMetricId: props.metric };
+        }),
 }));

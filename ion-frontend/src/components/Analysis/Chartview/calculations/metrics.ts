@@ -5,12 +5,14 @@ export const technicalIndicators: { [indicator: string]: any } = {
     ExponentialMovingAverage: calcExponentialMovingAverage,
 };
 
-export const technicalIndicatorsParams: { [indicator: keyof typeof technicalIndicators]: { [parameters: string]: any } } = {
+export const technicalIndicatorsParams: {
+    [indicator: keyof typeof technicalIndicators]: { [parameters: string]: any };
+} = {
     SimpleMovingAverage: {
         window: 9,
     },
     ExponentialMovingAverage: {
         window: 9,
         smoothing: 2,
-    }
-}
+    },
+};

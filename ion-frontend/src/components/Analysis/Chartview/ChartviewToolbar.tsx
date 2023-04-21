@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { TbMathIntegralX } from 'react-icons/tb';
 
 import { useThemeStore } from 'store/theme';
-import {useTickerDataStore} from 'store/prices/watchlist';
+import { useTickerDataStore } from 'store/prices/watchlist';
 
 import { ColorsEnum } from 'common/theme';
 import { TickerSearch } from 'components/Search/Search';
@@ -20,7 +20,11 @@ const ModifiedStudiesButton = (props: { [others: string]: any }) => {
     );
 };
 
-export default function ChartviewTolbar(props: { ticker: string | undefined; baseId: string }) {
+export default function ChartviewTolbar(props: {
+    baseId: string;
+    ticker: string | undefined;
+    assetType: string | undefined;
+}) {
     const { mode } = useThemeStore();
     const data = useTickerDataStore(state => state.data);
     const [showLab, setShowLab] = React.useState<boolean>(false);
@@ -51,23 +55,31 @@ export default function ChartviewTolbar(props: { ticker: string | undefined; bas
                     width: '100%',
                     alignItems: 'center',
                     justifyContent: 'flex-start',
+                    gap: 10,
+                    paddingLeft: 10,
                 }}
             >
-                {props.ticker && data[props.ticker] ? (
+                {props.ticker && props.assetType && data[props.ticker] ? (
                     <>
                         <Typography
-                            variant="subtitle1"
+                            variant="subtitle2"
                             component="div"
-                            style={{ paddingLeft: 10, paddingRight: 10 }}
+                            style={{
+                                backgroundColor: ColorsEnum.warmgray2,
+                                borderRadius: 5,
+                                paddingLeft: 5,
+                                paddingRight: 5,
+                            }}
                         >
+                            {props.assetType?.charAt(0).toUpperCase() + props.assetType?.slice(1)}
+                        </Typography>
+                        <Typography variant="subtitle1" component="div">
                             {props.ticker}
                         </Typography>
                         <Typography
                             variant="subtitle1"
                             component="div"
                             style={{
-                                paddingLeft: 10,
-                                paddingRight: 10,
                                 color: 'white',
                                 fontWeight: 'bold',
                             }}
@@ -80,8 +92,6 @@ export default function ChartviewTolbar(props: { ticker: string | undefined; bas
                             variant="subtitle1"
                             component="div"
                             style={{
-                                paddingLeft: 10,
-                                paddingRight: 10,
                                 color:
                                     data[props.ticker].dataY[data[props.ticker].dataY.length - 1] >
                                     data[props.ticker].dataY[data[props.ticker].dataY.length - 2]
