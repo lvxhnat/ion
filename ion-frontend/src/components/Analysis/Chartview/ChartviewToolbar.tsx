@@ -105,53 +105,58 @@ const LabPopupStrategyRow = (props: {
     const removeLiveMovesMetric = useLiveMovesStore(state => state.removeLiveMovesMetric);
 
     return (
-        <S.LabPopupStrategyRow>
-            <S.LabPopupStrategyRowCell header style={{ width: '20%' }}>
-                <Typography variant="subtitle2">
-                    {props.fieldType.charAt(0).toUpperCase() + props.fieldType.slice(1)}
-                </Typography>
-            </S.LabPopupStrategyRowCell>
+        <>
             {metrics && metrics.length !== 0 ? (
                 metrics.map((entry: TickerMetricStoreFormat) => {
                     const indicatorId: string = entry.metric;
-                    return (
-                        <React.Fragment key={`${indicatorId}_labPopupStrategyRow`}>
-                            <S.LabPopupStrategyRowCell
-                                style={{ width: '60%', justifyContent: 'flex-start' }}
-                            >
+                    return entry.field === props.fieldType ? (
+                        <S.LabPopupStrategyRow key={`${entry.field}_${entry.metric}`}>
+                            <S.LabPopupStrategyRowCell header style={{ width: '20%' }}>
                                 <Typography variant="subtitle2">
-                                    {entry.field === props.fieldType ? indicatorId : null}
+                                    {props.fieldType.charAt(0).toUpperCase() +
+                                        props.fieldType.slice(1)}
                                 </Typography>
                             </S.LabPopupStrategyRowCell>
-                            <S.LabPopupStrategyRowCell
-                                style={{ width: '20%', justifyContent: 'flex-end' }}
-                            >
-                                {entry.field === props.fieldType ? (
-                                    <S.CloseIconWrapper
-                                        onClick={() => {
-                                            const removeProps = {
-                                                ticker: props.ticker,
-                                                metric: indicatorId,
-                                            };
-                                            removeMetric(removeProps);
-                                            removeLiveMovesMetric(removeProps);
-                                            removeLine({
-                                                baseId: props.baseId,
-                                                id: indicatorId,
-                                            });
-                                        }}
-                                    >
-                                        <CloseIcon fontSize="inherit" />
-                                    </S.CloseIconWrapper>
-                                ) : null}
-                            </S.LabPopupStrategyRowCell>
-                        </React.Fragment>
+                            <React.Fragment key={`${indicatorId}_labPopupStrategyRow`}>
+                                <S.LabPopupStrategyRowCell
+                                    style={{ width: '60%', justifyContent: 'flex-start' }}
+                                >
+                                    <Typography variant="subtitle2">
+                                        {entry.field === props.fieldType ? indicatorId : null}
+                                    </Typography>
+                                </S.LabPopupStrategyRowCell>
+                                <S.LabPopupStrategyRowCell
+                                    style={{ width: '20%', justifyContent: 'flex-end' }}
+                                >
+                                    {entry.field === props.fieldType ? (
+                                        <S.CloseIconWrapper
+                                            onClick={() => {
+                                                const removeProps = {
+                                                    ticker: props.ticker,
+                                                    metric: indicatorId,
+                                                };
+                                                removeMetric(removeProps);
+                                                removeLiveMovesMetric(removeProps);
+                                                removeLine({
+                                                    baseId: props.baseId,
+                                                    id: indicatorId,
+                                                });
+                                            }}
+                                        >
+                                            <CloseIcon fontSize="inherit" />
+                                        </S.CloseIconWrapper>
+                                    ) : null}
+                                </S.LabPopupStrategyRowCell>
+                            </React.Fragment>
+                        </S.LabPopupStrategyRow>
+                    ) : (
+                        undefined
                     );
                 })
             ) : (
                 <S.LabPopupStrategyRowCell style={{ width: '80%' }} />
             )}
-        </S.LabPopupStrategyRow>
+        </>
     );
 };
 

@@ -125,7 +125,8 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
                     return;
                 }
             });
-            if (!metricExists) newMetrics[props.ticker].push(props.value);
+            if (!metricExists)
+                newMetrics[props.ticker] = [...newMetrics[props.ticker], props.value];
             return { metrics: newMetrics };
         }),
     removeMetric: (props: RemoveMetricPropType) =>
