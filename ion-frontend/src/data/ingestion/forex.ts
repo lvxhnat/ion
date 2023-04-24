@@ -3,13 +3,21 @@ import { ENDPOINTS } from 'common/constant/endpoints';
 import { OandaFXSocketConnection } from 'data/clients/oanda';
 import { ForexHistoricalDTO } from 'data/schema/tickers';
 
-export const getHistoricalForex = (symbol: string, period: string, granularity: string) => {
+export const getHistoricalForex = (props: {
+    symbol: string;
+    granularity: string;
+    period?: string;
+    count?: number;
+}) => {
+    const dI: any = {};
+    if (props.period) dI.period = props.period;
+    if (props.count) dI.count = props.count;
     return dataIngestionRequest.post<ForexHistoricalDTO[]>(
         ENDPOINTS.PRIVATE.FOREX_HISTORICAL_ENDPOINT,
         {
-            symbol: symbol,
-            period: period,
-            granularity: granularity,
+            symbol: props.symbol,
+            granularity: props.granularity,
+            ...dI,
         }
     );
 };

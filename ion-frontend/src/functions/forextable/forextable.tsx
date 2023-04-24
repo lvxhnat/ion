@@ -69,7 +69,11 @@ function ForexHistoricalCell(props: { forexPair: string }) {
     React.useEffect(() => {
         const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
 
-        getHistoricalForex(props.forexPair, '1M', 'D').then(res => {
+        getHistoricalForex({
+            symbol: props.forexPair,
+            granularity: 'D',
+            count: 50,
+        }).then(res => {
             setData({
                 id: props.forexPair,
                 name: props.forexPair,

@@ -43,7 +43,11 @@ export default function Chartview(props: {
         const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
 
         if (assetType === ASSET_TYPES.FOREX) {
-            getHistoricalForex(ticker, '1M', 'D').then(res => {
+            getHistoricalForex({
+                symbol: ticker,
+                count: 50,
+                granularity: 'D',
+            }).then(res => {
                 setData({
                     ticker: ticker as string,
                     data: {
