@@ -11,8 +11,8 @@ from sqlalchemy import (
     BigInteger,
 )
 
-from ion_clients.services.postgres.schemas.base import Base
-from ion_clients.services.postgres.actions import bulk_upsert
+from data_ingestion.app.api.api_v2.postgres.models.base import Base
+from data_ingestion.app.api.api_v2.postgres.actions import bulk_upsert
 from ion_clients.core.utils.type_detect import ParseableTypes, TypeDetectEntry
 
 

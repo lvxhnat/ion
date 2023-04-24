@@ -2,10 +2,10 @@ from typing import List
 from fastapi import APIRouter
 from datetime import datetime, timedelta
 
-from data_ingestion.app.api.api_v2.models.tickers.params import (
+from data_ingestion.app.api.api_v2.postgres.schemas.data.tickers.params import (
     HistoricalEquityParams,
 )
-from data_ingestion.app.api.api_v2.models.tickers.dto import (
+from data_ingestion.app.api.api_v2.postgres.schemas.data.tickers.dto import (
     HistoricalEquityDTO,
 )
 from ion_clients.clients.finhub.instruments import get_finnhub_historical_data

@@ -10,9 +10,9 @@ from data_ingestion.app.api.api_v2.configs.base_config import (
     configs as base_configs,
 )
 
-from ion_clients.services.postgres.schemas.base import Base
-from ion_clients.services.postgres.schemas.infra import portfolio
-from ion_clients.services.postgres.actions import initialise_table
+from data_ingestion.app.api.api_v2.postgres.models.base import Base
+from data_ingestion.app.api.api_v2.postgres.models.infra import portfolio
+from data_ingestion.app.api.api_v2.postgres.actions import initialise_table
 
 from ion_clients.clients.oanda.instruments import stream_oanda_live_data
 

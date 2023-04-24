@@ -8,7 +8,7 @@ from sqlalchemy import inspect, desc, Table, exc as sqlalchemyExcs, MetaData
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 
-from ion_clients.services.postgres.postgres_service import (
+from data_ingestion.app.api.api_v2.postgres.postgres_service import (
     postgres,
     postgres_engine,
 )
@@ -140,7 +140,7 @@ def bulk_upsert(
         WriteObject (_type_): The object to be written into the table with schema as specified by TableSchema. Rollback otherwise.
 
     Example Usage:
-    >>> from ion_clients.services.postgres.schemas.area_latlon import AreaLatLon
+    >>> from data_ingestion.app.api.api_v2.postgres.schemas.area_latlon import AreaLatLon
     >>> import pandas as pd
     >>> df = pd.read_csv(
         "/Users/lohyikuang/Downloads/personal_projects/ion/research-notebooks/areaLatLon.csv"

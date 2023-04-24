@@ -1,7 +1,7 @@
 import { dataIngestionRequest } from 'services/request';
 import { ENDPOINTS } from 'common/constant/endpoints';
-import { OandaFXSocketConnection } from 'data/clients/oanda';
-import { ForexHistoricalDTO } from 'data/schema/tickers';
+import { OandaFXSocketConnection } from 'endpoints/clients/oanda';
+import { ForexHistoricalDTO } from 'endpoints/schema/tickers';
 
 export const getHistoricalForex = (props: {
     symbol: string;

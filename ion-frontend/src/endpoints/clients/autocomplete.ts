@@ -1,6 +1,6 @@
 import { dataIngestionRequest } from 'services/request';
 import { ENDPOINTS } from 'common/constant/endpoints';
-import { ETFInfoDTO, ETFInfoRequestProps } from 'data/schema/autocomplete';
+import { ETFInfoDTO, ETFInfoRequestProps } from 'endpoints/schema/autocomplete';
 
 export const getAllFunctions = () => {
     return dataIngestionRequest.get(ENDPOINTS.PRIVATE.ALL_FUNCTIONS);

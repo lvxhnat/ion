@@ -2,9 +2,16 @@ from typing import Literal
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 
-from ion_clients.services.postgres.actions import order_query, get_session
-from ion_clients.services.postgres.schemas.infra.portfolio import Portfolio
-
+from data_ingestion.app.api.api_v2.postgres.actions import (
+    order_query,
+    get_session,
+)
+from data_ingestion.app.api.api_v2.postgres.models.infra.portfolio import (
+    Portfolio,
+)
+from data_ingestion.app.api.api_v2.postgres.schemas.infra.portfolio.params import (
+    PortfolioParams,
+)
 from data_ingestion.app.api.api_v1.models.database.postgres.tables import (
     tables as postgres_tables,
 )
@@ -38,30 +45,41 @@ def query_postgres_table(
     )
 
 
-@router.get("/{tableId}")
+@router.get("/{table_name}")
 def get_postgres_table(
-    tableId: Portfolio.__tablename__,
+    table_name: str,
     session: Session = Depends(get_session),
 ):
-    items = session.query(query_tables[tableId]).all()
+    items = session.query(query_tables[table_name]).all()
     return items
 
 
-@router.delete("/{tableId}")
+@router.delete("/{table_name}")
 def delete_postgres_table_entry(
     id: int,
-    tableId: Portfolio.__tablename__,
+    table_name: str,
     session: Session = Depends(get_session),
 ):
-    entry = session.query(query_tables[tableId]).get(id)
-    session.delete(entry).commit().close()
+    entry = session.query(query_tables[table_name]).get(id)
+    session.delete(entry)
     return
 
 
-@router.post("/{tableId}")
+@router.post("/{table_name}")
 def insert_postgres_table_entry(
-    tableId: Portfolio.__tablename__,
+    table_name: str,
+    entry: PortfolioParams,
     session: Session = Depends(get_session),
 ):
-    print("test")
+    session.add(query_tables[table_name](entry))
     return
+
+
+@router.put("/{table_name}")
+def update_postgres_table_entry(
+    table_name: str,
+    id: str,
+    replacement_entry: PortfolioParams,
+    session: Session = Depends(get_session),
+):
+    session.query(query_tables[table_name]).get(id).update(replacement_entry)

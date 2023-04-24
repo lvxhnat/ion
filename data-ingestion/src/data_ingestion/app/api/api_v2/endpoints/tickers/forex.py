@@ -8,10 +8,10 @@ from ion_clients.clients.oanda.configs.responses import (
     FormattedOandaCandles,
 )
 
-from data_ingestion.app.api.api_v2.models.tickers.params import (
+from data_ingestion.app.api.api_v2.postgres.schemas.data.tickers.params import (
     HistoricalForexParams,
 )
-from data_ingestion.app.api.api_v2.models.tickers.dto import (
+from data_ingestion.app.api.api_v2.postgres.schemas.data.tickers.dto import (
     HistoricalForexDTO,
 )
 
@@ -72,29 +72,29 @@ def get_historical_forex_data(
         granularity=params.granularity,
     )
 
-    if data['response_code'] != 200:
+    if data["response_code"] != 200:
         return HTTPException(
-            status_code=data['response_code'],
-            detail=data['error_message'],
+            status_code=data["response_code"],
+            detail=data["error_message"],
         )
     else:
-        if not data['data']:
+        if not data["data"]:
             return HTTPException(
                 status_code=404,
                 detail=f"Unknown exception occured. Response code returned is 200 but raised error code: {data['error_message']}",
             )
-        forex_data: List[FormattedOandaCandles] = data['data']
+        forex_data: List[FormattedOandaCandles] = data["data"]
 
         return [
             *map(
                 lambda forex_entry: {
                     "symbol": params.symbol,
-                    "date": forex_entry['date'],
-                    "volume": forex_entry['vol'],
-                    "open": forex_entry['mid_open'],
-                    "close": forex_entry['mid_close'],
-                    "high": forex_entry['mid_high'],
-                    "low": forex_entry['mid_low'],
+                    "date": forex_entry["date"],
+                    "volume": forex_entry["vol"],
+                    "open": forex_entry["mid_open"],
+                    "close": forex_entry["mid_close"],
+                    "high": forex_entry["mid_high"],
+                    "low": forex_entry["mid_low"],
                 },
                 forex_data,
             )

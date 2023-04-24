@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy import Column, Numeric, String, DateTime
 
-from ion_clients.services.postgres.schemas.base import Base
+from data_ingestion.app.api.api_v2.postgres.models.base import Base
 
 
 class USTreasuryYield(Base):

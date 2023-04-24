@@ -2,7 +2,7 @@ import numpy as np
 from datetime import datetime
 from sqlalchemy import Column, Float, String, DateTime, ForeignKey
 
-from ion_clients.services.postgres.schemas.base import Base
+from data_ingestion.app.api.api_v2.postgres.models.base import Base
 
 
 class AssetMetaData(Base):

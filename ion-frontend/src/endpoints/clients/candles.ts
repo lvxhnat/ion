@@ -1,5 +1,5 @@
 import { ENDPOINTS } from 'common/constant/endpoints';
-import { EquityHistoricalDTO } from 'data/schema/tickers';
+import { EquityHistoricalDTO } from 'endpoints/schema/tickers';
 import { dataIngestionRequest } from 'services/request';
 
 export const getCandles = (ticker: string | string[]) => {

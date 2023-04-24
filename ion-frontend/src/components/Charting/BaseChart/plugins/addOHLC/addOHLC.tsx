@@ -1,6 +1,6 @@
 import { ColorsEnum } from 'common/theme';
 import * as d3 from 'd3';
-import { OHLCHistoricalDTO } from 'data/schema/tickers';
+import { OHLCHistoricalDTO } from 'endpoints/schema/tickers';
 import { CHARTIDS } from '../../config';
 
 export const addOHLC = (props: {

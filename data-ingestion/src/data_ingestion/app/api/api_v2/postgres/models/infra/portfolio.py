@@ -1,7 +1,6 @@
-import numpy as np
 from sqlalchemy import Column, String, DateTime
 
-from ion_clients.services.postgres.schemas.base import Base
+from data_ingestion.app.api.api_v2.postgres.models.base import Base
 
 
 class Portfolio(Base):

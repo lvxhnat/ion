@@ -1,5 +1,5 @@
 import { Modify } from 'common/types';
-import { IngestionDataType } from 'data/ingestion/ingestion';
+import { IngestionDataType } from 'endpoints/clients/ingestion';
 
 export interface DataTableProps {
     data: UploadDataType;
@@ -44,6 +44,6 @@ export type UploadDataType = Modify<
     IngestionDataType,
     {
         content_header: DataTableHeaderDefinition[];
-        content_body: { id: number; [col: string]: any }[];
+        content_body: { id: number;[col: string]: any }[];
     }
 >;

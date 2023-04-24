@@ -6,7 +6,9 @@ from prefect.task_runners import ConcurrentTaskRunner
 
 from data_engine.flows.shared import refresh_table
 
-from ion_clients.services.postgres.schemas.data.tickers import AssetMetaData
+from data_ingestion.app.api.api_v2.postgres.models.data.tickers import (
+    AssetMetaData,
+)
 from ion_clients.clients.alphavantage.alphavantage import (
     get_alphavantage_ticker_listings,
 )

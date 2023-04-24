@@ -9,8 +9,8 @@ import { MdWavingHand } from 'react-icons/md';
 import { ColorsEnum } from 'common/theme';
 import { geoMapping } from './mappings';
 
-import { getCurrentWeather } from 'data/ingestion/weather';
-import { CurrentWeatherSchema } from 'data/schema/weather';
+import { getCurrentWeather } from 'endpoints/clients/weather';
+import { CurrentWeatherSchema } from 'endpoints/schema/weather';
 import { capitalizeString } from 'common/helper/general';
 
 // https://colordesigner.io/gradient-generator

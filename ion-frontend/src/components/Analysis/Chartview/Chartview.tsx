@@ -5,8 +5,8 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
-import { getCandles } from 'data/ingestion/candles';
-import { EquityHistoricalDTO, ForexHistoricalDTO } from 'data/schema/tickers';
+import { getCandles } from 'endpoints/clients/candles';
+import { EquityHistoricalDTO, ForexHistoricalDTO } from 'endpoints/schema/tickers';
 import BaseLineChart from 'components/Charting/BaseChart';
 
 import { MdWaterfallChart } from 'react-icons/md';
@@ -14,7 +14,7 @@ import { useTickerDataStore } from 'store/prices/watchlist';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import ChartviewToolbar from './ChartviewToolbar';
 import { ASSET_TYPES } from 'common/constant';
-import { getHistoricalForex } from 'data/ingestion/forex';
+import { getHistoricalForex } from 'endpoints/clients/forex';
 import ChartviewPriceShower from './ChartviewPriceShower';
 
 const Item = styled(Box)(({ theme }) => ({

@@ -220,6 +220,7 @@ export default function PortfolioPopup(props: { show: boolean; setShow: (show: b
                                 ? defaultCurrency
                                 : portfolioConfig.currency;
                         setPortfolios(portfolioConfig);
+                        console.log(portfolioConfig);
                         props.setShow(false);
                     }}
                 >
