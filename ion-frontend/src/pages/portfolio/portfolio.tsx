@@ -3,24 +3,31 @@ import * as S from './style';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
+import AddIcon from '@mui/icons-material/Add';
 
 import Navigation from 'components/Navigation';
-import CreatePortfolio from './CreatePortfolio';
-import MainTable from './MainTable';
+import CreatePortfolioPopup from './portfoliopopup';
+import { Typography } from '@mui/material';
+import PortfolioTable from './portfoliotable/portfoliotable';
 
 export default function Portfolio() {
+    const [show, setShow] = React.useState<boolean>(false);
     return (
         <>
             <CssBaseline />
             <Navigation />
             <S.OptionsWrapper>
-                <CreatePortfolio />
-                <S.IconButtonWrapper>
-                    <DeleteIcon fontSize="small" />
-                </S.IconButtonWrapper>
+                <S.ButtonWrapper onClick={() => setShow(true)}>
+                    <AddIcon fontSize="small" />
+                    <Typography variant="subtitle2"> Add Portfolio </Typography>
+                </S.ButtonWrapper>
             </S.OptionsWrapper>
-            <MainTable />
+            <div style={{ display: 'flex' }}>
+                <div style={{ width: '40%' }}>
+                    <PortfolioTable />
+                </div>
+            </div>
+            <CreatePortfolioPopup show={show} setShow={setShow} />
         </>
     );
 }

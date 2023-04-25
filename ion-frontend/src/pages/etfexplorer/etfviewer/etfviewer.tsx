@@ -14,9 +14,9 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 import BaseLineChart from 'components/Charting/BaseChart';
-import { EquityHistoricalDTO } from 'data/schema/tickers';
+import { EquityHistoricalDTO } from 'endpoints/schema/tickers';
 import WidgetContainer from 'components/WidgetContainer';
-import { ETFDataSchema } from 'data/schema/etf';
+import { ETFDataSchema } from 'endpoints/schema/etf';
 import { ColorsEnum } from 'common/theme';
 import Info from './info';
 import { Skeleton } from '@mui/material';

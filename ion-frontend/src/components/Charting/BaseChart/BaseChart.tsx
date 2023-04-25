@@ -79,8 +79,9 @@ export default function BaseChart({
     showTooltip = CHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
     showMetrics = CHARTCONFIGS.DEFAULT_SHOW_METRICS,
 }: LineChartProps): React.ReactElement {
-    const tickerSymbol: string = baseId.split('_')[0];
+    const tickerSymbol: string = baseId.split('__')[0];
     const setLiveMoves = useLiveMovesStore(state => state.setLiveMoves);
+    console.log(tickerSymbol, 'sss');
     const metrics = useMetricStore(state => state.metrics[tickerSymbol]);
     const ref = useD3(
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {

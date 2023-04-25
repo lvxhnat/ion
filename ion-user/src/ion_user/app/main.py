@@ -8,9 +8,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from data_ingestion.app.api.api_v1.configs.base_config import settings
 from data_ingestion.app.api.api_v1 import api
 
-from ion_clients.services.postgres.schemas.base import Base
-from ion_clients.services.postgres.schemas.infra import ingestion
-from ion_clients.services.postgres.actions import initialise_table
+from data_ingestion.app.api.api_v2.postgres.models.base import Base
+from data_ingestion.app.api.api_v2.postgres.models.infra import ingestion
+from data_ingestion.app.api.api_v2.postgres.actions import initialise_table
 
 from ion_clients.clients.oanda.instruments import stream_oanda_live_data
 

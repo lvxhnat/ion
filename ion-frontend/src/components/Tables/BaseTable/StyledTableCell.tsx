@@ -7,11 +7,18 @@ interface StyledTableCellProps {
     isHeader?: boolean;
     width?: string;
     color?: string;
+    [props: string]: any;
 }
 
-export function StyledTableCell({ children, isHeader, width, color }: StyledTableCellProps) {
+export function StyledTableCell({
+    children,
+    isHeader,
+    width,
+    color,
+    ...props
+}: StyledTableCellProps) {
     return (
-        <S.TableCellWrapper width={width}>
+        <S.TableCellWrapper {...props} width={width}>
             <S.TableCellLabel
                 variant="subtitle2"
                 align="center"

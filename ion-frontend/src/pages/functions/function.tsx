@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ColorsEnum } from 'common/theme';
 import { useThemeStore } from 'store/theme';
-import { getAllFunctions } from 'data/ingestion/autocomplete';
+import { getAllFunctions } from 'endpoints/clients/autocomplete';
 import HexLayer from 'components/Charting/HexLayer';
 import Navigation from 'components/Navigation';
 

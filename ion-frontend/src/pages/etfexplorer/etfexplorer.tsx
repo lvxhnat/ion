@@ -10,14 +10,14 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
-import { getETFAssetTypes, getETFInfos } from 'data/ingestion/autocomplete';
+import { getETFAssetTypes, getETFInfos } from 'endpoints/clients/autocomplete';
 import { UploadDataType } from 'components/Tables/DataTable/type';
 import { DataTable } from 'components/Tables/DataTable';
 import Navigation from 'components/Navigation';
-import { getETFInfo } from 'data/ingestion/etf';
-import { ETFDataSchema } from 'data/schema/etf';
-import { getCandles } from 'data/ingestion/candles';
-import { EquityHistoricalDTO } from 'data/schema/tickers';
+import { getETFInfo } from 'endpoints/clients/etf';
+import { ETFDataSchema } from 'endpoints/schema/etf';
+import { getCandles } from 'endpoints/clients/candles';
+import { EquityHistoricalDTO } from 'endpoints/schema/tickers';
 import ETFViewer from './etfviewer/etfviewer';
 
 export default function ETFExplorer() {

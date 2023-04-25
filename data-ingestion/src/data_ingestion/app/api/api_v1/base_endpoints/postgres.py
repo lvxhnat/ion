@@ -1,7 +1,10 @@
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 
-from ion_clients.services.postgres.actions import order_query, get_session
+from data_ingestion.app.api.api_v2.postgres.actions import (
+    order_query,
+    get_session,
+)
 
 from data_ingestion.app.api.api_v1.configs.base_config import (
     settings as base_settings,

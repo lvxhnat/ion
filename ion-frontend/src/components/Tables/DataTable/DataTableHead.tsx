@@ -11,7 +11,7 @@ import { visuallyHidden } from '@mui/utils';
 
 import { StyledTableCell } from './DataTable';
 import { ColorsEnum } from 'common/theme';
-import { IngestionDtypeObjectType } from 'data/ingestion/ingestion';
+import { IngestionDtypeObjectType } from 'endpoints/clients/ingestion';
 import { typeIconHints } from 'common/theme/components/icons';
 import { useThemeStore } from 'store/theme';
 

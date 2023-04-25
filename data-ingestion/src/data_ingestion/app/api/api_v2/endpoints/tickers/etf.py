@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter
 from pyetfdb_scraper.etf import ETF
 
-from data_ingestion.app.api.api_v2.models.tickers.params import InfoETFParams
+from data_ingestion.app.api.api_v2.postgres.schemas.data.tickers.params import InfoETFParams
 
 
 router = APIRouter(

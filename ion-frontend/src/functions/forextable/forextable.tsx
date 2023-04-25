@@ -13,7 +13,7 @@ import { Modify } from 'common/types';
 import { ColorsEnum } from 'common/theme';
 import { ForexStreamType, ForexTableHeaderType, FormattedForexStreamType } from './type';
 import { forexStreamStore } from 'store/prices/prices';
-import { getHistoricalForex, getWebsocketForex } from 'data/ingestion/forex';
+import { getHistoricalForex, getWebsocketForex } from 'endpoints/clients/forex';
 import { StyledTableCell } from 'components/Tables/BaseTable/StyledTableCell';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
@@ -69,7 +69,11 @@ function ForexHistoricalCell(props: { forexPair: string }) {
     React.useEffect(() => {
         const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
 
-        getHistoricalForex(props.forexPair, '1M', 'D').then(res => {
+        getHistoricalForex({
+            symbol: props.forexPair,
+            granularity: 'D',
+            count: 50,
+        }).then(res => {
             setData({
                 id: props.forexPair,
                 name: props.forexPair,

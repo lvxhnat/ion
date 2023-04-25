@@ -1,3 +1,5 @@
+import { technicalIndicatorsParams } from 'components/Analysis/Chartview/calculations/metrics';
+import { MovingAverageProps } from 'components/Analysis/Chartview/calculations/types';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { create } from 'zustand';
 /**
@@ -90,10 +92,14 @@ export interface TickerMetricStoreFormat {
     metric: string;
     field: MetricCalculableFields;
     value: number[];
+    metricParams: MovingAverageProps;
+}
+interface AddMetricValueType extends Omit<TickerMetricStoreFormat, 'metricParams'> {
+    metricParams?: MovingAverageProps;
 }
 interface AddMetricPropType {
     ticker: string;
-    value: TickerMetricStoreFormat;
+    value: AddMetricValueType;
 }
 interface RemoveMetricPropType {
     ticker: string;
@@ -102,21 +108,31 @@ interface RemoveMetricPropType {
 interface RemoveTickerPropType {
     ticker: string;
 }
+interface EditselectedMetricIdPropType {
+    metric: string;
+}
 export interface MetricStoreTypes {
+    selectedMetricId: string | null;
     metrics: {
         [ticker: string]: TickerMetricStoreFormat[];
     };
     addMetric: (props: AddMetricPropType) => void;
     removeMetric: (props: RemoveMetricPropType) => void;
     removeTicker: (props: RemoveTickerPropType) => void;
+    setselectedMetricId: (props: EditselectedMetricIdPropType) => void;
 }
 export const useMetricStore = create<MetricStoreTypes>(set => ({
+    selectedMetricId: null,
     metrics: {},
     addMetric: (props: AddMetricPropType) =>
         set((state: MetricStoreTypes) => {
             const newMetrics = { ...state.metrics }; // Create a new metric object
             if (!Object.keys(newMetrics).includes(props.ticker)) {
                 newMetrics[props.ticker] = [];
+            }
+            if (!props.value.metricParams) {
+                const metricName = props.value.metric.split('__')[0];
+                props.value.metricParams = technicalIndicatorsParams[metricName];
             }
             let metricExists = false;
             newMetrics[props.ticker].map(entry => {
@@ -125,7 +141,13 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
                     return;
                 }
             });
-            if (!metricExists) newMetrics[props.ticker].push(props.value);
+            if (!metricExists)
+                // Cast to value since the field will now be filled in
+                newMetrics[props.ticker] = [
+                    ...newMetrics[props.ticker],
+                    props.value as TickerMetricStoreFormat,
+                ];
+
             return { metrics: newMetrics };
         }),
     removeMetric: (props: RemoveMetricPropType) =>
@@ -141,5 +163,9 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
             const newMetrics = { ...state.metrics };
             delete newMetrics[props.ticker];
             return { metrics: newMetrics };
+        }),
+    setselectedMetricId: (props: EditselectedMetricIdPropType) =>
+        set((_: MetricStoreTypes) => {
+            return { selectedMetricId: props.metric };
         }),
 }));

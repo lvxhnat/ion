@@ -1,5 +1,5 @@
 import { Modify } from 'common/types';
-import { IngestionDataType } from 'data/ingestion/ingestion';
+import { IngestionDataType } from 'endpoints/clients/ingestion';
 
 export interface DataTableProps {
     data: UploadDataType;

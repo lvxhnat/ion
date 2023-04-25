@@ -69,6 +69,7 @@ export enum ColorsEnum {
     coolgray8 = '#383838',
     white = '#FFFFFF',
     mamitaGreen = '#26D221',
+    darkGreen = '#006100',
     geekBlue = '#3D5884',
     intellectualLavender = '#774161',
     teenPurple = '#8A02E5',

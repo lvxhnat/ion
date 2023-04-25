@@ -14,9 +14,9 @@ import { StyledTableCell } from 'components/Tables/BaseTable/StyledTableCell';
 import { TableCellWrapper } from 'components/Tables/BaseTable/style';
 import { ColorsEnum } from 'common/theme';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
-import { getCandles } from 'data/ingestion/candles';
+import { getCandles } from 'endpoints/clients/candles';
 import { ASSET_TYPES, ROUTES } from 'common/constant';
-import { EquityHistoricalDTO } from 'data/schema/tickers';
+import { EquityHistoricalDTO } from 'endpoints/schema/tickers';
 
 function WidgetTickerRow(props: { ticker: string }) {
     const [data, setData] = React.useState<{

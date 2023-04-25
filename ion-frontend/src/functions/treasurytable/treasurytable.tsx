@@ -13,7 +13,7 @@ import {
     StyledTableCell,
     StyledChartCell,
 } from '../../components/Tables/BaseTable/StyledTableCell';
-import { getTableQuery } from 'data/ingestion/postgres';
+import { queryTable } from 'endpoints/clients/database/postgres';
 import BaseLineChart from 'components/Charting/BaseChart';
 
 export default function TreasuryTable(props: TreasuryTableProps) {
@@ -22,12 +22,12 @@ export default function TreasuryTable(props: TreasuryTableProps) {
     const processString = (colName: string) =>
         colName
             .slice(1, colName.length)
-            .split('_')
+            .split('__')
             .map((token: string) => token.charAt(0).toUpperCase() + token.slice(1))
             .join(' ');
 
     React.useEffect(() => {
-        getTableQuery(props.table).then(data => {
+        queryTable(props.table).then(data => {
             let columnNames = Object.keys(data.data[0]);
             let obj: { [index: string]: Array<number | null> } = {};
             columnNames.map((columnName: string) => (obj[columnName] = []));

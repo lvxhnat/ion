@@ -5,16 +5,15 @@ from data_ingestion.app.api.api_v2.configs.base_config import (
     configs as base_configs,
 )
 
-from ion_clients.services.postgres.actions import order_search, get_session
+from data_ingestion.app.api.api_v2.postgres.actions import (
+    order_search,
+    get_session,
+)
+
 from ion_clients.clients.weather.openweather import get_current_weather
 from ion_clients.clients.weather.types.openweather import OpenWeatherDTO
 
-from data_ingestion.app.api.api_v2.models.weather.params import (
-    CurrentWeatherParams,
-)
-from data_ingestion.app.api.api_v2.models.weather.params import (
-    CurrentWeatherParams,
-)
+from data_ingestion.app.api.api_v2.postgres.schemas.data.weather.params import CurrentWeatherParams
 
 router = APIRouter(
     prefix=f"/weather",

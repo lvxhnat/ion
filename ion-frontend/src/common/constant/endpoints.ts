@@ -9,6 +9,7 @@ export const ENDPOINTS = {
         EQUITY_HISTORICAL_ENDPOINT: 'equity/historical',
         CURRENT_WEATHER_ENDPOINT: 'weather/current',
         QUERY_POSTGRES_ENDPOINT: 'postgres/query',
+        BASE_POSTGRES_ENDPOINT: 'postgres/', // Use for CRUD Operations. Officially 'postgres/{table_name}'
 
         SEARCH_FUNCTIONS: 'autocomplete/securityFunctions',
         ALL_FUNCTIONS: 'autocomplete/allFunctions',

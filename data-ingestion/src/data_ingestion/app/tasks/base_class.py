@@ -5,7 +5,9 @@ import celery
 from celery import Task
 from sqlalchemy import orm
 
-from ion_clients.services.postgres.postgres_service import postgres_engine
+from data_ingestion.app.api.api_v2.postgres.postgres_service import (
+    postgres_engine,
+)
 
 logger: Logger = celery.utils.log.get_task_logger(__name__)
 

@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from data_ingestion.app.api.api_v2.endpoints.weather import weather
 from data_ingestion.app.api.api_v2.endpoints.tickers import (
     etf,
-    forex, 
+    forex,
     equity,
 )
 from data_ingestion.app.api.api_v2.endpoints.database import postgres

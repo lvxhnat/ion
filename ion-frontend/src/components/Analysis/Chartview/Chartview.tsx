@@ -5,8 +5,8 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
-import { getCandles } from 'data/ingestion/candles';
-import { EquityHistoricalDTO, ForexHistoricalDTO } from 'data/schema/tickers';
+import { getCandles } from 'endpoints/clients/candles';
+import { EquityHistoricalDTO, ForexHistoricalDTO } from 'endpoints/schema/tickers';
 import BaseLineChart from 'components/Charting/BaseChart';
 
 import { MdWaterfallChart } from 'react-icons/md';
@@ -14,7 +14,7 @@ import { useTickerDataStore } from 'store/prices/watchlist';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import ChartviewToolbar from './ChartviewToolbar';
 import { ASSET_TYPES } from 'common/constant';
-import { getHistoricalForex } from 'data/ingestion/forex';
+import { getHistoricalForex } from 'endpoints/clients/forex';
 import ChartviewPriceShower from './ChartviewPriceShower';
 
 const Item = styled(Box)(({ theme }) => ({
@@ -33,7 +33,7 @@ export default function Chartview(props: {
 }) {
     const [data, setData] = useTickerDataStore(state => [state.data, state.setData]);
 
-    const baseLineChartId: string = `${props.ticker}_tickerChart`;
+    const baseLineChartId: string = `${props.ticker}__tickerChart`;
 
     React.useEffect(() => {
         const ticker = props.ticker ? props.ticker : 'SPY';
@@ -43,7 +43,11 @@ export default function Chartview(props: {
         const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
 
         if (assetType === ASSET_TYPES.FOREX) {
-            getHistoricalForex(ticker, '1M', 'D').then(res => {
+            getHistoricalForex({
+                symbol: ticker,
+                count: 50,
+                granularity: 'D',
+            }).then(res => {
                 setData({
                     ticker: ticker as string,
                     data: {
@@ -77,7 +81,11 @@ export default function Chartview(props: {
 
     return (
         <Item>
-            <ChartviewToolbar ticker={props.ticker} baseId={baseLineChartId} />
+            <ChartviewToolbar
+                baseId={baseLineChartId}
+                assetType={props.assetType}
+                ticker={props.ticker}
+            />
             {props.ticker && data[props.ticker] ? (
                 <div style={{ height: '90%' }}>
                     <ChartviewPriceShower ticker={props.ticker} />

@@ -1,4 +1,4 @@
-from ion_clients.services.postgres.schemas.data import (
+from data_ingestion.app.api.api_v2.postgres.models.data import (
     treasury,
     area_latlon,
 )

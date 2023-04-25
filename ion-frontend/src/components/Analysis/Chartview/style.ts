@@ -52,12 +52,13 @@ export const LabPopupStrategyRow = styled('div')(({ theme }) => ({
     borderRight: 0,
     '&:hover': {
         backgroundColor: ColorsEnum.geekBlue,
+        cursor: 'pointer',
     },
 }));
 
 export const LabPopupStrategyRowCell = styled('div')<LabPopupStrategyRowProps>(
     ({ theme, header }) => ({
-        padding: theme.spacing(1),
+        padding: theme.spacing(0.8),
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
