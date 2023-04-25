@@ -6,12 +6,9 @@ from prefect import task, flow
 from prefect.task_runners import ConcurrentTaskRunner
 
 from data_engine.flows.shared import refresh_table
+from data_engine.models.database.area_latlon import AreaLatLon
 
 from ion_clients.clients.common.area_latlon import geonames_info
-from ion_clients.clients.common.types.area_latlon import GeoNamesData
-from data_ingestion.app.api.api_v2.postgres.models.data.area_latlon import (
-    AreaLatLon,
-)
 
 
 @task

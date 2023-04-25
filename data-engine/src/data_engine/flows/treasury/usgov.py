@@ -11,7 +11,7 @@ from ion_clients.clients.usdept.types.treasury import (
     TreasuryYears,
     TreasuryTypes,
 )
-from data_ingestion.app.api.api_v2.postgres.models.data.treasury import (
+from data_engine.models.database.treasury import (
     USTreasuryYield,
     USBillRates,
     USLongTermRates,

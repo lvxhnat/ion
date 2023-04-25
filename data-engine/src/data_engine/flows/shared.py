@@ -1,10 +1,9 @@
 from prefect import task
-from data_ingestion.app.api.api_v2.postgres.actions import (
+from ion_clients.services.postgres.actions import (
     bulk_upsert,
     bulk_refresh,
 )
-from data_ingestion.app.api.api_v2.postgres.postgres_service import postgres
-
+from ion_clients.services.postgres.postgres_service import postgres
 
 @task
 def write_table(table_name, table_info):
