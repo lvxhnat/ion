@@ -1,18 +1,10 @@
+import { PortfolioTableEntry } from 'endpoints/schema/database/postgres/portfolio/props';
 import { create } from 'zustand';
 
-export interface PortfolioSpecificationType {
-    name: string;
-    description: string;
-    currency: string;
-}
-interface PortfolioProps {
-    name: string;
-    description: string;
-    currency: string;
-}
+interface PortfolioProps extends PortfolioTableEntry {}
 
 interface PortfolioStoreTypes {
-    portfolios: PortfolioSpecificationType[];
+    portfolios: PortfolioTableEntry[];
     setPortfolios: (config: PortfolioProps) => void;
 }
 
@@ -21,14 +13,7 @@ export const usePortfolioStore = create<PortfolioStoreTypes>(set => ({
     setPortfolios: (props: PortfolioProps) => {
         return set((state: PortfolioStoreTypes) => {
             return {
-                portfolios: [
-                    ...state.portfolios,
-                    {
-                        name: props.name,
-                        description: props.description,
-                        currency: props.currency,
-                    },
-                ],
+                portfolios: [...state.portfolios, props],
             };
         });
     },

@@ -5,20 +5,24 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { StyledTableCell } from 'components/Tables/BaseTable/StyledTableCell';
+import Typography from '@mui/material/Typography';
 
-import { PortfolioSpecificationType, usePortfolioStore } from 'store/portfolio/portfolio';
+import { usePortfolioStore } from 'store/portfolio/portfolio';
+import { StyledTableCell } from 'components/Tables/BaseTable/StyledTableCell';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
 import { CurrencyToCountry } from 'common/constant/countries';
-import Typography from '@mui/material/Typography';
+import { PortfolioTableEntry } from 'endpoints/schema/database/postgres/portfolio/props';
+import { formatDate } from 'common/constant/dates';
 
 export default function PortfolioTable() {
     const portfolios = usePortfolioStore(state => state.portfolios);
 
-    const tableHeaders: { name: keyof PortfolioSpecificationType; id: string; width: number }[] = [
-        { name: 'name' as keyof PortfolioSpecificationType, id: 'name', width: 20 },
-        { name: 'description' as keyof PortfolioSpecificationType, id: 'description', width: 60 },
-        { name: 'currency' as keyof PortfolioSpecificationType, id: 'currency', width: 20 },
+    const tableHeaders: { name: keyof PortfolioTableEntry; id: string; width: number }[] = [
+        { name: 'name' as keyof PortfolioTableEntry, id: 'name', width: 15 },
+        { name: 'description' as keyof PortfolioTableEntry, id: 'description', width: 40 },
+        { name: 'currency' as keyof PortfolioTableEntry, id: 'currency', width: 5 },
+        { name: 'creation_date' as keyof PortfolioTableEntry, id: 'creation_date', width: 20 },
+        { name: 'last_updated' as keyof PortfolioTableEntry, id: 'last_updated', width: 20 },
     ];
 
     return (
@@ -40,7 +44,7 @@ export default function PortfolioTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {portfolios.map((entry: PortfolioSpecificationType) => (
+                    {portfolios.map((entry: PortfolioTableEntry) => (
                         <StyledTableRow key={`${entry.name}_row`}>
                             {tableHeaders.map(columnEntry => (
                                 <StyledTableCell key={`${columnEntry.name}_label`}>
@@ -67,7 +71,9 @@ export default function PortfolioTable() {
                                             />
                                         ) : undefined}
                                         <Typography variant="subtitle2">
-                                            {entry[columnEntry.name]}
+                                            {entry[columnEntry.name] instanceof Date
+                                                ? formatDate(entry[columnEntry.name] as Date)
+                                                : (entry[columnEntry.name] as string)}
                                         </Typography>
                                     </div>
                                 </StyledTableCell>

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as S from '../style';
+import * as uuid from 'uuid';
 
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -7,7 +8,10 @@ import Typography from '@mui/material/Typography';
 import { ColorsEnum } from 'common/theme';
 import { useThemeStore } from 'store/theme';
 import PopupButton from 'components/Button';
-import { PortfolioSpecificationType, usePortfolioStore } from 'store/portfolio/portfolio';
+import { insertTable } from 'endpoints/clients/database/postgres';
+import { usePortfolioStore } from 'store/portfolio/portfolio';
+import { PostgresTablesEnum } from 'endpoints/schema/database/postgres/props';
+import { PortfolioTableEntry } from 'endpoints/schema/database/postgres/portfolio/props';
 
 function PortfolioPopupOptionRow(props: {
     title: string;
@@ -69,8 +73,8 @@ function PortfolioPopupOptionRow(props: {
 
 function PortfolioPopupTextRow(props: {
     title: string;
-    [props: string]: any;
-    showdescription?: boolean;
+    showDescription?: boolean;
+    [others: string]: any;
 }) {
     const { mode } = useThemeStore();
 
@@ -111,10 +115,10 @@ function PortfolioPopupTextRow(props: {
                     justifyContent: 'flex-start',
                 }}
             >
-                {props.showdescription ? (
-                    <textarea {...props} style={textStyle} />
+                {props.showDescription ? (
+                    <textarea {...props.others} style={textStyle} />
                 ) : (
-                    <input type="text" {...props} style={textStyle} />
+                    <input type="text" {...props.others} style={textStyle} />
                 )}
             </div>
         </div>
@@ -123,16 +127,31 @@ function PortfolioPopupTextRow(props: {
 
 export default function PortfolioPopup(props: { show: boolean; setShow: (show: boolean) => void }) {
     const [showCancel, setShowCancel] = React.useState<boolean>(false);
-    const [portfolioConfig, setPortfolioConfig] = React.useState<PortfolioSpecificationType>({
+    const [portfolioConfig, setPortfolioConfig] = React.useState<PortfolioTableEntry>({
+        uuid: '',
         name: '',
         description: '',
         currency: '',
+        last_updated: new Date(),
+        creation_date: new Date(),
     });
     const setPortfolios = usePortfolioStore(state => state.setPortfolios);
 
     const defaultCurrency = 'SGD';
     const currencies = ['SGD', 'USD'];
 
+    const handleClick = () => {
+        portfolioConfig.currency =
+            portfolioConfig.currency === '' ? defaultCurrency : portfolioConfig.currency;
+        portfolioConfig.uuid = uuid.v4();
+        portfolioConfig.creation_date = new Date();
+        setPortfolios(portfolioConfig);
+        insertTable({
+            tableName: PostgresTablesEnum.PORTFOLIO,
+            entry: portfolioConfig,
+        });
+        props.setShow(false);
+    };
     return (
         <div
             style={{
@@ -180,7 +199,7 @@ export default function PortfolioPopup(props: { show: boolean; setShow: (show: b
                     }}
                 />
                 <PortfolioPopupTextRow
-                    showdescription
+                    showDescription={true}
                     title="Portfolio Description"
                     onChange={(event: any) => {
                         portfolioConfig.description = event.target.value;
@@ -212,18 +231,7 @@ export default function PortfolioPopup(props: { show: boolean; setShow: (show: b
                 <PopupButton buttonType="secondary" onClick={() => props.setShow(false)}>
                     Cancel
                 </PopupButton>
-                <PopupButton
-                    buttonType="primary"
-                    onClick={() => {
-                        portfolioConfig.currency =
-                            portfolioConfig.currency === ''
-                                ? defaultCurrency
-                                : portfolioConfig.currency;
-                        setPortfolios(portfolioConfig);
-                        console.log(portfolioConfig);
-                        props.setShow(false);
-                    }}
-                >
+                <PopupButton buttonType="primary" onClick={handleClick}>
                     OK
                 </PopupButton>
             </div>
