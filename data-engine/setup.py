@@ -8,13 +8,13 @@ here = pathlib.Path.absolute(pathlib.Path(__file__).resolve().parent)
 
 # get package version
 with open(
-    pathlib.Path(here, "./src/data_engine/__init__.py"), encoding="utf-8"
+    pathlib.Path(here, f"./src/{name}/__init__.py"), encoding="utf-8"
 ) as f:
     result = re.search(r'__version__ = ["\']([^"\']+)', f.read())
 
     if not result:
         raise ValueError(
-            f"Can't find the version in {pathlib.Path(here, 'src/data_engine/__init__.py')}"
+            f"Can't find the version in {pathlib.Path(here, f'src/{name}/__init__.py')}"
         )
 
     version = result.group(1)
@@ -40,7 +40,10 @@ setup(
     long_description_content_type="text/markdown",
     package_dir={"": "src"},
     packages=setuptools.find_namespace_packages(where="./src"),
-    package_data={"data_engine": ["*.txt", "*.json", "*.preamble", "*.sql"]},
+    entry_points={
+        "console_scripts": [f"{name} = {name}.entrypoints:main"],
+    },
+    package_data={name: ["*.txt", "*.json", "*.preamble", "*.sql"]},
     install_requires=list(base_requirements),
     python_requires=">=3.9",
 )

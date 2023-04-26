@@ -26,8 +26,6 @@ def ingest_asset_metadata():
     description="Scheduled prefect pipeline for extracting all asset information.",
 )
 def asset_ingestion_flow():
-    if None:
-        return
     asset_results: List[Dict[str, str]] = (
         ingest_asset_metadata.submit()
         .result()
