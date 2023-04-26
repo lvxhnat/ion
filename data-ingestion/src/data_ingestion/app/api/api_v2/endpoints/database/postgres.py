@@ -71,8 +71,7 @@ def insert_postgres_table_entry(
     entry: PortfolioParams,
     session: Session = Depends(get_session),
 ):
-    print(query_tables[table_name]())
-    session.add(query_tables[table_name](**entry))
+    session.add(query_tables[table_name](**entry.dict()))
     return
 
 

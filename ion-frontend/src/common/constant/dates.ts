@@ -13,7 +13,7 @@ const monthNames = [
     'December',
 ];
 
-export const formatDate = (date: Date): string => {
+export const formatDate = (date: Date | string): string => {
     var d = new Date(date),
         month = '' + monthNames[d.getMonth()].slice(0, 3),
         day = '' + d.getDate(),

@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { ColorsEnum } from 'common/theme';
 import { useThemeStore } from 'store/theme';
 import PopupButton from 'components/Button';
-import { insertTable } from 'endpoints/clients/database/postgres';
+import { insertTable, getTable } from 'endpoints/clients/database/postgres';
 import { usePortfolioStore } from 'store/portfolio/portfolio';
 import { PostgresTablesEnum } from 'endpoints/schema/database/postgres/props';
 import { PortfolioTableEntry } from 'endpoints/schema/database/postgres/portfolio/props';
@@ -47,7 +47,7 @@ function PortfolioPopupOptionRow(props: {
                     justifyContent: 'center',
                 }}
             >
-                <Typography variant="subtitle1">{props.title}</Typography>
+                <Typography variant="subtitle1" noWrap>{props.title}</Typography>
             </div>
             <div
                 style={{
@@ -73,10 +73,11 @@ function PortfolioPopupOptionRow(props: {
 
 function PortfolioPopupTextRow(props: {
     title: string;
-    showDescription?: boolean;
-    [others: string]: any;
+    type?: "description" | "text";
+    [x: string]: any;
 }) {
     const { mode } = useThemeStore();
+    const type = props.type ?? "description"
 
     const textStyle: React.CSSProperties = {
         width: '100%',
@@ -105,7 +106,7 @@ function PortfolioPopupTextRow(props: {
                     justifyContent: 'center',
                 }}
             >
-                <Typography variant="subtitle1">{props.title}</Typography>
+                <Typography variant="subtitle1" noWrap>{props.title}</Typography>
             </div>
             <div
                 style={{
@@ -115,10 +116,10 @@ function PortfolioPopupTextRow(props: {
                     justifyContent: 'flex-start',
                 }}
             >
-                {props.showDescription ? (
-                    <textarea {...props.others} style={textStyle} />
+                {type === 'description' ? (
+                    <textarea {...props} style={textStyle} />
                 ) : (
-                    <input type="text" {...props.others} style={textStyle} />
+                    <input type="text" {...props} style={textStyle} />
                 )}
             </div>
         </div>
@@ -135,7 +136,13 @@ export default function PortfolioPopup(props: { show: boolean; setShow: (show: b
         last_updated: new Date(),
         creation_date: new Date(),
     });
-    const setPortfolios = usePortfolioStore(state => state.setPortfolios);
+    const [setPortfolio, setPortfolios] = usePortfolioStore(state => [state.setPortfolio, state.setPortfolios]);
+
+    React.useEffect(() => {
+        getTable({tableName: PostgresTablesEnum.PORTFOLIO}).then((res) => {
+            setPortfolios(res.data);
+        })
+    }, [])
 
     const defaultCurrency = 'SGD';
     const currencies = ['SGD', 'USD'];
@@ -145,7 +152,7 @@ export default function PortfolioPopup(props: { show: boolean; setShow: (show: b
             portfolioConfig.currency === '' ? defaultCurrency : portfolioConfig.currency;
         portfolioConfig.uuid = uuid.v4();
         portfolioConfig.creation_date = new Date();
-        setPortfolios(portfolioConfig);
+        setPortfolio(portfolioConfig);
         insertTable({
             tableName: PostgresTablesEnum.PORTFOLIO,
             entry: portfolioConfig,
@@ -192,6 +199,7 @@ export default function PortfolioPopup(props: { show: boolean; setShow: (show: b
             </S.LabPopupContainerWrapper>
             <div style={{ padding: 5 }}>
                 <PortfolioPopupTextRow
+                    type="text"
                     title="Portfolio Name"
                     onChange={(event: any) => {
                         portfolioConfig.name = event.target.value;
@@ -199,7 +207,6 @@ export default function PortfolioPopup(props: { show: boolean; setShow: (show: b
                     }}
                 />
                 <PortfolioPopupTextRow
-                    showDescription={true}
                     title="Portfolio Description"
                     onChange={(event: any) => {
                         portfolioConfig.description = event.target.value;
