@@ -2,6 +2,8 @@ import os
 import sys
 import click
 import importlib
+import importlib.util
+
 from typing import List
 from pathlib import Path
 
@@ -20,3 +22,11 @@ def start() -> None:
         for file in files:
             for n, c in inspect.getmembers(sys.modules[str(base_path / file)]):
                 print(n, c)
+
+    spec = importlib.util.spec_from_file_location(
+        "module.name", "/path/to/file.py"
+    )
+    foo = importlib.util.module_from_spec(spec)
+    sys.modules["module.name"] = foo
+    spec.loader.exec_module(foo)
+    foo.MyClass()
