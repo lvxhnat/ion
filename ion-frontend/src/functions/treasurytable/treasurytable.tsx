@@ -27,7 +27,7 @@ export default function TreasuryTable(props: TreasuryTableProps) {
             .join(' ');
 
     React.useEffect(() => {
-        queryTable(props.table).then(data => {
+        queryTable({ tableName: props.table }).then(data => {
             let columnNames = Object.keys(data.data[0]);
             let obj: { [index: string]: Array<number | null> } = {};
             columnNames.map((columnName: string) => (obj[columnName] = []));

@@ -6,9 +6,9 @@ import {
     UpdateTableParams,
 } from 'endpoints/schema/database/postgres/props';
 
-export const queryTable = (table: string) => {
+export const queryTable = (props: { tableName: string }) => {
     return dataIngestionRequest.post(ENDPOINTS.PRIVATE.QUERY_POSTGRES_ENDPOINT, {
-        table: table,
+        table: props.tableName,
     });
 };
 

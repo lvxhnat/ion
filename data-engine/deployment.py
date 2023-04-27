@@ -7,7 +7,7 @@ from data_engine.flows.treasury.usgov import treasury_ingestion_flow
 from data_engine.flows.common.area_latlon import geonames_ingestion_flow
 from data_engine.flows.tickers.tickers import asset_ingestion_flow
 
-config_file_path = "./src/data_engine/request_configs/"
+config_file_path = "./src/data_engine/configs/flows"
 
 
 @hydra.main(

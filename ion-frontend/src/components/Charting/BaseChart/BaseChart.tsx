@@ -21,12 +21,13 @@ function determineEndY(minValue: number, maxValue: number) {
     return maxValue + minBoundary;
 }
 
-function determineDatetimeFormat(startDate: Date, endDate: Date) {
-    const timeDifference: number = Math.abs(endDate.getTime() - startDate.getTime()) / 1000;
+function determineDatetimeFormat(startDate: Date, endDate: Date, count: number, numTicks: number) {
+    const timeDifference: number =
+        ((count / numTicks) * Math.abs(endDate.getTime() - startDate.getTime())) / 1000;
     let format: string = '%Y';
-    if (timeDifference >= 60 * 60 * 24 * 365) format = '%Y/%m';
-    else if (timeDifference >= 60 * 60 * 24 * 31) format = '%m/%d';
-    else if (timeDifference >= 60 * 60) format = '%m/%d %H:%M';
+    if (timeDifference >= 60 * 60 * 24 * 300) format = '%b %Y';
+    else if (timeDifference >= 60 * 60 * 24 * 21) format = '%d %b %Y';
+    else if (timeDifference >= 60 * 60) format = '%d %b %H:%M';
     else format = '%M:%S';
     return format;
 }
@@ -79,9 +80,9 @@ export default function BaseChart({
     showTooltip = CHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
     showMetrics = CHARTCONFIGS.DEFAULT_SHOW_METRICS,
 }: LineChartProps): React.ReactElement {
+    const numTicks: number = 10;
     const tickerSymbol: string = baseId.split('__')[0];
     const setLiveMoves = useLiveMovesStore(state => state.setLiveMoves);
-    console.log(tickerSymbol, 'sss');
     const metrics = useMetricStore(state => state.metrics[tickerSymbol]);
     const ref = useD3(
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
@@ -129,15 +130,17 @@ export default function BaseChart({
                     } else {
                         dateItem = date;
                     }
-                    return d3.timeFormat(determineDatetimeFormat(dataX[0], dataX[1]))(dateItem);
+                    return d3.timeFormat(
+                        determineDatetimeFormat(dataX[0], dataX[1], dataX.length, numTicks)
+                    )(dateItem);
                 })
                 .tickSize(height)
                 .ticks(0);
 
             if (showAxis) {
                 // Set the number of ticks if we want to show the axis
-                xAxis.ticks(10);
-                yAxis.ticks(10);
+                xAxis.ticks(numTicks);
+                yAxis.ticks(numTicks);
             }
 
             svg.append('g')
