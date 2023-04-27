@@ -80,14 +80,14 @@ export const addLineTracker = (props: {
         if (dates[i]) {
             props.setLiveMoves({
                 ticker: tickerSymbol,
-                metric: 'price',
+                metricId: 'price',
                 value: props.data.dataY[i],
             });
             if (props.metrics) {
                 props.metrics.map((entry: TickerMetricStoreFormat) => {
                     props.setLiveMoves({
                         ticker: tickerSymbol,
-                        metric: entry.metric,
+                        metricId: entry.metricId,
                         value: entry.value[i],
                     });
                 });

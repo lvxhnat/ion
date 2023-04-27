@@ -47,7 +47,9 @@ function PortfolioPopupOptionRow(props: {
                     justifyContent: 'center',
                 }}
             >
-                <Typography variant="subtitle1" noWrap>{props.title}</Typography>
+                <Typography variant="subtitle1" noWrap>
+                    {props.title}
+                </Typography>
             </div>
             <div
                 style={{
@@ -73,11 +75,11 @@ function PortfolioPopupOptionRow(props: {
 
 function PortfolioPopupTextRow(props: {
     title: string;
-    type?: "description" | "text";
+    type?: 'description' | 'text';
     [x: string]: any;
 }) {
     const { mode } = useThemeStore();
-    const type = props.type ?? "description"
+    const type = props.type ?? 'description';
 
     const textStyle: React.CSSProperties = {
         width: '100%',
@@ -106,7 +108,9 @@ function PortfolioPopupTextRow(props: {
                     justifyContent: 'center',
                 }}
             >
-                <Typography variant="subtitle1" noWrap>{props.title}</Typography>
+                <Typography variant="subtitle1" noWrap>
+                    {props.title}
+                </Typography>
             </div>
             <div
                 style={{
@@ -136,13 +140,16 @@ export default function PortfolioPopup(props: { show: boolean; setShow: (show: b
         last_updated: new Date(),
         creation_date: new Date(),
     });
-    const [setPortfolio, setPortfolios] = usePortfolioStore(state => [state.setPortfolio, state.setPortfolios]);
+    const [setPortfolio, setPortfolios] = usePortfolioStore(state => [
+        state.setPortfolio,
+        state.setPortfolios,
+    ]);
 
     React.useEffect(() => {
-        getTable({tableName: PostgresTablesEnum.PORTFOLIO}).then((res) => {
+        getTable({ tableName: PostgresTablesEnum.PORTFOLIO }).then(res => {
             setPortfolios(res.data);
-        })
-    }, [])
+        });
+    }, []);
 
     const defaultCurrency = 'SGD';
     const currencies = ['SGD', 'USD'];

@@ -22,7 +22,8 @@ function determineEndY(minValue: number, maxValue: number) {
 }
 
 function determineDatetimeFormat(startDate: Date, endDate: Date, count: number, numTicks: number) {
-    const timeDifference: number = (count / numTicks) * Math.abs(endDate.getTime() - startDate.getTime()) / 1000;
+    const timeDifference: number =
+        ((count / numTicks) * Math.abs(endDate.getTime() - startDate.getTime())) / 1000;
     let format: string = '%Y';
     if (timeDifference >= 60 * 60 * 24 * 300) format = '%b %Y';
     else if (timeDifference >= 60 * 60 * 24 * 21) format = '%d %b %Y';
@@ -129,7 +130,9 @@ export default function BaseChart({
                     } else {
                         dateItem = date;
                     }
-                    return d3.timeFormat(determineDatetimeFormat(dataX[0], dataX[1], dataX.length, numTicks))(dateItem);
+                    return d3.timeFormat(
+                        determineDatetimeFormat(dataX[0], dataX[1], dataX.length, numTicks)
+                    )(dateItem);
                 })
                 .tickSize(height)
                 .ticks(0);

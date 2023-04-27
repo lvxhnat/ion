@@ -16,14 +16,37 @@ import { formatDate } from 'common/constant/dates';
 
 export default function PortfolioTable() {
     const portfolios: PortfolioTableEntry[] = usePortfolioStore(state => state.portfolios);
-    const [portfolioSelected, setPortfolioSelected] = usePortfolioStore(state => [state.selectedPortfolio, state.setSelectedPortfolio])
+    const [portfolioSelected, setPortfolioSelected] = usePortfolioStore(state => [
+        state.selectedPortfolio,
+        state.setSelectedPortfolio,
+    ]);
 
-    const tableHeaders: { name: keyof PortfolioTableEntry; id: string; width: number; type: "string" | "number" | "date" }[] = [
-        { name: 'name' as keyof PortfolioTableEntry, id: 'name', width: 15, type: "string" },
-        { name: 'description' as keyof PortfolioTableEntry, id: 'description', width: 40, type: "string" },
-        { name: 'currency' as keyof PortfolioTableEntry, id: 'currency', width: 5, type: "string" },
-        { name: 'creation_date' as keyof PortfolioTableEntry, id: 'creation_date', width: 20, type: "date" },
-        { name: 'last_updated' as keyof PortfolioTableEntry, id: 'last_updated', width: 20, type: "date" },
+    const tableHeaders: {
+        name: keyof PortfolioTableEntry;
+        id: string;
+        width: number;
+        type: 'string' | 'number' | 'date';
+    }[] = [
+        { name: 'name' as keyof PortfolioTableEntry, id: 'name', width: 15, type: 'string' },
+        {
+            name: 'description' as keyof PortfolioTableEntry,
+            id: 'description',
+            width: 40,
+            type: 'string',
+        },
+        { name: 'currency' as keyof PortfolioTableEntry, id: 'currency', width: 5, type: 'string' },
+        {
+            name: 'creation_date' as keyof PortfolioTableEntry,
+            id: 'creation_date',
+            width: 20,
+            type: 'date',
+        },
+        {
+            name: 'last_updated' as keyof PortfolioTableEntry,
+            id: 'last_updated',
+            width: 20,
+            type: 'date',
+        },
     ];
 
     return (
@@ -46,7 +69,10 @@ export default function PortfolioTable() {
                 </TableHead>
                 <TableBody>
                     {portfolios.map((entry: PortfolioTableEntry) => (
-                        <StyledTableRow key={`${entry.name}_row`} onClick={() => setPortfolioSelected(entry)}>
+                        <StyledTableRow
+                            key={`${entry.name}_row`}
+                            onClick={() => setPortfolioSelected(entry)}
+                        >
                             {tableHeaders.map(columnEntry => (
                                 <StyledTableCell key={`${columnEntry.name}_label`}>
                                     <div
