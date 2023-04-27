@@ -7,22 +7,35 @@ export const getIndicatorIdFromMetric = (
     ticker: string,
     parameters: { [parameter: string]: any }
 ): string => {
-    return ticker + indicatorIdDelimiter + Object.keys(parameters).join(indicatorIdDelimiter);
+    return ticker + indicatorIdDelimiter + Object.values(parameters).join(indicatorIdDelimiter);
 };
 
 export const getIndicatorMetricFromId = (indicatorId: string): Function => {
     return technicalIndicators[
         indicatorId.split(indicatorIdDelimiter)[0] as TechnicalIndicatorsKeys
-    ];
+    ].function;
 };
 
-export const technicalIndicators: { [indicator: string]: Function } = {
-    SimpleMovingAverage: calcSimpleMovingAverage,
-    ExponentialMovingAverage: calcExponentialMovingAverage,
+interface TechnicalIndicatorTypes {
+    shortName: string
+    function: Function
+    defaultParams: { [params: string]: any }
+}
+export const technicalIndicators: { [indicator: string]: TechnicalIndicatorTypes } = {
+    SimpleMovingAverage: {
+        shortName: "SMA",
+        function: calcSimpleMovingAverage,
+        defaultParams: { window: 9 },
+    },
+    ExponentialMovingAverage: {
+        shortName: "EMA",
+        function: calcExponentialMovingAverage,
+        defaultParams: { window: 9, smoothing: 2 }
+    },
 };
 
 export const technicalIndicatorsParams: {
-    [indicator: keyof typeof technicalIndicators]: { [parameters: string]: any };
+    [indicator: TechnicalIndicatorsKeys]: { [parameters: string]: any };
 } = {
     SimpleMovingAverage: {
         window: 9,

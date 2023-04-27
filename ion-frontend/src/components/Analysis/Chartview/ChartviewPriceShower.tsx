@@ -3,10 +3,10 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import { TickerMetricStoreFormat, useLiveMovesStore, useMetricStore } from 'store/prices/watchlist';
 import { ColorsEnum } from 'common/theme';
+import { technicalIndicators } from './calculations/metrics';
 
 export default function ChartviewPriceShower(props: { ticker: string }) {
     const metrics = useMetricStore(state => state.metrics[props.ticker]);
-
     return (
         <div
             style={{
@@ -20,7 +20,7 @@ export default function ChartviewPriceShower(props: { ticker: string }) {
             <ChartViewPriceShowerCell ticker={props.ticker} />
             {metrics
                 ? metrics.map((entry: TickerMetricStoreFormat) => {
-                      return <ChartViewMetricShowerCell ticker={props.ticker} entry={entry} />;
+                      return <ChartViewMetricShowerCell key={`${entry.metricId}_ChartViewMetricShowerCell`} ticker={props.ticker} entry={entry} />;
                   })
                 : undefined}
         </div>
@@ -32,7 +32,7 @@ const ChartViewMetricShowerCell = (props: { ticker: string; entry: TickerMetricS
         state => state.liveMoves[props.ticker][props.entry.metricId]
     );
 
-    const formattedIndicatorString = `${props.entry.metric}(${Object.values(
+    const formattedIndicatorString = `${technicalIndicators[props.entry.metric].shortName}(${Object.values(
         props.entry.metricParams
     ).join(', ')})`;
 
@@ -53,9 +53,8 @@ const ChartViewMetricShowerCell = (props: { ticker: string; entry: TickerMetricS
 };
 
 const ChartViewPriceShowerCell = (props: { ticker: string }) => {
-    const liveMoves: number | null = useLiveMovesStore(
-        state => state.liveMoves[props.ticker]['price']
-    );
+    const liveMoves = useLiveMovesStore(state => state.liveMoves);
+    const currentPrice = liveMoves[props.ticker] ? liveMoves[props.ticker]['price'] : null
 
     return (
         <Typography
@@ -68,7 +67,7 @@ const ChartViewPriceShowerCell = (props: { ticker: string }) => {
                 borderRight: `1px solid ${ColorsEnum.coolgray1}`,
             }}
         >
-            ${liveMoves?.toFixed(2)}
+            {currentPrice ? `$${currentPrice}` : undefined}
         </Typography>
     );
 };

@@ -17,14 +17,16 @@ import {
 } from 'store/prices/watchlist';
 import { removeLine } from 'components/Charting/BaseChart/plugins/addLine/addLine';
 import {
+    getIndicatorIdFromMetric,
     getIndicatorMetricFromId,
-    indicatorIdDelimiter,
     technicalIndicators,
+    technicalIndicatorsParams,
 } from './calculations/metrics';
 import IntegerChoice from './choice/integerchoice';
 import PopupButton from 'components/Button';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { MovingAverageProps } from './calculations/types';
+import { stringToColour } from 'common/helper/general';
 
 /**
  * Generates the Right-most Panel shown on the Lab Popup, allowing users to modify the parameters of the functions used to calculate the time series.
@@ -46,19 +48,23 @@ const LabPopupMetricParams = (props: { ticker: string }) => {
                 metrics[props.ticker].filter(entry => entry.metricId === selectedMetricId)[0] ?? {}
             );
         }
-    }, [selectedMetricId]);
+    }, [selectedMetricId, metrics]);
 
     const handleApplyClick = () => {
         if (view) {
+            const metricId = getIndicatorIdFromMetric(props.ticker, view.metricParams);
             setMetric({
                 ticker: props.ticker,
+                replacementId: view.metricId,
                 value: {
                     metric: view.metric,
                     field: view.field,
-                    metricParams: view.metricParams,
+                    metricId: metricId,
+                    color: stringToColour(metricId),
+                    metricParams: {...view.metricParams},
                     value: getIndicatorMetricFromId(view.metric)({
                         arr: tickerData.dataY,
-                        ...view,
+                        ...view.metricParams,
                     }),
                 },
             });
@@ -74,7 +80,7 @@ const LabPopupMetricParams = (props: { ticker: string }) => {
         <div
             style={{ position: 'relative', display: 'flex', flexDirection: 'column', flexGrow: 1 }}
         >
-            {view
+            {view && view.metricParams
                 ? Object.keys(view.metricParams).map((indicator: string) => {
                       return (
                           <IntegerChoice
@@ -118,15 +124,21 @@ const LabPopupMetricRow = (props: {
     const addMetric = useMetricStore(state => state.addMetric);
 
     const addMetricToStrategy = (): void => {
-        const movingAverage: number[] = technicalIndicators[props.indicator]({
+        const defaultParams = { ...technicalIndicatorsParams[props.indicator] }
+        const movingAverage: number[] = technicalIndicators[props.indicator].function({
             arr: data[props.ticker].dataY,
+            ...defaultParams,
         });
+        const metricId = getIndicatorIdFromMetric(props.ticker, defaultParams)
         addMetric({
             ticker: props.ticker,
             value: {
                 field: 'price',
-                metric: props.indicator,
                 value: movingAverage,
+                metric: props.indicator,
+                metricParams: defaultParams,
+                color: stringToColour(metricId),
+                metricId: metricId,
             },
         });
     };
@@ -182,10 +194,9 @@ const LabPopupStrategyRow = (props: {
             {metrics && metrics.length !== 0 ? (
                 metrics.map((entry: TickerMetricStoreFormat) => {
                     const indicatorId = entry.metricId;
-                    const formattedIndicatorString = `${entry.metric}(${Object.values(
+                    const formattedIndicatorString = `${technicalIndicators[entry.metric].shortName}(${Object.values(
                         entry.metricParams
                     ).join(', ')})`;
-                    console.log(metrics);
                     return entry.field === props.fieldType ? (
                         <S.LabPopupStrategyRow
                             key={`${entry.metricId}_LabPopupStrategyRow`}

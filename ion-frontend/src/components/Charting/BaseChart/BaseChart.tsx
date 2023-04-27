@@ -196,7 +196,7 @@ export default function BaseChart({
                         baseId: baseId,
                         dataX: dataX,
                         dataY: entry.value,
-                        color: stringToColour(`${tickerSymbol}_${entry.metric}`),
+                        color: entry.color,
                         type: 'pureLine',
                     });
                 });
