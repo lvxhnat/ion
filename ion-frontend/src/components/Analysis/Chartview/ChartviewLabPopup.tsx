@@ -61,7 +61,7 @@ const LabPopupMetricParams = (props: { ticker: string }) => {
                     field: view.field,
                     metricId: metricId,
                     color: stringToColour(metricId),
-                    metricParams: {...view.metricParams},
+                    metricParams: { ...view.metricParams },
                     value: getIndicatorMetricFromId(view.metric)({
                         arr: tickerData.dataY,
                         ...view.metricParams,
@@ -124,12 +124,12 @@ const LabPopupMetricRow = (props: {
     const addMetric = useMetricStore(state => state.addMetric);
 
     const addMetricToStrategy = (): void => {
-        const defaultParams = { ...technicalIndicatorsParams[props.indicator] }
+        const defaultParams = { ...technicalIndicatorsParams[props.indicator] };
         const movingAverage: number[] = technicalIndicators[props.indicator].function({
             arr: data[props.ticker].dataY,
             ...defaultParams,
         });
-        const metricId = getIndicatorIdFromMetric(props.ticker, defaultParams)
+        const metricId = getIndicatorIdFromMetric(props.ticker, defaultParams);
         addMetric({
             ticker: props.ticker,
             value: {
@@ -194,9 +194,9 @@ const LabPopupStrategyRow = (props: {
             {metrics && metrics.length !== 0 ? (
                 metrics.map((entry: TickerMetricStoreFormat) => {
                     const indicatorId = entry.metricId;
-                    const formattedIndicatorString = `${technicalIndicators[entry.metric].shortName}(${Object.values(
-                        entry.metricParams
-                    ).join(', ')})`;
+                    const formattedIndicatorString = `${
+                        technicalIndicators[entry.metric].shortName
+                    }(${Object.values(entry.metricParams).join(', ')})`;
                     return entry.field === props.fieldType ? (
                         <S.LabPopupStrategyRow
                             key={`${entry.metricId}_LabPopupStrategyRow`}

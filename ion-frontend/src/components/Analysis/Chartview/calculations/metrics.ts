@@ -17,20 +17,20 @@ export const getIndicatorMetricFromId = (indicatorId: string): Function => {
 };
 
 interface TechnicalIndicatorTypes {
-    shortName: string
-    function: Function
-    defaultParams: { [params: string]: any }
+    shortName: string;
+    function: Function;
+    defaultParams: { [params: string]: any };
 }
 export const technicalIndicators: { [indicator: string]: TechnicalIndicatorTypes } = {
     SimpleMovingAverage: {
-        shortName: "SMA",
+        shortName: 'SMA',
         function: calcSimpleMovingAverage,
         defaultParams: { window: 9 },
     },
     ExponentialMovingAverage: {
-        shortName: "EMA",
+        shortName: 'EMA',
         function: calcExponentialMovingAverage,
-        defaultParams: { window: 9, smoothing: 2 }
+        defaultParams: { window: 9, smoothing: 2 },
     },
 };
 

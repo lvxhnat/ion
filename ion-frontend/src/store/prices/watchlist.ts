@@ -47,17 +47,18 @@ export const useTickerDataStore = create<TickerDataStoreTypes>(set => ({
 /**
  * Stores the data point the cursor is currently on as it is moving around the chart, to be able to show as some form of tooltip
  */
+export type AllowedLiveMoveValueTypes = number | string | Date | null;
 export interface EditLiveMovePropTypes {
     ticker: string;
     metricId: string;
-    value: number | null;
+    value: AllowedLiveMoveValueTypes;
 }
-export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> { }
+export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> {}
 
 export interface EditLiveMoveTypes {
     liveMoves: {
         [ticker: string]: {
-            [metric: string]: number | null;
+            [metric: string]: AllowedLiveMoveValueTypes;
         };
     };
     setLiveMoves: (props: EditLiveMovePropTypes) => void;
@@ -171,8 +172,9 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
             newMetrics[props.ticker] = newMetrics[props.ticker].map(
                 (entry: TickerMetricStoreFormat) => {
                     // metricParams must be present if the metrics is required to be replaced
-                    const returnEntry = (entry.metricId === props.replacementId) ? props.value : entry;
-                    return returnEntry
+                    const returnEntry =
+                        entry.metricId === props.replacementId ? props.value : entry;
+                    return returnEntry;
                 }
             );
             return { metrics: newMetrics };
