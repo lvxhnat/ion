@@ -46,7 +46,8 @@ const LabPopupMetricParams = (props: { ticker: string }) => {
     React.useEffect(() => {
         if (selectedMetricId && metrics[props.ticker]) {
             const tickerView = metrics[props.ticker].filter(entry => entry.metricId === selectedMetricId)[0];
-            setView({...tickerView, metricParams: {...tickerView.metricParams} } ?? {});
+            // Theres no need to deep copy here as metricParams may not be present. Only once the metric is added, will there be metricParams.
+            setView({...tickerView } ?? {});
         }
     }, [selectedMetricId, metrics]);
 
@@ -120,6 +121,7 @@ const LabPopupMetricParams = (props: { ticker: string }) => {
                         return (
                             <OptionChoice 
                                 label={indicator}
+                                key={`${indicator}_${props.ticker}`}
                                 value={view.metricParams[indicator as keyof MovingAverageProps]?.toString()}
                                 options={indicatorSchema.format}
                                 onChange={(event: any) => {
