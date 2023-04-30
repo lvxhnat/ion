@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { ColorsEnum } from 'common/theme';
 import { useThemeStore } from 'store/theme';
-import { Typography } from '@mui/material';
 
 interface SelectProps {
     options: SelectOptions[];
-    handleChange: React.ChangeEventHandler<HTMLSelectElement>;
+    [others: string]: any;
 }
 
 interface SelectOptions {
@@ -18,7 +17,9 @@ export default function Select(props: SelectProps) {
     return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
             <select
+                {...props}    
                 style={{
+                    width: '100%',
                     backgroundColor: 'transparent',
                     color: mode === 'dark' ? ColorsEnum.white : ColorsEnum.black,
                     paddingLeft: 2,
@@ -26,7 +27,6 @@ export default function Select(props: SelectProps) {
                     height: 25,
                     fontSize: `calc(0.4rem + 0.3vw)`,
                 }}
-                onChange={props.handleChange}
             >
                 {props.options.map((entry: SelectOptions, index: number) => (
                     <option value={entry.value} key={`${entry.value}_${index}`}>

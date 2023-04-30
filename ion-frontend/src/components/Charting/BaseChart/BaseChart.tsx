@@ -189,6 +189,7 @@ export default function BaseChart({
 
             if (showMetrics && metrics && metrics.length !== 0) {
                 metrics.map((entry: TickerMetricStoreFormat) => {
+                    console.log(entry);
                     A.addChart({
                         x: x,
                         y: y,

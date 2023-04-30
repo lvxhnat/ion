@@ -1,7 +1,4 @@
-import { stringToColour } from 'common/helper/general';
 import {
-    getIndicatorIdFromMetric,
-    indicatorIdDelimiter,
     technicalIndicators,
 } from 'components/Analysis/Chartview/calculations/metrics';
 import { MovingAverageProps } from 'components/Analysis/Chartview/calculations/schemas/props/schema';

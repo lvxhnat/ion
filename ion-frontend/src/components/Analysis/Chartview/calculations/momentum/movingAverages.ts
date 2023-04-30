@@ -51,7 +51,6 @@ export function calcExponentialMovingAverage(props: ExponentialMovingAverageProp
             return accumulator;
         } else if (i > window - 1) {
             accumulator = props.arr[i] * alpha + accumulator * (1 - alpha);
-            console.log(accumulator, window);
             return accumulator;
         } else {
             accumulator += props.arr[i];
