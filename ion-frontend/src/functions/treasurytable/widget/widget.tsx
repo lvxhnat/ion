@@ -14,7 +14,7 @@ export default function Widget() {
             title="us_treasury_rates"
             component={
                 <Select
-                    handleChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+                    onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
                         setTable(event.target.value as typeof allowedTreasuryTables[number])
                     }
                     options={allowedTreasuryTables.map((tableName: string) => {

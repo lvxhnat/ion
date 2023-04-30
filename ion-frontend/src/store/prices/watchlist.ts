@@ -1,10 +1,7 @@
-import { stringToColour } from 'common/helper/general';
 import {
-    indicatorIdDelimiter,
     technicalIndicators,
-    technicalIndicatorsParams,
 } from 'components/Analysis/Chartview/calculations/metrics';
-import { MovingAverageProps } from 'components/Analysis/Chartview/calculations/types';
+import { MovingAverageProps } from 'components/Analysis/Chartview/calculations/schemas/props/schema';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { create } from 'zustand';
 /**
@@ -46,17 +43,18 @@ export const useTickerDataStore = create<TickerDataStoreTypes>(set => ({
 /**
  * Stores the data point the cursor is currently on as it is moving around the chart, to be able to show as some form of tooltip
  */
+export type AllowedLiveMoveValueTypes = number | string | Date | null;
 export interface EditLiveMovePropTypes {
     ticker: string;
     metricId: string;
-    value: number | null;
+    value: AllowedLiveMoveValueTypes;
 }
-export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> {}
+export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> { }
 
 export interface EditLiveMoveTypes {
     liveMoves: {
         [ticker: string]: {
-            [metric: string]: number | null;
+            [metric: string]: AllowedLiveMoveValueTypes;
         };
     };
     setLiveMoves: (props: EditLiveMovePropTypes) => void;
@@ -104,41 +102,13 @@ export interface TickerMetricStoreFormat {
     metricId: string;
     metricParams: MovingAverageProps;
 }
-export interface AddMetricValueType
-    extends Omit<TickerMetricStoreFormat, 'metricParams' | 'color' | 'metricId'> {
-    color?: string;
-    metricId?: string;
-    metricParams?: MovingAverageProps;
-}
 
-const formatAddMetricValueType = (props: {
-    ticker: string;
-    value: AddMetricValueType;
-}): TickerMetricStoreFormat => {
-    let entry: AddMetricValueType = props.value;
-    // If metric does not exist, we will check for the parameters that do not exist and subsequently proceed to create the default values for each one of them.
-    console.log(props.value, 'T');
-    if (!entry.metricParams) {
-        // Check if metric is accidentally created as a metric id or not
-        if ((entry.metric as string).includes(indicatorIdDelimiter))
-            throw Error(`Metric should contain the default delimiter ${indicatorIdDelimiter}`);
-        entry.metricParams = technicalIndicatorsParams[entry.metric];
-    }
-    if (!entry.metricId) {
-        // Creates a unique id by joining delimiter ids with the parameters provided to this parameter
-        entry.metricId = `${
-            props.ticker + indicatorIdDelimiter + props.value.metric + indicatorIdDelimiter
-        }${Object.values(entry.metricParams).join(indicatorIdDelimiter)}`;
-    }
-    if (!entry.color) {
-        entry.color = stringToColour(entry.metricId);
-    }
-    // We have now made all the fields compulsory/filled in
-    return entry as TickerMetricStoreFormat;
-};
 interface AddMetricPropType {
     ticker: string;
-    value: AddMetricValueType;
+    value: TickerMetricStoreFormat;
+}
+interface SetMetricPropType extends AddMetricPropType {
+    replacementId: string;
 }
 interface RemoveMetricPropType {
     ticker: string;
@@ -156,7 +126,7 @@ export interface MetricStoreTypes {
         [ticker: string]: TickerMetricStoreFormat[];
     };
     addMetric: (props: AddMetricPropType) => void;
-    setMetric: (props: AddMetricPropType) => void;
+    setMetric: (props: SetMetricPropType) => void;
     removeMetric: (props: RemoveMetricPropType) => void;
     removeTicker: (props: RemoveTickerPropType) => void;
     setselectedMetricId: (props: EditselectedMetricIdPropType) => void;
@@ -173,16 +143,11 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
             if (!Object.keys(newMetrics).includes(props.ticker)) {
                 newMetrics[props.ticker] = [];
             }
-            console.log(props.value, 'A');
-            const newEntry: TickerMetricStoreFormat = formatAddMetricValueType({
-                ticker: props.ticker,
-                value: props.value,
-            });
 
+            const newEntry = props.value;
             // Check if the metric with the same id already exists
             let metricExists = false;
             newMetrics[props.ticker].map(entry => {
-                console.log(newEntry.metricId, entry.metricId, 'B');
                 if (entry.metricId === newEntry.metricId) {
                     metricExists = true;
                     return;
@@ -196,20 +161,16 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
                 return { metrics: newMetrics };
             }
         }),
-    setMetric: (props: AddMetricPropType) =>
+    setMetric: (props: SetMetricPropType) =>
         set((state: MetricStoreTypes) => {
             const newMetrics = { ...state.metrics };
+            // Fill in any missing parameters
             newMetrics[props.ticker] = newMetrics[props.ticker].map(
                 (entry: TickerMetricStoreFormat) => {
-                    if (entry.metric === props.value.metric) {
-                        // metricParams must be present if the metrics is required to be replaced
-                        const newEntry: TickerMetricStoreFormat = formatAddMetricValueType({
-                            ticker: props.ticker,
-                            value: props.value,
-                        });
-                        return newEntry;
-                    }
-                    return entry;
+                    // metricParams must be present if the metrics is required to be replaced
+                    const returnEntry =
+                        entry.metricId === props.replacementId ? props.value : entry;
+                    return returnEntry;
                 }
             );
             return { metrics: newMetrics };

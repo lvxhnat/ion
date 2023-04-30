@@ -17,14 +17,17 @@ import {
 } from 'store/prices/watchlist';
 import { removeLine } from 'components/Charting/BaseChart/plugins/addLine/addLine';
 import {
+    getIndicatorIdFromMetric,
     getIndicatorMetricFromId,
-    indicatorIdDelimiter,
     technicalIndicators,
 } from './calculations/metrics';
-import IntegerChoice from './choice/integerchoice';
+import NumericChoice from './choice/numericchoice';
 import PopupButton from 'components/Button';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
-import { MovingAverageProps } from './calculations/types';
+import { MovingAverageProps } from './calculations/schemas/props/schema';
+import { stringToColour } from 'common/helper/general';
+import Select from 'components/Select';
+import OptionChoice from './choice/optionchoice';
 
 /**
  * Generates the Right-most Panel shown on the Lab Popup, allowing users to modify the parameters of the functions used to calculate the time series.
@@ -42,59 +45,98 @@ const LabPopupMetricParams = (props: { ticker: string }) => {
 
     React.useEffect(() => {
         if (selectedMetricId && metrics[props.ticker]) {
-            setView(
-                metrics[props.ticker].filter(entry => entry.metricId === selectedMetricId)[0] ?? {}
-            );
+            const tickerView = metrics[props.ticker].filter(entry => entry.metricId === selectedMetricId)[0];
+            // Theres no need to deep copy here as metricParams may not be present. Only once the metric is added, will there be metricParams.
+            setView({...tickerView } ?? {});
         }
-    }, [selectedMetricId]);
+    }, [selectedMetricId, metrics]);
 
     const handleApplyClick = () => {
         if (view) {
+            const metricId = getIndicatorIdFromMetric(props.ticker, view.metric, view.metricParams);
             setMetric({
                 ticker: props.ticker,
+                replacementId: view.metricId,
                 value: {
                     metric: view.metric,
                     field: view.field,
-                    metricParams: view.metricParams,
+                    metricId: metricId,
+                    color: stringToColour(metricId),
+                    metricParams: { ...view.metricParams },
                     value: getIndicatorMetricFromId(view.metric)({
                         arr: tickerData.dataY,
-                        ...view,
+                        ...view.metricParams,
                     }),
                 },
             });
-            setView(undefined);
         }
     };
 
-    const handleCancelClick = () => {
-        setView(undefined);
+    const handleResetClick = () => {
+        const tickerView = metrics[props.ticker].filter(entry => entry.metricId === selectedMetricId)[0];
+        setView({...tickerView, metricParams: {...tickerView.metricParams} } ?? {});
     };
 
     return (
         <div
             style={{ position: 'relative', display: 'flex', flexDirection: 'column', flexGrow: 1 }}
         >
-            {view
+            {view && view.metricParams
                 ? Object.keys(view.metricParams).map((indicator: string) => {
-                      return (
-                          <IntegerChoice
-                              key={`${indicator}_${props.ticker}`}
-                              label={indicator}
-                              min="5"
-                              max="28"
-                              value={view.metricParams[indicator as keyof MovingAverageProps]}
-                              onChange={(event: any) => {
-                                  view.metricParams[indicator as keyof MovingAverageProps] =
-                                      event.target.value;
-                                  setView(view);
-                              }}
-                          />
-                      );
+                    const indicatorSchema = technicalIndicators[view.metric].schema[indicator]
+                    if (indicatorSchema.type === 'integer') {
+                        return (
+                            <NumericChoice
+                                key={`${indicator}_${props.ticker}`}
+                                label={indicator}
+                                min={indicatorSchema.format[0]}
+                                max={indicatorSchema.format[1]}
+                                value={view.metricParams[indicator as keyof MovingAverageProps]}
+                                onChange={(event: any) => {
+                                    view.metricParams[indicator as keyof MovingAverageProps] =
+                                        event.target.value;
+                                    setView(view);
+                                }}
+                            />
+                        );
+                    } else if (indicatorSchema.type === 'float') {
+                        const diff = ((+indicatorSchema.format[1] - +indicatorSchema.format[0])/100).toString()
+                        const step = 1/(10 ** (diff.length - (diff.indexOf(".") + 1)))
+                        return (
+                            <NumericChoice
+                                key={`${indicator}_${props.ticker}`}
+                                label={indicator}
+                                step={step}
+                                min={indicatorSchema.format[0]}
+                                max={indicatorSchema.format[1]}
+                                value={view.metricParams[indicator as keyof MovingAverageProps]}
+                                onChange={(event: any) => {
+                                    view.metricParams[indicator as keyof MovingAverageProps] =
+                                        event.target.value;
+                                    setView(view);
+                                }}
+                            />
+                        );
+                    } else {
+                        return (
+                            <OptionChoice 
+                                label={indicator}
+                                key={`${indicator}_${props.ticker}`}
+                                value={view.metricParams[indicator as keyof MovingAverageProps]?.toString()}
+                                options={indicatorSchema.format}
+                                onChange={(event: any) => {
+                                    view.metricParams[indicator as keyof MovingAverageProps] =
+                                        event.target.value;
+                                    setView(view);
+                                }}
+                            />
+                        )
+                    }
                   })
                 : null}
             <S.BottomToolbar style={{ borderBottomLeftRadius: 0 }}>
-                <PopupButton buttonType="secondary" onClick={handleCancelClick}>
-                    Cancel
+                <PopupButton buttonType="secondary" onClick={handleResetClick}>
+                    Reset
                 </PopupButton>
                 <PopupButton buttonType="primary" onClick={handleApplyClick}>
                     Apply
@@ -112,21 +154,27 @@ const LabPopupMetricParams = (props: { ticker: string }) => {
 const LabPopupMetricRow = (props: {
     baseId: string;
     ticker: string;
-    indicator: TechnicalIndicatorsKeys;
+    metric: TechnicalIndicatorsKeys;
 }) => {
     const data = useTickerDataStore(state => state.data);
     const addMetric = useMetricStore(state => state.addMetric);
 
     const addMetricToStrategy = (): void => {
-        const movingAverage: number[] = technicalIndicators[props.indicator]({
+        const defaultParams = { ...technicalIndicators[props.metric].defaultParams };
+        const movingAverage: number[] = technicalIndicators[props.metric].function({
             arr: data[props.ticker].dataY,
+            ...defaultParams,
         });
+        const metricId = getIndicatorIdFromMetric(props.ticker, props.metric, defaultParams);
         addMetric({
             ticker: props.ticker,
             value: {
                 field: 'price',
-                metric: props.indicator,
                 value: movingAverage,
+                metric: props.metric,
+                metricParams: defaultParams,
+                color: stringToColour(metricId),
+                metricId: metricId,
             },
         });
     };
@@ -143,7 +191,7 @@ const LabPopupMetricRow = (props: {
                 }}
             >
                 <EqualizerIcon fontSize="inherit" />
-                <Typography variant="subtitle2">{props.indicator}</Typography>
+                <Typography variant="subtitle2">{props.metric}</Typography>
             </div>
             <div
                 style={{
@@ -182,10 +230,9 @@ const LabPopupStrategyRow = (props: {
             {metrics && metrics.length !== 0 ? (
                 metrics.map((entry: TickerMetricStoreFormat) => {
                     const indicatorId = entry.metricId;
-                    const formattedIndicatorString = `${entry.metric}(${Object.values(
-                        entry.metricParams
-                    ).join(', ')})`;
-                    console.log(metrics);
+                    const formattedIndicatorString = `${
+                        technicalIndicators[entry.metric].shortName
+                    }(${Object.values(entry.metricParams).join(', ')})`;
                     return entry.field === props.fieldType ? (
                         <S.LabPopupStrategyRow
                             key={`${entry.metricId}_LabPopupStrategyRow`}
@@ -275,12 +322,12 @@ export function LabPopup(props: {
             </S.LabPopupHeaderWrapper>
             <div style={{ display: 'flex', overflowY: 'hidden', flexGrow: 1 }}>
                 <S.LabPopupMetricsTableWrapper>
-                    {Object.keys(technicalIndicators).map((indicator: TechnicalIndicatorsKeys) => (
+                    {Object.keys(technicalIndicators).map((metric: TechnicalIndicatorsKeys) => (
                         <LabPopupMetricRow
-                            key={`${props.ticker}_${indicator}_labPopupMetricRow`}
+                            key={`${props.ticker}_${metric}_labPopupMetricRow`}
                             ticker={props.ticker}
                             baseId={props.baseId}
-                            indicator={indicator}
+                            metric={metric}
                         />
                     ))}
                 </S.LabPopupMetricsTableWrapper>

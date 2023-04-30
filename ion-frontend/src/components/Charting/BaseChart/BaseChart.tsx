@@ -189,6 +189,7 @@ export default function BaseChart({
 
             if (showMetrics && metrics && metrics.length !== 0) {
                 metrics.map((entry: TickerMetricStoreFormat) => {
+                    console.log(entry);
                     A.addChart({
                         x: x,
                         y: y,
@@ -196,7 +197,7 @@ export default function BaseChart({
                         baseId: baseId,
                         dataX: dataX,
                         dataY: entry.value,
-                        color: stringToColour(`${tickerSymbol}_${entry.metric}`),
+                        color: entry.color,
                         type: 'pureLine',
                     });
                 });

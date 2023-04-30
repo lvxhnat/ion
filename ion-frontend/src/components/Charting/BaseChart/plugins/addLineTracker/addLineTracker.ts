@@ -83,6 +83,11 @@ export const addLineTracker = (props: {
                 metricId: 'price',
                 value: props.data.dataY[i],
             });
+            props.setLiveMoves({
+                ticker: tickerSymbol,
+                metricId: 'date',
+                value: props.data.dataX[i],
+            });
             if (props.metrics) {
                 props.metrics.map((entry: TickerMetricStoreFormat) => {
                     props.setLiveMoves({
