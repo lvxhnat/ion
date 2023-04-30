@@ -20,12 +20,11 @@ import {
     getIndicatorIdFromMetric,
     getIndicatorMetricFromId,
     technicalIndicators,
-    technicalIndicatorsParams,
 } from './calculations/metrics';
-import IntegerChoice from './choice/integerchoice';
+import NumericChoice from './choice/numericchoice';
 import PopupButton from 'components/Button';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
-import { MovingAverageProps } from './calculations/types';
+import { MovingAverageProps } from './calculations/schemas/props/schema';
 import { stringToColour } from 'common/helper/general';
 
 /**
@@ -44,9 +43,8 @@ const LabPopupMetricParams = (props: { ticker: string }) => {
 
     React.useEffect(() => {
         if (selectedMetricId && metrics[props.ticker]) {
-            setView(
-                metrics[props.ticker].filter(entry => entry.metricId === selectedMetricId)[0] ?? {}
-            );
+            const tickerView = metrics[props.ticker].filter(entry => entry.metricId === selectedMetricId)[0];
+            setView({...tickerView, metricParams: {...tickerView.metricParams} } ?? {});
         }
     }, [selectedMetricId, metrics]);
 
@@ -68,12 +66,12 @@ const LabPopupMetricParams = (props: { ticker: string }) => {
                     }),
                 },
             });
-            setView(undefined);
         }
     };
 
     const handleCancelClick = () => {
-        setView(undefined);
+        const tickerView = metrics[props.ticker].filter(entry => entry.metricId === selectedMetricId)[0];
+        setView({...tickerView, metricParams: {...tickerView.metricParams} } ?? {});
     };
 
     return (
@@ -82,20 +80,43 @@ const LabPopupMetricParams = (props: { ticker: string }) => {
         >
             {view && view.metricParams
                 ? Object.keys(view.metricParams).map((indicator: string) => {
-                      return (
-                          <IntegerChoice
-                              key={`${indicator}_${props.ticker}`}
-                              label={indicator}
-                              min="5"
-                              max="28"
-                              value={view.metricParams[indicator as keyof MovingAverageProps]}
-                              onChange={(event: any) => {
-                                  view.metricParams[indicator as keyof MovingAverageProps] =
-                                      event.target.value;
-                                  setView(view);
-                              }}
-                          />
-                      );
+                    const indicatorSchema = technicalIndicators[view.metric].schema[indicator]
+                    if (indicatorSchema.type === 'integer') {
+                        return (
+                            <NumericChoice
+                                key={`${indicator}_${props.ticker}`}
+                                label={indicator}
+                                min={indicatorSchema.format[0]}
+                                max={indicatorSchema.format[1]}
+                                value={view.metricParams[indicator as keyof MovingAverageProps]}
+                                onChange={(event: any) => {
+                                    view.metricParams[indicator as keyof MovingAverageProps] =
+                                        event.target.value;
+                                    setView(view);
+                                }}
+                            />
+                        );
+                    } else if (indicatorSchema.type === 'float') {
+                        const diff = ((+indicatorSchema.format[1] - +indicatorSchema.format[0])/100).toString()
+                        const step = 1/(10 ** (diff.length - (diff.indexOf(".") + 1)))
+                        return (
+                            <NumericChoice
+                                key={`${indicator}_${props.ticker}`}
+                                label={indicator}
+                                step={step}
+                                min={indicatorSchema.format[0]}
+                                max={indicatorSchema.format[1]}
+                                value={view.metricParams[indicator as keyof MovingAverageProps]}
+                                onChange={(event: any) => {
+                                    view.metricParams[indicator as keyof MovingAverageProps] =
+                                        event.target.value;
+                                    setView(view);
+                                }}
+                            />
+                        );
+                    } else {
+                        return (<></>)
+                    }
                   })
                 : null}
             <S.BottomToolbar style={{ borderBottomLeftRadius: 0 }}>
@@ -124,7 +145,7 @@ const LabPopupMetricRow = (props: {
     const addMetric = useMetricStore(state => state.addMetric);
 
     const addMetricToStrategy = (): void => {
-        const defaultParams = { ...technicalIndicatorsParams[props.indicator] };
+        const defaultParams = { ...technicalIndicators[props.indicator].defaultParams };
         const movingAverage: number[] = technicalIndicators[props.indicator].function({
             arr: data[props.ticker].dataY,
             ...defaultParams,

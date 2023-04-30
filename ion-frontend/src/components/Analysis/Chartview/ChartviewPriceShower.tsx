@@ -85,9 +85,9 @@ const ChartViewPriceShowerCell = (props: { ticker: string }) => {
             }}
         >
             {liveMoves[props.ticker]
-                ? `${formatDate(liveMoves[props.ticker]['date'] as Date)}: $${(
+                ? `${formatDate(liveMoves[props.ticker]['date'] as Date)}: $${
                       liveMoves[props.ticker]['price'] as number
-                  )}`
+                  }`
                 : undefined}
         </Typography>
     );

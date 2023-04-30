@@ -3,7 +3,7 @@ import { ColorsEnum } from 'common/theme';
 import { styled } from '@mui/system';
 import { typographyTheme } from 'common/theme/typography';
 
-export const IntegerChoiceInput = styled('input')(({ theme }) => ({
+export const NumericChoiceInput = styled('input')(({ theme }) => ({
     width: '100%',
     padding: 3,
     fontSize: typographyTheme.subtitle2.fontSize,

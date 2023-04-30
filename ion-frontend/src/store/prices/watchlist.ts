@@ -3,9 +3,8 @@ import {
     getIndicatorIdFromMetric,
     indicatorIdDelimiter,
     technicalIndicators,
-    technicalIndicatorsParams,
 } from 'components/Analysis/Chartview/calculations/metrics';
-import { MovingAverageProps } from 'components/Analysis/Chartview/calculations/types';
+import { MovingAverageProps } from 'components/Analysis/Chartview/calculations/schemas/props/schema';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { create } from 'zustand';
 /**
@@ -53,7 +52,7 @@ export interface EditLiveMovePropTypes {
     metricId: string;
     value: AllowedLiveMoveValueTypes;
 }
-export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> {}
+export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> { }
 
 export interface EditLiveMoveTypes {
     liveMoves: {
