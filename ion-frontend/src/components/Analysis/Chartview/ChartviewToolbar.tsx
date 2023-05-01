@@ -37,7 +37,7 @@ const ChartTypeButton = (props: {
             ticker: props.ticker, 
             chart: {
                 color: chart.color, 
-                type: showArea ? 'area' : 'line',
+                type: (!showArea) ? 'area' : 'line',
             }
         })
     }

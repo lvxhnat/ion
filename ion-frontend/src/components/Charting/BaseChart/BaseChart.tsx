@@ -183,8 +183,8 @@ export default function BaseChart({
                 y: y,
                 id: defaultData.id,
                 baseId: baseId,
-                type: chartSettings.type,
-                color: chartSettings.color,
+                type: chartSettings ? chartSettings.type : 'line',
+                color: chartSettings ? chartSettings.color : 'white',
                 dataX: dataX,
                 dataY: dataY,
             });
