@@ -81,7 +81,7 @@ function ForexHistoricalCell(props: { forexPair: string }) {
                 dataX: res.data.map((d: any) => parseTime(d.date) as Date),
                 dataY: res.data.map((d: any) => d.close),
                 color: 'white',
-                type: 'pureLine',
+                type: 'line',
             });
         });
     }, []);

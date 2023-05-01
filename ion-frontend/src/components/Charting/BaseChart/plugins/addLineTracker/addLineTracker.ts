@@ -37,6 +37,7 @@ export const addLineTracker = (props: {
         zeroAxis: false,
     });
     const focus = svg.append('g').attr('class', groupClassname);
+    let mouseMoveTimeout: any;
 
     svg.append('rect')
         .attr('class', mousetrackerClassname)
@@ -45,7 +46,41 @@ export const addLineTracker = (props: {
         .attr('width', width)
         .attr('height', height)
         .on('mouseover', mouseover)
-        .on('mousemove', mousemove)
+        .on('mousemove', (event: MouseEvent) => {
+            const x0 = x.invert(d3.pointer(event, svg.node())[0]);
+            const i = bisect(dates, x0, 1);
+            focus
+                .selectAll(`.${lineClassname}_y`)
+                .attr('transform', `translate(${x(dates[i])}, 0)`);
+            focus
+                .selectAll(`.${lineClassname}_x`)
+                .attr('transform', `translate(0, ${y(props.data.dataY[i])})`);
+            clearTimeout(mouseMoveTimeout);
+            mouseMoveTimeout = setTimeout(() => {
+                // To make calls more efficient, we add debounce
+                if (dates[i]) {
+                    props.setLiveMoves({
+                        ticker: tickerSymbol,
+                        metricId: 'price',
+                        value: props.data.dataY[i],
+                    });
+                    props.setLiveMoves({
+                        ticker: tickerSymbol,
+                        metricId: 'date',
+                        value: props.data.dataX[i],
+                    });
+                    if (props.metrics) {
+                        props.metrics.map((entry: TickerMetricStoreFormat) => {
+                            props.setLiveMoves({
+                                ticker: tickerSymbol,
+                                metricId: entry.metricId,
+                                value: entry.value[i],
+                            });
+                        });
+                    }
+                }
+            }, 40);
+        })
         .on('mouseout', mouseout);
 
     focus
@@ -73,36 +108,5 @@ export const addLineTracker = (props: {
     }
     function mouseout() {
         focus.style('opacity', 0);
-    }
-    function mousemove(e: MouseEvent) {
-        const x0 = x.invert(d3.pointer(e, svg.node())[0]);
-        const i = bisect(dates, x0, 1);
-        if (dates[i]) {
-            props.setLiveMoves({
-                ticker: tickerSymbol,
-                metricId: 'price',
-                value: props.data.dataY[i],
-            });
-            props.setLiveMoves({
-                ticker: tickerSymbol,
-                metricId: 'date',
-                value: props.data.dataX[i],
-            });
-            if (props.metrics) {
-                props.metrics.map((entry: TickerMetricStoreFormat) => {
-                    props.setLiveMoves({
-                        ticker: tickerSymbol,
-                        metricId: entry.metricId,
-                        value: entry.value[i],
-                    });
-                });
-            }
-            focus
-                .selectAll(`.${lineClassname}_y`)
-                .attr('transform', `translate(${x(dates[i])}, 0)`);
-            focus
-                .selectAll(`.${lineClassname}_x`)
-                .attr('transform', `translate(0, ${y(props.data.dataY[i])})`);
-        }
     }
 };

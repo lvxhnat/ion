@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
-import * as C from '../plugins';
 import { DefaultDataProps } from '../schema/schema';
+import { addArea } from '../plugins/editChart/addArea';
+import { addLine } from '../plugins/editChart/addLine';
 
 interface addChartProps extends Omit<DefaultDataProps, 'name' | 'parent'> {
     baseId: string;
@@ -9,28 +10,18 @@ interface addChartProps extends Omit<DefaultDataProps, 'name' | 'parent'> {
 }
 
 export default function addChart(props: addChartProps) {
-    const addLine = (data: number[]) => {
-        return C.addLine({
+    const params = {
             id: props.id,
             x: props.x,
             y: props.y,
             baseId: props.baseId,
             color: props.color,
             dataX: props.dataX,
-            dataY: data,
-        });
+            dataY: props.dataY,
     };
-
-    let data: number[];
-
-    data = props.dataY;
-
     if (props.type === 'line') {
-        addLine(data);
-    } else if (props.type === 'candleStick' || props.type === 'barStick') {
-    } else if (props.type === 'areaLine') {
-        addLine(data);
-    } else if (props.type === 'pureLine') {
-        addLine(data);
+        addLine(params)
+    } else {
+        addArea(params)
     }
 }

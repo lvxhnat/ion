@@ -1,3 +1,5 @@
+import { ChartTypes } from "../type";
+
 export interface DefaultDataProps {
     id: string;
     name: string;
@@ -5,7 +7,5 @@ export interface DefaultDataProps {
     dataX: Date[];
     dataY: number[];
     color: string;
-    type: AllowedLineTypes;
+    type: ChartTypes;
 }
-export const AllowedLineTypeList = ['line', 'pureLine', 'areaLine', 'candleStick', 'barStick'];
-export type AllowedLineTypes = 'line' | 'pureLine' | 'areaLine' | 'candleStick' | 'barStick';

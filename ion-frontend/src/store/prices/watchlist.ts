@@ -81,6 +81,31 @@ export const useLiveMovesStore = create<EditLiveMoveTypes>(set => ({
 }));
 
 /**
+ * Stores the data that is required for plotting the different line chart formats
+ */
+export interface ChartStoreTypes {
+    charts: { [ticker: string]: TickerChartType }
+    setChart: (props: EditChartPropType) => void;
+}
+interface TickerChartType {
+    color: string;
+    type: 'line' | 'area';
+}
+interface EditChartPropType {
+    ticker: string;
+    chart: TickerChartType;
+}
+
+export const useChartStore = create<ChartStoreTypes>(set => ({
+    charts: {},
+    setChart: (props: EditChartPropType) => {
+        set((state: ChartStoreTypes) => {
+            return { charts: { ...state.charts, [props.ticker]: props.chart } };
+        })
+    }
+}));
+
+/**
  * Controls the metrics that is currently chosen by the selected grid view (on each ticker)
  * ------------------
  * Naming Conventions

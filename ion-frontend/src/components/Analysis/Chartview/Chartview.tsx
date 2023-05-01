@@ -10,7 +10,7 @@ import { EquityHistoricalDTO, ForexHistoricalDTO } from 'endpoints/schema/ticker
 import BaseLineChart from 'components/Charting/BaseChart';
 
 import { MdWaterfallChart } from 'react-icons/md';
-import { useTickerDataStore } from 'store/prices/watchlist';
+import { useChartStore, useTickerDataStore } from 'store/prices/watchlist';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import ChartviewToolbar from './ChartviewToolbar';
 import { ASSET_TYPES } from 'common/constant';
@@ -32,6 +32,7 @@ export default function Chartview(props: {
     ticker?: string;
 }) {
     const [data, setData] = useTickerDataStore(state => [state.data, state.setData]);
+    const addChart = useChartStore(state => state.setChart);
 
     const baseLineChartId: string = `${props.ticker}__tickerChart`;
 
@@ -41,6 +42,14 @@ export default function Chartview(props: {
             ? props.assetType
             : (ASSET_TYPES.ETF as keyof typeof ASSET_TYPES);
         const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
+        
+        addChart({
+            ticker: ticker,
+            chart: {
+                color: 'white',
+                type: 'line',
+            }
+        })
 
         if (assetType === ASSET_TYPES.FOREX) {
             getHistoricalForex({
@@ -57,7 +66,7 @@ export default function Chartview(props: {
                         dataX: res.data.map((d: ForexHistoricalDTO) => parseTime(d.date)),
                         dataY: res.data.map((d: ForexHistoricalDTO) => d.close),
                         color: 'white',
-                        type: 'pureLine',
+                        type: 'line',
                     } as DefaultDataProps,
                 });
             });
@@ -72,7 +81,7 @@ export default function Chartview(props: {
                         dataX: res.data.map((d: EquityHistoricalDTO) => parseTime(d.date)),
                         dataY: res.data.map((d: EquityHistoricalDTO) => d.close),
                         color: 'white',
-                        type: 'pureLine',
+                        type: 'line',
                     } as DefaultDataProps,
                 });
             });

@@ -90,7 +90,7 @@ export default function TreasuryTable(props: TreasuryTableProps) {
                                                             dataX: data._date,
                                                             dataY: data[column],
                                                             color: 'white',
-                                                            type: 'pureLine',
+                                                            type: 'line',
                                                         }}
                                                     />
                                                 </div>

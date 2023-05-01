@@ -15,7 +15,6 @@ import {
     useMetricStore,
     useTickerDataStore,
 } from 'store/prices/watchlist';
-import { removeLine } from 'components/Charting/BaseChart/plugins/addLine/addLine';
 import {
     getIndicatorIdFromMetric,
     getIndicatorMetricFromId,
@@ -26,8 +25,8 @@ import PopupButton from 'components/Button';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { MovingAverageProps } from './calculations/schemas/props/schema';
 import { stringToColour } from 'common/helper/general';
-import Select from 'components/Select';
 import OptionChoice from './choice/optionchoice';
+import { removeLine } from 'components/Charting/BaseChart/plugins/editChart/removeChart';
 
 /**
  * Generates the Right-most Panel shown on the Lab Popup, allowing users to modify the parameters of the functions used to calculate the time series.

@@ -3,13 +3,15 @@ import * as S from './style';
 
 import Typography from '@mui/material/Typography';
 import { TbMathIntegralX } from 'react-icons/tb';
+import { FaChartArea, FaChartLine } from 'react-icons/fa';
 
 import { useThemeStore } from 'store/theme';
-import { useTickerDataStore } from 'store/prices/watchlist';
+import { useChartStore, useTickerDataStore } from 'store/prices/watchlist';
 
 import { ColorsEnum } from 'common/theme';
 import { TickerSearch } from 'components/Search/Search';
 import { LabPopup } from './ChartviewLabPopup';
+import { ChartTypes } from 'components/Charting/BaseChart/type';
 
 const ModifiedStudiesButton = (props: { [others: string]: any }) => {
     return (
@@ -20,7 +22,34 @@ const ModifiedStudiesButton = (props: { [others: string]: any }) => {
     );
 };
 
-export default function ChartviewTolbar(props: {
+const ChartTypeButton = (props: { 
+    baseId: string;
+    ticker: string;
+    chartType: ChartTypes;
+}) => {
+
+    const [showArea, setShowArea] = React.useState<boolean>(false);
+    const [chart, setChart] = useChartStore(state => [state.charts[props.ticker], state.setChart]);
+
+    const handleClick = () => {
+        setShowArea(!showArea)
+        setChart({
+            ticker: props.ticker, 
+            chart: {
+                color: chart.color, 
+                type: showArea ? 'area' : 'line',
+            }
+        })
+    }
+
+    return (
+        <S.ButtonWrapper onClick={handleClick} {...props}>
+            {showArea ? <FaChartArea /> : <FaChartLine />}
+        </S.ButtonWrapper>
+    )
+}
+
+export default function ChartviewToolbar(props: {
     baseId: string;
     ticker: string | undefined;
     assetType: string | undefined;
@@ -112,8 +141,10 @@ export default function ChartviewTolbar(props: {
                     </>
                 ) : undefined}
             </div>
-            <div></div>
+            <div>
+            </div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                {props.ticker ? <ChartTypeButton ticker={props.ticker} baseId={props.baseId} chartType='area'/> : undefined}
                 <ModifiedStudiesButton onClick={() => setShowLab(true)} />
             </div>
         </div>

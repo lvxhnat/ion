@@ -14,3 +14,5 @@ export interface LineChartProps {
     showTooltip?: boolean;
     showMetrics?: boolean;
 }
+
+export type ChartTypes = 'line' | 'area'

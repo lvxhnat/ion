@@ -1,6 +1,5 @@
 import * as d3 from 'd3';
 import { CHARTCONFIGS } from '../../config';
-import { returnChartAxis } from '../../BaseChart';
 
 /**
  * Add a line to a BaseLineChart object. The line ID will be denoted by {BaseLineChartID_AssignedLineID}.
@@ -33,9 +32,4 @@ export const addLine = (props: {
         .attr('stroke', props.color)
         .attr('stroke-width', CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
         .attr('d', valueLine(d3.range(props.dataX.length)));
-};
-
-export const removeLine = (props: { id: string; baseId: string }): void => {
-    const lineIdComposed: string = `${props.baseId}_${props.id}`;
-    d3.select(`#${lineIdComposed}`).remove();
 };

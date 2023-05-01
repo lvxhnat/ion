@@ -39,7 +39,7 @@ function WidgetTickerRow(props: { ticker: string }) {
                     dataX: res.data.map((obj: EquityHistoricalDTO) => new Date(obj.date)),
                     dataY: res.data.map((obj: EquityHistoricalDTO) => obj.close),
                     color: 'white',
-                    type: 'pureLine',
+                    type: 'line',
                 },
                 last_close: res.data[res.data.length - 1].close.toFixed(2),
                 pct_change:
