@@ -15,7 +15,7 @@ interface SelectOptions {
 export default function Select(props: SelectProps) {
     const { mode } = useThemeStore();
     return (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
             <select
                 {...props}    
                 style={{

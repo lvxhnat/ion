@@ -12,7 +12,7 @@ export const HeaderPanel = styled('div')(({ theme }) => ({
 }));
 
 export const LeftPanel = styled('div')(({ theme }) => ({
-    width: '100%',
+    width: '50%',
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
@@ -20,6 +20,7 @@ export const LeftPanel = styled('div')(({ theme }) => ({
 }));
 
 export const RightPanel = styled('div')(({ theme }) => ({
+    width: '50%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
