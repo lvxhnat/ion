@@ -5,9 +5,7 @@ Ion is a web application designed to leverage OSINT and APIs to create a central
 ![](./assets/pages/main-page-preview.gif)
 
 ## Features
-
 ---
-
 |          Home Page           |            Available Functions            |
 | :--------------------------: | :---------------------------------------: |
 | ![](./assets/pages/home.png) | ![](./assets/pages/function-explorer.png) |
@@ -76,9 +74,7 @@ yarn start
 <br clear="left"/>
 
 ## Data Sources
-
 ---
-
 |         Status         |                          Prompt                          |
 | :--------------------: | :------------------------------------------------------: |
 |         Online         | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) |
@@ -94,15 +90,21 @@ yarn start
 |           ETFDB           |        ETF Metadata and Database         | pyETFDB-scraper | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) |       ETF List        | Scheduled + On-Demand |
 |        Finnhub API        |      Daily Historical Ticker Prices      |   ion-clients   | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) |       ETF List        |       On-Demand       |
 
-## Contributing
-
+## References 
 ---
+** Academic Records **
+Probability and Statistics for Finance - Svetlozar, Rachev, Markus Hoechstoetter\
+Stochastic calculus for finance I: The binomial asset pricing model - Steven E. Shreve\
+Stochastic calculus for finance II Continuous time models - Steven E. Shreve
 
+** UI UX Design **
+Bloomberg Charting
+
+## Contributing
+---
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
-
 ---
-
 [MIT](https://choosealicense.com/licenses/mit/)
 

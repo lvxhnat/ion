@@ -206,10 +206,12 @@ export default function BaseChart({
 
             if (showTooltip) {
                 C.addLineTracker({
+                    ticker: tickerSymbol,
                     baseId: baseId,
                     tooltipId: baseId,
                     data: defaultData,
                     metrics: metrics,
+                    draw: chartSettings.draw,
                     setLiveMoves: setLiveMoves,
                 });
             }

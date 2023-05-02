@@ -30,7 +30,7 @@ export const addArea = (props: {
     svg.append('path')
         .attr('id', lineIdComposed)
         .attr('fill', props.color)
-        .attr('fill-opacity', 0.3)
+        .attr('fill-opacity', 0.25)
         .attr('stroke', props.color)
         .attr('stroke-width', CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
         .attr('d', valueLine(d3.range(props.dataX.length)));

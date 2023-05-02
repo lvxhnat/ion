@@ -6,14 +6,15 @@ import { returnChartAxis } from '../../BaseChart';
 import { EditLiveMovePropTypes, TickerMetricStoreFormat } from 'store/prices/watchlist';
 
 export const addLineTracker = (props: {
+    ticker: string;
     baseId: string;
     tooltipId: string;
     data: DefaultDataProps; // The base data tracker
     metrics: TickerMetricStoreFormat[];
     setLiveMoves: (props: EditLiveMovePropTypes) => void;
+    draw?: boolean;
 }) => {
     const svg = d3.selectAll(`#${props.baseId}`);
-    const tickerSymbol: string = props.baseId.split('__')[0];
 
     const bisect = d3.bisector((d: any) => d).left;
 
@@ -39,48 +40,15 @@ export const addLineTracker = (props: {
     const focus = svg.append('g').attr('class', groupClassname);
     let mouseMoveTimeout: any;
 
-    svg.append('rect')
+    const trackerContainer = svg.append('rect')
         .attr('class', mousetrackerClassname)
         .style('fill', 'transparent')
         .style('pointer-events', 'all')
         .attr('width', width)
         .attr('height', height)
         .on('mouseover', mouseover)
-        .on('mousemove', (event: MouseEvent) => {
-            const x0 = x.invert(d3.pointer(event, svg.node())[0]);
-            const i = bisect(dates, x0, 1);
-            focus
-                .selectAll(`.${lineClassname}_y`)
-                .attr('transform', `translate(${x(dates[i])}, 0)`);
-            focus
-                .selectAll(`.${lineClassname}_x`)
-                .attr('transform', `translate(0, ${y(props.data.dataY[i])})`);
-            clearTimeout(mouseMoveTimeout);
-            mouseMoveTimeout = setTimeout(() => {
-                // To make calls more efficient, we add debounce
-                if (dates[i]) {
-                    props.setLiveMoves({
-                        ticker: tickerSymbol,
-                        metricId: 'price',
-                        value: props.data.dataY[i],
-                    });
-                    props.setLiveMoves({
-                        ticker: tickerSymbol,
-                        metricId: 'date',
-                        value: props.data.dataX[i],
-                    });
-                    if (props.metrics) {
-                        props.metrics.map((entry: TickerMetricStoreFormat) => {
-                            props.setLiveMoves({
-                                ticker: tickerSymbol,
-                                metricId: entry.metricId,
-                                value: entry.value[i],
-                            });
-                        });
-                    }
-                }
-            }, 40);
-        })
+        .on('mousedown', mousedown)
+        .on('mousemove', mousemove)
         .on('mouseout', mouseout);
 
     focus
@@ -103,9 +71,77 @@ export const addLineTracker = (props: {
         .attr('x1', 0)
         .attr('x2', width);
 
+    function mousemove(event: MouseEvent) {
+        const x0 = x.invert(d3.pointer(event, svg.node())[0]);
+        const i = bisect(dates, x0, 1);
+        focus
+            .selectAll(`.${lineClassname}_y`)
+            .attr('transform', `translate(${x(dates[i])}, 0)`);
+        focus
+            .selectAll(`.${lineClassname}_x`)
+            .attr('transform', `translate(0, ${y(props.data.dataY[i])})`);
+        clearTimeout(mouseMoveTimeout);
+        mouseMoveTimeout = setTimeout(() => {
+            // To make calls more efficient, we add debounce
+            if (dates[i]) {
+                props.setLiveMoves({
+                    ticker: props.ticker,
+                    metricId: 'price',
+                    value: props.data.dataY[i],
+                });
+                props.setLiveMoves({
+                    ticker: props.ticker,
+                    metricId: 'date',
+                    value: props.data.dataX[i],
+                });
+                if (props.metrics) {
+                    props.metrics.map((entry: TickerMetricStoreFormat) => {
+                        props.setLiveMoves({
+                            ticker: props.ticker,
+                            metricId: entry.metricId,
+                            value: entry.value[i],
+                        });
+                    });
+                }
+            }
+        }, 40);
+    }
+    let startDraw: boolean = true;
+    function mousedown(e: MouseEvent) {
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        if (true) {
+            if (startDraw) {
+                const m = d3.pointer(e);
+                const line = svg
+                    .append('line')
+                    .attr('class', `${props.baseId}_${CHARTIDS.DRAW_LINE_CLASS}`)
+                    .attr('x1', m[0])
+                    .attr('y1', m[1])
+                    .attr('x2', m[0])
+                    .attr('y2', m[1])
+                    .attr('stroke-width', 2)
+                    .attr('stroke', 'green');
+                trackerContainer.on('mousemove', (event: MouseEvent) => {
+                    mousemove(event);
+                    const m = d3.pointer(event);
+                    line.attr('x2', m[0]).attr('y2', m[1]);
+                })
+            } else {
+                trackerContainer.on('mousemove', (event: MouseEvent) => {
+                    mousemove(event);
+                })
+            }
+            // Swapping this allow us to disconnect the line when required.
+            startDraw = !startDraw
+        }
+    }
+
     function mouseover() {
         focus.style('opacity', 1);
     }
+
     function mouseout() {
         focus.style('opacity', 0);
     }

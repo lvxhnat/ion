@@ -5,6 +5,7 @@
 *.DS_Store
 *.ipynb
 *.ipynb_checkpoints
+*.egg-info
 
 bin/
 data-engine/outputs/

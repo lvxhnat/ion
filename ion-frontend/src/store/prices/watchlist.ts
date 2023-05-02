@@ -90,6 +90,7 @@ export interface ChartStoreTypes {
 interface TickerChartType {
     color: string;
     type: 'line' | 'area';
+    draw?: boolean;
 }
 interface EditChartPropType {
     ticker: string;
