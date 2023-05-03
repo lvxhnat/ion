@@ -7,7 +7,7 @@ from ion_provider.flows.treasury.usgov import treasury_ingestion_flow
 from ion_provider.flows.common.area_latlon import geonames_ingestion_flow
 from ion_provider.flows.tickers.tickers import asset_ingestion_flow
 
-config_file_path = "./src/data_engine/configs/flows"
+config_file_path = "./configs/flows"
 
 
 @hydra.main(

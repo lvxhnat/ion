@@ -20,18 +20,42 @@ def docker() -> None:
     pass
 
 
+ROOT_PATH = Path(__file__).parents[4] / "docker"
+DOCKER_COMPOSE_POSTGRES = str(ROOT_PATH / "postgres" / "docker-compose.postgres.yml")
+DOCKER_COMPOSE_WITHOUT_KAFKA = str(ROOT_PATH / "docker-compose-without-kafka.yml")
+
+
 @click.command()
+@click.option(
+    "-d",
+    "--detach",
+    type=bool, 
+    default=False,
+    help="Deteched mode: Run containers in the background"
+)
+@click.option(
+    "--stop",
+    type=bool,
+    is_flag=True,
+    default=False,
+    help="Use this flag to stop the running containers",
+)
 @click.pass_context
-def quickstart(context) -> None:
+def quickstart(
+    context,
+    detach: bool, 
+    stop: bool
+) -> None:
 
-    quickstart_file: str = str(
-        Path(__file__).parents[4]
-        / "docker"
-        / "postgres"
-        / "docker-compose.postgres.yml"
-    )
+    quickstart_file: str = DOCKER_COMPOSE_WITHOUT_KAFKA
+    base_command: List[str] = ["docker", "compose", "-f", quickstart_file, "-p", package_name]
 
-    base_command: List[str] = ["docker", "compose", "-f", quickstart_file]
+    if stop:
+        subprocess.run(
+            [*base_command, "stop"],
+            check=True,
+        )
+        return
 
     with get_docker_client() as client:
         run_quickstart_preflight_checks(client)
@@ -47,8 +71,9 @@ def quickstart(context) -> None:
         < base_configs.QUICKSTART_MAX_WAIT_TIME
     ):
         try:
+            suffix_helpers: List[str] = ["-d", "--remove-orphans"] if detach else ["--remove-orphans"]
             subprocess.run(
-                base_command + ["-p", package_name, "up", "-d", "--remove-orphans"],
+                base_command + ["up", *suffix_helpers],
                 check=True,
                 stderr=subprocess.PIPE,
             )

@@ -1,14 +1,15 @@
 FROM python:3.9.16-buster
 
-COPY ../../ion-clients/ /external/ion-clients
-RUN pip install -e /external/ion-clients
+ENV APP_PATH="/data-ingestion"
+RUN mkdir ${APP_PATH}
+WORKDIR ${APP_PATH}
 
-COPY ../../data-ingestion/ /app
-RUN pip install -e /app
+COPY ../../ion-clients/ /ion-clients
+RUN pip install -e /ion-clients
 
-WORKDIR /app
-
-RUN rm -rf /external/ion-clients
+COPY ../../data-ingestion/ ${APP_PATH}
+RUN pip install --upgrade pip
+RUN pip install -e .
 
 # start app
 CMD ["uvicorn", "src.data_ingestion.app.main:app", "--reload", "--port", "1236"]

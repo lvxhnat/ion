@@ -1,6 +1,8 @@
 import os
+import subprocess
 from enum import Enum
-from typing import Iterator
+from pathlib import Path
+from typing import Iterator, List
 from contextlib import contextmanager
 
 import docker
@@ -9,10 +11,12 @@ import docker.models.containers
 
 MIN_MEMORY_NEEDED = 3.8  # GB
 
+
 class ContainerStateType(Enum):
     CONTAINER_RUNNING = "running"
     CONTAINER_SLEEPING = "sleeping"
     CONTAINER_NOTEXIST = "notexist"
+
 
 class DockerNotRunningError(Exception):
     SHOW_STACK_TRACE = False
