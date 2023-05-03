@@ -6,10 +6,12 @@
 *.ipynb
 *.ipynb_checkpoints
 *.egg-info
+*.pyc
 
 bin/
 data-engine/outputs/
 research-notebooks/
+__pycache__/
 
 .vscode/
 

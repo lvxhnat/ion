@@ -1,7 +1,8 @@
 import click
 
+from ion.cli.docker_cli import docker
+from ion.configs.base import configs as base_configs
 from ion import __version__ as version, __package_name__ as package_name
-from ion.cli.start import start
 
 
 @click.group(name=package_name)
@@ -16,19 +17,12 @@ def info():
     """Information about Data Engine
     Ion Title Type: ANSI Shadow / Default / Default
     """
-    LOGO_COLOR = "\033[91m"
-    LOGO = rf"""
-        
-                        ██╗ ██████╗ ███╗   ██╗
-                        ██║██╔═══██╗████╗  ██║
-                        ██║██║   ██║██╔██╗ ██║
-                        ██║██║   ██║██║╚██╗██║
-                        ██║╚██████╔╝██║ ╚████║
-                        ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
-    """
-    LOGO_FOOTNOTE = f"{click.style('Made by the Big Data Corp 🐍💚📊', 'red')}\n"
+    LOGO = base_configs.LOGO
+    LOGO_COLOR = base_configs.LOGO_COLOR
+    LOGO_FOOTNOTE = f"{click.style('Made by the Big Data Corp 🐍💚📊. Enjoy!', 'red')}\n"
+
     click.echo(f"{LOGO_COLOR}{LOGO}{LOGO_COLOR}")
     click.echo(LOGO_FOOTNOTE)
 
 
-main.add_command(start)
+main.add_command(docker)
