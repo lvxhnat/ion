@@ -15,7 +15,7 @@ __pycache__/
 
 .vscode/
 
-# Data 
+# Data files
 *.csv
 *.json
 !package.json

@@ -1,6 +1,7 @@
 import os
-from contextlib import contextmanager
+from enum import Enum
 from typing import Iterator
+from contextlib import contextmanager
 
 import docker
 import docker.errors
@@ -8,11 +9,36 @@ import docker.models.containers
 
 MIN_MEMORY_NEEDED = 3.8  # GB
 
+class ContainerStateType(Enum):
+    CONTAINER_RUNNING = "running"
+    CONTAINER_SLEEPING = "sleeping"
+    CONTAINER_NOTEXIST = "notexist"
+
 class DockerNotRunningError(Exception):
     SHOW_STACK_TRACE = False
 
+
 class DockerLowMemoryError(Exception):
     SHOW_STACK_TRACE = False
+
+
+def is_running(container_name) -> ContainerStateType:
+    """
+    verify the status of a sniffer container by it's name
+    :param container_name: the name of the container
+    :return: Boolean if the status is ok
+    """
+    with get_docker_client() as client:
+        try:
+            container = client.containers.get(container_name)
+            container_state = container.attrs["State"]
+            if container_state["Status"] == ContainerStateType.CONTAINER_RUNNING:
+                return ContainerStateType.CONTAINER_RUNNING
+            else:
+                return ContainerStateType.CONTAINER_SLEEPING
+        except docker.errors.NotFound:
+            return ContainerStateType.CONTAINER_NOTEXIST
+
 
 @contextmanager
 def get_docker_client() -> Iterator[docker.DockerClient]:
@@ -49,8 +75,10 @@ def get_docker_client() -> Iterator[docker.DockerClient]:
     finally:
         client.close()
 
+
 def memory_in_gb(mem_bytes: int) -> float:
     return mem_bytes / (1024 * 1024 * 1000)
+
 
 def run_quickstart_preflight_checks(client: docker.DockerClient) -> None:
     # Check total memory.
@@ -61,3 +89,7 @@ def run_quickstart_preflight_checks(client: docker.DockerClient) -> None:
             f"Total Docker memory configured {memory_in_gb(total_mem_configured):.2f}GB is below the minimum threshold {MIN_MEMORY_NEEDED}GB. "
             "You can increase the memory allocated to Docker in the Docker settings."
         )
+
+
+if __name__ == "__main__":
+    is_running("ion")

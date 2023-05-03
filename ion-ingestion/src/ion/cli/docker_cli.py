@@ -1,3 +1,4 @@
+import re
 import click
 import time
 import subprocess
@@ -49,13 +50,14 @@ def quickstart(context) -> None:
             subprocess.run(
                 base_command + ["-p", package_name, "up", "-d", "--remove-orphans"],
                 check=True,
+                stderr=subprocess.PIPE,
             )
         except subprocess.CalledProcessError as error:
             click.secho(
                 "Ion Engine failed to start up due to error while calling docker-compose",
                 fg="red",
             )
-            click.secho(f"Error Response: {str(error)}", fg="red")
+            click.secho(error.stderr.decode(), fg="red")
             return
 
         start_up_attempts += 1
@@ -65,6 +67,10 @@ def quickstart(context) -> None:
 
     click.secho(base_configs.LOGO, fg="white")
     click.secho("✔ Ion Engine is now running", fg="green")
+    click.secho(
+        "Need support? Get in touch through my personal email: yikuang5@gmail.com",
+        fg="magenta",
+    )
 
 
 docker.add_command(quickstart)
