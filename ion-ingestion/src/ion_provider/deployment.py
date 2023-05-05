@@ -22,8 +22,12 @@ def execute_us_treasury_deployment(config: DictConfig):
         version="1",
         tags=["common"],
         parameters={
-            "years": OmegaConf.to_object(config.scrapers.usgov.treasury_info.year),
-            "types": OmegaConf.to_object(config.scrapers.usgov.treasury_info.type),
+            "years": OmegaConf.to_object(
+                config.scrapers.usgov.treasury_info.params.year
+            ),
+            "types": OmegaConf.to_object(
+                config.scrapers.usgov.treasury_info.params.type
+            ),
         },
         schedule=(
             CronSchedule(

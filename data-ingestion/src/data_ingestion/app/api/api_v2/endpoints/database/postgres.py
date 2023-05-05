@@ -2,7 +2,7 @@ from typing import Literal
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 
-from data_ingestion.app.api.api_v2.postgres.actions import (
+from ion_clients.services.postgres.actions import (
     order_query,
     get_session,
 )
@@ -39,9 +39,9 @@ def query_postgres_table(
     params: TableQueryParams, session: Session = Depends(get_session)
 ):
     return order_query(
-        postgres_tables[params.table],
         session,
-        postgres_tables[params.table]._date,
+        table_schema=postgres_tables[params.table],
+        table_column=postgres_tables[params.table]._date,
     )
 
 

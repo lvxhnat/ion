@@ -33,7 +33,7 @@ def asset_ingestion_flow():
         .assign(last_updated=datetime.today())
         .to_dict("records")
     )
-    refresh_table.submit(AssetMetaData, asset_results).result()
+    refresh_table.submit(AssetMetaData, asset_results, True).result()
 
 
 if __name__ == "__main__":

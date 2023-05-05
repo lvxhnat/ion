@@ -1,6 +1,7 @@
-from uuid import uuid4
 import pandas as pd
 import numpy as np
+from uuid import uuid4
+from typing import List
 
 from prefect import task, flow
 from prefect.task_runners import ConcurrentTaskRunner
@@ -17,18 +18,14 @@ def ingest_geonames() -> pd.DataFrame:
     return (
         geonames_info()
         .drop_duplicates()[
-            [
-                col.name
-                for col in AreaLatLon.__table__.columns
-                if col.name != "uuid"
-            ]
+            [col.name for col in AreaLatLon.__table__.columns if col.name != "uuid"]
         ]
         .dropna()
     )
 
 
 @task
-def typecast_geonames(data: pd.DataFrame):
+def typecast_geonames(data: pd.DataFrame) -> List[dict]:
     # typecast
     data.latitude = data.latitude.astype(np.float32)
     data.longitude = data.longitude.astype(np.float32)
@@ -46,7 +43,7 @@ def typecast_geonames(data: pd.DataFrame):
 def geonames_ingestion_flow():
     geonames = ingest_geonames.submit().result()
     geonames = typecast_geonames.submit(geonames).result()
-    refresh_table.submit(AreaLatLon, geonames).result()
+    refresh_table.submit(AreaLatLon, geonames, True).result()
 
 
 if __name__ == "__main__":

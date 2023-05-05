@@ -8,7 +8,7 @@ from ion_clients.clients.weather.types import (
     wttr as wttrTypes,
     openweather as openweatherTypes,
 )
-from data_ingestion.app.api.api_v2.postgres.actions import (
+from ion_clients.services.postgres.actions import (
     order_search,
     get_session,
 )
@@ -51,8 +51,8 @@ def get_openweather_weather_data(
 ) -> CurrentWeatherDTO:
     postgres_table = postgres_tables["global_area_latlon"]
     query = order_search(
-        TableSchema=postgres_table,
-        session=session,
+        session,
+        table_schema=postgres_table,
         filters=[
             postgres_table.name.like(city),
             postgres_table.country_code.like(country_code),

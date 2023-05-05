@@ -5,11 +5,10 @@ from data_ingestion.app.api.api_v2.configs.base_config import (
     configs as base_configs,
 )
 
-from data_ingestion.app.api.api_v2.postgres.actions import (
+from ion_clients.services.postgres.actions import (
     order_search,
     get_session,
 )
-
 from ion_clients.clients.weather.openweather import get_current_weather
 from ion_clients.clients.weather.types.openweather import OpenWeatherDTO
 
@@ -35,12 +34,12 @@ def get_current_weather_conditions(
     postgres_table = base_configs.POSTGRES_TABLES["global_area_latlon"]
 
     query = order_search(
-        TableSchema=postgres_table,
-        session=session,
+        session,
         filters=[
             postgres_table.name.like(params.city),
             postgres_table.country_code.like(params.country_code),
         ],
+        table_schema=postgres_table,
     )
     data: OpenWeatherDTO = get_current_weather(
         query["latitude"], query["longitude"]

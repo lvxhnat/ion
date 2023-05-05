@@ -12,9 +12,9 @@ from data_ingestion.app.api.api_v2.configs.base_config import (
 
 from data_ingestion.app.api.api_v2.postgres.models.base import Base
 from data_ingestion.app.api.api_v2.postgres.models.infra import portfolio
-from data_ingestion.app.api.api_v2.postgres.actions import initialise_table
 
 from ion_clients.clients.oanda.instruments import stream_oanda_live_data
+from ion_clients.services.postgres.postgres_service import create_table
 
 
 def create_app() -> FastAPI:
@@ -51,14 +51,14 @@ app: FastAPI = create_app()
 
 
 @app.on_event("startup")
-async def intiialise_database_infra():
+async def intialise_database_infra():
     """Initialise tables in Postgres if does not exist already"""
     for _, cls in inspect.getmembers(
         portfolio, lambda member: inspect.isclass(member)
     ):
         # Check for table attribute excludes the direct parent class
         if issubclass(cls, Base) and hasattr(cls, "__table__"):
-            table_initiated: bool = initialise_table(cls)
+            table_initiated: bool = create_table(cls)
             if not table_initiated:
                 return
 
