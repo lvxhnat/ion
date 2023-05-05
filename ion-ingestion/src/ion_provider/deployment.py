@@ -1,7 +1,7 @@
 import hydra
 from omegaconf import DictConfig, OmegaConf
 from prefect.deployments import Deployment
-from prefect.orion.schemas.schedules import CronSchedule
+from prefect.server.schemas.schedules import CronSchedule
 
 from ion_provider.flows.treasury.usgov import treasury_ingestion_flow
 from ion_provider.flows.common.area_latlon import geonames_ingestion_flow
@@ -22,12 +22,8 @@ def execute_us_treasury_deployment(config: DictConfig):
         version="1",
         tags=["common"],
         parameters={
-            "years": OmegaConf.to_object(
-                config.scrapers.usgov.treasury_info.year
-            ),
-            "types": OmegaConf.to_object(
-                config.scrapers.usgov.treasury_info.type
-            ),
+            "years": OmegaConf.to_object(config.scrapers.usgov.treasury_info.year),
+            "types": OmegaConf.to_object(config.scrapers.usgov.treasury_info.type),
         },
         schedule=(
             CronSchedule(

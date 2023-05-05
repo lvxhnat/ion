@@ -80,5 +80,5 @@ setup(
     install_requires=list(
         base_requirements | scrape_requirements | framework_common
     ),
-    extras_require={"dev": [*dev_requirements]},
+    extras_require={"dev": list(dev_requirements)},
 )

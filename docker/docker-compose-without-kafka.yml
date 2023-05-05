@@ -1,7 +1,6 @@
 version: "3"
 
 services:
-
   frontend:
     container_name: frontend
     build:
@@ -11,12 +10,11 @@ services:
       - 3000:3000
     environment:
       NODE_ENV: development
-      REACT_APP_DATA_INGESTION_BASE_URL: http://backend:1236/api/v2/
-      REACT_APP_WEBSOCKET_URL: ws://backend:1236/
+      REACT_APP_DATA_INGESTION_BASE_URL: http://localhost:1236/api/v2/
+      REACT_APP_WEBSOCKET_URL: ws://localhost:1236/
     depends_on: 
       backend:
         condition: service_started
-
   backend:
     container_name: backend
     build: 
@@ -29,15 +27,13 @@ services:
     depends_on: 
       postgres-database:
         condition: service_started
-
   postgres-database:
     container_name: postgres-database
     image: postgres:12.3
     env_file: ./postgres/env/docker.env
     hostname: postgres
     ports:
-      - "5432:5432"
-
+      - 5432:5432
   prefect-server:
     container_name: prefect-server
     build:
@@ -50,12 +46,14 @@ services:
     ports:
       - 4200:4200
     environment:
+      PREFECT_ORION_API_HOST: prefect-server
+      PREFECT_ORION_API_PORT: 4200
       PREFECT_ORION_ANALYTICS_ENABLED: "false"
+      PREFECT_ORION_UI_API_URL: http://127.0.0.1:4200/api
       PREFECT_LOGGING_SERVER_LEVEL: WARNING
     depends_on:
       postgres-database:
         condition: service_started
-
   prefect-agent:
     container_name: prefect-agent
     image: prefecthq/prefect:2.7-python3.9

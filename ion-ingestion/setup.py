@@ -22,13 +22,8 @@ base_requirements = {
     "python-dotenv==1.0.0",
 }
 
-framework_common = {
-    "aiohttp==3.8.4",
-    "fastapi==0.85.1",
-    "uvicorn==0.19.0",
-    "websockets==10.4",
-    "kombu==5.2.4",
-    "celery==5.2.7",
+main_requirements = {
+    "hydra-core==1.3",
 }
 
 dev_requirements = {
@@ -60,7 +55,7 @@ setup(
     long_description_content_type="text/markdown",
     package_dir={"": "src"},
     packages=find_packages("src", exclude=["*tests"]),
-    install_requires=list(base_requirements | framework_common),
+    install_requires=list(base_requirements | main_requirements),
     entry_points=entry_points,
     python_requires=">=3.9",
 )

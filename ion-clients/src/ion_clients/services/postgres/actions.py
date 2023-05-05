@@ -1,5 +1,4 @@
 import pandas as pd
-from uuid import uuid4
 from typing import List, Union
 
 import psycopg2
@@ -148,7 +147,6 @@ def bulk_upsert(
     >>> postgres_bulk_upsert(AreaLatLon, df, primary_key=None)
 
     """
-
     table_columns: List[str] = [
         *map(lambda s: s.name, TableSchema.__table__.columns)
     ]
@@ -168,12 +166,10 @@ def bulk_upsert(
     if not table_exists(TableSchema):
         # Create table if it does not exist
         TableSchema.__table__.create(postgres_engine)
-
         objects: List[TableSchema] = []
 
         if isinstance(WriteObject, pd.DataFrame):
             WriteObject = WriteObject.iterrows()
-
         for object in WriteObject:
             objects.append(TableSchema(**object))
 

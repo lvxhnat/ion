@@ -9,7 +9,7 @@
 *.pyc
 
 bin/
-data-engine/outputs/
+outputs/
 research-notebooks/
 __pycache__/
 

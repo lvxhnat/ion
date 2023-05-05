@@ -1,5 +1,4 @@
 from typing import List
-from datetime import datetime
 
 from prefect import task, flow
 from prefect.task_runners import ConcurrentTaskRunner
@@ -41,9 +40,7 @@ def treasury_ingestion_flow(years: List[int], types: List[str]):
 
     for treasury_type, table_name in zip(types, table_names):
         for year in years:
-            treasury_item = ingest_treasury.submit(
-                year, treasury_type
-            ).result()
+            treasury_item = ingest_treasury.submit(year, treasury_type).result()
             refresh_table.submit(table_name, treasury_item).result()
 
 

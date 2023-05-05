@@ -32,6 +32,8 @@ def create_app() -> FastAPI:
         "http://localhost:*",
         "http://localhost:3000",
         "http://localhost:3001",
+        "http://frontend:3000",
+        "http://frontend:*",
     ]
 
     app.add_middleware(
