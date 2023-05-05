@@ -1,18 +1,15 @@
-import psycopg2
 import pandas as pd
-from pydantic import BaseModel
-from typing import List, Union
+from typing import List
 
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import InstrumentedAttribute
-from sqlalchemy import desc, exc as MetaData, Table
+from sqlalchemy import desc, Table
 
 from ion_clients.services.logging import get_logger
 from ion_clients.services.postgres.postgres_service import (
-    drop_table,
     create_table,
 )
-from ion_clients.services.postgres.schemas.params import BulkEditParams
+from ion_clients.services.postgres.schemas.params import WriteObjectType
 
 logger = get_logger()
 
@@ -82,42 +79,46 @@ def order_query(
     ]
 
 
-def bulk_upsert(params: BulkEditParams) -> None:
+def bulk_upsert(
+    session: Session, table_schema: Table, write_objects: WriteObjectType
+) -> None:
     """Bulk upsert (update if present, insert if absent) a given sequence of write objects into a database"""
-    create_table(params.table_schema)
+    create_table(table_schema)
 
-    if isinstance(params.write_objects, pd.DataFrame):
-        for write_object in params.write_objects.iterrows():
-            params.session.merge(params.table_schema(**write_object))
+    if isinstance(write_objects, pd.DataFrame):
+        for write_object in write_objects.iterrows():
+            session.merge(table_schema(**write_object))
         return
 
-    for write_object in params.write_objects:
-        if isinstance(write_object, params.table_schema):
-            params.session.merge(write_object)
+    for write_object in write_objects:
+        if isinstance(write_object, table_schema):
+            session.merge(write_object)
         else:
-            params.session.merge(params.table_schema(**write_object))
+            session.merge(table_schema(**write_object))
     return
 
 
-def bulk_insert(params: BulkEditParams) -> None:
+def bulk_insert(
+    session: Session, table_schema: Table, write_objects: WriteObjectType
+) -> None:
 
     """Bulk insert a given sequence of write objects into a database"""
 
-    create_table(params.table_schema)
+    create_table(table_schema)
 
     entries = []
 
-    if isinstance(params.write_objects, pd.DataFrame):
-        for write_object in params.write_objects.iterrows():
-            entries.append(params.table_schema(**write_object))
-        params.session.bulk_save_objects(entries)
+    if isinstance(write_objects, pd.DataFrame):
+        for write_object in write_objects.iterrows():
+            entries.append(table_schema(**write_object))
+        session.bulk_save_objects(entries)
         return
 
-    for write_object in params.write_objects:
-        if isinstance(write_object, params.table_schema):
+    for write_object in write_objects:
+        if isinstance(write_object, table_schema):
             entries.append(write_object)
         else:
-            entries.append(params.table_schema(**write_object))
+            entries.append(table_schema(**write_object))
 
-    params.session.bulk_save_objects(entries)
+    session.bulk_save_objects(entries)
     return
