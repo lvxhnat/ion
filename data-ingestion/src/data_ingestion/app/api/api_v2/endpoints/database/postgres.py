@@ -2,10 +2,9 @@ from typing import Literal
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 
-from ion_clients.services.postgres.actions import (
-    order_query,
-    get_session,
-)
+from ion_clients.services.postgres.actions import order_query
+from ion_clients.services.postgres.postgres_service import get_session
+
 from data_ingestion.app.api.api_v2.postgres.models.infra.portfolio import (
     Portfolio,
 )

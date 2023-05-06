@@ -1,10 +1,8 @@
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 
-from ion_clients.services.postgres.actions import (
-    order_query,
-    get_session,
-)
+from ion_clients.services.postgres.actions import order_query
+from ion_clients.services.postgres.postgres_service import get_session
 
 from data_ingestion.app.api.api_v1.configs.base_config import (
     settings as base_settings,
@@ -34,6 +32,6 @@ def get_table_details(
 ):
     return order_query(
         session,
-        table_schema = postgres_tables[params.table],
-        table_column = postgres_tables[params.table]._date,
+        table_schema=postgres_tables[params.table],
+        table_column=postgres_tables[params.table]._date,
     )

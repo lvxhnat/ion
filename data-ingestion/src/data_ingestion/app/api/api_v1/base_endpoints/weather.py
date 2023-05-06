@@ -8,10 +8,8 @@ from ion_clients.clients.weather.types import (
     wttr as wttrTypes,
     openweather as openweatherTypes,
 )
-from ion_clients.services.postgres.actions import (
-    order_search,
-    get_session,
-)
+from ion_clients.services.postgres.actions import order_search
+from ion_clients.services.postgres.postgres_service import get_session
 
 from data_ingestion.app.api.api_v1.configs.base_config import (
     settings as base_settings,

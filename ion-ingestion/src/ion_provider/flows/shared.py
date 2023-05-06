@@ -3,9 +3,9 @@ from sqlalchemy import Table
 
 from ion_clients.services.postgres.actions import bulk_upsert, bulk_insert
 from ion_clients.services.postgres.postgres_service import (
-    get_session,
     table_exists,
     drop_table,
+    get_session,
 )
 from ion_clients.services.postgres.schemas.params import WriteObjectType
 

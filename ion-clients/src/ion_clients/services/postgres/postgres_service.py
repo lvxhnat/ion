@@ -3,6 +3,7 @@ from contextlib import contextmanager
 from logging import Logger, getLogger
 
 from sqlalchemy import engine, exc, orm, inspect, Table
+from sqlalchemy.orm import Session
 
 from ion_clients.core.configuration.storage.postgres import postgres_config
 
@@ -22,9 +23,8 @@ def table_exists(
     postgres_uri: str = None,
 ) -> bool:
     postgres_engine: engine.Engine = _get_postgres_engine(postgres_uri)
-    return inspect(postgres_engine).has_table(
-        table_schema.__tablename__
-    )
+    return inspect(postgres_engine).has_table(table_schema.__tablename__)
+
 
 def create_table(
     table_schema: Table,
@@ -33,15 +33,15 @@ def create_table(
     postgres_engine: engine.Engine = _get_postgres_engine(postgres_uri)
     if not table_exists(table_schema):
         table_schema.__table__.create(postgres_engine)
-        return 
-    else: 
+        return
+    else:
         logger.warning(
             f"Table {table_schema.__tablename__} already exists. Skipping create_table action."
         )
-            
-    
+
+
 def drop_table(
-    table_schema: Table, 
+    table_schema: Table,
     postgres_uri: str = None,
 ) -> None:
     postgres_engine: engine.Engine = _get_postgres_engine(postgres_uri)
@@ -55,13 +55,14 @@ def drop_table(
             f"No {table_schema.__tablename__} to drop. Skipping drop_table action."
         )
 
+
 def _get_postgres_engine(postgres_uri: str = None):
     if not postgres_uri:
         postgres_uri = postgres_config.POSTGRES_URI
     return engine.create_engine(postgres_uri, echo=False)
 
 
-def _get_postgres_session(postgres_uri: str = None):
+def _get_postgres_session(postgres_uri: str = None) -> orm.sessionmaker:
     return orm.sessionmaker(
         bind=_get_postgres_engine(postgres_uri), expire_on_commit=False
     )
@@ -72,8 +73,11 @@ class DatabaseError(Exception):
 
 
 class SQLDatabase:
-    def __init__(self, session: orm.sessionmaker):
-        self.session = session()
+    def __init__(self, session: orm.sessionmaker = None):
+        if session:
+            self.session = session()
+        else:
+            self.session = _get_postgres_session()()
 
     @contextmanager
     def session_scope(
