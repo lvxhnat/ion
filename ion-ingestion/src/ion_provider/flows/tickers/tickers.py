@@ -6,7 +6,7 @@ from prefect.task_runners import ConcurrentTaskRunner
 
 from ion_provider.flows.shared import refresh_table
 
-from ion_provider.models.database.tickers import (
+from ion_provider.models.tickers.tickers import (
     AssetMetaData,
 )
 from ion_clients.clients.alphavantage.alphavantage import (
@@ -38,3 +38,4 @@ def asset_ingestion_flow():
 
 if __name__ == "__main__":
     asset_ingestion_flow()
+    pass

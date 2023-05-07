@@ -3,7 +3,6 @@ from contextlib import contextmanager
 from logging import Logger, getLogger
 
 from sqlalchemy import engine, exc, orm, inspect, Table
-from sqlalchemy.orm import Session
 
 from ion_clients.core.configuration.storage.postgres import postgres_config
 
