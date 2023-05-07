@@ -12,7 +12,7 @@ from ion_clients.clients.usdept.types.treasury import (
     TreasuryYears,
     TreasuryTypes,
 )
-from ion_provider.models.database.treasury import (
+from ion_provider.models.government.treasury import (
     USTreasuryYield,
     USBillRates,
     USLongTermRates,
