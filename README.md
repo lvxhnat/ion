@@ -93,6 +93,8 @@ yarn start
 |        USDA GATS API      |         Agricultural Trade Data          |     usda-api    | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     | Scheduled + On-Demand |
 |        USDA PSD API       |       Agricultural S&D Forecasts Data    |     usda-api    | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     | Scheduled + On-Demand |
 |           FRED API        |       US Federal Reserve Economic Data   |     fred-api    | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     |       On-Demand       |
+|           EIA API         |     US Official Energy Statistics Data   |      eia-api    | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     |       On-Demand       |
+|           News API        |     Live Internet News Aggregated Data   |     news-api    | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     |       On-Demand       |
 
 ## References 
 ---

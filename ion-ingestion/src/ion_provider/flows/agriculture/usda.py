@@ -46,4 +46,6 @@ def asset_ingestion_flow():
 
 
 if __name__ == "__main__":
-    pass
+    api_key = "3c7e6e98-bf37-40b1-8775-803976ad6d66"
+    print(get_esr_commodities(api_key))
+    
