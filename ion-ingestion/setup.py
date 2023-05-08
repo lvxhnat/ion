@@ -23,6 +23,7 @@ base_requirements = {
 }
 
 main_requirements = {
+    "usda_api",
     "hydra-core==1.3",
 }
 
