@@ -59,15 +59,11 @@ yarn start
 
 <img align="left" src="./assets/architecture.drawio.svg" width="400" style="padding-right: 25px">
 
-- `polar-frontend` aims to separate the general data marketplace from the main UI/UX of Ion, which is based around trading/financial/alternative data.
-
 - `ion-frontend` handles the UI/UX of Ion, including the dashboard and the features seen below.
-
-- `ion-user` handles the user authentication and storage of user details, which has its own database.
 
 - `data-ingestion` handles the extraction of data from the database that `data-engine` writes to.
 
-- `data-engine` handles the scraping of data that otherwise takes a long time to extract. E.g. Treasury data. This service writes to both MongoDB and PostgresSQL databases.
+- `ion-ingestion` handles the scraping of data that otherwise takes a long time to extract. E.g. Treasury data. This service writes to both MongoDB and PostgresSQL databases.
 
 - `ion-clients` provides a unified package service that contains all of the code used by `data-ingestion` and `data-engine` services, including database schemas.
 
@@ -98,12 +94,12 @@ yarn start
 
 ## References 
 ---
-** Academic Records **
+**Academic Records**\
 Probability and Statistics for Finance - Svetlozar, Rachev, Markus Hoechstoetter\
 Stochastic calculus for finance I: The binomial asset pricing model - Steven E. Shreve\
 Stochastic calculus for finance II Continuous time models - Steven E. Shreve
 
-** UI UX Design **
+**UI UX Design**\
 Bloomberg Charting
 
 ## Contributing
