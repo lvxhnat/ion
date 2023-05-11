@@ -54,6 +54,7 @@ export const ButtonWrapper = styled('div')(({ theme }) => ({
     gap: 3,
     display: 'flex',
     alignItems: 'center',
+    backgroundColor: ColorsEnum.warmgray2,
     padding: `${theme.spacing(0.5)} ${theme.spacing(1)}`,
     '&:hover': {
         backgroundColor: ColorsEnum.darkGrey,

@@ -115,7 +115,15 @@ const ChartTypeButton = (props: { baseId: string; ticker: string; chartType: Cha
 
     return (
         <S.ButtonWrapper onClick={handleClick} {...props}>
-            {showArea ? <FaChartArea /> : <FaChartLine />}
+            {showArea ? 
+            <>
+            <FaChartArea />
+            <Typography variant="subtitle2"> Area </Typography>
+            </>
+             : <>
+             <FaChartLine />
+             <Typography variant="subtitle2"> Line </Typography>
+             </>}
         </S.ButtonWrapper>
     );
 };
@@ -166,7 +174,7 @@ export default function ChartviewToolbar(props: {
                             {props.assetType?.charAt(0).toUpperCase() + props.assetType?.slice(1)}
                         </Typography>
                         <Typography variant="subtitle1" component="div">
-                            {props.ticker}
+                            {props.ticker.toUpperCase()}
                         </Typography>
                         <Typography
                             variant="subtitle1"
@@ -205,7 +213,7 @@ export default function ChartviewToolbar(props: {
                 ) : undefined}
             </div>
             <div></div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+            <div style={{ gap: 2, padding: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                 {props.ticker ? (
                     <>
                         <ChartTypeButton
