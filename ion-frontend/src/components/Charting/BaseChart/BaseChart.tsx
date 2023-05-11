@@ -8,7 +8,12 @@ import { useD3 } from 'common/hooks/useD3';
 import { ColorsEnum } from 'common/theme';
 
 import { CHARTCONFIGS, CHARTIDS } from './config';
-import { TickerMetricStoreFormat, useChartStore, useLiveMovesStore, useMetricStore } from 'store/prices/watchlist';
+import {
+    TickerMetricStoreFormat,
+    useChartStore,
+    useLiveMovesStore,
+    useMetricStore,
+} from 'store/prices/watchlist';
 
 export function determineStartY(zeroAxis: boolean, minValue: number, maxValue: number) {
     const minBoundary = (maxValue - minValue) * 0.3;
@@ -79,18 +84,17 @@ export default function BaseChart({
     showTooltip = CHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
     showMetrics = CHARTCONFIGS.DEFAULT_SHOW_METRICS,
 }: LineChartProps): React.ReactElement {
-
     const numTicks: number = 10;
     const tickerSymbol: string = baseId.split('__')[0];
     const setLiveMoves = useLiveMovesStore(state => state.setLiveMoves);
     const metrics = useMetricStore(state => state.metrics[tickerSymbol]);
     const chartSettings = useChartStore(state => state.charts)[tickerSymbol];
-    
+
     const ref = useD3(
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
             // Ensure rerender does not duplicate chart
             if (!svg.selectAll('*').empty()) svg.selectAll('*').remove(); // removes any overlapping versions of the svgs
-            
+
             if (showLegend && showTooltip && showPricing) {
                 throw new Error('Pick either show legend and tooltips or pricing only.');
             }
@@ -176,7 +180,7 @@ export default function BaseChart({
                 C.styleGrid({
                     baseId: baseId,
                 });
-            }      
+            }
 
             A.addChart({
                 x: x,

@@ -45,11 +45,11 @@ export function calcBollingerBand(props: BollingerBandProps): BollingerBandRetur
         calcStd = (currIndex, newAvg) =>
             Math.sqrt(
                 stdAccumulator ** 2 +
-                (props.arr[currIndex] - props.arr[currIndex - window]) *
-                (props.arr[currIndex] -
-                    newAvg +
-                    props.arr[currIndex - window] -
-                    avgAccumulator)
+                    (props.arr[currIndex] - props.arr[currIndex - window]) *
+                        (props.arr[currIndex] -
+                            newAvg +
+                            props.arr[currIndex - window] -
+                            avgAccumulator)
             );
     } else {
         const alpha: number = smoothing / (1 + window);
@@ -57,7 +57,7 @@ export function calcBollingerBand(props: BollingerBandProps): BollingerBandRetur
         calcStd = (currIndex, _) =>
             Math.sqrt(
                 (1 - alpha) *
-                (stdAccumulator ** 2 + alpha * (props.arr[currIndex] - avgAccumulator) ** 2)
+                    (stdAccumulator ** 2 + alpha * (props.arr[currIndex] - avgAccumulator) ** 2)
             );
     }
 

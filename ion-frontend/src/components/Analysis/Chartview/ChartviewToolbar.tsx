@@ -2,8 +2,9 @@ import * as React from 'react';
 import * as S from './style';
 
 import Typography from '@mui/material/Typography';
-import { TbMathIntegralX } from 'react-icons/tb';
-import { FaChartArea, FaChartLine } from 'react-icons/fa';
+import { TbMathIntegralX, TbClick } from 'react-icons/tb';
+import { FaChartArea, FaChartLine, FaBroom } from 'react-icons/fa';
+import { MdDraw, MdOutlineUndo } from 'react-icons/md';
 
 import { useThemeStore } from 'store/theme';
 import { useChartStore, useTickerDataStore } from 'store/prices/watchlist';
@@ -12,6 +13,81 @@ import { ColorsEnum } from 'common/theme';
 import { TickerSearch } from 'components/Search/Search';
 import { LabPopup } from './ChartviewLabPopup';
 import { ChartTypes } from 'components/Charting/BaseChart/type';
+import { removeLine } from 'components/Charting/BaseChart/plugins/editChart/removeChart';
+import { CHARTIDS } from 'components/Charting/BaseChart/config';
+
+const DrawLinesButton = (props: { ticker: string; baseId: string }) => {
+    const [draw, setDraw] = React.useState<boolean>(false);
+    const [menu, setMenu] = React.useState<boolean>(false);
+    const [charts, setChart] = useChartStore(state => [state.charts, state.setChart]);
+
+    return (
+        <div>
+            <S.ButtonWrapper onClick={() => setMenu(!menu)}>
+                {draw ? <MdDraw /> : <TbClick />}
+                <Typography variant="subtitle2">{draw ? 'Drawing' : 'Draw'}</Typography>
+            </S.ButtonWrapper>
+            <div
+                style={{
+                    zIndex: 10,
+                    position: 'absolute',
+                    display: menu ? 'block' : 'none',
+                }}
+            >
+                <S.FlexRow
+                    alternate
+                    onClick={() => {
+                        setChart({
+                            ticker: props.ticker,
+                            chart: { ...charts[props.ticker], draw: !draw },
+                        });
+                        setDraw(!draw);
+                        setMenu(false);
+                    }}
+                >
+                    {' '}
+                    <MdDraw /> <Typography variant="subtitle2">Draw Line</Typography>{' '}
+                </S.FlexRow>
+                <S.FlexRow
+                    onClick={() => {
+                        removeLine({
+                            baseId: props.baseId,
+                            class: CHARTIDS.DRAW_LINE_CLASS,
+                        });
+                        setChart({
+                            ticker: props.ticker,
+                            chart: { ...charts[props.ticker], draw: false },
+                        });
+                        setDraw(false);
+                        setMenu(false);
+                    }}
+                >
+                    {' '}
+                    <MdOutlineUndo /> <Typography variant="subtitle2">Undo Draw</Typography>{' '}
+                </S.FlexRow>
+                <S.FlexRow
+                    alternate
+                    onClick={() => {
+                        removeLine({
+                            baseId: props.baseId,
+                            class: CHARTIDS.DRAW_LINE_CLASS,
+                            selectAll: true,
+                        });
+                        setChart({
+                            ticker: props.ticker,
+                            chart: { ...charts[props.ticker], draw: false },
+                        });
+                        setDraw(false);
+                        setMenu(false);
+                    }}
+                >
+                    {' '}
+                    <FaBroom /> <Typography variant="subtitle2">Clean Lines</Typography>{' '}
+                </S.FlexRow>
+            </div>
+        </div>
+    );
+};
 
 const ModifiedStudiesButton = (props: { [others: string]: any }) => {
     return (
@@ -22,32 +98,27 @@ const ModifiedStudiesButton = (props: { [others: string]: any }) => {
     );
 };
 
-const ChartTypeButton = (props: { 
-    baseId: string;
-    ticker: string;
-    chartType: ChartTypes;
-}) => {
-
+const ChartTypeButton = (props: { baseId: string; ticker: string; chartType: ChartTypes }) => {
     const [showArea, setShowArea] = React.useState<boolean>(false);
     const [chart, setChart] = useChartStore(state => [state.charts[props.ticker], state.setChart]);
 
     const handleClick = () => {
-        setShowArea(!showArea)
+        setShowArea(!showArea);
         setChart({
-            ticker: props.ticker, 
+            ticker: props.ticker,
             chart: {
-                color: chart.color, 
-                type: (!showArea) ? 'area' : 'line',
-            }
-        })
-    }
+                color: chart.color,
+                type: !showArea ? 'area' : 'line',
+            },
+        });
+    };
 
     return (
         <S.ButtonWrapper onClick={handleClick} {...props}>
             {showArea ? <FaChartArea /> : <FaChartLine />}
         </S.ButtonWrapper>
-    )
-}
+    );
+};
 
 export default function ChartviewToolbar(props: {
     baseId: string;
@@ -69,14 +140,6 @@ export default function ChartviewToolbar(props: {
                 alignItems: 'center',
             }}
         >
-            {props.ticker ? (
-                <LabPopup
-                    baseId={props.baseId}
-                    show={showLab}
-                    setShow={setShowLab}
-                    ticker={props.ticker}
-                />
-            ) : undefined}
             <TickerSearch selectedTicker={props.ticker} />
             <div
                 style={{
@@ -141,12 +204,28 @@ export default function ChartviewToolbar(props: {
                     </>
                 ) : undefined}
             </div>
-            <div>
-            </div>
+            <div></div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                {props.ticker ? <ChartTypeButton ticker={props.ticker} baseId={props.baseId} chartType='area'/> : undefined}
-                <ModifiedStudiesButton onClick={() => setShowLab(true)} />
+                {props.ticker ? (
+                    <>
+                        <ChartTypeButton
+                            ticker={props.ticker}
+                            baseId={props.baseId}
+                            chartType="area"
+                        />
+                        <DrawLinesButton ticker={props.ticker} baseId={props.baseId} />
+                        <ModifiedStudiesButton onClick={() => setShowLab(true)} />
+                    </>
+                ) : undefined}
             </div>
+            {props.ticker ? (
+                <LabPopup
+                    baseId={props.baseId}
+                    show={showLab}
+                    setShow={setShowLab}
+                    ticker={props.ticker}
+                />
+            ) : undefined}
         </div>
     );
 }

@@ -44,9 +44,11 @@ const LabPopupMetricParams = (props: { ticker: string }) => {
 
     React.useEffect(() => {
         if (selectedMetricId && metrics[props.ticker]) {
-            const tickerView = metrics[props.ticker].filter(entry => entry.metricId === selectedMetricId)[0];
+            const tickerView = metrics[props.ticker].filter(
+                entry => entry.metricId === selectedMetricId
+            )[0];
             // Theres no need to deep copy here as metricParams may not be present. Only once the metric is added, will there be metricParams.
-            setView({...tickerView } ?? {});
+            setView({ ...tickerView } ?? {});
         }
     }, [selectedMetricId, metrics]);
 
@@ -72,8 +74,10 @@ const LabPopupMetricParams = (props: { ticker: string }) => {
     };
 
     const handleResetClick = () => {
-        const tickerView = metrics[props.ticker].filter(entry => entry.metricId === selectedMetricId)[0];
-        setView({...tickerView, metricParams: {...tickerView.metricParams} } ?? {});
+        const tickerView = metrics[props.ticker].filter(
+            entry => entry.metricId === selectedMetricId
+        )[0];
+        setView({ ...tickerView, metricParams: { ...tickerView.metricParams } } ?? {});
     };
 
     return (
@@ -82,55 +86,60 @@ const LabPopupMetricParams = (props: { ticker: string }) => {
         >
             {view && view.metricParams
                 ? Object.keys(view.metricParams).map((indicator: string) => {
-                    const indicatorSchema = technicalIndicators[view.metric].schema[indicator]
-                    if (indicatorSchema.type === 'integer') {
-                        return (
-                            <NumericChoice
-                                key={`${indicator}_${props.ticker}`}
-                                label={indicator}
-                                min={indicatorSchema.format[0]}
-                                max={indicatorSchema.format[1]}
-                                value={view.metricParams[indicator as keyof MovingAverageProps]}
-                                onChange={(event: any) => {
-                                    view.metricParams[indicator as keyof MovingAverageProps] =
-                                        event.target.value;
-                                    setView(view);
-                                }}
-                            />
-                        );
-                    } else if (indicatorSchema.type === 'float') {
-                        const diff = ((+indicatorSchema.format[1] - +indicatorSchema.format[0])/100).toString()
-                        const step = 1/(10 ** (diff.length - (diff.indexOf(".") + 1)))
-                        return (
-                            <NumericChoice
-                                key={`${indicator}_${props.ticker}`}
-                                label={indicator}
-                                step={step}
-                                min={indicatorSchema.format[0]}
-                                max={indicatorSchema.format[1]}
-                                value={view.metricParams[indicator as keyof MovingAverageProps]}
-                                onChange={(event: any) => {
-                                    view.metricParams[indicator as keyof MovingAverageProps] =
-                                        event.target.value;
-                                    setView(view);
-                                }}
-                            />
-                        );
-                    } else {
-                        return (
-                            <OptionChoice 
-                                label={indicator}
-                                key={`${indicator}_${props.ticker}`}
-                                value={view.metricParams[indicator as keyof MovingAverageProps]?.toString()}
-                                options={indicatorSchema.format}
-                                onChange={(event: any) => {
-                                    view.metricParams[indicator as keyof MovingAverageProps] =
-                                        event.target.value;
-                                    setView(view);
-                                }}
-                            />
-                        )
-                    }
+                      const indicatorSchema = technicalIndicators[view.metric].schema[indicator];
+                      if (indicatorSchema.type === 'integer') {
+                          return (
+                              <NumericChoice
+                                  key={`${indicator}_${props.ticker}`}
+                                  label={indicator}
+                                  min={indicatorSchema.format[0]}
+                                  max={indicatorSchema.format[1]}
+                                  value={view.metricParams[indicator as keyof MovingAverageProps]}
+                                  onChange={(event: any) => {
+                                      view.metricParams[indicator as keyof MovingAverageProps] =
+                                          event.target.value;
+                                      setView(view);
+                                  }}
+                              />
+                          );
+                      } else if (indicatorSchema.type === 'float') {
+                          const diff = (
+                              (+indicatorSchema.format[1] - +indicatorSchema.format[0]) /
+                              100
+                          ).toString();
+                          const step = 1 / 10 ** (diff.length - (diff.indexOf('.') + 1));
+                          return (
+                              <NumericChoice
+                                  key={`${indicator}_${props.ticker}`}
+                                  label={indicator}
+                                  step={step}
+                                  min={indicatorSchema.format[0]}
+                                  max={indicatorSchema.format[1]}
+                                  value={view.metricParams[indicator as keyof MovingAverageProps]}
+                                  onChange={(event: any) => {
+                                      view.metricParams[indicator as keyof MovingAverageProps] =
+                                          event.target.value;
+                                      setView(view);
+                                  }}
+                              />
+                          );
+                      } else {
+                          return (
+                              <OptionChoice
+                                  label={indicator}
+                                  key={`${indicator}_${props.ticker}`}
+                                  value={view.metricParams[
+                                      indicator as keyof MovingAverageProps
+                                  ]?.toString()}
+                                  options={indicatorSchema.format}
+                                  onChange={(event: any) => {
+                                      view.metricParams[indicator as keyof MovingAverageProps] =
+                                          event.target.value;
+                                      setView(view);
+                                  }}
+                              />
+                          );
+                      }
                   })
                 : null}
             <S.BottomToolbar style={{ borderBottomLeftRadius: 0 }}>

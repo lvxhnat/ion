@@ -1,6 +1,4 @@
-import {
-    technicalIndicators,
-} from 'components/Analysis/Chartview/calculations/metrics';
+import { technicalIndicators } from 'components/Analysis/Chartview/calculations/metrics';
 import { MovingAverageProps } from 'components/Analysis/Chartview/calculations/schemas/props/schema';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { create } from 'zustand';
@@ -49,7 +47,7 @@ export interface EditLiveMovePropTypes {
     metricId: string;
     value: AllowedLiveMoveValueTypes;
 }
-export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> { }
+export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> {}
 
 export interface EditLiveMoveTypes {
     liveMoves: {
@@ -84,7 +82,7 @@ export const useLiveMovesStore = create<EditLiveMoveTypes>(set => ({
  * Stores the data that is required for plotting the different line chart formats
  */
 export interface ChartStoreTypes {
-    charts: { [ticker: string]: TickerChartType }
+    charts: { [ticker: string]: TickerChartType };
     setChart: (props: EditChartPropType) => void;
 }
 interface TickerChartType {
@@ -102,8 +100,8 @@ export const useChartStore = create<ChartStoreTypes>(set => ({
     setChart: (props: EditChartPropType) => {
         set((state: ChartStoreTypes) => {
             return { charts: { ...state.charts, [props.ticker]: props.chart } };
-        })
-    }
+        });
+    },
 }));
 
 /**

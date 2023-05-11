@@ -40,7 +40,8 @@ export const addLineTracker = (props: {
     const focus = svg.append('g').attr('class', groupClassname);
     let mouseMoveTimeout: any;
 
-    const trackerContainer = svg.append('rect')
+    const trackerContainer = svg
+        .append('rect')
         .attr('class', mousetrackerClassname)
         .style('fill', 'transparent')
         .style('pointer-events', 'all')
@@ -74,15 +75,14 @@ export const addLineTracker = (props: {
     function mousemove(event: MouseEvent) {
         const x0 = x.invert(d3.pointer(event, svg.node())[0]);
         const i = bisect(dates, x0, 1);
-        focus
-            .selectAll(`.${lineClassname}_y`)
-            .attr('transform', `translate(${x(dates[i])}, 0)`);
+        focus.selectAll(`.${lineClassname}_y`).attr('transform', `translate(${x(dates[i])}, 0)`);
         focus
             .selectAll(`.${lineClassname}_x`)
             .attr('transform', `translate(0, ${y(props.data.dataY[i])})`);
         clearTimeout(mouseMoveTimeout);
         mouseMoveTimeout = setTimeout(() => {
             // To make calls more efficient, we add debounce
+            // This sequence of hooks sets the prices for the cursor as it moves
             if (dates[i]) {
                 props.setLiveMoves({
                     ticker: props.ticker,
@@ -106,35 +106,39 @@ export const addLineTracker = (props: {
             }
         }, 40);
     }
+    // This counter maintains the number of lines drawn, and also the id of the most recent line
+    let counter: number = 0;
     let startDraw: boolean = true;
     function mousedown(e: MouseEvent) {
         e.stopPropagation();
         e.stopImmediatePropagation();
         e.preventDefault();
-        if (true) {
+        if (props.draw) {
             if (startDraw) {
                 const m = d3.pointer(e);
                 const line = svg
                     .append('line')
                     .attr('class', `${props.baseId}_${CHARTIDS.DRAW_LINE_CLASS}`)
-                    .attr('x1', m[0])
-                    .attr('y1', m[1])
-                    .attr('x2', m[0])
-                    .attr('y2', m[1])
+                    .attr('id', counter)
+                    .attr('x1', m[0] - 5)
+                    .attr('y1', m[1] - 3)
+                    .attr('x2', m[0] - 5)
+                    .attr('y2', m[1] - 3)
                     .attr('stroke-width', 2)
-                    .attr('stroke', 'green');
+                    .attr('stroke', ColorsEnum.royalred);
                 trackerContainer.on('mousemove', (event: MouseEvent) => {
                     mousemove(event);
                     const m = d3.pointer(event);
-                    line.attr('x2', m[0]).attr('y2', m[1]);
-                })
+                    line.attr('x2', m[0] - 5).attr('y2', m[1] - 3);
+                });
+                counter += 1;
             } else {
                 trackerContainer.on('mousemove', (event: MouseEvent) => {
                     mousemove(event);
-                })
+                });
             }
             // Swapping this allow us to disconnect the line when required.
-            startDraw = !startDraw
+            startDraw = !startDraw;
         }
     }
 

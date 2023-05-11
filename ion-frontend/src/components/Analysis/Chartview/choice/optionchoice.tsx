@@ -4,11 +4,11 @@ import * as S from './style';
 import Typography from '@mui/material/Typography';
 import Select from 'components/Select';
 
-export default function OptionChoice(props: { 
+export default function OptionChoice(props: {
     label: string;
-    options: string[]|number[]; 
+    options: string[] | number[];
     [others: string]: any;
- }) {
+}) {
     return (
         <S.ChoiceContainer>
             <div style={{ width: '40%' }}>
@@ -17,10 +17,10 @@ export default function OptionChoice(props: {
                 </Typography>
             </div>
             <div style={{ width: '60%' }}>
-                <Select 
+                <Select
                     {...props}
-                    options={props.options.map((entry) => {
-                        return {value: entry.toString(), name: entry.toString()}
+                    options={props.options.map(entry => {
+                        return { value: entry.toString(), name: entry.toString() };
                     })}
                 />
             </div>

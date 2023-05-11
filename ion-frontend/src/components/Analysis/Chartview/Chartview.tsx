@@ -42,14 +42,14 @@ export default function Chartview(props: {
             ? props.assetType
             : (ASSET_TYPES.ETF as keyof typeof ASSET_TYPES);
         const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
-        
+
         addChart({
             ticker: ticker,
             chart: {
                 color: 'white',
                 type: 'line',
-            }
-        })
+            },
+        });
 
         if (assetType === ASSET_TYPES.FOREX) {
             getHistoricalForex({

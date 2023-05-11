@@ -2,6 +2,23 @@ import { ColorsEnum } from 'common/theme';
 
 import { styled } from '@mui/system';
 
+interface FlexRowProps {
+    alternate?: boolean;
+}
+
+export const FlexRow = styled('div')<FlexRowProps>(({ theme, alternate }) => ({
+    gap: 5,
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    backgroundColor: alternate ? ColorsEnum.darkGrey : ColorsEnum.warmgray1,
+    padding: `${theme.spacing(0.5)} ${theme.spacing(2)}`,
+    '&:hover': {
+        backgroundColor: ColorsEnum.beer,
+        cursor: 'pointer',
+    },
+}));
+
 interface PopupContainerProps {
     show?: boolean;
 }
@@ -34,6 +51,7 @@ export const LabPopupHeaderWrapper = styled('div')(({ theme }) => ({
 }));
 
 export const ButtonWrapper = styled('div')(({ theme }) => ({
+    gap: 3,
     display: 'flex',
     alignItems: 'center',
     padding: `${theme.spacing(0.5)} ${theme.spacing(1)}`,

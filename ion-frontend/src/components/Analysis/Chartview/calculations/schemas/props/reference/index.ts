@@ -1,7 +1,7 @@
-import { ExponentialMovingAverageJSONProps, SimpleMovingAverageJSONProps, BollingerBandJSONProps } from "./momentum";
-
-export {
+import {
     ExponentialMovingAverageJSONProps,
     SimpleMovingAverageJSONProps,
     BollingerBandJSONProps,
-}
+} from './momentum';
+
+export { ExponentialMovingAverageJSONProps, SimpleMovingAverageJSONProps, BollingerBandJSONProps };

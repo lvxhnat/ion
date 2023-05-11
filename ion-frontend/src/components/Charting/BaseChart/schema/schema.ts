@@ -1,4 +1,4 @@
-import { ChartTypes } from "../type";
+import { ChartTypes } from '../type';
 
 export interface DefaultDataProps {
     id: string;

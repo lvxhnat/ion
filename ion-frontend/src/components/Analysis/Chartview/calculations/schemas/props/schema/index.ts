@@ -5,4 +5,9 @@ import {
     ExponentialMovingAverageProps,
 } from './momentum';
 
-export type { BollingerBandProps, MovingAverageProps, SimpleMovingAverageProps, ExponentialMovingAverageProps };
+export type {
+    BollingerBandProps,
+    MovingAverageProps,
+    SimpleMovingAverageProps,
+    ExponentialMovingAverageProps,
+};

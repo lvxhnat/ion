@@ -17,7 +17,7 @@ export default function Select(props: SelectProps) {
     return (
         <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
             <select
-                {...props}    
+                {...props}
                 style={{
                     width: '100%',
                     backgroundColor: 'transparent',

@@ -1,6 +1,27 @@
 import * as d3 from 'd3';
 
-export const removeLine = (props: { id: string; baseId: string }): void => {
-    const lineIdComposed: string = `${props.baseId}_${props.id}`;
-    d3.select(`#${lineIdComposed}`).remove();
+export const removeLine = (props: {
+    baseId: string;
+    id?: string;
+    class?: string;
+    identifier?: string;
+    selectAll?: boolean;
+}): void => {
+    if (props.id && props.class) {
+        throw Error('Provide on id or class, not both.');
+    }
+    let lineId: string;
+    if (props.id) {
+        lineId = `#${props.baseId}_${props.id}`;
+    } else {
+        lineId = `.${props.baseId}_${props.class}`;
+    }
+    if (props.identifier) {
+        lineId = `${lineId}_${props.identifier}`;
+    }
+    if (props.selectAll) {
+        d3.selectAll(lineId).remove();
+    } else {
+        d3.selectAll(`${lineId}:last-of-type`).remove();
+    }
 };

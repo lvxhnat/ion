@@ -16,7 +16,13 @@ export const getIndicatorIdFromMetric = (
     metric: TechnicalIndicatorsKeys,
     parameters: { [parameter: string]: any }
 ): string => {
-    return ticker + indicatorIdDelimiter + metric + indicatorIdDelimiter + Object.values(parameters).join(indicatorIdDelimiter);
+    return (
+        ticker +
+        indicatorIdDelimiter +
+        metric +
+        indicatorIdDelimiter +
+        Object.values(parameters).join(indicatorIdDelimiter)
+    );
 };
 
 export const getIndicatorMetricFromId = (indicatorId: string): Function => {

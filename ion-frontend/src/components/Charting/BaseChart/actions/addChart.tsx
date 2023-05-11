@@ -11,17 +11,17 @@ interface addChartProps extends Omit<DefaultDataProps, 'name' | 'parent'> {
 
 export default function addChart(props: addChartProps) {
     const params = {
-            id: props.id,
-            x: props.x,
-            y: props.y,
-            baseId: props.baseId,
-            color: props.color,
-            dataX: props.dataX,
-            dataY: props.dataY,
+        id: props.id,
+        x: props.x,
+        y: props.y,
+        baseId: props.baseId,
+        color: props.color,
+        dataX: props.dataX,
+        dataY: props.dataY,
     };
     if (props.type === 'line') {
-        addLine(params)
+        addLine(params);
     } else {
-        addArea(params)
+        addArea(params);
     }
 }
