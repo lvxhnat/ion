@@ -1,5 +1,6 @@
-from pydantic import BaseSettings, Field
+from typing import List
 from pathlib import Path
+from pydantic import BaseSettings, Field
 
 
 class IngestionSettings(BaseSettings):
@@ -9,11 +10,10 @@ class IngestionSettings(BaseSettings):
     FINNHUB_API_KEY: str = Field(..., env="FINNHUB_API_KEY")
     OPENWEATHER_API_KEY: str = Field(..., env="OPENWEATHER_API_KEY")
 
+    NEWS_API_KEY: str = Field(..., env="NEWS_APIKEY_0")
+
     class Config:
-        env_file = (
-            Path(__file__).resolve().parent.parent.parent.parent
-            / ".env.credentials"
-        )
+        env_file = Path(__file__).resolve().parents[3] / ".env.credentials"
         env_file_encoding = "utf-8"
 
 
