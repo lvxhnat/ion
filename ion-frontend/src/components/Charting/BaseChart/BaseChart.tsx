@@ -44,7 +44,7 @@ export function returnChartAxis(props: {
 }) {
     const dateTime: number[] = props.dataX.map((date: Date) => date.getTime());
     const width = document.getElementById(props.baseId)!.parentNode!.parentElement!.clientWidth;
-    const height = document.getElementById(props.baseId)!.parentNode!.parentElement!.clientHeight;
+    const height = document.getElementById(props.baseId)!.parentNode!.parentElement!.clientHeight * 0.7;
 
     const minDate = Math.min(...dateTime);
     const maxDate = Math.max(...dateTime);
