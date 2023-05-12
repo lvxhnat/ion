@@ -205,7 +205,8 @@ export default function ETFViewer(props: ETFViewerProps) {
                                 <WidgetContainer title="past_1y_historical">
                                     {props.etfCandlesData.length !== 0 ? (
                                         <BaseLineChart
-                                            showAxis
+                                            showXAxis
+                                            showYAxis
                                             showAverage
                                             showTooltip
                                             baseId={`svg-container`}

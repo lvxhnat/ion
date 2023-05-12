@@ -3,7 +3,11 @@ import { ColorsEnum } from 'common/theme';
 import { CHARTCONFIGS, CHARTIDS } from '../../config';
 import { DefaultDataProps } from '../../schema/schema';
 import { returnChartAxis } from '../../BaseChart';
-import { EditLiveMovePropTypes, TickerMetricStoreFormat } from 'store/prices/watchlist';
+import {
+    EditLiveMovePropTypes,
+    TickerMetricStoreFormat,
+    useChartStore,
+} from 'store/prices/watchlist';
 
 export const addLineTracker = (props: {
     ticker: string;
@@ -15,6 +19,7 @@ export const addLineTracker = (props: {
     draw?: boolean;
 }) => {
     const svg = d3.selectAll(`#${props.baseId}`);
+    const draw = useChartStore.getState().charts[props.ticker].draw;
 
     const bisect = d3.bisector((d: any) => d).left;
 
@@ -113,7 +118,7 @@ export const addLineTracker = (props: {
         e.stopPropagation();
         e.stopImmediatePropagation();
         e.preventDefault();
-        if (props.draw) {
+        if (draw) {
             if (startDraw) {
                 const m = d3.pointer(e);
                 const line = svg

@@ -35,19 +35,6 @@ export const StyledTableCell: React.FC<TableCellProps> = props => {
     );
 };
 
-function DataTableSkeleton() {
-    return (
-        <>
-            <S.TableHeader>
-                <Skeleton variant="rectangular" width={'100%'} height={''} animation="wave" />
-            </S.TableHeader>
-            <S.StyledTableContainer>
-                <Skeleton variant="rectangular" width={'100%'} height={'100%'} animation="wave" />
-            </S.StyledTableContainer>
-        </>
-    );
-}
-
 function DataTableEnhancedHeader(props: {
     fileName: string;
     rowCount: number;

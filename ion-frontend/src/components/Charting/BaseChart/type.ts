@@ -9,7 +9,8 @@ export interface LineChartProps {
     showAverage?: boolean;
     showLegend?: boolean;
     showGrid?: boolean;
-    showAxis?: boolean;
+    showXAxis?: boolean;
+    showYAxis?: boolean;
     showNormalised?: boolean;
     showTooltip?: boolean;
     showMetrics?: boolean;

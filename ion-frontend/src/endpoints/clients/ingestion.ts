@@ -5,7 +5,7 @@ export interface IngestionDataType {
     file_rows: number;
     content_header: string[];
     content_body: any[][];
-    dtypes: {
+    dtypes?: {
         [header: string]: IngestionDtypeObjectType;
     };
 }

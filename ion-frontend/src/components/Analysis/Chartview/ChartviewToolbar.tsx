@@ -1,10 +1,12 @@
 import * as React from 'react';
 import * as S from './style';
 
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+
 import { TbMathIntegralX, TbClick } from 'react-icons/tb';
 import { FaChartArea, FaChartLine, FaBroom } from 'react-icons/fa';
-import { MdDraw, MdOutlineUndo } from 'react-icons/md';
+import { MdDraw, MdOutlineUndo, MdOutlineBackupTable } from 'react-icons/md';
 
 import { useThemeStore } from 'store/theme';
 import { useChartStore, useTickerDataStore } from 'store/prices/watchlist';
@@ -137,6 +139,8 @@ export default function ChartviewToolbar(props: {
     baseId: string;
     ticker: string | undefined;
     assetType: string | undefined;
+    showSidebar: boolean;
+    setShowSidebar: (show: boolean) => void;
 }) {
     const { mode } = useThemeStore();
     const data = useTickerDataStore(state => state.data);
@@ -229,6 +233,18 @@ export default function ChartviewToolbar(props: {
             >
                 {props.ticker ? (
                     <>
+                        <Tooltip title="Show Side Table" followCursor>
+                            <S.ButtonWrapper
+                                style={{
+                                    backgroundColor: props.showSidebar
+                                        ? ColorsEnum.darkGrey
+                                        : ColorsEnum.warmgray2,
+                                }}
+                                onClick={() => props.setShowSidebar(!props.showSidebar)}
+                            >
+                                <MdOutlineBackupTable />
+                            </S.ButtonWrapper>
+                        </Tooltip>
                         <ChartTypeButton
                             ticker={props.ticker}
                             baseId={props.baseId}

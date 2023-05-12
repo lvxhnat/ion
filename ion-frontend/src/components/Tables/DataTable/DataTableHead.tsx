@@ -31,7 +31,9 @@ export default function DataTableHead(props: DataTableHeaderProps) {
         <TableHead>
             <TableRow>
                 {columns.map((column: DataTableHeaderDefinition, index: number) => {
-                    const allTypes: IngestionDtypeObjectType = props.data.dtypes[column.headerName];
+                    const allTypes: IngestionDtypeObjectType | undefined = props.data.dtypes
+                        ? props.data.dtypes[column.headerName]
+                        : undefined;
                     let nullableTag: string | undefined;
 
                     if (allTypes) {

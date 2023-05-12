@@ -80,12 +80,14 @@ export default function BaseChart({
     showPricing = CHARTCONFIGS.DEFAULT_SHOW_PRICING,
     showAverage = CHARTCONFIGS.DEFAULT_SHOW_AVERAGE,
     showGrid = CHARTCONFIGS.DEFAULT_SHOW_GRID,
-    showAxis = CHARTCONFIGS.DEFAULT_SHOW_AXIS,
+    showXAxis = CHARTCONFIGS.DEFAULT_SHOW_AXIS,
+    showYAxis = CHARTCONFIGS.DEFAULT_SHOW_AXIS,
     showTooltip = CHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
     showMetrics = CHARTCONFIGS.DEFAULT_SHOW_METRICS,
 }: LineChartProps): React.ReactElement {
     const numTicks: number = 10;
     const tickerSymbol: string = baseId.split('__')[0];
+
     const setLiveMoves = useLiveMovesStore(state => state.setLiveMoves);
     const metrics = useMetricStore(state => state.metrics[tickerSymbol]);
     const chartSettings = useChartStore(state => state.charts)[tickerSymbol];
@@ -111,8 +113,8 @@ export default function BaseChart({
             svg.attr('viewBox', [
                 0,
                 0,
-                width + (showAxis ? 30 : 0), // Fixed sizing seems to work better than scaling with multiplication for showing of axis
-                height + (showAxis ? 15 : 0),
+                width + (showXAxis ? 30 : 0), // Fixed sizing seems to work better than scaling with multiplication for showing of axis
+                height + (showYAxis ? 15 : 0),
             ])
                 .attr('preserveAspectRatio', 'xMidYMid meet')
                 .classed('svg-content-responsive', true)
@@ -143,9 +145,11 @@ export default function BaseChart({
                 .tickSize(height)
                 .ticks(0);
 
-            if (showAxis) {
+            if (showXAxis) {
                 // Set the number of ticks if we want to show the axis
                 xAxis.ticks(numTicks);
+            }
+            if (showYAxis) {
                 yAxis.ticks(numTicks);
             }
 

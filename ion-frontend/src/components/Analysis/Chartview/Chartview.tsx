@@ -16,10 +16,10 @@ import ChartviewToolbar from './ChartviewToolbar';
 import { ASSET_TYPES } from 'common/constant';
 import { getHistoricalForex } from 'endpoints/clients/forex';
 import ChartviewPriceShower from './ChartviewPriceShower';
+import DataTable from './table';
 
 const Item = styled(Box)(({ theme }) => ({
     height: '100%',
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     color: theme.palette.text.secondary,
 }));
 
@@ -32,6 +32,8 @@ export default function Chartview(props: {
     ticker?: string;
 }) {
     const [data, setData] = useTickerDataStore(state => [state.data, state.setData]);
+    const [rawData, setRawData] = React.useState<{ [col: string]: any }[]>([]);
+    const [showSidebar, setShowSidebar] = React.useState<boolean>(false);
     const addChart = useChartStore(state => state.setChart);
 
     const baseLineChartId: string = `${props.ticker}__tickerChart`;
@@ -69,6 +71,7 @@ export default function Chartview(props: {
                         type: 'line',
                     } as DefaultDataProps,
                 });
+                setRawData(res.data);
             });
         } else if (assetType === ASSET_TYPES.EQUITY) {
             getCandles(ticker).then(res => {
@@ -84,6 +87,7 @@ export default function Chartview(props: {
                         type: 'line',
                     } as DefaultDataProps,
                 });
+                setRawData(res.data);
             });
         }
     }, []);
@@ -91,22 +95,30 @@ export default function Chartview(props: {
     return (
         <Item>
             <ChartviewToolbar
+                ticker={props.ticker}
                 baseId={baseLineChartId}
                 assetType={props.assetType}
-                ticker={props.ticker}
+                showSidebar={showSidebar}
+                setShowSidebar={setShowSidebar}
             />
-            {props.ticker && data[props.ticker] ? (
-                <div style={{ height: '90%' }}>
-                    <ChartviewPriceShower ticker={props.ticker} />
-                    <BaseLineChart
-                        showAxis
-                        showGrid
-                        showAverage
-                        showTooltip
-                        showMetrics
-                        baseId={baseLineChartId}
-                        defaultData={data[props.ticker]}
-                    />
+            {props.ticker && data[props.ticker] && rawData.length !== 0 ? (
+                <div style={{ height: '100%', display: 'flex' }}>
+                    <div style={{ width: '25%', display: showSidebar ? 'flex' : 'none' }}>
+                        <DataTable data={rawData} columns={Object.keys(rawData[0])} />
+                    </div>
+                    <div style={{ width: showSidebar ? '75%' : '100%', height: '100%' }}>
+                        <ChartviewPriceShower ticker={props.ticker} />
+                        <BaseLineChart
+                            showXAxis
+                            showYAxis
+                            showGrid
+                            showAverage
+                            showTooltip
+                            showMetrics
+                            baseId={baseLineChartId}
+                            defaultData={data[props.ticker]}
+                        />
+                    </div>
                 </div>
             ) : (
                 <div
