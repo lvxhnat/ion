@@ -120,16 +120,16 @@ export const addLineTracker = (props: {
                     .append('line')
                     .attr('class', `${props.baseId}_${CHARTIDS.DRAW_LINE_CLASS}`)
                     .attr('id', counter)
-                    .attr('x1', m[0] - 5)
+                    .attr('x1', m[0] - 3)
                     .attr('y1', m[1] - 3)
-                    .attr('x2', m[0] - 5)
+                    .attr('x2', m[0] - 3)
                     .attr('y2', m[1] - 3)
                     .attr('stroke-width', 2)
                     .attr('stroke', ColorsEnum.royalred);
                 trackerContainer.on('mousemove', (event: MouseEvent) => {
                     mousemove(event);
                     const m = d3.pointer(event);
-                    line.attr('x2', m[0] - 5).attr('y2', m[1] - 3);
+                    line.attr('x2', m[0] - 3).attr('y2', m[1] - 3);
                 });
                 counter += 1;
             } else {

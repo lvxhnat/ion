@@ -54,9 +54,11 @@ const DrawLinesButton = (props: { ticker: string; baseId: string }) => {
                             baseId: props.baseId,
                             class: CHARTIDS.DRAW_LINE_CLASS,
                         });
+                        // Prevent the setting of draw from refreshing the draw line chart
+                        charts[props.ticker].draw = false;
                         setChart({
                             ticker: props.ticker,
-                            chart: { ...charts[props.ticker], draw: false },
+                            chart: charts[props.ticker],
                         });
                         setDraw(false);
                         setMenu(false);
@@ -73,9 +75,10 @@ const DrawLinesButton = (props: { ticker: string; baseId: string }) => {
                             class: CHARTIDS.DRAW_LINE_CLASS,
                             selectAll: true,
                         });
+                        charts[props.ticker].draw = false;
                         setChart({
                             ticker: props.ticker,
-                            chart: { ...charts[props.ticker], draw: false },
+                            chart: charts[props.ticker],
                         });
                         setDraw(false);
                         setMenu(false);
