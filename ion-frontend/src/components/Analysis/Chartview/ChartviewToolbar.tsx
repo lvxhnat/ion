@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 
 import { TbMathIntegralX, TbClick } from 'react-icons/tb';
 import { FaChartArea, FaChartLine, FaBroom } from 'react-icons/fa';
-import { MdDraw, MdOutlineUndo, MdOutlineBackupTable } from 'react-icons/md';
+import { MdDraw, MdCancel, MdOutlineUndo, MdOutlineBackupTable } from 'react-icons/md';
 
 import { useThemeStore } from 'store/theme';
 import { useChartStore, useTickerDataStore } from 'store/prices/watchlist';
@@ -19,79 +19,82 @@ import { removeLine } from 'components/Charting/BaseChart/plugins/editChart/remo
 import { CHARTIDS } from 'components/Charting/BaseChart/config';
 
 const DrawLinesButton = (props: { ticker: string; baseId: string }) => {
-    const [draw, setDraw] = React.useState<boolean>(false);
     const [menu, setMenu] = React.useState<boolean>(false);
     const [charts, setChart] = useChartStore(state => [state.charts, state.setChart]);
 
-    return (
-        <div>
-            <S.ButtonWrapper onClick={() => setMenu(!menu)}>
-                {draw ? <MdDraw /> : <TbClick />}
-                <Typography variant="subtitle2">{draw ? 'Drawing' : 'Draw'}</Typography>
-            </S.ButtonWrapper>
-            <div
-                style={{
-                    zIndex: 10,
-                    position: 'absolute',
-                    display: menu ? 'block' : 'none',
-                }}
-            >
-                <S.FlexRow
-                    alternate
-                    onClick={() => {
-                        setChart({
-                            ticker: props.ticker,
-                            chart: { ...charts[props.ticker], draw: !draw },
-                        });
-                        setDraw(!draw);
-                        setMenu(false);
+    if (charts[props.ticker])
+        return (
+            <div>
+                <S.ButtonWrapper onClick={() => setMenu(!menu)}>
+                    {charts[props.ticker].draw ? <MdDraw /> : <TbClick />}
+                    <Typography variant="subtitle2">
+                        {charts[props.ticker].draw ? 'Drawing' : 'Draw'}
+                    </Typography>
+                </S.ButtonWrapper>
+                <div
+                    style={{
+                        zIndex: 10,
+                        position: 'absolute',
+                        display: menu ? 'block' : 'none',
                     }}
                 >
-                    {' '}
-                    <MdDraw /> <Typography variant="subtitle2">Draw Line</Typography>{' '}
-                </S.FlexRow>
-                <S.FlexRow
-                    onClick={() => {
-                        removeLine({
-                            baseId: props.baseId,
-                            class: CHARTIDS.DRAW_LINE_CLASS,
-                        });
-                        // Prevent the setting of draw from refreshing the draw line chart
-                        charts[props.ticker].draw = false;
-                        setChart({
-                            ticker: props.ticker,
-                            chart: charts[props.ticker],
-                        });
-                        setDraw(false);
-                        setMenu(false);
-                    }}
-                >
-                    {' '}
-                    <MdOutlineUndo /> <Typography variant="subtitle2">Undo Draw</Typography>{' '}
-                </S.FlexRow>
-                <S.FlexRow
-                    alternate
-                    onClick={() => {
-                        removeLine({
-                            baseId: props.baseId,
-                            class: CHARTIDS.DRAW_LINE_CLASS,
-                            selectAll: true,
-                        });
-                        charts[props.ticker].draw = false;
-                        setChart({
-                            ticker: props.ticker,
-                            chart: charts[props.ticker],
-                        });
-                        setDraw(false);
-                        setMenu(false);
-                    }}
-                >
-                    {' '}
-                    <FaBroom /> <Typography variant="subtitle2">Clean Lines</Typography>{' '}
-                </S.FlexRow>
+                    <S.FlexRow
+                        alternate
+                        onClick={() => {
+                            setChart({
+                                ticker: props.ticker,
+                                chart: {
+                                    ...charts[props.ticker],
+                                    draw: !charts[props.ticker].draw,
+                                },
+                            });
+                            setMenu(false);
+                        }}
+                    >
+                        {charts[props.ticker].draw ? (
+                            <>
+                                <MdCancel />
+                                <Typography variant="subtitle2">Disable Draw</Typography>
+                            </>
+                        ) : (
+                            <>
+                                <MdDraw />
+                                <Typography variant="subtitle2">Draw Line</Typography>
+                            </>
+                        )}
+                    </S.FlexRow>
+                    <S.FlexRow
+                        onClick={() => {
+                            removeLine({
+                                baseId: props.baseId,
+                                class: CHARTIDS.DRAW_LINE_CLASS,
+                            });
+                            setMenu(false);
+                        }}
+                    >
+                        {' '}
+                        <MdOutlineUndo /> <Typography variant="subtitle2">
+                            Undo Draw
+                        </Typography>{' '}
+                    </S.FlexRow>
+                    <S.FlexRow
+                        alternate
+                        onClick={() => {
+                            removeLine({
+                                baseId: props.baseId,
+                                class: CHARTIDS.DRAW_LINE_CLASS,
+                                selectAll: true,
+                            });
+                            setMenu(false);
+                        }}
+                    >
+                        {' '}
+                        <FaBroom /> <Typography variant="subtitle2">Clean Lines</Typography>{' '}
+                    </S.FlexRow>
+                </div>
             </div>
-        </div>
-    );
+        );
+    else return <div></div>;
 };
 
 const ModifiedStudiesButton = (props: { [others: string]: any }) => {
