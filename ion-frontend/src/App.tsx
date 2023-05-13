@@ -9,15 +9,15 @@ import Explore from 'pages/etfexplorer';
 import Portfolio from 'pages/portfolio';
 import Landing from 'pages/landing';
 import Function from 'pages/functions/function';
-import { HealthChecksPage } from 'functions/healthchecks/page';
-import { WatchlistPage } from 'functions/watchlist';
+import { HealthChecksPage } from 'pages/landing/healthchecks/page';
+import Geopolitics from 'pages/geopolitics';
 
 function App() {
     return (
         <Router>
             <Routes>
                 <Route
-                    path={`${ROUTES.PUBLIC.ANALYSIS}/:assetType/:symbolId`}
+                    path={`${ROUTES.PUBLIC.SECURITIES}/:assetType/:symbolId`}
                     element={<Analysis />}
                 />
                 <Route path={ROUTES.PUBLIC.LANDING} element={<Landing />} />
@@ -25,6 +25,7 @@ function App() {
                 <Route path={ROUTES.PUBLIC.PORTFOLIO} element={<Portfolio />} />
                 <Route path={ROUTES.PUBLIC.EXPLORE} element={<Explore />} />
                 <Route path={ROUTES.PUBLIC.HEALTHCHECK} element={<HealthChecksPage />} />
+                <Route path={ROUTES.PUBLIC.GEOPOLITICS} element={<Geopolitics />} />
             </Routes>
         </Router>
     );

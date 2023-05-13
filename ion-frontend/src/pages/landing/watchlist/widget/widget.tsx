@@ -54,7 +54,7 @@ function WidgetTickerRow(props: { ticker: string }) {
         <StyledTableRow
             key={`tickerTableBody_${data.ticker}`}
             onClick={() =>
-                navigate(`${ROUTES.PUBLIC.ANALYSIS}/${ASSET_TYPES.EQUITY}/${data.ticker}`)
+                navigate(`${ROUTES.PUBLIC.SECURITIES}/${ASSET_TYPES.EQUITY}/${data.ticker}`)
             }
         >
             <StyledTableCell>{data.ticker}</StyledTableCell>
