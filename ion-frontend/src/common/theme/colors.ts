@@ -1,6 +1,8 @@
 // https://colordesigner.io/gradient-generator
 
 export enum ColorsEnum {
+    upHint = '#009C00',
+    downHint = '#EF2B00',
     primary = '#ff9b00',
     secondary = '#FFBAAB',
     success = '#85B899',
@@ -29,8 +31,6 @@ export enum ColorsEnum {
     beer21 = '#1f1f1f',
     beer22 = '#191919',
     beer23 = '#171717',
-    upHint = '#00DD00',
-    downHint = 'red',
     error = '#F5734D',
     sunshine = '#FFDA00',
     royalred = '#7D001C',

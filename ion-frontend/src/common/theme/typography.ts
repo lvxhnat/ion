@@ -30,7 +30,7 @@ export const typographyTheme = {
         fontWeight: 500,
     },
     overline: {
-        fontSize: `calc(0.3rem + 0.3vw)`,
+        fontSize: `calc(0.25rem + 0.3vw)`,
     },
     button: {
         fontSize: '0.8rem + 0.2vw',

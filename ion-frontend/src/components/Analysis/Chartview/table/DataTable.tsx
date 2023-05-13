@@ -1,16 +1,16 @@
-import * as React from 'react';
 import * as S from './style';
+import * as React from 'react';
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableSortLabel from '@mui/material/TableSortLabel';
 import Box from '@mui/material/Box';
+import Table from '@mui/material/Table';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableBody from '@mui/material/TableBody';
+import TableHead from '@mui/material/TableHead';
+import Typography from '@mui/material/Typography';
+import TableSortLabel from '@mui/material/TableSortLabel';
 import Tooltip from '@mui/material/Tooltip';
 import { visuallyHidden } from '@mui/utils';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
 
 import { ColorsEnum } from 'common/theme';
 import { formatDate } from 'common/constant/dates';
@@ -24,7 +24,7 @@ interface TableCellProps {
 export interface DataTableProps {
     data: any;
     columns: string[];
-    boldHeader?: boolean | undefined; // Make header bold
+    boldHeader?: boolean | undefined;
     rowCount?: number | undefined;
     pageSize?: number | undefined;
     rowsPerPage?: number | undefined;
@@ -33,7 +33,7 @@ export interface DataTableProps {
 
 export interface DataTableCellProps {
     id: string;
-    selected?: boolean;
+    backgroundColor?: string;
     onClick?: Function;
     children?: any;
 }
@@ -51,16 +51,18 @@ export function DataTableCell(props: DataTableCellProps) {
             component="td"
             id="1"
             scope="row"
-            align="left"
+            align="center"
             onClick={props.onClick}
             sx={{
+                padding: 0,
                 '&.MuiTableCell-root': {
-                    backgroundColor: props.selected ? ColorsEnum.darkGrey : 'default',
+                    backgroundColor: props.backgroundColor,
                 },
-                padding: 1,
+                borderBottom: `1px solid ${ColorsEnum.white}`,
+                borderRight: `1px solid ${ColorsEnum.white}`,
             }}
         >
-            <Typography variant="subtitle2" noWrap>
+            <Typography variant="overline" noWrap>
                 {props.children}
             </Typography>
         </StyledTableCell>
@@ -82,10 +84,11 @@ export function DataTableHead(props: DataTableHeaderProps) {
                     return (
                         <StyledTableCell
                             key={`dataTableHead_${column}_${index}`}
-                            align="left"
+                            scope="row"
+                            align="center"
                             sortDirection={orderBy === column ? order : false}
                             sx={{
-                                padding: '1px 3px',
+                                padding: 0,
                                 backgroundColor: backgroundColor,
                             }}
                         >
@@ -94,10 +97,9 @@ export function DataTableHead(props: DataTableHeaderProps) {
                                     active={orderBy === column}
                                     direction={orderBy === column ? order : 'asc'}
                                     onClick={createSortHandler(column)}
-                                    sx={{ gap: 1 }}
                                 >
                                     <Typography
-                                        variant="subtitle2"
+                                        variant="overline"
                                         noWrap
                                         sx={{ fontWeight: props.boldHeader ? 'bold' : 600 }}
                                     >
@@ -191,15 +193,23 @@ export default function DataTable(props: DataTableProps) {
                                         if (column === 'date') {
                                             value = formatDate(value);
                                         }
-                                        if (column !== 'symbol')
+                                        if (column !== 'symbol') {
+                                            let color = 'transparent';
+                                            if (column !== 'date' && props.data.length > row_index + 1) {
+                                                const diff: number = value - props.data[row_index + 1][column]
+                                                if (diff > 0) color = ColorsEnum.upHint;
+                                                else color = ColorsEnum.downHint;
+                                            }
                                             return (
                                                 <DataTableCell
                                                     id={`${row_index}-${column_index}`}
                                                     key={`dataTableBody_${column_index}_${row_index}`}
+                                                    backgroundColor={color}
                                                 >
                                                     {value}
                                                 </DataTableCell>
                                             );
+                                        }
                                     })}
                                 </TableRow>
                             );
