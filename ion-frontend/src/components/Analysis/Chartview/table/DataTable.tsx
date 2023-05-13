@@ -195,8 +195,12 @@ export default function DataTable(props: DataTableProps) {
                                         }
                                         if (column !== 'symbol') {
                                             let color = 'transparent';
-                                            if (column !== 'date' && props.data.length > row_index + 1) {
-                                                const diff: number = value - props.data[row_index + 1][column]
+                                            if (
+                                                column !== 'date' &&
+                                                props.data.length > row_index + 1
+                                            ) {
+                                                const diff: number =
+                                                    value - props.data[row_index + 1][column];
                                                 if (diff > 0) color = ColorsEnum.upHint;
                                                 else color = ColorsEnum.downHint;
                                             }
