@@ -11,9 +11,9 @@ import { MdDraw, MdCancel, MdOutlineUndo, MdOutlineBackupTable } from 'react-ico
 import { useThemeStore } from 'store/theme';
 import { useChartStore, useTickerDataStore } from 'store/prices/watchlist';
 
+import ChartviewLabPopup from './ChartviewLabPopup';
 import { ColorsEnum } from 'common/theme';
 import { TickerSearch } from 'components/Search/Search';
-import { LabPopup } from './ChartviewLabPopup';
 import { ChartTypes } from 'components/Charting/BaseChart/type';
 import { removeLine } from 'components/Charting/BaseChart/plugins/editChart/removeChart';
 import { CHARTIDS } from 'components/Charting/BaseChart/config';
@@ -259,7 +259,7 @@ export default function ChartviewToolbar(props: {
                 ) : undefined}
             </div>
             {props.ticker ? (
-                <LabPopup
+                <ChartviewLabPopup
                     baseId={props.baseId}
                     show={showLab}
                     setShow={setShowLab}

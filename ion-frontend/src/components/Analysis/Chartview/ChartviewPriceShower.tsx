@@ -9,8 +9,8 @@ import {
     useMetricStore,
 } from 'store/prices/watchlist';
 import { ColorsEnum } from 'common/theme';
-import { technicalIndicators } from './calculations/metrics';
 import { formatDate } from 'common/constant/dates';
+import { technicalIndicators } from './calculations/metrics';
 
 export default function ChartviewPriceShower(props: { ticker: string }) {
     const metrics = useMetricStore(state => state.metrics[props.ticker]);

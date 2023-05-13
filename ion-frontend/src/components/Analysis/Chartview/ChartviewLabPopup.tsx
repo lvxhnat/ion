@@ -296,7 +296,7 @@ const LabPopupStrategyRow = (props: {
     );
 };
 
-export function LabPopup(props: {
+export default function ChartviewLabPopup(props: {
     baseId: string;
     ticker: string;
     show: boolean;

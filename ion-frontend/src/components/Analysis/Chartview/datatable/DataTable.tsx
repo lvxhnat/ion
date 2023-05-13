@@ -201,8 +201,8 @@ export default function DataTable(props: DataTableProps) {
                                             ) {
                                                 const diff: number =
                                                     value - props.data[row_index + 1][column];
-                                                if (diff > 0) color = ColorsEnum.upHint;
-                                                else color = ColorsEnum.downHint;
+                                                if (diff > 0) color = `${ColorsEnum.upHint}99`;
+                                                else color = `${ColorsEnum.downHint}99`;
                                             }
                                             return (
                                                 <DataTableCell
