@@ -9,31 +9,13 @@ import { useNavigate } from 'react-router-dom';
 
 import { ColorsEnum } from 'common/theme';
 import { useThemeStore } from 'store/theme';
-import { getAllFunctions } from 'endpoints/clients/autocomplete';
 import HexLayer from 'components/Charting/HexLayer';
 import Navigation from 'components/Navigation';
+import { ROUTES, ROUTE_METADATA } from 'common/constant';
 
 export default function Function() {
     const { mode } = useThemeStore();
     const navigate = useNavigate();
-    const [availableFunctions, setAvailableFunctions] = React.useState<{ [index: string]: any[] }>(
-        {}
-    );
-
-    React.useEffect(() => {
-        getAllFunctions().then(res => {
-            const data: any = {};
-            res.data.map((entry: any) => {
-                const key: string = entry.type;
-                if (data[key]) {
-                    data[key].push(entry);
-                } else {
-                    data[key] = [entry];
-                }
-            });
-            setAvailableFunctions(data);
-        });
-    }, []);
 
     return (
         <>
@@ -74,57 +56,41 @@ export default function Function() {
                             discover the capabilities of the IonTerminal
                         </Typography>
                     </S.MainWrapper>
-                    {Object.keys(availableFunctions).map((key: string) => {
+                    {Object.keys(ROUTE_METADATA).map((ROUTE_KEY: string) => {
                         return (
-                            <React.Fragment key={`fragment_${key}`}>
-                                <Typography
-                                    key={key}
-                                    variant="subtitle1"
-                                    style={{ color: ColorsEnum.beer }}
-                                >
-                                    {key}
-                                </Typography>
-                                {availableFunctions[key].map(entry => (
-                                    <S.MainWrapper
-                                        onClick={() => navigate(entry.redirect)}
-                                        key={entry.name}
+                            <S.HoveredLink
+                                key={`fragment_${ROUTE_KEY}`}
+                                onClick={() =>
+                                    navigate(ROUTES.PUBLIC[ROUTE_KEY as keyof typeof ROUTES.PUBLIC])
+                                }
+                            >
+                                <div style={{ display: 'flex', gap: 10 }}>
+                                    <Typography
+                                        variant="subtitle1"
+                                        style={{ color: ColorsEnum.beer }}
                                     >
-                                        {!['About'].includes(key) ? (
-                                            <S.SubWrappers
-                                                style={{ width: '5%' }}
-                                                key={`${entry.name}_subwrapper1`}
-                                            >
-                                                <Typography
-                                                    variant="subtitle1"
-                                                    style={{ color: ColorsEnum.machoBlue }}
-                                                    key={`${entry.name}_typography1`}
-                                                >
-                                                    {'>'}
-                                                </Typography>
-                                            </S.SubWrappers>
-                                        ) : null}
-                                        <S.SubWrappers
-                                            style={{ width: '15%' }}
-                                            key={`${entry.name}_subwrapper2`}
-                                        >
-                                            <Typography
-                                                variant="subtitle1"
-                                                style={{ color: ColorsEnum.machoBlue }}
-                                                key={`${entry.name}_typography2`}
-                                            >
-                                                {entry.name}
-                                            </Typography>
-                                        </S.SubWrappers>
-                                        <Typography
-                                            variant="subtitle1"
-                                            style={{ color: ColorsEnum.machoBlue }}
-                                            key={`${entry.name}_typography3`}
-                                        >
-                                            {entry.long_name}
-                                        </Typography>
-                                    </S.MainWrapper>
-                                ))}
-                            </React.Fragment>
+                                        {
+                                            ROUTE_METADATA[ROUTE_KEY as keyof typeof ROUTE_METADATA]
+                                                .NAME
+                                        }
+                                    </Typography>
+                                    <Typography
+                                        variant="subtitle1"
+                                        style={{ color: ColorsEnum.warmgray4 }}
+                                    >
+                                        {
+                                            ROUTE_METADATA[ROUTE_KEY as keyof typeof ROUTE_METADATA]
+                                                .DISPLAY_ROUTE
+                                        }
+                                    </Typography>
+                                </div>
+                                <Typography variant="subtitle2" style={{ color: ColorsEnum.white }}>
+                                    {
+                                        ROUTE_METADATA[ROUTE_KEY as keyof typeof ROUTE_METADATA]
+                                            .DESCRIPTION
+                                    }
+                                </Typography>
+                            </S.HoveredLink>
                         );
                     })}
                 </Grid>

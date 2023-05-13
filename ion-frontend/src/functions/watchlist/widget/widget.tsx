@@ -80,10 +80,7 @@ export default function Widget() {
     const tickers = ['SPY', 'GPS', 'BABA', 'AAPL', 'TSLA', 'IAU', 'VGLT'];
 
     return (
-        <WidgetContainer
-            title="ticker_watchlist"
-            fullScreenRedirect={ROUTES.PUBLIC.TICKER_WATCHLIST}
-        >
+        <WidgetContainer title="ticker_watchlist">
             <Table style={{ minWidth: 150 }} aria-label="a dense table" stickyHeader>
                 <TableHead>
                     <TableRow sx={{ backgroundColor: ColorsEnum.coolgray8 }}>
