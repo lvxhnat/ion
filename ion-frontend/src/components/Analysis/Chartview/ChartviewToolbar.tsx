@@ -9,7 +9,7 @@ import { FaChartArea, FaChartLine, FaBroom } from 'react-icons/fa';
 import { MdDraw, MdCancel, MdOutlineUndo, MdOutlineBackupTable } from 'react-icons/md';
 
 import { useThemeStore } from 'store/theme';
-import { useChartStore, useTickerDataStore } from 'store/prices/watchlist';
+import { useChartStore, useTickerDataStore } from 'store/chartview/chartview';
 
 import ChartviewLabPopup from './ChartviewLabPopup';
 import { ColorsEnum } from 'common/theme';

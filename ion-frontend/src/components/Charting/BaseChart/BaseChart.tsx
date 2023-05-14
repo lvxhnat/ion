@@ -13,7 +13,7 @@ import {
     useChartStore,
     useLiveMovesStore,
     useMetricStore,
-} from 'store/prices/watchlist';
+} from 'store/chartview/chartview';
 
 export function determineStartY(zeroAxis: boolean, minValue: number, maxValue: number) {
     const minBoundary = (maxValue - minValue) * 0.3;

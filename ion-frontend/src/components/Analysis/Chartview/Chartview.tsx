@@ -12,7 +12,7 @@ import BaseLineChart from 'components/Charting/BaseChart';
 import ChartviewPriceShower from './ChartviewPriceShower';
 import ChartviewToolbar from './ChartviewToolbar';
 
-import { useChartStore, useTickerDataStore } from 'store/prices/watchlist';
+import { useChartStore, useTickerDataStore } from 'store/chartview/chartview';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { ASSET_TYPES } from 'common/constant';
 import { getHistoricalForex } from 'endpoints/clients/forex';

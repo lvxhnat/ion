@@ -14,7 +14,7 @@ import {
     useLiveMovesStore,
     useMetricStore,
     useTickerDataStore,
-} from 'store/prices/watchlist';
+} from 'store/chartview/chartview';
 import {
     getIndicatorIdFromMetric,
     getIndicatorMetricFromId,

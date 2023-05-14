@@ -7,7 +7,7 @@ import {
     EditLiveMovePropTypes,
     TickerMetricStoreFormat,
     useChartStore,
-} from 'store/prices/watchlist';
+} from 'store/chartview/chartview';
 
 export const addLineTracker = (props: {
     ticker: string;

@@ -12,7 +12,7 @@ import BaseLineChart from 'components/Charting/BaseChart';
 import { Modify } from 'common/types';
 import { ColorsEnum } from 'common/theme';
 import { ForexStreamType, ForexTableHeaderType, FormattedForexStreamType } from './type';
-import { forexStreamStore } from 'store/prices/prices';
+import { forexStreamStore } from 'store/chartview/forex';
 import { getHistoricalForex, getWebsocketForex } from 'endpoints/clients/forex';
 import { StyledTableCell } from 'components/Tables/BaseTable/StyledTableCell';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';

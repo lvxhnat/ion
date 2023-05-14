@@ -9,7 +9,6 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import DataTableHead from './DataTableHead';
 import DataTableCell from './DataTableCell';
-import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import TablePagination from '@mui/material/TablePagination';
 import { useUploadPage } from 'store/table/table';
