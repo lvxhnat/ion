@@ -97,7 +97,9 @@ yarn start
 **Academic Records**\
 Probability and Statistics for Finance - Svetlozar, Rachev, Markus Hoechstoetter\
 Stochastic calculus for finance I: The binomial asset pricing model - Steven E. Shreve\
-Stochastic calculus for finance II Continuous time models - Steven E. Shreve
+Stochastic calculus for finance II Continuous time models - Steven E. Shreve\
+
+[Financial Models for Numerical Methods](https://github.com/cantaro86/Financial-Models-Numerical-Methods)
 
 **UI UX Design**\
 Bloomberg Charting

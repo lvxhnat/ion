@@ -1,3 +1,3 @@
-import Geopolitics from "./geopolitics";
+import Geopolitics from './geopolitics';
 
-export default Geopolitics
+export default Geopolitics;

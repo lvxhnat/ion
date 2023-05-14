@@ -49,13 +49,16 @@ def order_search(
     session: Session,
     /,
     filters: list,
-    table_schema: Table = None,
+    table_schema: Table,
+    limit: int = 10,
     first: bool = True,
 ) -> dict:
     if first:
         return _serialize(session.query(table_schema).filter(*filters).first())
     else:
-        return _serialize(session.query(table_schema).filter(*filters).all())
+        return _serialize(
+            session.query(table_schema).filter(*filters).limit(limit).all()
+        )
 
 
 def order_query(

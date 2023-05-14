@@ -1,5 +1,3 @@
-import { LivePlayerWidget } from "./widget";
+import { LivePlayerWidget } from './widget';
 
-export {
-    LivePlayerWidget
-}
+export { LivePlayerWidget };

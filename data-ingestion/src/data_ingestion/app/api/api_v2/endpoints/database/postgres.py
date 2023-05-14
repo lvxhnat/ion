@@ -1,4 +1,3 @@
-from typing import Literal
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 
@@ -11,10 +10,8 @@ from data_ingestion.app.api.api_v2.postgres.models.infra.portfolio import (
 from data_ingestion.app.api.api_v2.postgres.schemas.infra.portfolio.params import (
     PortfolioParams,
 )
-from data_ingestion.app.api.api_v1.models.database.postgres.tables import (
+from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import (
     tables as postgres_tables,
-)
-from data_ingestion.app.api.api_v1.models.database.postgres.params import (
     TableQueryParams,
 )
 

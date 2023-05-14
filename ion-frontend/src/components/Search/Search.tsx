@@ -80,9 +80,9 @@ export function TickerSearch(props: { selectedTicker?: string }) {
     const debounceSearchQuery = useDebounce(query, 500);
     React.useEffect(() => {
         if (debounceSearchQuery) {
-            getTickerSearchAutocomplete(query).then((res) => {
+            getTickerSearchAutocomplete(query).then(res => {
                 setOptions(res.data);
-            })
+            });
         }
     }, [debounceSearchQuery]);
 
@@ -107,9 +107,11 @@ export function TickerSearch(props: { selectedTicker?: string }) {
                     }}
                     placeholder={props.selectedTicker ?? 'Enter Symbol'}
                 />
-                <SelectArrowWrapper onClick={() => {
-                    setShowMenu(!showMenu)
-                }}>
+                <SelectArrowWrapper
+                    onClick={() => {
+                        setShowMenu(!showMenu);
+                    }}
+                >
                     <ArrowDropDownIcon fontSize="small" />
                 </SelectArrowWrapper>
             </div>
@@ -125,14 +127,10 @@ export function TickerSearch(props: { selectedTicker?: string }) {
             >
                 <TableRowWrapper overtColors={false} disableHover={true}>
                     <TableRowItemWrapper style={{ width: '15%', fontWeight: 'bold' }}>
-                        <Typography variant="subtitle2">
-                            Symbol
-                        </Typography>
+                        <Typography variant="subtitle2">Symbol</Typography>
                     </TableRowItemWrapper>
                     <TableRowItemWrapper style={{ width: '85%', fontWeight: 'bold' }}>
-                        <Typography variant="subtitle2">
-                            Description
-                        </Typography>
+                        <Typography variant="subtitle2">Description</Typography>
                     </TableRowItemWrapper>
                 </TableRowWrapper>
                 {options.map((entry: any, index: number) => (
@@ -141,9 +139,7 @@ export function TickerSearch(props: { selectedTicker?: string }) {
                         key={`tickerSearch_TableRowWrapper_${index}`}
                     >
                         <TableRowItemWrapper style={{ width: '15%' }}>
-                            <Typography variant="subtitle2">
-                                {entry.symbol}
-                            </Typography>
+                            <Typography variant="subtitle2">{entry.symbol}</Typography>
                         </TableRowItemWrapper>
                         <TableRowItemWrapper style={{ width: '85%' }}>
                             <Typography variant="subtitle2" noWrap>
