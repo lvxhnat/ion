@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ENDPOINTS } from 'common/constant/endpoints';
+import { ENDPOINTS } from 'endpoints/endpoints';
 
 const dataIngestionRequest = axios.create({
     baseURL: ENDPOINTS.BASEURLS.DATA_INGESTION,

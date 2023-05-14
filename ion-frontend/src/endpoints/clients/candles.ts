@@ -1,4 +1,4 @@
-import { ENDPOINTS } from 'common/constant/endpoints';
+import { ENDPOINTS } from 'endpoints/endpoints';
 import { EquityHistoricalDTO } from 'endpoints/schema/tickers';
 import { dataIngestionRequest } from 'services/request';
 

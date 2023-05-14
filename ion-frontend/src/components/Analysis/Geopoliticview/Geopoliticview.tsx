@@ -16,7 +16,7 @@ export default function Geopoliticview() {
     <div style={{ width: '100%', display: 'flex' }}>
         <div style={{ width: '50%' }}> </div>
         <div style={{ width: '50%' }}>
-            { geo ? <Chloropleth baseId={'geopolitics'} geoData={geo} /> : "fsdakfasfdsafdsak" }
+            { geo ? <Chloropleth baseId={'geopolitics'} geoData={geo} /> : null }
             <GeopoliticMetadata />
         </div>
     </div>

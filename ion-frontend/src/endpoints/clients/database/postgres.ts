@@ -1,5 +1,5 @@
 import { dataIngestionRequest } from 'services/request';
-import { ENDPOINTS } from 'common/constant/endpoints';
+import { ENDPOINTS } from 'endpoints/endpoints';
 import {
     DeleteTableParams,
     InsertTableParams,

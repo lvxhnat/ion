@@ -13,6 +13,8 @@ import { useDebounce } from 'common/hooks/useDebounce';
 import { useThemeStore } from 'store/theme';
 import { ColorsEnum } from 'common/theme';
 import { typographyTheme } from 'common/theme/typography';
+import { getTickerSearchAutocomplete } from 'endpoints/clients/autocomplete';
+import { Typography } from '@mui/material';
 
 interface SearchProps {
     placeholder?: string;
@@ -36,7 +38,6 @@ const TableRowItemWrapper = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'left',
     justifyContent: 'left',
-    fontSize: typographyTheme.subtitle2.fontSize,
 }));
 
 type TableRowInputProps = {
@@ -71,19 +72,21 @@ const TickerSearchInput = styled('input')(({ theme }) => ({
 }));
 
 export function TickerSearch(props: { selectedTicker?: string }) {
-    const ref = React.useRef<HTMLInputElement>(null);
     const { mode } = useThemeStore();
     const [showMenu, setShowMenu] = React.useState<boolean>(false);
+    const [options, setOptions] = React.useState([]);
+    const [query, setQuery] = React.useState<string>('');
+
+    const debounceSearchQuery = useDebounce(query, 500);
+    React.useEffect(() => {
+        if (debounceSearchQuery) {
+            getTickerSearchAutocomplete(query).then((res) => {
+                setOptions(res.data);
+            })
+        }
+    }, [debounceSearchQuery]);
 
     const primaryColor: string = mode === 'dark' ? ColorsEnum.black : ColorsEnum.white;
-
-    const closeOpenMenu = (e: any) => {
-        if (ref.current && showMenu && !ref.current.contains(e.target)) {
-            setShowMenu(false);
-        }
-    };
-
-    document.addEventListener('mousedown', closeOpenMenu);
 
     return (
         <div style={{ width: '100%', maxWidth: '450px' }}>
@@ -98,14 +101,19 @@ export function TickerSearch(props: { selectedTicker?: string }) {
             >
                 <TickerSearchInput
                     type="text"
+                    onChange={(event: any) => {
+                        setShowMenu(true);
+                        setQuery(event.target.value);
+                    }}
                     placeholder={props.selectedTicker ?? 'Enter Symbol'}
                 />
-                <SelectArrowWrapper onClick={() => setShowMenu(!showMenu)}>
+                <SelectArrowWrapper onClick={() => {
+                    setShowMenu(!showMenu)
+                }}>
                     <ArrowDropDownIcon fontSize="small" />
                 </SelectArrowWrapper>
             </div>
             <div
-                ref={ref}
                 style={{
                     display: showMenu ? 'block' : 'none',
                     backgroundColor: ColorsEnum.darkGrey,
@@ -117,20 +125,30 @@ export function TickerSearch(props: { selectedTicker?: string }) {
             >
                 <TableRowWrapper overtColors={false} disableHover={true}>
                     <TableRowItemWrapper style={{ width: '15%', fontWeight: 'bold' }}>
-                        Symbol
+                        <Typography variant="subtitle2">
+                            Symbol
+                        </Typography>
                     </TableRowItemWrapper>
                     <TableRowItemWrapper style={{ width: '85%', fontWeight: 'bold' }}>
-                        Description
+                        <Typography variant="subtitle2">
+                            Description
+                        </Typography>
                     </TableRowItemWrapper>
                 </TableRowWrapper>
-                {[...Array(8).keys()].map((_, index: number) => (
+                {options.map((entry: any, index: number) => (
                     <TableRowWrapper
                         overtColors={index % 2 === 0}
                         key={`tickerSearch_TableRowWrapper_${index}`}
                     >
-                        <TableRowItemWrapper style={{ width: '15%' }}>/ETF</TableRowItemWrapper>
+                        <TableRowItemWrapper style={{ width: '15%' }}>
+                            <Typography variant="subtitle2">
+                                {entry.symbol}
+                            </Typography>
+                        </TableRowItemWrapper>
                         <TableRowItemWrapper style={{ width: '85%' }}>
-                            This is an ETF that focuses.
+                            <Typography variant="subtitle2" noWrap>
+                                {entry.name.toUpperCase()}
+                            </Typography>
                         </TableRowItemWrapper>
                     </TableRowWrapper>
                 ))}

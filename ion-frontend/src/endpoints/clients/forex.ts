@@ -1,5 +1,5 @@
 import { dataIngestionRequest } from 'services/request';
-import { ENDPOINTS } from 'common/constant/endpoints';
+import { ENDPOINTS } from 'endpoints/endpoints';
 import { OandaFXSocketConnection } from 'endpoints/clients/oanda';
 import { ForexHistoricalDTO } from 'endpoints/schema/tickers';
 

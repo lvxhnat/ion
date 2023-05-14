@@ -12,7 +12,7 @@ import TableContainer from '@mui/material/TableContainer';
 import { ColorsEnum } from 'common/theme';
 import WidgetContainer from 'components/WidgetContainer';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
-import { TEST_ENDPOINTS } from 'common/constant/endpoints';
+import { TEST_ENDPOINTS } from 'endpoints/endpoints';
 import { dataIngestionRequest } from 'services/request';
 import { ROUTES } from 'common/constant';
 

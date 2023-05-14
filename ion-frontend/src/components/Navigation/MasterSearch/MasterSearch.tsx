@@ -7,7 +7,7 @@ import TableBody from '@mui/material/TableBody';
 
 import { useDebounce } from 'common/hooks/useDebounce';
 import { dataIngestionRequest } from 'services/request';
-import { ENDPOINTS } from 'common/constant/endpoints';
+import { ENDPOINTS } from 'endpoints/endpoints';
 import { FunctionSuggestion, SearchSuggestions } from './type';
 import { ColorsEnum } from 'common/theme';
 import { useNavigate } from 'react-router-dom';
