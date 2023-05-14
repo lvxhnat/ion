@@ -5,12 +5,12 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 import Navigation from 'components/Navigation';
 
-import { TreasuryTableWidget } from 'functions/treasurytable';
-import { ForexTableWidget } from 'functions/forextable';
-import { InternationalClockWidget } from 'functions/internationalclock';
-import { HealthCheckWidget } from 'functions/healthchecks';
-import { WatchlistWidget } from 'functions/watchlist';
-import { LivePlayerWidget } from 'functions/liveplayer/widget';
+import { TreasuryTableWidget } from './treasurytable';
+import { ForexTableWidget } from './forextable';
+import { InternationalClockWidget } from './internationalclock';
+import { WatchlistWidget } from './watchlist';
+import { LivePlayerWidget } from './liveplayer';
+import { HealthCheckWidget } from 'pages/landing/healthchecks';
 
 export default function Landing() {
     console.log(

@@ -8,11 +8,11 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 
 import { ColorsEnum } from 'common/theme';
-import { StyledTableRow } from '../../components/Tables/BaseTable/StyledTableRow';
+import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
 import {
     StyledTableCell,
     StyledChartCell,
-} from '../../components/Tables/BaseTable/StyledTableCell';
+} from 'components/Tables/BaseTable/StyledTableCell';
 import { queryTable } from 'endpoints/clients/database/postgres';
 import BaseLineChart from 'components/Charting/BaseChart';
 

@@ -1,6 +1,6 @@
 import BaseSocket from 'common/sockets/BaseSocket';
 import { OandaPriceStreamObjectTypes } from 'common/types/clients/oanda';
-import { ForexStreamType } from '../../functions/forextable/type';
+import { ForexStreamType } from 'pages/landing/forextable/type';
 
 function unpackOandaFXStream(oandaStreamObject: string): ForexStreamType | null {
     const priceStream: OandaPriceStreamObjectTypes = JSON.parse(oandaStreamObject);

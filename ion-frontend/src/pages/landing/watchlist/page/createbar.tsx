@@ -4,7 +4,7 @@ import * as S from './style';
 import IconButton from '@mui/material/IconButton';
 import { ColorsEnum } from 'common/theme';
 import { useThemeStore } from 'store/theme';
-import { useWatchlistStore } from 'store/prices/watchlist';
+import { useWatchlistStore } from 'store/chartview/chartview';
 
 const GridSelectItem = (props: {
     padding: number;

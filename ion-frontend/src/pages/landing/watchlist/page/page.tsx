@@ -3,7 +3,7 @@ import * as React from 'react';
 import { CssBaseline, Grid } from '@mui/material';
 import Navigation from 'components/Navigation';
 import Createbar from './createbar';
-import { useWatchlistStore } from 'store/prices/watchlist';
+import { useWatchlistStore } from 'store/chartview/chartview';
 import Chartview from 'components/Analysis/Chartview';
 import { ASSET_TYPES } from 'common/constant';
 

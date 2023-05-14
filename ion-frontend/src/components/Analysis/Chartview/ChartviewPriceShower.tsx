@@ -7,7 +7,7 @@ import {
     TickerMetricStoreFormat,
     useLiveMovesStore,
     useMetricStore,
-} from 'store/prices/watchlist';
+} from 'store/chartview/chartview';
 import { ColorsEnum } from 'common/theme';
 import { formatDate } from 'common/constant/dates';
 import { technicalIndicators } from './calculations/metrics';

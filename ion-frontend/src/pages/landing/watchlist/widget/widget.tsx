@@ -54,7 +54,7 @@ function WidgetTickerRow(props: { ticker: string }) {
         <StyledTableRow
             key={`tickerTableBody_${data.ticker}`}
             onClick={() =>
-                navigate(`${ROUTES.PUBLIC.ANALYSIS}/${ASSET_TYPES.EQUITY}/${data.ticker}`)
+                navigate(`${ROUTES.PUBLIC.SECURITIES}/${ASSET_TYPES.EQUITY}/${data.ticker}`)
             }
         >
             <StyledTableCell>{data.ticker}</StyledTableCell>
@@ -80,10 +80,7 @@ export default function Widget() {
     const tickers = ['SPY', 'GPS', 'BABA', 'AAPL', 'TSLA', 'IAU', 'VGLT'];
 
     return (
-        <WidgetContainer
-            title="ticker_watchlist"
-            fullScreenRedirect={ROUTES.PUBLIC.TICKER_WATCHLIST}
-        >
+        <WidgetContainer title="ticker_watchlist">
             <Table style={{ minWidth: 150 }} aria-label="a dense table" stickyHeader>
                 <TableHead>
                     <TableRow sx={{ backgroundColor: ColorsEnum.coolgray8 }}>

@@ -1,4 +1,4 @@
-import { TechnicalIndicatorsKeys } from 'store/prices/watchlist';
+import { TechnicalIndicatorsKeys } from 'store/chartview/chartview';
 import { calcSimpleMovingAverage, calcExponentialMovingAverage } from './momentum/movingAverages';
 import { ExponentialMovingAverageProps } from './schemas/props/schema';
 import { calcBollingerBand } from './momentum/bollingerBands';
