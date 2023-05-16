@@ -2,16 +2,26 @@ import { ColorsEnum } from 'common/theme';
 
 import { styled } from '@mui/system';
 
+export const PortfolioSidePanelToolbarWrapper = styled('div')(({ theme }) => ({
+    backgroundColor: ColorsEnum.warmgray1, 
+    gap: 5,
+    padding: 5, 
+    display: 'flex',
+    alignItems: 'center',
+}))
 export const OptionsWrapper = styled('div')(({ theme }) => ({
     display: 'flex',
-    backgroundColor: ColorsEnum.darkGrey,
-    border: `1px solid ${ColorsEnum.warmgray1}`,
+    backgroundColor: ColorsEnum.warmgray1,
+    padding: 5,
     gap: 5,
 }));
 
 export const ButtonWrapper = styled('div')(({ theme }) => ({
+    gap: 3,
     display: 'flex',
     alignItems: 'center',
+    fontColor: ColorsEnum.white,
+    backgroundColor: ColorsEnum.warmgray2,
     padding: `${theme.spacing(0.5)} ${theme.spacing(1)}`,
     '&:hover': {
         backgroundColor: ColorsEnum.darkGrey,

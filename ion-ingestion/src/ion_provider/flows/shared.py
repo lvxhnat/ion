@@ -5,7 +5,7 @@ from ion_clients.services.postgres.actions import bulk_upsert, bulk_insert
 from ion_clients.services.postgres.postgres_service import (
     table_exists,
     drop_table,
-    get_session,
+    SQLDatabase,
 )
 from ion_clients.services.postgres.schemas.params import WriteObjectType
 
@@ -16,7 +16,8 @@ def refresh_table(
     write_objects: WriteObjectType,
     coerce_refresh: bool = False,
 ):
-    with get_session() as session:
+    postgres = SQLDatabase()
+    with postgres.session_scope() as session:
         params = {
             "session": session,
             "table_schema": table_schema,

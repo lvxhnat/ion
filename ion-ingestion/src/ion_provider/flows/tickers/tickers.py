@@ -29,7 +29,6 @@ def asset_ingestion_flow():
     asset_results: List[Dict[str, str]] = (
         ingest_asset_metadata.submit()
         .result()
-        .assign(asset_class="stock")
         .assign(last_updated=datetime.today())
         .to_dict("records")
     )

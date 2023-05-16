@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import or_
+from sqlalchemy import or_, func
 
 from fastapi import APIRouter, Depends
 
@@ -17,13 +17,13 @@ from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import
 
 router = APIRouter(
     prefix="/autocomplete",
-    tags=["database", "autocomplete"],
+    tags=["autocomplete"],
 )
 
 query_tables = {AssetMetaData.__tablename__: AssetMetaData}
 
 
-@router.get("/health", tags=["health"])
+@router.get("/health")
 def health_check():
     return {"status": "healthy"}
 
@@ -33,11 +33,17 @@ def query_postgres_table(
     params: AssetSearchParams, session: Session = Depends(get_session)
 ):
     if len(params.query) < 4:
-        query = query_tables[params.table].symbol.like(f"%{params.query}%")
+        query = func.lower(query_tables[params.table].symbol).like(
+            f"%{params.query}%"
+        )
     else:
         query = or_(
-            query_tables[params.table].symbol.like(f"%{params.query}%"),
-            query_tables[params.table].name.like(f"%{params.query}%"),
+            func.lower(query_tables[params.table].symbol).like(
+                f"%{params.query}%"
+            ),
+            func.lower(query_tables[params.table].name).like(
+                f"%{params.query}%"
+            ),
         )
     return order_search(
         session,
