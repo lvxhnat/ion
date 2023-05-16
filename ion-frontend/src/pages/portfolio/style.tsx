@@ -40,10 +40,12 @@ export const ButtonWrapper = styled('div')<ButtonWrapperProp>(({ theme, disabled
     backgroundColor: ColorsEnum.warmgray2,
     opacity: !disabled ? 1 : 0.4,
     padding: `${theme.spacing(0.5)} ${theme.spacing(1)}`,
-    '&:hover': !disabled ? {
-        backgroundColor: ColorsEnum.warmgray2,
-        cursor: 'pointer',
-    } : undefined,
+    '&:hover': !disabled
+        ? {
+              backgroundColor: ColorsEnum.warmgray2,
+              cursor: 'pointer',
+          }
+        : undefined,
 }));
 
 export const LabOpenButtonWrapper = styled('div')(({ theme }) => ({

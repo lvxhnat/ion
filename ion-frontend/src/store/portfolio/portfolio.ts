@@ -1,7 +1,7 @@
 import { PortfolioTableEntry } from 'endpoints/schema/database/postgres/portfolio/props';
 import { create } from 'zustand';
 
-interface PortfolioProps extends PortfolioTableEntry { }
+interface PortfolioProps extends PortfolioTableEntry {}
 
 type PortfoliosProps = PortfolioProps[];
 
@@ -30,9 +30,9 @@ export const usePortfolioStore = create<PortfolioStoreTypes>(set => ({
     deletePortfolio: (uuid: string) => {
         return set((state: PortfolioStoreTypes) => {
             return {
-                portfolios: state.portfolios.filter((entry) => entry.uuid !== uuid)
-            }
-        })
+                portfolios: state.portfolios.filter(entry => entry.uuid !== uuid),
+            };
+        });
     },
     setPortfolios: (props: PortfoliosProps) => set({ portfolios: props }), // Refresh entire portfolio store
 }));

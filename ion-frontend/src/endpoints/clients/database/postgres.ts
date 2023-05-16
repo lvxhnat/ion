@@ -31,7 +31,7 @@ export const insertTable = (props: InsertTableParams) => {
 export const deleteTable = (props: DeleteTableParams) => {
     return dataIngestionRequest.delete(
         `${ENDPOINTS.PRIVATE.BASE_POSTGRES_ENDPOINT}${props.tableName}`,
-        { params: { id: props.id, } } // params not data
+        { params: { id: props.id } } // params not data
     );
 };
 

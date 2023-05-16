@@ -137,11 +137,13 @@ const createPortfolioTableEntry = () => ({
     currency: '',
     last_updated: new Date(),
     creation_date: new Date(),
-})
+});
 
 export default function PortfolioPopup(props: { show: boolean; setShow: (show: boolean) => void }) {
     const [showCancel, setShowCancel] = React.useState<boolean>(false);
-    const [portfolioConfig, setPortfolioConfig] = React.useState<PortfolioTableEntry>(createPortfolioTableEntry());
+    const [portfolioConfig, setPortfolioConfig] = React.useState<PortfolioTableEntry>(
+        createPortfolioTableEntry()
+    );
     const [addPortfolio, setPortfolios] = usePortfolioStore(state => [
         state.addPortfolio,
         state.setPortfolios,
@@ -167,7 +169,7 @@ export default function PortfolioPopup(props: { show: boolean; setShow: (show: b
             entry: portfolioConfig,
         });
         props.setShow(false);
-        setPortfolioConfig(createPortfolioTableEntry())
+        setPortfolioConfig(createPortfolioTableEntry());
     };
     return (
         <div

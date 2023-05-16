@@ -16,21 +16,19 @@ import { PostgresTablesEnum } from 'endpoints/schema/database/postgres/props';
 
 export default function Portfolio() {
     const [show, setShow] = React.useState<boolean>(false);
-    const [portfolioSelected, clearSelectedPortfolio, deletePortfolio] = usePortfolioStore(state => [
-        state.selectedPortfolio, 
-        state.clearSelectedPortfolio,
-        state.deletePortfolio
-    ])
+    const [portfolioSelected, clearSelectedPortfolio, deletePortfolio] = usePortfolioStore(
+        state => [state.selectedPortfolio, state.clearSelectedPortfolio, state.deletePortfolio]
+    );
 
     const handleRemovePortfolio = () => {
-        if ("uuid" in portfolioSelected) {
+        if ('uuid' in portfolioSelected) {
             deleteTable({
                 id: portfolioSelected.uuid,
                 tableName: PostgresTablesEnum.PORTFOLIO,
-            })
-            clearSelectedPortfolio()
+            });
+            clearSelectedPortfolio();
         }
-    }
+    };
 
     return (
         <>
@@ -43,12 +41,15 @@ export default function Portfolio() {
                             <MdAdd />
                             <Typography variant="subtitle2"> Add Portfolio </Typography>
                         </S.ButtonWrapper>
-                        <S.ButtonWrapper disabled={Object.keys(portfolioSelected).length === 0} onClick={() => {
-                            if ('uuid' in portfolioSelected) {
-                                handleRemovePortfolio()
-                                deletePortfolio(portfolioSelected.uuid);
-                            }
-                        }}>
+                        <S.ButtonWrapper
+                            disabled={Object.keys(portfolioSelected).length === 0}
+                            onClick={() => {
+                                if ('uuid' in portfolioSelected) {
+                                    handleRemovePortfolio();
+                                    deletePortfolio(portfolioSelected.uuid);
+                                }
+                            }}
+                        >
                             <MdRemove />
                             <Typography variant="subtitle2"> Remove Portfolio </Typography>
                         </S.ButtonWrapper>

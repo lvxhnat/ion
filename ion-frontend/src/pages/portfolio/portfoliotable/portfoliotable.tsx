@@ -17,10 +17,9 @@ import { ColorsEnum } from 'common/theme';
 
 export default function PortfolioTable() {
     const portfolios: PortfolioTableEntry[] = usePortfolioStore(state => state.portfolios);
-    const [portfolioSelected, setPortfolioSelected] = usePortfolioStore(state => [
-        state.selectedPortfolio,
-        state.setSelectedPortfolio,
-    ]);
+    const [portfolioSelected, setPortfolioSelected, clearSelectedPortfolio] = usePortfolioStore(
+        state => [state.selectedPortfolio, state.setSelectedPortfolio, state.clearSelectedPortfolio]
+    );
 
     const tableHeaders: {
         name: keyof PortfolioTableEntry;
@@ -74,47 +73,52 @@ export default function PortfolioTable() {
                         if (index % 2) rowColor = ColorsEnum.darkGrey;
                         if ('uuid' in portfolioSelected && portfolioSelected.uuid === entry.uuid) {
                             rowColor = ColorsEnum.warmgray1;
-                        } 
-                    return (
-                        <StyledTableRow 
-                            style={{ backgroundColor: rowColor }}
-                            key={`${entry.name}_row`}
-                            onClick={() => setPortfolioSelected(entry)}
-                        >
-                            {tableHeaders.map(columnEntry => (
-                                <StyledTableCell key={`${columnEntry.name}_label`}>
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            width: '100%',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            gap: 5,
-                                        }}
-                                    >
-                                        {columnEntry.name === 'currency' ? (
-                                            <img
-                                                width="20"
-                                                src={`https://flagcdn.com/${
-                                                    CurrencyToCountry[
-                                                        entry[
-                                                            columnEntry.name
-                                                        ] as keyof typeof CurrencyToCountry
-                                                    ]
-                                                }.svg`}
-                                                alt={entry[columnEntry.name]}
-                                            />
-                                        ) : undefined}
-                                        <Typography variant="subtitle2" noWrap>
-                                            {columnEntry.type === 'date'
-                                                ? formatDate(entry[columnEntry.name] as Date)
-                                                : (entry[columnEntry.name] as string)}
-                                        </Typography>
-                                    </div>
-                                </StyledTableCell>
-                            ))}
-                        </StyledTableRow>
-                    )})}
+                        }
+                        return (
+                            <StyledTableRow
+                                style={{ backgroundColor: rowColor }}
+                                key={`${entry.name}_row`}
+                                onClick={() =>
+                                    'uuid' in portfolioSelected
+                                        ? clearSelectedPortfolio()
+                                        : setPortfolioSelected(entry)
+                                }
+                            >
+                                {tableHeaders.map(columnEntry => (
+                                    <StyledTableCell key={`${columnEntry.name}_label`}>
+                                        <div
+                                            style={{
+                                                display: 'flex',
+                                                width: '100%',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                gap: 5,
+                                            }}
+                                        >
+                                            {columnEntry.name === 'currency' ? (
+                                                <img
+                                                    width="20"
+                                                    src={`https://flagcdn.com/${
+                                                        CurrencyToCountry[
+                                                            entry[
+                                                                columnEntry.name
+                                                            ] as keyof typeof CurrencyToCountry
+                                                        ]
+                                                    }.svg`}
+                                                    alt={entry[columnEntry.name]}
+                                                />
+                                            ) : undefined}
+                                            <Typography variant="subtitle2" noWrap>
+                                                {columnEntry.type === 'date'
+                                                    ? formatDate(entry[columnEntry.name] as Date)
+                                                    : (entry[columnEntry.name] as string)}
+                                            </Typography>
+                                        </div>
+                                    </StyledTableCell>
+                                ))}
+                            </StyledTableRow>
+                        );
+                    })}
                 </TableBody>
             </Table>
         </TableContainer>

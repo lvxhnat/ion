@@ -10,7 +10,7 @@ export default function NoDataSkeleton(props: { text: string }) {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                height: '80%',
+                height: '100%',
                 opacity: 0.5,
             }}
         >

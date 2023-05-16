@@ -39,8 +39,8 @@ export function TickerSearch(props: {
     const [showMenu, setShowMenu] = React.useState<boolean>(false);
     const [options, setOptions] = React.useState([]);
     const [query, setQuery] = React.useState<string>('');
-    
-    const width: string = "450px"
+
+    const width: string = '450px';
 
     const debounceSearchQuery = useDebounce(query, 500);
     React.useEffect(() => {
