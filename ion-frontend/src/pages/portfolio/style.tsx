@@ -28,17 +28,22 @@ export const OptionsWrapper = styled('div')(({ theme }) => ({
     gap: 5,
 }));
 
-export const ButtonWrapper = styled('div')(({ theme }) => ({
+interface ButtonWrapperProp {
+    disabled?: boolean;
+}
+
+export const ButtonWrapper = styled('div')<ButtonWrapperProp>(({ theme, disabled = false }) => ({
     gap: 3,
     display: 'flex',
     alignItems: 'center',
     fontColor: ColorsEnum.white,
     backgroundColor: ColorsEnum.warmgray2,
+    opacity: !disabled ? 1 : 0.4,
     padding: `${theme.spacing(0.5)} ${theme.spacing(1)}`,
-    '&:hover': {
-        backgroundColor: ColorsEnum.darkGrey,
+    '&:hover': !disabled ? {
+        backgroundColor: ColorsEnum.warmgray2,
         cursor: 'pointer',
-    },
+    } : undefined,
 }));
 
 export const LabOpenButtonWrapper = styled('div')(({ theme }) => ({

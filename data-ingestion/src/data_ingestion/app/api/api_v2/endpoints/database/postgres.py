@@ -51,8 +51,8 @@ def get_postgres_table(
 
 @router.delete("/{table_name}")
 def delete_postgres_table_entry(
-    id: int,
     table_name: str,
+    id: str,
     session: Session = Depends(get_session),
 ):
     entry = session.query(query_tables[table_name]).get(id)

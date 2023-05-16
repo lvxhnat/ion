@@ -4,7 +4,7 @@ export const ENDPOINTS = {
     },
     PRIVATE: {
         ETF_INFO: 'tickers/etf/info',
-        FOREX_STREAMING_ENDPOINT: 'tickers/oanda/ws',
+        FOREX_STREAMING_ENDPOINT: 'oanda/ws',
         FOREX_HISTORICAL_ENDPOINT: 'tickers/forex/historical',
         EQUITY_HISTORICAL_ENDPOINT: 'tickers/equity/historical',
         CURRENT_WEATHER_ENDPOINT: 'weather/weather/current',

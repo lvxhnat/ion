@@ -13,6 +13,7 @@ import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
 import { CurrencyToCountry } from 'common/constant/countries';
 import { PortfolioTableEntry } from 'endpoints/schema/database/postgres/portfolio/props';
 import { formatDate } from 'common/constant/dates';
+import { ColorsEnum } from 'common/theme';
 
 export default function PortfolioTable() {
     const portfolios: PortfolioTableEntry[] = usePortfolioStore(state => state.portfolios);
@@ -68,8 +69,15 @@ export default function PortfolioTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {portfolios.map((entry: PortfolioTableEntry) => (
-                        <StyledTableRow
+                    {portfolios.map((entry: PortfolioTableEntry, index: number) => {
+                        let rowColor = 'transparent';
+                        if (index % 2) rowColor = ColorsEnum.darkGrey;
+                        if ('uuid' in portfolioSelected && portfolioSelected.uuid === entry.uuid) {
+                            rowColor = ColorsEnum.warmgray1;
+                        } 
+                    return (
+                        <StyledTableRow 
+                            style={{ backgroundColor: rowColor }}
                             key={`${entry.name}_row`}
                             onClick={() => setPortfolioSelected(entry)}
                         >
@@ -106,7 +114,7 @@ export default function PortfolioTable() {
                                 </StyledTableCell>
                             ))}
                         </StyledTableRow>
-                    ))}
+                    )})}
                 </TableBody>
             </Table>
         </TableContainer>

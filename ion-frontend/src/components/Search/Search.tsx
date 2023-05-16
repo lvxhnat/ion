@@ -39,6 +39,8 @@ export function TickerSearch(props: {
     const [showMenu, setShowMenu] = React.useState<boolean>(false);
     const [options, setOptions] = React.useState([]);
     const [query, setQuery] = React.useState<string>('');
+    
+    const width: string = "450px"
 
     const debounceSearchQuery = useDebounce(query, 500);
     React.useEffect(() => {
@@ -52,7 +54,7 @@ export function TickerSearch(props: {
     const primaryColor: string = mode === 'dark' ? ColorsEnum.black : ColorsEnum.white;
 
     return (
-        <div style={{ width: '100%', maxWidth: '450px' }}>
+        <div style={{ width: width }}>
             <div
                 style={{
                     display: 'flex',
@@ -60,6 +62,7 @@ export function TickerSearch(props: {
                     justifyContent: 'center',
                     border: '1px solid ' + primaryColor,
                     borderRadius: '2px',
+                    width: width,
                 }}
             >
                 <S.TickerSearchInput
@@ -82,10 +85,10 @@ export function TickerSearch(props: {
                 style={{
                     display: showMenu ? 'block' : 'none',
                     backgroundColor: ColorsEnum.darkGrey,
-                    width: '450px',
                     padding: 5,
-                    position: 'absolute',
                     zIndex: 10,
+                    position: 'absolute',
+                    width: width,
                 }}
             >
                 <S.TableRowWrapper overtColors={false} disableHover={true}>

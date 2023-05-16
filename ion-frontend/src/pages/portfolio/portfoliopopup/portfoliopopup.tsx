@@ -130,18 +130,20 @@ function PortfolioPopupTextRow(props: {
     );
 }
 
+const createPortfolioTableEntry = () => ({
+    uuid: '',
+    name: '',
+    description: '',
+    currency: '',
+    last_updated: new Date(),
+    creation_date: new Date(),
+})
+
 export default function PortfolioPopup(props: { show: boolean; setShow: (show: boolean) => void }) {
     const [showCancel, setShowCancel] = React.useState<boolean>(false);
-    const [portfolioConfig, setPortfolioConfig] = React.useState<PortfolioTableEntry>({
-        uuid: '',
-        name: '',
-        description: '',
-        currency: '',
-        last_updated: new Date(),
-        creation_date: new Date(),
-    });
-    const [setPortfolio, setPortfolios] = usePortfolioStore(state => [
-        state.setPortfolio,
+    const [portfolioConfig, setPortfolioConfig] = React.useState<PortfolioTableEntry>(createPortfolioTableEntry());
+    const [addPortfolio, setPortfolios] = usePortfolioStore(state => [
+        state.addPortfolio,
         state.setPortfolios,
     ]);
 
@@ -159,12 +161,13 @@ export default function PortfolioPopup(props: { show: boolean; setShow: (show: b
             portfolioConfig.currency === '' ? defaultCurrency : portfolioConfig.currency;
         portfolioConfig.uuid = uuid.v4();
         portfolioConfig.creation_date = new Date();
-        setPortfolio(portfolioConfig);
+        addPortfolio(portfolioConfig);
         insertTable({
             tableName: PostgresTablesEnum.PORTFOLIO,
             entry: portfolioConfig,
         });
         props.setShow(false);
+        setPortfolioConfig(createPortfolioTableEntry())
     };
     return (
         <div

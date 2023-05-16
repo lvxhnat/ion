@@ -4,15 +4,34 @@ import * as S from './style';
 import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 
-import { MdAdd } from 'react-icons/md';
+import { MdAdd, MdRemove } from 'react-icons/md';
 
 import Navigation from 'components/Navigation';
 import CreatePortfolioPopup from './portfoliopopup';
 import PortfolioTable from './portfoliotable/portfoliotable';
 import PortfolioSidePanel from './portfoliosidepanel/portfoliosidepanel';
+import { usePortfolioStore } from 'store/portfolio/portfolio';
+import { deleteTable } from 'endpoints/clients/database/postgres';
+import { PostgresTablesEnum } from 'endpoints/schema/database/postgres/props';
 
 export default function Portfolio() {
     const [show, setShow] = React.useState<boolean>(false);
+    const [portfolioSelected, clearSelectedPortfolio, deletePortfolio] = usePortfolioStore(state => [
+        state.selectedPortfolio, 
+        state.clearSelectedPortfolio,
+        state.deletePortfolio
+    ])
+
+    const handleRemovePortfolio = () => {
+        if ("uuid" in portfolioSelected) {
+            deleteTable({
+                id: portfolioSelected.uuid,
+                tableName: PostgresTablesEnum.PORTFOLIO,
+            })
+            clearSelectedPortfolio()
+        }
+    }
+
     return (
         <>
             <CssBaseline />
@@ -23,6 +42,15 @@ export default function Portfolio() {
                         <S.ButtonWrapper onClick={() => setShow(true)}>
                             <MdAdd />
                             <Typography variant="subtitle2"> Add Portfolio </Typography>
+                        </S.ButtonWrapper>
+                        <S.ButtonWrapper disabled={Object.keys(portfolioSelected).length === 0} onClick={() => {
+                            if ('uuid' in portfolioSelected) {
+                                handleRemovePortfolio()
+                                deletePortfolio(portfolioSelected.uuid);
+                            }
+                        }}>
+                            <MdRemove />
+                            <Typography variant="subtitle2"> Remove Portfolio </Typography>
                         </S.ButtonWrapper>
                     </S.OptionsWrapper>
                     <PortfolioTable />

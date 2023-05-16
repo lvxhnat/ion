@@ -1,28 +1,38 @@
 import { PortfolioTableEntry } from 'endpoints/schema/database/postgres/portfolio/props';
 import { create } from 'zustand';
 
-interface PortfolioProps extends PortfolioTableEntry {}
+interface PortfolioProps extends PortfolioTableEntry { }
 
 type PortfoliosProps = PortfolioProps[];
 
 interface PortfolioStoreTypes {
     portfolios: PortfolioTableEntry[];
     selectedPortfolio: PortfolioTableEntry | {};
-    setPortfolio: (config: PortfolioProps) => void;
+    addPortfolio: (props: PortfolioProps) => void;
+    deletePortfolio: (uuid: string) => void;
     setPortfolios: (config: PortfoliosProps) => void;
     setSelectedPortfolio: (config: PortfolioProps) => void;
+    clearSelectedPortfolio: () => void;
 }
 
 export const usePortfolioStore = create<PortfolioStoreTypes>(set => ({
-    portfolios: [],
     selectedPortfolio: {},
-    setPortfolio: (props: PortfolioProps) => {
+    setSelectedPortfolio: (props: PortfolioProps | {}) => set({ selectedPortfolio: props }),
+    clearSelectedPortfolio: () => set({ selectedPortfolio: {} }),
+    portfolios: [],
+    addPortfolio: (props: PortfolioProps) => {
         return set((state: PortfolioStoreTypes) => {
             return {
                 portfolios: [...state.portfolios, props],
             };
         });
     },
-    setPortfolios: (props: PortfoliosProps) => set({ portfolios: props }),
-    setSelectedPortfolio: (props: PortfolioProps) => set({ selectedPortfolio: props }),
+    deletePortfolio: (uuid: string) => {
+        return set((state: PortfolioStoreTypes) => {
+            return {
+                portfolios: state.portfolios.filter((entry) => entry.uuid !== uuid)
+            }
+        })
+    },
+    setPortfolios: (props: PortfoliosProps) => set({ portfolios: props }), // Refresh entire portfolio store
 }));
