@@ -12,12 +12,12 @@ export const ClassTagWrapper = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 5, 
+    borderRadius: 5,
     padding: `${0} ${theme.spacing(1)}`,
     height: 15,
     fontSize: typographyTheme.subtitle2.fontSize,
     backgroundColor: ColorsEnum.royalred,
-}))
+}));
 
 export const TableRowWrapper = styled('div')<TableRowInputProps>(
     ({ theme, overtColors, disableHover }) => ({
@@ -61,7 +61,6 @@ export const TableRowItemWrapper = styled('div')(({ theme }) => ({
     alignItems: 'left',
     justifyContent: 'left',
 }));
-
 
 export const SearchWrapper = styled('div')(({ theme }) => ({
     position: 'relative',

@@ -4,7 +4,7 @@ import * as S from './style';
 import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 
-import { MdAdd } from 'react-icons/md'
+import { MdAdd } from 'react-icons/md';
 
 import Navigation from 'components/Navigation';
 import CreatePortfolioPopup from './portfoliopopup';

@@ -3,12 +3,12 @@ import { ColorsEnum } from 'common/theme';
 import { styled } from '@mui/system';
 
 export const PortfolioSidePanelToolbarWrapper = styled('div')(({ theme }) => ({
-    backgroundColor: ColorsEnum.warmgray1, 
+    backgroundColor: ColorsEnum.warmgray1,
     gap: 5,
-    padding: 5, 
+    padding: 5,
     display: 'flex',
     alignItems: 'center',
-}))
+}));
 export const OptionsWrapper = styled('div')(({ theme }) => ({
     display: 'flex',
     backgroundColor: ColorsEnum.warmgray1,

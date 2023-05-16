@@ -22,18 +22,18 @@ interface SearchProps {
 
 const assetMapping = {
     stock: {
-        name: "STK",
+        name: 'STK',
         color: ColorsEnum.royalred,
     },
     etf: {
-        name: "ETF",
+        name: 'ETF',
         color: ColorsEnum.geekBlue,
-    }
-}
+    },
+};
 
-export function TickerSearch(props: { 
-    selectedTicker?: string 
-    setSelectedOption?: (ticker: string, asset_type: string) => void 
+export function TickerSearch(props: {
+    selectedTicker?: string;
+    setSelectedOption?: (ticker: string, asset_type: string) => void;
 }) {
     const { mode } = useThemeStore();
     const [showMenu, setShowMenu] = React.useState<boolean>(false);
@@ -95,33 +95,48 @@ export function TickerSearch(props: {
                     <S.TableRowItemWrapper style={{ width: '75%', fontWeight: 'bold' }}>
                         <Typography variant="subtitle2">Description</Typography>
                     </S.TableRowItemWrapper>
-                    <S.TableRowItemWrapper style={{ width: '10%', fontWeight: 'bold', justifyContent: 'center' }}>
+                    <S.TableRowItemWrapper
+                        style={{ width: '10%', fontWeight: 'bold', justifyContent: 'center' }}
+                    >
                         <Typography variant="subtitle2">Class</Typography>
                     </S.TableRowItemWrapper>
                 </S.TableRowWrapper>
                 {options.map((entry: any, index: number) => {
-                    const assetSettings = assetMapping[entry.asset_class.toLowerCase() as keyof typeof assetMapping]
+                    const assetSettings =
+                        assetMapping[entry.asset_class.toLowerCase() as keyof typeof assetMapping];
                     return (
-                    <S.TableRowWrapper
-                        overtColors={index % 2 === 0}
-                        key={`tickerSearch_S.TableRowWrapper_${index}`}
-                        onClick={() => props.setSelectedOption ? props.setSelectedOption(entry.symbol, entry.asset_class) : null} 
-                    >
-                        <S.TableRowItemWrapper style={{ width: '15%' }}>
-                            <Typography variant="subtitle2">{entry.symbol}</Typography>
-                        </S.TableRowItemWrapper>
-                        <S.TableRowItemWrapper style={{ width: '75%' }}>
-                            <Typography variant="subtitle2" noWrap>
-                                {entry.name.toUpperCase()}
-                            </Typography>
-                        </S.TableRowItemWrapper>
-                        <S.TableRowItemWrapper style={{ width: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                            <S.ClassTagWrapper style={{ backgroundColor: assetSettings.color }}>
-                                {assetSettings.name}
-                            </S.ClassTagWrapper>
-                        </S.TableRowItemWrapper>
-                    </S.TableRowWrapper>
-                )})}
+                        <S.TableRowWrapper
+                            overtColors={index % 2 === 0}
+                            key={`tickerSearch_S.TableRowWrapper_${index}`}
+                            onClick={() =>
+                                props.setSelectedOption
+                                    ? props.setSelectedOption(entry.symbol, entry.asset_class)
+                                    : null
+                            }
+                        >
+                            <S.TableRowItemWrapper style={{ width: '15%' }}>
+                                <Typography variant="subtitle2">{entry.symbol}</Typography>
+                            </S.TableRowItemWrapper>
+                            <S.TableRowItemWrapper style={{ width: '75%' }}>
+                                <Typography variant="subtitle2" noWrap>
+                                    {entry.name.toUpperCase()}
+                                </Typography>
+                            </S.TableRowItemWrapper>
+                            <S.TableRowItemWrapper
+                                style={{
+                                    width: '10%',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <S.ClassTagWrapper style={{ backgroundColor: assetSettings.color }}>
+                                    {assetSettings.name}
+                                </S.ClassTagWrapper>
+                            </S.TableRowItemWrapper>
+                        </S.TableRowWrapper>
+                    );
+                })}
             </div>
         </div>
     );
