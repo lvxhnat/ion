@@ -4,7 +4,6 @@ import * as d3 from 'd3';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import { MdWaterfallChart } from 'react-icons/md';
 
 import { getCandles } from 'endpoints/clients/candles';
 import { EquityHistoricalDTO, ForexHistoricalDTO } from 'endpoints/schema/tickers';
@@ -17,6 +16,7 @@ import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { ASSET_TYPES } from 'common/constant';
 import { getHistoricalForex } from 'endpoints/clients/forex';
 import DataTable from './datatable';
+import NoDataSkeleton from 'components/Skeletons/NoDataSkeleton';
 
 const Item = styled(Box)(({ theme }) => ({
     height: '100%',
@@ -121,24 +121,7 @@ export default function Chartview(props: {
                     </div>
                 </div>
             ) : (
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: '80%',
-                        opacity: 0.5,
-                    }}
-                >
-                    <MdWaterfallChart
-                        style={{ width: 'calc(25px + 0.5vw)', height: 'calc(25px + 0.5vw)' }}
-                    />
-                    <Typography variant="subtitle2" component="div">
-                        {' '}
-                        Enter a symbol{' '}
-                    </Typography>
-                </div>
+                <NoDataSkeleton text="Enter a symbol" />
             )}
         </Item>
     );

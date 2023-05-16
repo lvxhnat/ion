@@ -27,7 +27,7 @@ export default function Portfolio() {
                     </S.OptionsWrapper>
                     <PortfolioTable />
                 </div>
-                <div style={{ width: '60%' }}>
+                <div style={{ width: '60%', minHeight: '50vh' }}>
                     <PortfolioSidePanel />
                 </div>
             </div>

@@ -1,10 +1,12 @@
 import * as React from 'react';
 import * as S from '../style';
+
+import Typography from '@mui/material/Typography';
+
 import { TickerSearch } from 'components/Search/Search';
-import { ColorsEnum } from 'common/theme';
 import { usePortfolioStore } from 'store/portfolio/portfolio';
 import { MdOutlineSsidChart, MdStop } from 'react-icons/md';
-import { Typography } from '@mui/material';
+import NoDataSkeleton from 'components/Skeletons/NoDataSkeleton';
 
 interface SelectedTickerSchema {
     asset_id: string;
@@ -43,8 +45,8 @@ export default function PortfolioSidePanel() {
     const portfolioSelected = usePortfolioStore(state => state.selectedPortfolio);
 
     return (
-        <div>
-            <S.PortfolioSidePanelToolbarWrapper>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <S.PortfolioSidePanelHeader>
                 <TickerSearch
                     setSelectedOption={(ticker: string, asset_type: string) => {
                         setSelectedOption(ticker);
@@ -71,12 +73,17 @@ export default function PortfolioSidePanel() {
                         </Typography>
                     </S.ButtonWrapper>
                 </div>
-            </S.PortfolioSidePanelToolbarWrapper>
-            <div>
-                {selectedTickers.map((entry: SelectedTickerSchema) => {
-                    return <div key={entry.portfolio_id}>{entry.portfolio_id}</div>;
-                })}
-            </div>
+            </S.PortfolioSidePanelHeader>
+            <S.PortfolioSidePanelBody>
+                {selectedTickers.length === 0 ? (
+                    <NoDataSkeleton text="No Tickers Available" />
+                ) : (
+                    selectedTickers.map((entry: SelectedTickerSchema) => {
+                        return <div key={entry.portfolio_id}>{entry.portfolio_id}</div>;
+                    })
+                )}
+            </S.PortfolioSidePanelBody>
+            <S.PortfolioSidePanelFooter> </S.PortfolioSidePanelFooter>
         </div>
     );
 }

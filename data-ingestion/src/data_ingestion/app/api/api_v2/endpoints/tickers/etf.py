@@ -8,7 +8,6 @@ from data_ingestion.app.api.api_v2.postgres.schemas.data.tickers.params import (
 
 
 router = APIRouter(
-    prefix=f"/etf",
     tags=["tickers", "etf"],
 )
 

@@ -16,7 +16,6 @@ from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import
 # Autocomplete can be implemented by postgres, elastic etc, so a generic autocomplete file is created for it
 
 router = APIRouter(
-    prefix="/autocomplete",
     tags=["autocomplete"],
 )
 
