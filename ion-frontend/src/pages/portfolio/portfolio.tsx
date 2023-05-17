@@ -8,27 +8,11 @@ import { MdAdd, MdRemove } from 'react-icons/md';
 
 import Navigation from 'components/Navigation';
 import CreatePortfolioPopup from './portfoliopopup';
-import PortfolioTable from './portfoliotable/portfoliotable';
 import PortfolioSidePanel from './portfoliosidepanel/portfoliosidepanel';
-import { usePortfolioStore } from 'store/portfolio/portfolio';
-import { deleteTable } from 'endpoints/clients/database/postgres';
-import { PostgresTablesEnum } from 'endpoints/schema/database/postgres/props';
+import PortfolioMain from './portfoliomain/portfoliomain';
 
 export default function Portfolio() {
     const [show, setShow] = React.useState<boolean>(false);
-    const [portfolioSelected, clearSelectedPortfolio, deletePortfolio] = usePortfolioStore(
-        state => [state.selectedPortfolio, state.clearSelectedPortfolio, state.deletePortfolio]
-    );
-
-    const handleRemovePortfolio = () => {
-        if ('uuid' in portfolioSelected) {
-            deleteTable({
-                id: portfolioSelected.uuid,
-                tableName: PostgresTablesEnum.PORTFOLIO,
-            });
-            clearSelectedPortfolio();
-        }
-    };
 
     return (
         <>
@@ -36,25 +20,7 @@ export default function Portfolio() {
             <Navigation />
             <div style={{ display: 'flex', gap: 5 }}>
                 <div style={{ width: '40%' }}>
-                    <S.OptionsWrapper>
-                        <S.ButtonWrapper onClick={() => setShow(true)}>
-                            <MdAdd />
-                            <Typography variant="subtitle2"> Add Portfolio </Typography>
-                        </S.ButtonWrapper>
-                        <S.ButtonWrapper
-                            disabled={Object.keys(portfolioSelected).length === 0}
-                            onClick={() => {
-                                if ('uuid' in portfolioSelected) {
-                                    handleRemovePortfolio();
-                                    deletePortfolio(portfolioSelected.uuid);
-                                }
-                            }}
-                        >
-                            <MdRemove />
-                            <Typography variant="subtitle2"> Remove Portfolio </Typography>
-                        </S.ButtonWrapper>
-                    </S.OptionsWrapper>
-                    <PortfolioTable />
+                    <PortfolioMain setShow={setShow} />
                 </div>
                 <div style={{ width: '60%', minHeight: '50vh' }}>
                     <PortfolioSidePanel />

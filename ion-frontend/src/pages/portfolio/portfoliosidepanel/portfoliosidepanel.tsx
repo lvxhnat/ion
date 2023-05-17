@@ -7,6 +7,8 @@ import { TickerSearch } from 'components/Search/Search';
 import { usePortfolioStore } from 'store/portfolio/portfolio';
 import { MdOutlineSsidChart, MdStop } from 'react-icons/md';
 import NoDataSkeleton from 'components/Skeletons/NoDataSkeleton';
+import MainDataTable from 'components/Tables/MainDataTable';
+import { MainDataTableHeaderType } from 'components/Tables/MainDataTable/MainDataTable';
 
 interface SelectedTickerSchema {
     asset_id: string;
@@ -30,7 +32,7 @@ const initialiseEntry = (props: {
         asset_id: props.ticker,
         portfolio_id: props.portfolio_id,
         asset_type: props.asset_type,
-        quantity: null,
+        quantity: 0,
         position: null,
         currency: null,
         price_purchased: null,
@@ -44,9 +46,23 @@ export default function PortfolioSidePanel() {
     const [selectedTickers, setSelectedTickers] = React.useState<SelectedTickerSchema[]>([]);
     const portfolioSelected = usePortfolioStore(state => state.selectedPortfolio);
 
+    const staticTableHeaders: MainDataTableHeaderType[] = [
+        { id: 'remove', name: 'remove', type: 'remove', width: 5 },
+        { id: 'edit', name: 'edit', type: 'edit', width: 5 },
+        { id: 'asset_id', name: 'asset_id', type: 'value' },
+        { id: 'quantity', name: 'quantity', type: 'value' },
+        { id: 'position', name: 'position', type: 'value' },
+        { id: 'currency', name: 'currency', type: 'value' },
+    ];
+    const dynamicTableHeaders: MainDataTableHeaderType[] = [
+        ...staticTableHeaders,
+        { id: 'price_purchased', name: 'price_purchased', type: 'value' },
+        { id: 'transaction_date', name: 'transaction_date', type: 'value' },
+    ];
+
     return (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-            <S.PortfolioSidePanelHeader>
+            <S.OptionsWrapper>
                 <TickerSearch
                     setSelectedOption={(ticker: string, asset_type: string) => {
                         setSelectedOption(ticker);
@@ -68,19 +84,20 @@ export default function PortfolioSidePanel() {
                     <S.ButtonWrapper onClick={() => setStaticSelected(!staticSelected)}>
                         {staticSelected ? <MdStop /> : <MdOutlineSsidChart />}
                         <Typography variant="subtitle2">
-                            {' '}
                             {staticSelected ? 'Static' : 'Dynamic'}
                         </Typography>
                     </S.ButtonWrapper>
                 </div>
-            </S.PortfolioSidePanelHeader>
+            </S.OptionsWrapper>
             <S.PortfolioSidePanelBody>
                 {selectedTickers.length === 0 ? (
                     <NoDataSkeleton text="No Tickers Available" />
                 ) : (
-                    selectedTickers.map((entry: SelectedTickerSchema) => {
-                        return <div key={entry.portfolio_id}>{entry.portfolio_id}</div>;
-                    })
+                    <MainDataTable
+                        id="asset_id"
+                        tableHeaders={staticTableHeaders}
+                        tableBody={selectedTickers}
+                    />
                 )}
             </S.PortfolioSidePanelBody>
             <S.PortfolioSidePanelFooter> </S.PortfolioSidePanelFooter>

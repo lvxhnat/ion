@@ -9,9 +9,6 @@ const portfolioSidePanelToolStyles = {
     display: 'flex',
     alignItems: 'center',
 };
-export const PortfolioSidePanelHeader = styled('div')(({ theme }) => ({
-    ...portfolioSidePanelToolStyles,
-}));
 
 export const PortfolioSidePanelBody = styled('div')(({ theme }) => ({
     flex: 1,
@@ -24,7 +21,7 @@ export const PortfolioSidePanelFooter = styled('div')(({ theme }) => ({
 export const OptionsWrapper = styled('div')(({ theme }) => ({
     display: 'flex',
     backgroundColor: ColorsEnum.warmgray1,
-    padding: 5,
+    padding: 3,
     gap: 5,
 }));
 
