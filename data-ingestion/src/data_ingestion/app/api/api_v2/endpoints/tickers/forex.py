@@ -17,12 +17,11 @@ from data_ingestion.app.api.api_v2.postgres.schemas.data.tickers.dto import (
 
 
 router = APIRouter(
-    prefix=f"/forex",
     tags=["tickers", "forex"],
 )
 
 
-@router.get("/health", tags=["health"])
+@router.get("/health")
 def health_check():
     return {"status": "healthy"}
 

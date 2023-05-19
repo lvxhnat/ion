@@ -2,21 +2,47 @@ import { ColorsEnum } from 'common/theme';
 
 import { styled } from '@mui/system';
 
+const portfolioSidePanelToolStyles = {
+    backgroundColor: ColorsEnum.warmgray1,
+    gap: 5,
+    padding: 5,
+    display: 'flex',
+    alignItems: 'center',
+};
+
+export const PortfolioSidePanelBody = styled('div')(({ theme }) => ({
+    flex: 1,
+}));
+
+export const PortfolioSidePanelFooter = styled('div')(({ theme }) => ({
+    ...portfolioSidePanelToolStyles,
+}));
+
 export const OptionsWrapper = styled('div')(({ theme }) => ({
     display: 'flex',
-    backgroundColor: ColorsEnum.darkGrey,
-    border: `1px solid ${ColorsEnum.warmgray1}`,
+    backgroundColor: ColorsEnum.warmgray1,
+    padding: 3,
     gap: 5,
 }));
 
-export const ButtonWrapper = styled('div')(({ theme }) => ({
+interface ButtonWrapperProp {
+    disabled?: boolean;
+}
+
+export const ButtonWrapper = styled('div')<ButtonWrapperProp>(({ theme, disabled = false }) => ({
+    gap: 3,
     display: 'flex',
     alignItems: 'center',
+    fontColor: ColorsEnum.white,
+    backgroundColor: ColorsEnum.warmgray2,
+    opacity: !disabled ? 1 : 0.4,
     padding: `${theme.spacing(0.5)} ${theme.spacing(1)}`,
-    '&:hover': {
-        backgroundColor: ColorsEnum.darkGrey,
-        cursor: 'pointer',
-    },
+    '&:hover': !disabled
+        ? {
+              backgroundColor: ColorsEnum.warmgray2,
+              cursor: 'pointer',
+          }
+        : undefined,
 }));
 
 export const LabOpenButtonWrapper = styled('div')(({ theme }) => ({

@@ -8,7 +8,7 @@ from data_ingestion.app.api.api_v2.postgres.models.data import (
 
 class BaseAPIConfigs(BaseSettings):
     APP_NAME: str = "data_ingestion"
-    API_VERSION_STRING: str = "/api/v2"
+    API_VERSION_STRING: str = "/v2"
 
     POSTGRES_TABLES = {
         treasury.USBillRates.__tablename__: treasury.USBillRates,

@@ -31,5 +31,3 @@ class PortfolioAssets(Base):
     account: str = Column(String, nullable = True)
     fx_rate: float = Column(Float, nullable=True)
     transaction_date: datetime = Column(DateTime, nullable=True)
-
-    

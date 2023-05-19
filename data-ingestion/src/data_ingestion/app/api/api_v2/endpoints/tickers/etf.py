@@ -2,16 +2,17 @@ from typing import List
 from fastapi import APIRouter
 from pyetfdb_scraper.etf import ETF
 
-from data_ingestion.app.api.api_v2.postgres.schemas.data.tickers.params import InfoETFParams
+from data_ingestion.app.api.api_v2.postgres.schemas.data.tickers.params import (
+    InfoETFParams,
+)
 
 
 router = APIRouter(
-    prefix=f"/etf",
     tags=["tickers", "etf"],
 )
 
 
-@router.get("/health", tags=["health"])
+@router.get("/health")
 def health_check():
     return {"status": "healthy"}
 
@@ -27,10 +28,10 @@ def get_info_etf_data(
 
     Parameters
     ----------
-    
+
     Behavior
     ----------
-    
+
     Returns
     ----------
     """

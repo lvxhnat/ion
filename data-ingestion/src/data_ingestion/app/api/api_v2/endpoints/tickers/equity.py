@@ -11,12 +11,11 @@ from data_ingestion.app.api.api_v2.postgres.schemas.data.tickers.dto import (
 from ion_clients.clients.finhub.instruments import get_finnhub_historical_data
 
 router = APIRouter(
-    prefix=f"/equity",
     tags=["tickers", "equity"],
 )
 
 
-@router.get("/health", tags=["health"])
+@router.get("/health")
 def health_check():
     return {"status": "healthy"}
 

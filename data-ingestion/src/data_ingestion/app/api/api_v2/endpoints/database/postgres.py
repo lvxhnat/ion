@@ -16,8 +16,7 @@ from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import
 )
 
 router = APIRouter(
-    prefix="/postgres",
-    tags=["database", "postgres"],
+    tags=["postgres"],
 )
 
 query_tables = {
@@ -25,7 +24,7 @@ query_tables = {
 }
 
 
-@router.get("/health", tags=["health"])
+@router.get("/health")
 def health_check():
     return {"status": "healthy"}
 
@@ -52,8 +51,8 @@ def get_postgres_table(
 
 @router.delete("/{table_name}")
 def delete_postgres_table_entry(
-    id: int,
     table_name: str,
+    id: str,
     session: Session = Depends(get_session),
 ):
     entry = session.query(query_tables[table_name]).get(id)
