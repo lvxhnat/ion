@@ -55,7 +55,7 @@ export default function MainDataTable(props: {
                 <TableBody>
                     {props.tableBody.map((entry: MainDataTableBodyType, index: number) => {
                         let rowColor = 'transparent';
-                        if (index % 2) rowColor = ColorsEnum.darkGrey;
+                        if (index % 2 === 0) { rowColor = ColorsEnum.darkGrey };
                         return (
                             <StyledTableRow
                                 key={`MainDataTableRow_${index}`}

@@ -42,23 +42,8 @@ const initialiseEntry = (props: {
 
 export default function PortfolioSidePanel() {
     const [selectedOption, setSelectedOption] = React.useState<string>('');
-    const [staticSelected, setStaticSelected] = React.useState<boolean>(false);
     const [selectedTickers, setSelectedTickers] = React.useState<SelectedTickerSchema[]>([]);
     const portfolioSelected = usePortfolioStore(state => state.selectedPortfolio);
-
-    const staticTableHeaders: MainDataTableHeaderType[] = [
-        { id: 'remove', name: 'remove', type: 'remove', width: 5 },
-        { id: 'edit', name: 'edit', type: 'edit', width: 5 },
-        { id: 'asset_id', name: 'asset_id', type: 'value' },
-        { id: 'quantity', name: 'quantity', type: 'value' },
-        { id: 'position', name: 'position', type: 'value' },
-        { id: 'currency', name: 'currency', type: 'value' },
-    ];
-    const dynamicTableHeaders: MainDataTableHeaderType[] = [
-        ...staticTableHeaders,
-        { id: 'price_purchased', name: 'price_purchased', type: 'value' },
-        { id: 'transaction_date', name: 'transaction_date', type: 'value' },
-    ];
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -75,32 +60,64 @@ export default function PortfolioSidePanel() {
                                     asset_type: asset_type,
                                 }),
                             ]);
-                            setSelectedTickers;
                         }
                     }}
                 />
                 <div></div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-                    <S.ButtonWrapper onClick={() => setStaticSelected(!staticSelected)}>
-                        {staticSelected ? <MdStop /> : <MdOutlineSsidChart />}
-                        <Typography variant="subtitle2">
-                            {staticSelected ? 'Static' : 'Dynamic'}
-                        </Typography>
-                    </S.ButtonWrapper>
                 </div>
             </S.OptionsWrapper>
-            <S.PortfolioSidePanelBody>
-                {selectedTickers.length === 0 ? (
-                    <NoDataSkeleton text="No Tickers Available" />
-                ) : (
-                    <MainDataTable
-                        id="asset_id"
-                        tableHeaders={staticTableHeaders}
-                        tableBody={selectedTickers}
-                    />
-                )}
-            </S.PortfolioSidePanelBody>
-            <S.PortfolioSidePanelFooter> </S.PortfolioSidePanelFooter>
+            <PortfolioSidePanelBody selectedTickers={selectedTickers} />
+            <PortfolioSidePanelFooter />
         </div>
     );
+}
+
+const PortfolioSidePanelBody = (props: {
+    selectedTickers: SelectedTickerSchema[];
+}) => {
+    const staticTableHeaders: MainDataTableHeaderType[] = [
+        { id: 'remove', name: 'remove', type: 'remove', width: 5 },
+        { id: 'edit', name: 'edit', type: 'edit', width: 5 },
+        { id: 'asset_id', name: 'asset_id', type: 'value' },
+        { id: 'quantity', name: 'quantity', type: 'value' },
+        { id: 'position', name: 'position', type: 'value' },
+        { id: 'currency', name: 'currency', type: 'value' },
+    ];
+    const dynamicTableHeaders: MainDataTableHeaderType[] = [
+        ...staticTableHeaders,
+        { id: 'price_purchased', name: 'price_purchased', type: 'value' },
+        { id: 'transaction_date', name: 'transaction_date', type: 'value' },
+    ];
+    return (
+        <S.PortfolioSidePanelBody>
+                {props.selectedTickers.length === 0 ? (
+                <NoDataSkeleton text="No Tickers Available" />
+            ) : (
+                <MainDataTable
+                    id="asset_id"
+                    tableHeaders={staticTableHeaders}
+                    tableBody={props.selectedTickers}
+                />
+            )}
+        </S.PortfolioSidePanelBody>
+    )
+}
+
+
+const PortfolioSidePanelFooter = () => {
+    const [staticSelected, setStaticSelected] = React.useState<boolean>(false);
+    
+    return (
+        <S.PortfolioSidePanelFooter> 
+            <div style={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
+                <S.ButtonWrapper onClick={() => setStaticSelected(!staticSelected)}>
+                    {staticSelected ? <MdStop /> : <MdOutlineSsidChart />}
+                    <Typography variant="subtitle2">
+                        {staticSelected ? 'Static' : 'Dynamic'}
+                    </Typography>
+                </S.ButtonWrapper>
+            </div>
+        </S.PortfolioSidePanelFooter>
+    )
 }
