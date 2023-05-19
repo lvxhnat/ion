@@ -8,5 +8,8 @@ export interface OHLCHistoricalDTO {
     close: number;
 }
 
-export interface EquityHistoricalDTO extends OHLCHistoricalDTO {}
-export interface ForexHistoricalDTO extends OHLCHistoricalDTO {}
+export interface EquityHistoricalDTO {
+    data: OHLCHistoricalDTO[];
+    source: 'finnhub';
+}
+export interface ForexHistoricalDTO extends OHLCHistoricalDTO { }

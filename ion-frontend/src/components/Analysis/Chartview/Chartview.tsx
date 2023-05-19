@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
 import { getCandles } from 'endpoints/clients/candles';
-import { EquityHistoricalDTO, ForexHistoricalDTO } from 'endpoints/schema/tickers';
+import { ForexHistoricalDTO, OHLCHistoricalDTO } from 'endpoints/schema/tickers';
 import BaseLineChart from 'components/Charting/BaseChart';
 import ChartviewPriceShower from './ChartviewPriceShower';
 import ChartviewToolbar from './ChartviewToolbar';
@@ -74,19 +74,20 @@ export default function Chartview(props: {
             });
         } else if (assetType === ASSET_TYPES.EQUITY) {
             getCandles(ticker).then(res => {
+                const data = res.data.data;
                 setData({
                     ticker: ticker as string,
                     data: {
                         id: ticker,
                         name: ticker,
                         parent: true,
-                        dataX: res.data.map((d: EquityHistoricalDTO) => parseTime(d.date)),
-                        dataY: res.data.map((d: EquityHistoricalDTO) => d.close),
+                        dataX: data.map((d: OHLCHistoricalDTO) => parseTime(d.date)),
+                        dataY: data.map((d: OHLCHistoricalDTO) => d.close),
                         color: 'white',
                         type: 'line',
                     } as DefaultDataProps,
                 });
-                setRawData(res.data);
+                setRawData(data);
             });
         }
     }, []);

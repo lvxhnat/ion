@@ -16,7 +16,7 @@ import { ColorsEnum } from 'common/theme';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
 import { getCandles } from 'endpoints/clients/candles';
 import { ASSET_TYPES, ROUTES } from 'common/constant';
-import { EquityHistoricalDTO } from 'endpoints/schema/tickers';
+import { OHLCHistoricalDTO } from 'endpoints/schema/tickers';
 
 function WidgetTickerRow(props: { ticker: string }) {
     const [data, setData] = React.useState<{
@@ -29,23 +29,23 @@ function WidgetTickerRow(props: { ticker: string }) {
 
     React.useEffect(() => {
         getCandles(props.ticker).then(res => {
-            const entry = res.data;
+            const data = res.data.data;
             setData({
                 ticker: props.ticker,
                 chartData: {
                     id: props.ticker,
                     name: props.ticker,
                     parent: true,
-                    dataX: res.data.map((obj: EquityHistoricalDTO) => new Date(obj.date)),
-                    dataY: res.data.map((obj: EquityHistoricalDTO) => obj.close),
+                    dataX: data.map((obj: OHLCHistoricalDTO) => new Date(obj.date)),
+                    dataY: data.map((obj: OHLCHistoricalDTO) => obj.close),
                     color: 'white',
                     type: 'line',
                 },
-                last_close: res.data[res.data.length - 1].close.toFixed(2),
+                last_close: data[data.length - 1].close.toFixed(2),
                 pct_change:
                     100 *
-                    ((entry[entry.length - 1].close - entry[entry.length - 2].close) /
-                        entry[entry.length - 2].close),
+                    ((data[data.length - 1].close - data[data.length - 2].close) /
+                        data[data.length - 2].close),
             });
         });
     }, []);
