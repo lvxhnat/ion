@@ -7,8 +7,8 @@ from ion_clients.services.postgres.postgres_service import get_session
 from data_ingestion.app.api.api_v2.postgres.models.infra.portfolio import (
     Portfolio,
 )
-from data_ingestion.app.api.api_v2.postgres.schemas.infra.portfolio.params import (
-    PortfolioParams,
+from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import (
+    PostgresTable
 )
 from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import (
     tables as postgres_tables,
@@ -63,7 +63,7 @@ def delete_postgres_table_entry(
 @router.post("/{table_name}")
 def insert_postgres_table_entry(
     table_name: str,
-    entry: PortfolioParams,
+    entry: PostgresTable,
     session: Session = Depends(get_session),
 ):
     session.add(query_tables[table_name](**entry.dict()))
@@ -74,7 +74,7 @@ def insert_postgres_table_entry(
 def update_postgres_table_entry(
     table_name: str,
     id: str,
-    replacement_entry: PortfolioParams,
+    replacement_entry: PostgresTable,
     session: Session = Depends(get_session),
 ):
     session.query(query_tables[table_name]).get(id).update(replacement_entry)

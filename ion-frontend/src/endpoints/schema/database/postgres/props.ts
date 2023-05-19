@@ -1,22 +1,8 @@
-import { PortfolioTableEntry } from './portfolio/props';
+import { PortfolioAssetTableEntry, PortfolioTableEntry } from './portfolio/props';
 
 export enum PostgresTablesEnum {
     PORTFOLIO = 'portfolio',
+    PORTFOLIO_ASSETS = 'portfolio_assets',
 }
 
-interface BasePostgresTableParams {
-    tableName: string;
-}
-
-export interface InsertTableParams extends BasePostgresTableParams {
-    entry: PortfolioTableEntry;
-}
-
-export interface DeleteTableParams extends BasePostgresTableParams {
-    id: string;
-}
-
-export interface UpdateTableParams extends BasePostgresTableParams {
-    id: string;
-    entry: PortfolioTableEntry;
-}
+export type PostgresTableSchemas = PortfolioTableEntry | PortfolioAssetTableEntry

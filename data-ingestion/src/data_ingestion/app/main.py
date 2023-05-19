@@ -55,9 +55,7 @@ async def intialise_database_infra():
     ):
         # Check for table attribute excludes the direct parent class
         if issubclass(cls, Base) and hasattr(cls, "__table__"):
-            table_initiated: bool = create_table(cls)
-            if not table_initiated:
-                return
+            create_table(cls)
 
 
 @app.websocket("/oanda/ws")

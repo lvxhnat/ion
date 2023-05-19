@@ -1,3 +1,4 @@
+from typing import List
 from datetime import datetime
 from pydantic import BaseModel
 
@@ -13,5 +14,6 @@ class HistoricalCandlesDTO(BaseModel):
 class HistoricalForexDTO(HistoricalCandlesDTO):
     pass
 
-class HistoricalEquityDTO(HistoricalCandlesDTO): 
-    pass
+class HistoricalEquityDTO(BaseModel): 
+    data: List[HistoricalCandlesDTO]
+    source: str

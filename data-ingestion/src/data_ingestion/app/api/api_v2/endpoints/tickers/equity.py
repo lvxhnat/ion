@@ -23,7 +23,7 @@ def health_check():
 @router.post("/historical")
 def get_historical_equity_data(
     params: HistoricalEquityParams,
-) -> List[HistoricalEquityDTO]:
+) -> HistoricalEquityDTO:
 
     """Retrieve the historical equity data given a ticker symbol or list of ticker symbols.
     This endpoint currently doesnt support to_date parameter, or period calls like the forex endpoint.
@@ -51,6 +51,9 @@ def get_historical_equity_data(
     else:
         from_date = params.from_date
 
-    return get_finnhub_historical_data(
-        ticker=params.ticker, from_date=from_date
-    )
+    return {
+        "data": get_finnhub_historical_data(
+            ticker=params.ticker, from_date=from_date
+        ),
+        "source": "Finnhub",
+    }

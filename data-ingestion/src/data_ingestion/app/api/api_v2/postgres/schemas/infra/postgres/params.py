@@ -1,8 +1,13 @@
+from typing import Union
 from pydantic import BaseModel
 
 from data_ingestion.app.api.api_v2.postgres.models.data import (
     treasury,
     area_latlon,
+)
+from data_ingestion.app.api.api_v2.postgres.schemas.infra.portfolio.params import (
+    PortfolioAssetParams, 
+    PortfolioParams
 )
 
 tables = {
@@ -14,6 +19,7 @@ tables = {
     area_latlon.AreaLatLon.__tablename__: area_latlon.AreaLatLon,
 }
 
+PostgresTable = Union[PortfolioParams, PortfolioAssetParams]
 
 class TableQueryParams(BaseModel):
     table: str

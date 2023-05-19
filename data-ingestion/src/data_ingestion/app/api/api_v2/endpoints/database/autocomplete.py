@@ -33,15 +33,15 @@ def query_postgres_table(
 ):
     if len(params.query) < 4:
         query = func.lower(query_tables[params.table].symbol).like(
-            f"%{params.query}%"
+            f"%{params.query}%".lower()
         )
     else:
         query = or_(
             func.lower(query_tables[params.table].symbol).like(
-                f"%{params.query}%"
+                f"%{params.query}%".lower()
             ),
             func.lower(query_tables[params.table].name).like(
-                f"%{params.query}%"
+                f"%{params.query}%".lower()
             ),
         )
     return order_search(

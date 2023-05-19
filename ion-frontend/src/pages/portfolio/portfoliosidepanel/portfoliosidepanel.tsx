@@ -1,48 +1,46 @@
 import * as React from 'react';
 import * as S from '../style';
 
+import { v4 as uuid } from 'uuid';
+import { GiMagicBroom } from 'react-icons/gi';
+import { MdOutlineSsidChart, MdStop } from 'react-icons/md';
 import Typography from '@mui/material/Typography';
 
-import { TickerSearch } from 'components/Search/Search';
 import { usePortfolioStore } from 'store/portfolio/portfolio';
-import { MdOutlineSsidChart, MdStop } from 'react-icons/md';
+
+import { TickerSearch } from 'components/Search/Search';
 import NoDataSkeleton from 'components/Skeletons/NoDataSkeleton';
 import MainDataTable from 'components/Tables/MainDataTable';
+import PopupButton from 'components/Button';
+import { insertTable } from 'endpoints/clients/database/postgres';
 import { MainDataTableHeaderType } from 'components/Tables/MainDataTable/MainDataTable';
 
-interface SelectedTickerSchema {
-    asset_id: string;
-    portfolio_id: string;
-    asset_type: string;
-    quantity: number | null;
-    position: 'long' | 'short' | null;
-    currency: string | null;
-    price_purchased: string | null;
-    transaction_date?: Date | null;
-    account?: string;
-    fx_rate?: number;
-}
+import { PortfolioAssetTableEntry } from 'endpoints/schema/database/postgres/portfolio/props';
+import { PostgresTablesEnum } from 'endpoints/schema/database/postgres/props';
 
 const initialiseEntry = (props: {
     ticker: string;
     portfolio_id: string;
     asset_type: string;
-}): SelectedTickerSchema => {
+}): PortfolioAssetTableEntry => {
     return {
+        uuid: uuid(),
         asset_id: props.ticker,
         portfolio_id: props.portfolio_id,
         asset_type: props.asset_type,
-        quantity: 0,
-        position: null,
-        currency: null,
-        price_purchased: null,
+        quantity: 10,
+        position: 'long',
+        currency: 'SGD',
+        account: "test",
+        price_purchased: 23,
+        fx_rate: null,
         transaction_date: null,
     };
 };
 
 export default function PortfolioSidePanel() {
     const [selectedOption, setSelectedOption] = React.useState<string>('');
-    const [selectedTickers, setSelectedTickers] = React.useState<SelectedTickerSchema[]>([]);
+    const [selectedTickers, setSelectedTickers] = React.useState<PortfolioAssetTableEntry[]>([]);
     const portfolioSelected = usePortfolioStore(state => state.selectedPortfolio);
 
     return (
@@ -63,18 +61,20 @@ export default function PortfolioSidePanel() {
                         }
                     }}
                 />
-                <div></div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                    <S.ButtonWrapper>
+                        <GiMagicBroom />
+                    </S.ButtonWrapper>
                 </div>
             </S.OptionsWrapper>
             <PortfolioSidePanelBody selectedTickers={selectedTickers} />
-            <PortfolioSidePanelFooter />
+            <PortfolioSidePanelFooter selectedTickers={selectedTickers} />
         </div>
     );
 }
 
 const PortfolioSidePanelBody = (props: {
-    selectedTickers: SelectedTickerSchema[];
+    selectedTickers: PortfolioAssetTableEntry[];
 }) => {
     const staticTableHeaders: MainDataTableHeaderType[] = [
         { id: 'remove', name: 'remove', type: 'remove', width: 5 },
@@ -105,8 +105,20 @@ const PortfolioSidePanelBody = (props: {
 }
 
 
-const PortfolioSidePanelFooter = () => {
+const PortfolioSidePanelFooter = (props: {
+    selectedTickers: PortfolioAssetTableEntry[];
+}) => {
     const [staticSelected, setStaticSelected] = React.useState<boolean>(false);
+
+    const handleClick = () => {
+        props.selectedTickers.map((entry: PortfolioAssetTableEntry) => {
+            console.log(entry)
+            insertTable({
+                tableName: PostgresTablesEnum.PORTFOLIO_ASSETS,
+                entry: entry,
+            });
+        })
+    }
     
     return (
         <S.PortfolioSidePanelFooter> 
@@ -117,6 +129,11 @@ const PortfolioSidePanelFooter = () => {
                         {staticSelected ? 'Static' : 'Dynamic'}
                     </Typography>
                 </S.ButtonWrapper>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
+                <PopupButton buttonType='primary' onClick={() => handleClick()}> 
+                    Apply
+                </PopupButton>
             </div>
         </S.PortfolioSidePanelFooter>
     )

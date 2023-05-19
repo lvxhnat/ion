@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { MdRemove } from 'react-icons/md';
+import { MdDelete } from 'react-icons/md';
 import { HiOutlinePencil } from 'react-icons/hi';
 
 import Table from '@mui/material/Table';
@@ -40,6 +40,7 @@ export default function MainDataTable(props: {
                         {props.tableHeaders.map((headerSpecification: MainDataTableHeaderType) => {
                             let headerName: string = headerSpecification.name;
                             if (headerSpecification.type === 'remove') headerName = '';
+                            if (headerSpecification.type === 'edit') headerName = '';
                             return (
                                 <StyledTableCell
                                     isHeader
@@ -84,6 +85,7 @@ export default function MainDataTable(props: {
                                     } else if (columnEntry.type === 'remove') {
                                         component = (
                                             <HiOutlinePencil
+                                                style={{ fontSize: 15 }}
                                                 onClick={() =>
                                                     props.handleRowRemove
                                                         ? props.handleRowRemove(
@@ -95,7 +97,8 @@ export default function MainDataTable(props: {
                                         );
                                     } else if (columnEntry.type === 'edit') {
                                         component = (
-                                            <MdRemove
+                                            <MdDelete
+                                                style={{ fontSize: 15 }}
                                                 onClick={() =>
                                                     props.handleRowRemove
                                                         ? props.handleRowRemove(

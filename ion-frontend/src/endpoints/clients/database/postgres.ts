@@ -1,10 +1,6 @@
 import { dataIngestionRequest } from 'services/request';
 import { ENDPOINTS } from 'endpoints/endpoints';
-import {
-    DeleteTableParams,
-    InsertTableParams,
-    UpdateTableParams,
-} from 'endpoints/schema/database/postgres/props';
+import { PostgresTableSchemas } from 'endpoints/schema/database/postgres/props';
 
 export const queryTable = (props: { tableName: string }) => {
     return dataIngestionRequest.post(ENDPOINTS.PRIVATE.QUERY_POSTGRES_ENDPOINT, {
@@ -18,7 +14,10 @@ export const getTable = (props: { tableName: string }) => {
     );
 };
 
-export const insertTable = (props: InsertTableParams) => {
+export const insertTable = (props: {
+    tableName: string;
+    entry: PostgresTableSchemas,
+}) => {
     return dataIngestionRequest.post(
         `${ENDPOINTS.PRIVATE.BASE_POSTGRES_ENDPOINT}${props.tableName}`,
         props.entry
@@ -28,14 +27,21 @@ export const insertTable = (props: InsertTableParams) => {
 /**
  * Id indicates the value in the unique definition column that we want to use to delete the entry in the table
  */
-export const deleteTable = (props: DeleteTableParams) => {
+export const deleteTable = (props: {
+    tableName: string;
+    id: string;
+}) => {
     return dataIngestionRequest.delete(
         `${ENDPOINTS.PRIVATE.BASE_POSTGRES_ENDPOINT}${props.tableName}`,
         { params: { id: props.id } } // params not data
     );
 };
 
-export const updateTable = (props: UpdateTableParams) => {
+export const updateTable = (props: {
+    tableName: string;
+    id: string;
+    entry: PostgresTableSchemas;
+}) => {
     return dataIngestionRequest.put(
         `${ENDPOINTS.PRIVATE.BASE_POSTGRES_ENDPOINT}${props.tableName}`,
         {

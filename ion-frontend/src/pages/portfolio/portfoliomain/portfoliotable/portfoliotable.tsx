@@ -74,12 +74,13 @@ export default function PortfolioTable() {
                         if ('uuid' in portfolioSelected && portfolioSelected.uuid === entry.uuid) {
                             rowColor = ColorsEnum.warmgray1;
                         }
+                        console.log(portfolioSelected)
                         return (
                             <StyledTableRow
                                 style={{ backgroundColor: rowColor }}
                                 key={`${entry.name}_row`}
                                 onClick={() =>
-                                    'uuid' in portfolioSelected
+                                    ('uuid' in portfolioSelected && entry.uuid === portfolioSelected.uuid)
                                         ? clearSelectedPortfolio()
                                         : setPortfolioSelected(entry)
                                 }
