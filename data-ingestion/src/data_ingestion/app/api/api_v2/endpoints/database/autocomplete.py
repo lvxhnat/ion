@@ -28,7 +28,7 @@ def health_check():
 
 
 @router.post("/query")
-def query_postgres_table(
+def query_asset_search_table(
     params: AssetSearchParams, session: Session = Depends(get_session)
 ):
     if len(params.query) < 4:

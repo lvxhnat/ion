@@ -6,7 +6,7 @@ type StyledButtonProps = {
 };
 
 export const StyledButton = styled('button')<StyledButtonProps>(({ theme, buttonType }) => ({
-    backgroundColor: buttonType === 'primary' ? ColorsEnum.darkGreen : ColorsEnum.warmgray1,
+    backgroundColor: buttonType === 'primary' ? ColorsEnum.darkGreen : ColorsEnum.warmgray2,
     color: ColorsEnum.white,
     fontWeight: 'bold',
     border: 'none',

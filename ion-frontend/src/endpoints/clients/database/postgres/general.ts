@@ -2,13 +2,18 @@ import { dataIngestionRequest } from 'services/request';
 import { ENDPOINTS } from 'endpoints/endpoints';
 import { PostgresTableSchemas } from 'endpoints/schema/database/postgres/props';
 
-export const queryTable = (props: { tableName: string }) => {
+export const queryTable = (props: {
+    tableName: string;
+    id: string;
+}) => {
     return dataIngestionRequest.post(ENDPOINTS.PRIVATE.QUERY_POSTGRES_ENDPOINT, {
         table: props.tableName,
     });
 };
 
-export const getTable = (props: { tableName: string }) => {
+export const getTable = (props: {
+    tableName: string
+}) => {
     return dataIngestionRequest.get(
         `${ENDPOINTS.PRIVATE.BASE_POSTGRES_ENDPOINT}${props.tableName}`
     );

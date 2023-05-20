@@ -6,13 +6,15 @@ from ion_clients.services.postgres.postgres_service import get_session
 
 from data_ingestion.app.api.api_v2.postgres.models.infra.portfolio import (
     Portfolio,
+    PortfolioAssets,
 )
 from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import (
-    PostgresTable
+    PostgresTable,
 )
 from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import (
     tables as postgres_tables,
     TableQueryParams,
+    PortfolioSearchParams,
 )
 
 router = APIRouter(
@@ -21,6 +23,7 @@ router = APIRouter(
 
 query_tables = {
     Portfolio.__tablename__: Portfolio,
+    PortfolioAssets.__tablename__: PortfolioAssets,
 }
 
 
@@ -37,6 +40,17 @@ def query_postgres_table(
         session,
         table_schema=postgres_tables[params.table],
         table_column=postgres_tables[params.table]._date,
+    )
+
+
+@router.post("/query/portfolio")
+def query_portfolio_table(
+    params: PortfolioSearchParams, session: Session = Depends(get_session)
+):
+    return (
+        session.query(PortfolioAssets)
+        .filter(PortfolioAssets.portfolio_id == params.id)
+        .all()
     )
 
 

@@ -6,8 +6,8 @@ from data_ingestion.app.api.api_v2.postgres.models.data import (
     area_latlon,
 )
 from data_ingestion.app.api.api_v2.postgres.schemas.infra.portfolio.params import (
-    PortfolioAssetParams, 
-    PortfolioParams
+    PortfolioAssetParams,
+    PortfolioParams,
 )
 
 tables = {
@@ -21,8 +21,13 @@ tables = {
 
 PostgresTable = Union[PortfolioParams, PortfolioAssetParams]
 
+
 class TableQueryParams(BaseModel):
     table: str
+
+
+class PortfolioSearchParams(BaseModel):
+    id: str
 
 
 class AssetSearchParams(TableQueryParams):

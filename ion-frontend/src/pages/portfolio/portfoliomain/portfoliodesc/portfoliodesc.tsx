@@ -23,7 +23,7 @@ export default function PortfolioDesc(props: {}) {
                     <div style={{ display: 'flex', alignItems: 'flex-start', gap: 20, height: '40%' }}>
                         <div style={{ width: '20%' }}>
                             <img 
-                                height="125"
+                                height="100%"
                                 width="100%"
                                 style={{ objectFit: "contain" }}
                                 src="https://upload.wikimedia.org/wikipedia/commons/5/5d/Eug%C3%A8ne_Delacroix_-_Le_28_Juillet._La_Libert%C3%A9_guidant_le_peuple.jpg" 

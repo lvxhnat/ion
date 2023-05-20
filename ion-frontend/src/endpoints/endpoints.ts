@@ -12,6 +12,8 @@ export const ENDPOINTS = {
         BASE_POSTGRES_ENDPOINT: 'database/postgres/', // Use for CRUD Operations. Officially 'postgres/{table_name}'
         AUTOCOMPLETE_TICKERS_ENDPOINT: 'database/autocomplete/query',
 
+        QUERY_PORTFOLIO_ENDPOINT: 'database/postgres/query/portfolio',
+
         SEARCH_FUNCTIONS: 'autocomplete/securityFunctions',
         ALL_FUNCTIONS: 'autocomplete/allFunctions',
         ETFS_CATEGORIES: 'autocomplete/etfAssetTypes',

@@ -10,7 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import { ColorsEnum } from 'common/theme';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
 import { StyledTableCell, StyledChartCell } from 'components/Tables/BaseTable/StyledTableCell';
-import { queryTable } from 'endpoints/clients/database/postgres';
+import { getTable } from 'endpoints/clients/database/postgres/general';
 import BaseLineChart from 'components/Charting/BaseChart';
 
 export default function TreasuryTable(props: TreasuryTableProps) {
@@ -24,7 +24,7 @@ export default function TreasuryTable(props: TreasuryTableProps) {
             .join(' ');
 
     React.useEffect(() => {
-        queryTable({ tableName: props.table }).then(data => {
+        getTable({ tableName: props.table }).then(data => {
             let columnNames = Object.keys(data.data[0]);
             let obj: { [index: string]: Array<number | null> } = {};
             columnNames.map((columnName: string) => (obj[columnName] = []));

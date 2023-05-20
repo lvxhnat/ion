@@ -8,7 +8,7 @@ import { MdAdd, MdRemove } from 'react-icons/md';
 import PortfolioDesc from './portfoliodesc';
 import PortfolioTable from './portfoliotable';
 import { usePortfolioStore } from 'store/portfolio/portfolio';
-import { deleteTable } from 'endpoints/clients/database/postgres';
+import { deleteTable } from 'endpoints/clients/database/postgres/general';
 import { PostgresTablesEnum } from 'endpoints/schema/database/postgres/props';
 
 export default function PortfolioMain(props: { setShow: (show: boolean) => void }) {
