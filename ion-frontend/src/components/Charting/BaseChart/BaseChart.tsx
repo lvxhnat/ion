@@ -9,11 +9,9 @@ import { ColorsEnum } from 'common/theme';
 
 import { CHARTCONFIGS, CHARTIDS } from './config';
 import {
-    TickerMetricStoreFormat,
     useChartStore,
-    useLiveMovesStore,
-    useMetricStore,
 } from 'store/chartview/chartview';
+import { useBaseChartStore } from 'store/chartview/basechart';
 
 export function determineStartY(zeroAxis: boolean, minValue: number, maxValue: number) {
     const minBoundary = (maxValue - minValue) * 0.3;
@@ -41,7 +39,10 @@ export function returnChartAxis(props: {
     dataX: Date[];
     dataY: number[];
     zeroAxis: boolean;
-}) {
+}): {
+    x: d3.ScaleTime<number, number, never>, 
+    y: d3.ScaleLinear<number, number, never>
+}  {
     const dateTime: number[] = props.dataX.map((date: Date) => date.getTime());
     const width = document.getElementById(props.baseId)!.parentNode!.parentElement!.clientWidth;
     const height = document.getElementById(props.baseId)!.parentNode!.parentElement!.clientHeight;
@@ -83,14 +84,12 @@ export default function BaseChart({
     showXAxis = CHARTCONFIGS.DEFAULT_SHOW_AXIS,
     showYAxis = CHARTCONFIGS.DEFAULT_SHOW_AXIS,
     showTooltip = CHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
-    showMetrics = CHARTCONFIGS.DEFAULT_SHOW_METRICS,
 }: LineChartProps): React.ReactElement {
     const numTicks: number = 10;
     const tickerSymbol: string = baseId.split('__')[0];
 
-    const setLiveMoves = useLiveMovesStore(state => state.setLiveMoves);
-    const metrics = useMetricStore(state => state.metrics[tickerSymbol]);
     const chartSettings = useChartStore(state => state.charts)[tickerSymbol];
+    const setBaseChartConfigs = useBaseChartStore(state => state.setChartConfigs);
 
     const ref = useD3(
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
@@ -126,6 +125,11 @@ export default function BaseChart({
                 dataY: dataY,
                 zeroAxis: zeroAxis,
             });
+
+            setBaseChartConfigs({
+                baseId: baseId, 
+                configs: { x: x, y: y, dataX: dataX, }
+            })
 
             const yAxis = d3.axisRight(y).tickSize(width).ticks(0);
 
@@ -191,40 +195,21 @@ export default function BaseChart({
                 y: y,
                 id: defaultData.id,
                 baseId: baseId,
-                type: chartSettings ? chartSettings.type : 'line',
-                color: chartSettings ? chartSettings.color : 'white',
+                type: 'line',
+                color: 'white',
                 dataX: dataX,
                 dataY: dataY,
             });
-
-            if (showMetrics && metrics && metrics.length !== 0) {
-                metrics.map((entry: TickerMetricStoreFormat) => {
-                    A.addChart({
-                        x: x,
-                        y: y,
-                        id: entry.metric,
-                        baseId: baseId,
-                        dataX: dataX,
-                        dataY: entry.value,
-                        color: entry.color,
-                        type: 'line',
-                    });
-                });
-            }
 
             if (showTooltip) {
                 C.addLineTracker({
                     ticker: tickerSymbol,
                     baseId: baseId,
-                    tooltipId: baseId,
-                    data: defaultData,
-                    metrics: metrics,
-                    draw: chartSettings.draw,
-                    setLiveMoves: setLiveMoves,
+                    metrics: [],
                 });
             }
         },
-        [defaultData, showMetrics ? metrics : undefined, chartSettings]
+        [defaultData, chartSettings]
     );
 
     return (

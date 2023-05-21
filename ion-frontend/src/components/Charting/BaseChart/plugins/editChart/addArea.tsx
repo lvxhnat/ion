@@ -1,21 +1,33 @@
 import * as d3 from 'd3';
 import { CHARTCONFIGS } from '../../config';
 
+interface BaseAreaChartParams {
+    id: string;
+    baseId: string;
+    x: d3.ScaleTime<number, number, never>;
+    y: d3.ScaleLinear<number, number, never>;
+}
+
+interface AreaChartParams extends BaseAreaChartParams {
+    color: string;
+    dataX: Date[];
+    dataY: number[];
+}
+
+interface BoundedAreaChartParams extends BaseAreaChartParams {
+    dataX: Date[];
+    colorY1: string; 
+    colorY2: string;
+    dataY1: number[];
+    dataY2: number[];
+}
 /**
  * Add a line to a BaseLineChart object. The line ID will be denoted by {BaseLineChartID_AssignedLineID}.
  * @param id the ID we wish to assign to the line we will be appending on to the chart. This will be AssignedLineID stated in the desc above.
  * @param baseId the ID of the BaseLineChart component we created.
  * @param ...
  */
-export const addArea = (props: {
-    id: string;
-    x: d3.ScaleTime<number, number, never>;
-    y: d3.ScaleLinear<number, number, never>;
-    baseId: string;
-    color: string;
-    dataX: Date[];
-    dataY: number[];
-}): void => {
+export const addArea = (props: AreaChartParams): void => {
     const svg = d3.selectAll(`#${props.baseId}`);
 
     const lineIdComposed: string = `${props.baseId}_${props.id}`;

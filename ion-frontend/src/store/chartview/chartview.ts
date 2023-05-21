@@ -1,7 +1,14 @@
-import { technicalIndicators } from 'components/Analysis/Chartview/calculations/metrics';
+import { getChartviewBaseChartId } from 'components/Analysis/Chartview/Chartview';
+import { getIndicatorIdFromMetric, technicalIndicators } from 'components/Analysis/Chartview/calculations/metrics';
 import { MovingAverageProps } from 'components/Analysis/Chartview/calculations/schemas/props/schema';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
+import { ChartTypes } from 'components/Charting/BaseChart/type';
 import { create } from 'zustand';
+import { useBaseChartStore } from './basechart';
+import { addChart } from 'components/Charting/BaseChart/actions';
+import { stringToColour } from 'common/helper/general';
+import { removeLine } from 'components/Charting/BaseChart/plugins/editChart/removeChart';
+import { addLineTracker } from 'components/Charting/BaseChart/plugins';
 /**
  * This interface and the const function below controls the grid view (how many grids u are able to see on screen)
  */
@@ -47,7 +54,7 @@ export interface EditLiveMovePropTypes {
     metricId: string;
     value: AllowedLiveMoveValueTypes;
 }
-export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> {}
+export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> { }
 
 export interface EditLiveMoveTypes {
     liveMoves: {
@@ -87,7 +94,7 @@ export interface ChartStoreTypes {
 }
 interface TickerChartType {
     color: string;
-    type: 'line' | 'area';
+    type: ChartTypes
     draw?: boolean;
 }
 interface EditChartPropType {
@@ -125,6 +132,7 @@ export interface TickerMetricStoreFormat {
     color: string;
     metricId: string;
     metricParams: MovingAverageProps;
+    chartType?: ChartTypes;
 }
 
 interface AddMetricPropType {
@@ -167,10 +175,10 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
             if (!Object.keys(newMetrics).includes(props.ticker)) {
                 newMetrics[props.ticker] = [];
             }
-
             const newEntry = props.value;
             // Check if the metric with the same id already exists
             let metricExists = false;
+
             newMetrics[props.ticker].map(entry => {
                 if (entry.metricId === newEntry.metricId) {
                     metricExists = true;
@@ -182,6 +190,24 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
                 return { metrics: state.metrics };
             } else {
                 newMetrics[props.ticker] = [...newMetrics[props.ticker], newEntry];
+                const baseChartId: string = getChartviewBaseChartId(props.ticker);
+                const { x, y, dataX } = useBaseChartStore.getState().charts[baseChartId]
+                // Add the metric to our chart when it is added into the metric store
+                addChart({
+                    id: newEntry.metricId,
+                    baseId: baseChartId,
+                    x: x,
+                    y: y,
+                    dataX: dataX,
+                    dataY: newEntry.value,
+                    color: stringToColour(newEntry.metricId),
+                    type: newEntry.chartType ?? 'line',
+                })
+                addLineTracker({
+                    baseId: baseChartId,
+                    ticker: props.ticker,
+                    metrics: newMetrics[props.ticker],
+                })
                 return { metrics: newMetrics };
             }
         }),
@@ -189,6 +215,10 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
         set((state: MetricStoreTypes) => {
             const newMetrics = { ...state.metrics };
             // Fill in any missing parameters
+
+            const baseChartId = getChartviewBaseChartId(props.ticker)
+            const { x, y, dataX } = useBaseChartStore.getState().charts[baseChartId]
+
             newMetrics[props.ticker] = newMetrics[props.ticker].map(
                 (entry: TickerMetricStoreFormat) => {
                     // metricParams must be present if the metrics is required to be replaced
@@ -197,6 +227,29 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
                     return returnEntry;
                 }
             );
+
+            removeLine({
+                baseId: baseChartId,
+                id: props.replacementId,
+            })
+
+            addChart({
+                baseId: baseChartId,
+                id: props.value.metricId,
+                x: x,
+                y: y,
+                dataX: dataX,
+                dataY: props.value.value,
+                color: stringToColour(props.value.metricId),
+                type: props.value.chartType ?? 'line',
+            })
+
+            addLineTracker({
+                baseId: baseChartId,
+                ticker: props.ticker,
+                metrics: newMetrics[props.ticker],
+            })
+
             return { metrics: newMetrics };
         }),
     removeMetric: (props: RemoveMetricPropType) =>
@@ -205,6 +258,17 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
             newMetrics[props.ticker] = newMetrics[props.ticker].filter(
                 (entry: TickerMetricStoreFormat) => entry.metricId !== props.metricId
             );
+            // Remove the line from our chart
+            const baseChartId: string = getChartviewBaseChartId(props.ticker);
+            removeLine({
+                baseId: baseChartId,
+                id: props.metricId,
+            })
+            addLineTracker({
+                baseId: baseChartId,
+                ticker: props.ticker,
+                metrics: newMetrics[props.ticker],
+            })
             return { metrics: newMetrics };
         }),
     removeTicker: (props: RemoveTickerPropType) =>

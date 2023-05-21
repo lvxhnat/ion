@@ -6,11 +6,11 @@ from fastapi import APIRouter, Depends
 from ion_clients.services.postgres.postgres_service import get_session
 from ion_clients.services.postgres.actions import order_search
 
-from data_ingestion.app.api.api_v2.postgres.models.data.tickers import (
-    AssetMetaData,
-)
 from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import (
     AssetSearchParams,
+)
+from data_ingestion.app.api.api_v2.configs.base_config import (
+    configs as base_configs,
 )
 
 # Autocomplete can be implemented by postgres, elastic etc, so a generic autocomplete file is created for it
@@ -18,8 +18,6 @@ from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import
 router = APIRouter(
     tags=["autocomplete"],
 )
-
-query_tables = {AssetMetaData.__tablename__: AssetMetaData}
 
 
 @router.get("/health")
@@ -32,21 +30,21 @@ def query_asset_search_table(
     params: AssetSearchParams, session: Session = Depends(get_session)
 ):
     if len(params.query) < 4:
-        query = func.lower(query_tables[params.table].symbol).like(
-            f"%{params.query}%".lower()
-        )
+        query = func.lower(
+            base_configs.POSTGRES_TABLES[params.table].symbol
+        ).like(f"%{params.query}%".lower())
     else:
         query = or_(
-            func.lower(query_tables[params.table].symbol).like(
+            func.lower(base_configs.POSTGRES_TABLES[params.table].symbol).like(
                 f"%{params.query}%".lower()
             ),
-            func.lower(query_tables[params.table].name).like(
+            func.lower(base_configs.POSTGRES_TABLES[params.table].name).like(
                 f"%{params.query}%".lower()
             ),
         )
     return order_search(
         session,
         filters=[query],
-        table_schema=query_tables[params.table],
+        table_schema=base_configs.POSTGRES_TABLES[params.table],
         first=False,
     )

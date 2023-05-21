@@ -84,28 +84,19 @@ export default function MainDataTable(props: {
                                         );
                                     } else if (columnEntry.type === 'remove') {
                                         component = (
-                                            <HiOutlinePencil
+                                            <MdDelete
                                                 style={{ fontSize: 15 }}
-                                                onClick={() =>
+                                                onClick={() => {
                                                     props.handleRowRemove
-                                                        ? props.handleRowRemove(
-                                                              entry[props.id as keyof typeof entry]
-                                                          )
+                                                        ? props.handleRowRemove(entry.uuid)
                                                         : undefined
-                                                }
+                                                }}
                                             />
                                         );
                                     } else if (columnEntry.type === 'edit') {
                                         component = (
-                                            <MdDelete
+                                            <HiOutlinePencil
                                                 style={{ fontSize: 15 }}
-                                                onClick={() =>
-                                                    props.handleRowRemove
-                                                        ? props.handleRowRemove(
-                                                              entry[props.id as keyof typeof entry]
-                                                          )
-                                                        : undefined
-                                                }
                                             />
                                         );
                                     } else {

@@ -22,6 +22,8 @@ const Item = styled(Box)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
+export const getChartviewBaseChartId = (ticker: string | undefined) => `${ticker}__tickerChart`
+
 /**
  * Provides a historical chart view of a single security selected.
  * @returns
@@ -35,7 +37,7 @@ export default function Chartview(props: {
     const [showSidebar, setShowSidebar] = React.useState<boolean>(false);
     const addChart = useChartStore(state => state.setChart);
 
-    const baseLineChartId: string = `${props.ticker}__tickerChart`;
+    const baseLineChartId: string = getChartviewBaseChartId(props.ticker);
 
     React.useEffect(() => {
         const ticker = props.ticker ? props.ticker : 'SPY';
@@ -114,7 +116,6 @@ export default function Chartview(props: {
                             showGrid
                             showAverage
                             showTooltip
-                            showMetrics
                             baseId={baseLineChartId}
                             defaultData={data[props.ticker]}
                         />

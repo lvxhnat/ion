@@ -1,29 +1,35 @@
 import * as d3 from 'd3';
 import { ColorsEnum } from 'common/theme';
 import { CHARTCONFIGS, CHARTIDS } from '../../config';
-import { DefaultDataProps } from '../../schema/schema';
 import { returnChartAxis } from '../../BaseChart';
 import {
-    EditLiveMovePropTypes,
     TickerMetricStoreFormat,
     useChartStore,
+    useLiveMovesStore,
+    useMetricStore,
+    useTickerDataStore,
 } from 'store/chartview/chartview';
 
 export const addLineTracker = (props: {
     ticker: string;
     baseId: string;
-    tooltipId: string;
-    data: DefaultDataProps; // The base data tracker
-    metrics: TickerMetricStoreFormat[];
-    setLiveMoves: (props: EditLiveMovePropTypes) => void;
-    draw?: boolean;
+    metrics: TickerMetricStoreFormat[]
 }) => {
-    const svg = d3.selectAll(`#${props.baseId}`);
+    // Get the required states for initiating our tooltips
+    const data = useTickerDataStore.getState().data[props.ticker]
+    const setLiveMoves = useLiveMovesStore.getState().setLiveMoves
     const draw = useChartStore.getState().charts[props.ticker].draw;
+
+    // Retrieve the SVG
+    const svg = d3.selectAll(`#${props.baseId}`);
+
+    // Remove any existing draw containers
+    d3.selectAll(`#${props.baseId}_tooltipFocusGroup`).remove();
+    d3.selectAll(`#${props.baseId}_tooltipTrackerRect`).remove();
 
     const bisect = d3.bisector((d: any) => d).left;
 
-    const nameWrapper = (name: string) => `${props.baseId}_${name}_${props.tooltipId}`;
+    const nameWrapper = (name: string) => `${props.baseId}_${name}_${props.baseId}`;
 
     const groupClassname: string = nameWrapper(CHARTIDS.TOOLTIP_FOCUS_CLASS);
     const lineClassname: string = nameWrapper(CHARTIDS.TOOLTIP_LINE_CLASS);
@@ -34,19 +40,22 @@ export const addLineTracker = (props: {
     const height: number = document.getElementById(props.baseId)!.parentNode!.parentElement!
         .clientHeight;
 
-    const dates = props.data.dataX;
+    const dates = data.dataX;
 
     const { x, y } = returnChartAxis({
         baseId: props.baseId,
-        dataX: props.data.dataX,
-        dataY: props.data.dataY,
+        dataX: data.dataX,
+        dataY: data.dataY,
         zeroAxis: false,
     });
-    const focus = svg.append('g').attr('class', groupClassname);
+
+    const focus = svg.append('g').attr("id", `${props.baseId}_tooltipFocusGroup`).attr('class', groupClassname);
+
     let mouseMoveTimeout: any;
 
     const trackerContainer = svg
         .append('rect')
+        .attr("id", `${props.baseId}_tooltipTrackerRect`)
         .attr('class', mousetrackerClassname)
         .style('fill', 'transparent')
         .style('pointer-events', 'all')
@@ -83,25 +92,25 @@ export const addLineTracker = (props: {
         focus.selectAll(`.${lineClassname}_y`).attr('transform', `translate(${x(dates[i])}, 0)`);
         focus
             .selectAll(`.${lineClassname}_x`)
-            .attr('transform', `translate(0, ${y(props.data.dataY[i])})`);
+            .attr('transform', `translate(0, ${y(data.dataY[i])})`);
         clearTimeout(mouseMoveTimeout);
         mouseMoveTimeout = setTimeout(() => {
             // To make calls more efficient, we add debounce
             // This sequence of hooks sets the prices for the cursor as it moves
             if (dates[i]) {
-                props.setLiveMoves({
+                setLiveMoves({
                     ticker: props.ticker,
                     metricId: 'price',
-                    value: props.data.dataY[i],
+                    value: data.dataY[i],
                 });
-                props.setLiveMoves({
+                setLiveMoves({
                     ticker: props.ticker,
                     metricId: 'date',
-                    value: props.data.dataX[i],
+                    value: data.dataX[i],
                 });
                 if (props.metrics) {
                     props.metrics.map((entry: TickerMetricStoreFormat) => {
-                        props.setLiveMoves({
+                        setLiveMoves({
                             ticker: props.ticker,
                             metricId: entry.metricId,
                             value: entry.value[i],

@@ -13,7 +13,6 @@ export interface LineChartProps {
     showYAxis?: boolean;
     showNormalised?: boolean;
     showTooltip?: boolean;
-    showMetrics?: boolean;
 }
 
 export type ChartTypes = 'line' | 'area';

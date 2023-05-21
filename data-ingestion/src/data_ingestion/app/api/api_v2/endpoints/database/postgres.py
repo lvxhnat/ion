@@ -5,7 +5,6 @@ from ion_clients.services.postgres.actions import order_query
 from ion_clients.services.postgres.postgres_service import get_session
 
 from data_ingestion.app.api.api_v2.postgres.models.infra.portfolio import (
-    Portfolio,
     PortfolioAssets,
 )
 from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import (
@@ -17,15 +16,11 @@ from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import
     PortfolioSearchParams,
 )
 
+from data_ingestion.app.api.api_v2.configs.base_config import configs as base_configs
+
 router = APIRouter(
     tags=["postgres"],
 )
-
-query_tables = {
-    Portfolio.__tablename__: Portfolio,
-    PortfolioAssets.__tablename__: PortfolioAssets,
-}
-
 
 @router.get("/health")
 def health_check():
@@ -59,7 +54,7 @@ def get_postgres_table(
     table_name: str,
     session: Session = Depends(get_session),
 ):
-    items = session.query(query_tables[table_name]).all()
+    items = session.query(base_configs.POSTGRES_TABLES[table_name]).all()
     return items
 
 
@@ -69,7 +64,7 @@ def delete_postgres_table_entry(
     id: str,
     session: Session = Depends(get_session),
 ):
-    entry = session.query(query_tables[table_name]).get(id)
+    entry = session.query(base_configs.POSTGRES_TABLES[table_name]).get(id)
     session.delete(entry)
     return
 
@@ -80,7 +75,7 @@ def insert_postgres_table_entry(
     entry: PostgresTable,
     session: Session = Depends(get_session),
 ):
-    session.add(query_tables[table_name](**entry.dict()))
+    session.add(base_configs.POSTGRES_TABLES[table_name](**entry.dict()))
     return
 
 
@@ -91,4 +86,4 @@ def update_postgres_table_entry(
     replacement_entry: PostgresTable,
     session: Session = Depends(get_session),
 ):
-    session.query(query_tables[table_name]).get(id).update(replacement_entry)
+    session.query(base_configs.POSTGRES_TABLES[table_name]).get(id).update(replacement_entry)

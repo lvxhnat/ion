@@ -14,7 +14,6 @@ import { useChartStore, useTickerDataStore } from 'store/chartview/chartview';
 import ChartviewLabPopup from './ChartviewLabPopup';
 import { ColorsEnum } from 'common/theme';
 import { TickerSearch } from 'components/Search/Search';
-import { ChartTypes } from 'components/Charting/BaseChart/type';
 import { removeLine } from 'components/Charting/BaseChart/plugins/editChart/removeChart';
 import { CHARTIDS } from 'components/Charting/BaseChart/config';
 
@@ -106,7 +105,7 @@ const ModifiedStudiesButton = (props: { [others: string]: any }) => {
     );
 };
 
-const ChartTypeButton = (props: { baseId: string; ticker: string; chartType: ChartTypes }) => {
+const ChartTypeButton = (props: { baseId: string; ticker: string }) => {
     const [showArea, setShowArea] = React.useState<boolean>(false);
     const [chart, setChart] = useChartStore(state => [state.charts[props.ticker], state.setChart]);
 
@@ -251,7 +250,6 @@ export default function ChartviewToolbar(props: {
                         <ChartTypeButton
                             ticker={props.ticker}
                             baseId={props.baseId}
-                            chartType="area"
                         />
                         <DrawLinesButton ticker={props.ticker} baseId={props.baseId} />
                         <ModifiedStudiesButton onClick={() => setShowLab(true)} />

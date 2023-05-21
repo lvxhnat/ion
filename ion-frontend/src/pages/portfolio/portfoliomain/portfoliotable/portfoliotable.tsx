@@ -74,7 +74,6 @@ export default function PortfolioTable() {
                         if ('uuid' in portfolioSelected && portfolioSelected.uuid === entry.uuid) {
                             rowColor = ColorsEnum.warmgray1;
                         }
-                        console.log(portfolioSelected)
                         return (
                             <StyledTableRow
                                 style={{ backgroundColor: rowColor }}

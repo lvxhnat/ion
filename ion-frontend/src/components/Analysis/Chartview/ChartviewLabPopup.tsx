@@ -11,7 +11,6 @@ import {
     MetricCalculableFields,
     TechnicalIndicatorsKeys,
     TickerMetricStoreFormat,
-    useLiveMovesStore,
     useMetricStore,
     useTickerDataStore,
 } from 'store/chartview/chartview';
@@ -26,7 +25,6 @@ import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { MovingAverageProps } from './calculations/schemas/props/schema';
 import { stringToColour } from 'common/helper/general';
 import OptionChoice from './choice/optionchoice';
-import { removeLine } from 'components/Charting/BaseChart/plugins/editChart/removeChart';
 
 /**
  * Generates the Right-most Panel shown on the Lab Popup, allowing users to modify the parameters of the functions used to calculate the time series.
@@ -169,7 +167,7 @@ const LabPopupMetricRow = (props: {
 
     const addMetricToStrategy = (): void => {
         const defaultParams = { ...technicalIndicators[props.metric].defaultParams };
-        const movingAverage: number[] = technicalIndicators[props.metric].function({
+        const results: number[] = technicalIndicators[props.metric].function({
             arr: data[props.ticker].dataY,
             ...defaultParams,
         });
@@ -178,11 +176,12 @@ const LabPopupMetricRow = (props: {
             ticker: props.ticker,
             value: {
                 field: 'price',
-                value: movingAverage,
+                value: results,
                 metric: props.metric,
                 metricParams: defaultParams,
                 color: stringToColour(metricId),
                 metricId: metricId,
+                chartType: technicalIndicators[props.metric].chartType,
             },
         });
     };
@@ -230,7 +229,6 @@ const LabPopupStrategyRow = (props: {
         state.removeMetric,
     ]);
 
-    const removeLiveMovesMetric = useLiveMovesStore(state => state.removeLiveMovesMetric);
     const setselectedMetricId = useMetricStore(state => state.setselectedMetricId);
 
     return (
@@ -274,11 +272,7 @@ const LabPopupStrategyRow = (props: {
                                                 };
                                                 setselectedMetricId({ metric: '' });
                                                 removeMetric(removeProps);
-                                                removeLiveMovesMetric(removeProps);
-                                                removeLine({
-                                                    baseId: props.baseId,
-                                                    id: indicatorId,
-                                                });
+                                                // removeLiveMovesMetric(removeProps);
                                             }}
                                         >
                                             <CloseIcon fontSize="inherit" />

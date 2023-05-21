@@ -8,6 +8,7 @@ import {
     JSONMetricPropTypes,
     SimpleMovingAverageJSONProps,
 } from './schemas/props/reference/momentum';
+import { ChartTypes } from 'components/Charting/BaseChart/type';
 
 export const indicatorIdDelimiter: string = '__';
 
@@ -38,6 +39,7 @@ export interface NumericalBoundary {
 
 interface TechnicalIndicatorTypes {
     shortName: string;
+    chartType: ChartTypes;
     function: Function;
     schema: JSONMetricPropTypes;
     defaultParams: { [params: string]: any };
@@ -46,6 +48,7 @@ interface TechnicalIndicatorTypes {
 
 export const technicalIndicators: { [indicator: string]: TechnicalIndicatorTypes } = {
     SimpleMovingAverage: {
+        chartType: 'line',
         shortName: 'SMA',
         function: calcSimpleMovingAverage,
         defaultParams: { window: 9 },
@@ -54,6 +57,7 @@ export const technicalIndicators: { [indicator: string]: TechnicalIndicatorTypes
         schema: SimpleMovingAverageJSONProps,
     },
     ExponentialMovingAverage: {
+        chartType: 'line',
         shortName: 'EMA',
         function: calcExponentialMovingAverage,
         defaultParams: { window: 9, smoothing: 2 } as {
@@ -64,6 +68,7 @@ export const technicalIndicators: { [indicator: string]: TechnicalIndicatorTypes
         schema: ExponentialMovingAverageJSONProps,
     },
     BollingerBand: {
+        chartType: 'line',
         shortName: 'BollingerBand',
         function: calcBollingerBand,
         defaultParams: {

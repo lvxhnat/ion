@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Literal
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -33,12 +33,16 @@ class PortfolioAssetParams(BaseModel):
     uuid: str
     portfolio_id: str
     asset_id: str
-    asset_type: str
-    quantity: int
-    position: str
-    currency: str
-    account: str
-    price_purchased: float
+    asset_type: Literal["stock", "forex", "etf"]
+
+    # For portfolio optimisation
+    quantity: Optional[int]
+    position: Optional[str]
+
+    # For portfolio historical analysis
+    currency: Optional[str]  # Can be automatically detected from asset_type
+    account: Optional[str]
+    price_purchased: Optional[float]
     fx_rate: Optional[float]
     transaction_date: Optional[datetime]
 
