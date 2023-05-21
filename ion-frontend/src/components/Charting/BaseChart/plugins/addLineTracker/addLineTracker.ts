@@ -13,11 +13,11 @@ import {
 export const addLineTracker = (props: {
     ticker: string;
     baseId: string;
-    metrics: TickerMetricStoreFormat[]
+    metrics: TickerMetricStoreFormat[];
 }) => {
     // Get the required states for initiating our tooltips
-    const data = useTickerDataStore.getState().data[props.ticker]
-    const setLiveMoves = useLiveMovesStore.getState().setLiveMoves
+    const data = useTickerDataStore.getState().data[props.ticker];
+    const setLiveMoves = useLiveMovesStore.getState().setLiveMoves;
     const draw = useChartStore.getState().charts[props.ticker].draw;
 
     // Retrieve the SVG
@@ -49,13 +49,16 @@ export const addLineTracker = (props: {
         zeroAxis: false,
     });
 
-    const focus = svg.append('g').attr("id", `${props.baseId}_tooltipFocusGroup`).attr('class', groupClassname);
+    const focus = svg
+        .append('g')
+        .attr('id', `${props.baseId}_tooltipFocusGroup`)
+        .attr('class', groupClassname);
 
     let mouseMoveTimeout: any;
 
     const trackerContainer = svg
         .append('rect')
-        .attr("id", `${props.baseId}_tooltipTrackerRect`)
+        .attr('id', `${props.baseId}_tooltipTrackerRect`)
         .attr('class', mousetrackerClassname)
         .style('fill', 'transparent')
         .style('pointer-events', 'all')

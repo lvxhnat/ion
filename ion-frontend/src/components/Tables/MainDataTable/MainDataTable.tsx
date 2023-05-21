@@ -56,7 +56,9 @@ export default function MainDataTable(props: {
                 <TableBody>
                     {props.tableBody.map((entry: MainDataTableBodyType, index: number) => {
                         let rowColor = 'transparent';
-                        if (index % 2 === 0) { rowColor = ColorsEnum.darkGrey };
+                        if (index % 2 === 0) {
+                            rowColor = ColorsEnum.darkGrey;
+                        }
                         return (
                             <StyledTableRow
                                 key={`MainDataTableRow_${index}`}
@@ -89,16 +91,12 @@ export default function MainDataTable(props: {
                                                 onClick={() => {
                                                     props.handleRowRemove
                                                         ? props.handleRowRemove(entry.uuid)
-                                                        : undefined
+                                                        : undefined;
                                                 }}
                                             />
                                         );
                                     } else if (columnEntry.type === 'edit') {
-                                        component = (
-                                            <HiOutlinePencil
-                                                style={{ fontSize: 15 }}
-                                            />
-                                        );
+                                        component = <HiOutlinePencil style={{ fontSize: 15 }} />;
                                     } else {
                                         component = (
                                             <Typography variant="subtitle2" noWrap>

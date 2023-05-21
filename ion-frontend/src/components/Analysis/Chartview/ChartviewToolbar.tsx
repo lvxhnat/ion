@@ -247,10 +247,7 @@ export default function ChartviewToolbar(props: {
                                 <MdOutlineBackupTable />
                             </S.ButtonWrapper>
                         </Tooltip>
-                        <ChartTypeButton
-                            ticker={props.ticker}
-                            baseId={props.baseId}
-                        />
+                        <ChartTypeButton ticker={props.ticker} baseId={props.baseId} />
                         <DrawLinesButton ticker={props.ticker} baseId={props.baseId} />
                         <ModifiedStudiesButton onClick={() => setShowLab(true)} />
                     </>

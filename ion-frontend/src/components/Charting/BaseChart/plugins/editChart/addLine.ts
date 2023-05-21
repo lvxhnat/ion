@@ -32,5 +32,4 @@ export const addLine = (props: {
         .attr('stroke', props.color)
         .attr('stroke-width', CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH)
         .attr('d', valueLine(d3.range(props.dataX.length)));
-
 };

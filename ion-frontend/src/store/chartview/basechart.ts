@@ -6,8 +6,8 @@ export interface ChartStoreTypes {
     setChartConfigs: (props: ChartConfigProps) => void;
 }
 interface ChartConfigs {
-    x: d3.ScaleTime<number, number, never>,
-    y: d3.ScaleLinear<number, number, never>,
+    x: d3.ScaleTime<number, number, never>;
+    y: d3.ScaleLinear<number, number, never>;
     dataX: Date[];
 }
 interface ChartConfigProps {

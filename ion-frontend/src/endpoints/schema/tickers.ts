@@ -12,4 +12,4 @@ export interface EquityHistoricalDTO {
     data: OHLCHistoricalDTO[];
     source: 'finnhub';
 }
-export interface ForexHistoricalDTO extends OHLCHistoricalDTO { }
+export interface ForexHistoricalDTO extends OHLCHistoricalDTO {}

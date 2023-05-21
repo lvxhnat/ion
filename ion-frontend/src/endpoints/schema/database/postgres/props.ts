@@ -5,4 +5,4 @@ export enum PostgresTablesEnum {
     PORTFOLIO_ASSETS = 'portfolio_assets',
 }
 
-export type PostgresTableSchemas = PortfolioTableEntry | PortfolioAssetTableEntry
+export type PostgresTableSchemas = PortfolioTableEntry | PortfolioAssetTableEntry;

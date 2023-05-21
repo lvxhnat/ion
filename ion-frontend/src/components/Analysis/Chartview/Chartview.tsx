@@ -22,7 +22,7 @@ const Item = styled(Box)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-export const getChartviewBaseChartId = (ticker: string | undefined) => `${ticker}__tickerChart`
+export const getChartviewBaseChartId = (ticker: string | undefined) => `${ticker}__tickerChart`;
 
 /**
  * Provides a historical chart view of a single security selected.

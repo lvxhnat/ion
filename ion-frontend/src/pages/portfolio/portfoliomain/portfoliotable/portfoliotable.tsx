@@ -79,7 +79,8 @@ export default function PortfolioTable() {
                                 style={{ backgroundColor: rowColor }}
                                 key={`${entry.name}_row`}
                                 onClick={() =>
-                                    ('uuid' in portfolioSelected && entry.uuid === portfolioSelected.uuid)
+                                    'uuid' in portfolioSelected &&
+                                    entry.uuid === portfolioSelected.uuid
                                         ? clearSelectedPortfolio()
                                         : setPortfolioSelected(entry)
                                 }

@@ -1,5 +1,8 @@
 import { getChartviewBaseChartId } from 'components/Analysis/Chartview/Chartview';
-import { getIndicatorIdFromMetric, technicalIndicators } from 'components/Analysis/Chartview/calculations/metrics';
+import {
+    getIndicatorIdFromMetric,
+    technicalIndicators,
+} from 'components/Analysis/Chartview/calculations/metrics';
 import { MovingAverageProps } from 'components/Analysis/Chartview/calculations/schemas/props/schema';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { ChartTypes } from 'components/Charting/BaseChart/type';
@@ -54,7 +57,7 @@ export interface EditLiveMovePropTypes {
     metricId: string;
     value: AllowedLiveMoveValueTypes;
 }
-export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> { }
+export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> {}
 
 export interface EditLiveMoveTypes {
     liveMoves: {
@@ -94,7 +97,7 @@ export interface ChartStoreTypes {
 }
 interface TickerChartType {
     color: string;
-    type: ChartTypes
+    type: ChartTypes;
     draw?: boolean;
 }
 interface EditChartPropType {
@@ -191,7 +194,7 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
             } else {
                 newMetrics[props.ticker] = [...newMetrics[props.ticker], newEntry];
                 const baseChartId: string = getChartviewBaseChartId(props.ticker);
-                const { x, y, dataX } = useBaseChartStore.getState().charts[baseChartId]
+                const { x, y, dataX } = useBaseChartStore.getState().charts[baseChartId];
                 // Add the metric to our chart when it is added into the metric store
                 addChart({
                     id: newEntry.metricId,
@@ -202,12 +205,12 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
                     dataY: newEntry.value,
                     color: stringToColour(newEntry.metricId),
                     type: newEntry.chartType ?? 'line',
-                })
+                });
                 addLineTracker({
                     baseId: baseChartId,
                     ticker: props.ticker,
                     metrics: newMetrics[props.ticker],
-                })
+                });
                 return { metrics: newMetrics };
             }
         }),
@@ -216,8 +219,8 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
             const newMetrics = { ...state.metrics };
             // Fill in any missing parameters
 
-            const baseChartId = getChartviewBaseChartId(props.ticker)
-            const { x, y, dataX } = useBaseChartStore.getState().charts[baseChartId]
+            const baseChartId = getChartviewBaseChartId(props.ticker);
+            const { x, y, dataX } = useBaseChartStore.getState().charts[baseChartId];
 
             newMetrics[props.ticker] = newMetrics[props.ticker].map(
                 (entry: TickerMetricStoreFormat) => {
@@ -231,7 +234,7 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
             removeLine({
                 baseId: baseChartId,
                 id: props.replacementId,
-            })
+            });
 
             addChart({
                 baseId: baseChartId,
@@ -242,13 +245,13 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
                 dataY: props.value.value,
                 color: stringToColour(props.value.metricId),
                 type: props.value.chartType ?? 'line',
-            })
+            });
 
             addLineTracker({
                 baseId: baseChartId,
                 ticker: props.ticker,
                 metrics: newMetrics[props.ticker],
-            })
+            });
 
             return { metrics: newMetrics };
         }),
@@ -263,12 +266,12 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
             removeLine({
                 baseId: baseChartId,
                 id: props.metricId,
-            })
+            });
             addLineTracker({
                 baseId: baseChartId,
                 ticker: props.ticker,
                 metrics: newMetrics[props.ticker],
-            })
+            });
             return { metrics: newMetrics };
         }),
     removeTicker: (props: RemoveTickerPropType) =>

@@ -21,8 +21,8 @@ import { getPortfolioAssets } from 'endpoints/clients/database/postgres/portfoli
 
 /**
  * Initialise Portfolio Entry for insertion into portfolio_assets database
- * @param props 
- * @returns 
+ * @param props
+ * @returns
  */
 const initialiseEntry = (props: {
     ticker: string;
@@ -67,12 +67,12 @@ export default function PortfolioSidePanel() {
     React.useEffect(() => {
         if ('uuid' in portfolioSelected) {
             getPortfolioAssets({
-                id: portfolioSelected.uuid
-            }).then((res) => {
+                id: portfolioSelected.uuid,
+            }).then(res => {
                 setSelectedTickers(res.data);
-            })
+            });
         }
-    }, [portfolioSelected])
+    }, [portfolioSelected]);
 
     const handleApply = () => {
         selectedTickers.map((entry: PortfolioAssetTableEntry) => {
@@ -80,26 +80,26 @@ export default function PortfolioSidePanel() {
                 tableName: PostgresTablesEnum.PORTFOLIO_ASSETS,
                 entry: entry,
             });
-        })
-    }
+        });
+    };
 
     const handleCancel = () => {
         if ('uuid' in portfolioSelected) {
             getPortfolioAssets({
-                id: portfolioSelected.uuid
-            }).then((res) => {
+                id: portfolioSelected.uuid,
+            }).then(res => {
                 setSelectedTickers(res.data);
-            })
+            });
         }
-    }
+    };
 
     const handleRowRemove = (uuid: string) => {
-        setSelectedTickers(selectedTickers.filter((entry) => entry.uuid !== uuid))
+        setSelectedTickers(selectedTickers.filter(entry => entry.uuid !== uuid));
         deleteTable({
             tableName: PostgresTablesEnum.PORTFOLIO_ASSETS,
             id: uuid,
-        })
-    }
+        });
+    };
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -126,7 +126,7 @@ export default function PortfolioSidePanel() {
                 </div>
             </S.OptionsWrapper>
             <S.PortfolioSidePanelBody>
-                    {selectedTickers.length === 0 ? (
+                {selectedTickers.length === 0 ? (
                     <NoDataSkeleton text="No Tickers Available" />
                 ) : (
                     <MainDataTable
@@ -137,7 +137,7 @@ export default function PortfolioSidePanel() {
                     />
                 )}
             </S.PortfolioSidePanelBody>
-            <S.PortfolioSidePanelFooter> 
+            <S.PortfolioSidePanelFooter>
                 <div style={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
                     <S.ButtonWrapper onClick={() => setStaticSelected(!staticSelected)}>
                         {staticSelected ? <MdStop /> : <MdOutlineSsidChart />}
@@ -146,11 +146,11 @@ export default function PortfolioSidePanel() {
                         </Typography>
                     </S.ButtonWrapper>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 5}}>
-                    <PopupButton buttonType='secondary' onClick={() => handleCancel()}> 
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 5 }}>
+                    <PopupButton buttonType="secondary" onClick={() => handleCancel()}>
                         Cancel
                     </PopupButton>
-                    <PopupButton buttonType='primary' onClick={() => handleApply()}> 
+                    <PopupButton buttonType="primary" onClick={() => handleApply()}>
                         Apply
                     </PopupButton>
                 </div>

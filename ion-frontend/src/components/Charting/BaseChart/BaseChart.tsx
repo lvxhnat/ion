@@ -8,9 +8,7 @@ import { useD3 } from 'common/hooks/useD3';
 import { ColorsEnum } from 'common/theme';
 
 import { CHARTCONFIGS, CHARTIDS } from './config';
-import {
-    useChartStore,
-} from 'store/chartview/chartview';
+import { useChartStore } from 'store/chartview/chartview';
 import { useBaseChartStore } from 'store/chartview/basechart';
 
 export function determineStartY(zeroAxis: boolean, minValue: number, maxValue: number) {
@@ -40,9 +38,9 @@ export function returnChartAxis(props: {
     dataY: number[];
     zeroAxis: boolean;
 }): {
-    x: d3.ScaleTime<number, number, never>, 
-    y: d3.ScaleLinear<number, number, never>
-}  {
+    x: d3.ScaleTime<number, number, never>;
+    y: d3.ScaleLinear<number, number, never>;
+} {
     const dateTime: number[] = props.dataX.map((date: Date) => date.getTime());
     const width = document.getElementById(props.baseId)!.parentNode!.parentElement!.clientWidth;
     const height = document.getElementById(props.baseId)!.parentNode!.parentElement!.clientHeight;
@@ -127,9 +125,9 @@ export default function BaseChart({
             });
 
             setBaseChartConfigs({
-                baseId: baseId, 
-                configs: { x: x, y: y, dataX: dataX, }
-            })
+                baseId: baseId,
+                configs: { x: x, y: y, dataX: dataX },
+            });
 
             const yAxis = d3.axisRight(y).tickSize(width).ticks(0);
 

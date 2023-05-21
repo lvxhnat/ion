@@ -16,7 +16,7 @@ interface AreaChartParams extends BaseAreaChartParams {
 
 interface BoundedAreaChartParams extends BaseAreaChartParams {
     dataX: Date[];
-    colorY1: string; 
+    colorY1: string;
     colorY2: string;
     dataY1: number[];
     dataY2: number[];
