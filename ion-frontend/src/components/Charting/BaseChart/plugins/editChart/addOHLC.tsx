@@ -1,5 +1,6 @@
-import { ColorsEnum } from 'common/theme';
 import * as d3 from 'd3';
+
+import { ColorsEnum } from 'common/theme';
 import { OHLCHistoricalDTO } from 'endpoints/schema/tickers';
 import { CHARTIDS } from '../../config';
 

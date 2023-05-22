@@ -1,27 +1,27 @@
 import * as d3 from 'd3';
 import * as React from 'react';
-import * as C from './plugins';
-import * as A from './actions';
+
+import { addChart } from './actions';
 import { LineChartProps } from './type';
+import { addLineTracker, styleGrid, addMinMaxTag } from './plugins';
 
 import { useD3 } from 'common/hooks/useD3';
 import { ColorsEnum } from 'common/theme';
 
 import { CHARTCONFIGS, CHARTIDS } from './config';
-import { useChartStore } from 'store/chartview/chartview';
 import { useBaseChartStore } from 'store/chartview/basechart';
 
-export function determineStartY(zeroAxis: boolean, minValue: number, maxValue: number) {
+const determineStartY = (zeroAxis: boolean, minValue: number, maxValue: number) => {
     const minBoundary = (maxValue - minValue) * 0.3;
     return zeroAxis && minBoundary > 3 ? 0 : minValue - minBoundary;
 }
 
-function determineEndY(minValue: number, maxValue: number) {
+const determineEndY = (minValue: number, maxValue: number) => {
     const minBoundary = (maxValue - minValue) * 0.1;
     return maxValue + minBoundary;
 }
 
-function determineDatetimeFormat(startDate: Date, endDate: Date, count: number, numTicks: number) {
+const determineDatetimeFormat = (startDate: Date, endDate: Date, count: number, numTicks: number) => {
     const timeDifference: number =
         ((count / numTicks) * Math.abs(endDate.getTime() - startDate.getTime())) / 1000;
     let format: string = '%Y';
@@ -33,6 +33,8 @@ function determineDatetimeFormat(startDate: Date, endDate: Date, count: number, 
 }
 
 export function returnChartAxis(props: {
+    width: number; 
+    height: number;
     baseId: string;
     dataX: Date[];
     dataY: number[];
@@ -42,18 +44,16 @@ export function returnChartAxis(props: {
     y: d3.ScaleLinear<number, number, never>;
 } {
     const dateTime: number[] = props.dataX.map((date: Date) => date.getTime());
-    const width = document.getElementById(props.baseId)!.parentNode!.parentElement!.clientWidth;
-    const height = document.getElementById(props.baseId)!.parentNode!.parentElement!.clientHeight;
 
     const minDate = Math.min(...dateTime);
     const maxDate = Math.max(...dateTime);
     const minValue = Math.min(...props.dataY);
     const maxValue = Math.max(...props.dataY);
     // Prep and plot the axis
-    const x = d3.scaleTime().range([0, width]).domain([minDate, maxDate]);
+    const x = d3.scaleTime().range([0, props.width]).domain([minDate, maxDate]);
     const y = d3
         .scaleLinear()
-        .range([height, 0])
+        .range([props.height, 0])
         .domain([
             determineStartY(props.zeroAxis, minValue, maxValue),
             determineEndY(minValue, maxValue),
@@ -86,7 +86,6 @@ export default function BaseChart({
     const numTicks: number = 10;
     const tickerSymbol: string = baseId.split('__')[0];
 
-    const chartSettings = useChartStore(state => state.charts)[tickerSymbol];
     const setBaseChartConfigs = useBaseChartStore(state => state.setChartConfigs);
 
     const ref = useD3(
@@ -118,6 +117,8 @@ export default function BaseChart({
                 .attr('stroke-width', 0);
 
             const { x, y } = returnChartAxis({
+                width: width,
+                height: height,
                 baseId: baseId,
                 dataX: dataX,
                 dataY: dataY,
@@ -159,7 +160,7 @@ export default function BaseChart({
                 .attr('id', `${baseId}_${CHARTIDS.XAXIS_ID}`) // Sets a class name for our x axis
                 .call(xAxis)
                 .style('font-size', CHARTCONFIGS.DEFAULT_AXIS_FONTSIZE);
-
+            
             svg.append('g')
                 .attr('id', `${baseId}_${CHARTIDS.YAXIS_ID}`) // Set a class name for our y axis
                 .call(yAxis)
@@ -183,12 +184,20 @@ export default function BaseChart({
             }
 
             if (showGrid) {
-                C.styleGrid({
+                styleGrid({
                     baseId: baseId,
                 });
             }
 
-            A.addChart({
+            addMinMaxTag({
+                baseId: baseId,
+                x: x,
+                y: y,
+                dataX: dataX,
+                dataY: dataY,
+            })
+
+            addChart({
                 x: x,
                 y: y,
                 id: defaultData.id,
@@ -198,16 +207,18 @@ export default function BaseChart({
                 dataX: dataX,
                 dataY: dataY,
             });
-
+            
             if (showTooltip) {
-                C.addLineTracker({
+                addLineTracker({
+                    x: x, 
+                    y: y,
                     ticker: tickerSymbol,
                     baseId: baseId,
                     metrics: [],
                 });
             }
         },
-        [defaultData, chartSettings]
+        [defaultData]
     );
 
     return (

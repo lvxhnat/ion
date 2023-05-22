@@ -14,13 +14,6 @@ interface AreaChartParams extends BaseAreaChartParams {
     dataY: number[];
 }
 
-interface BoundedAreaChartParams extends BaseAreaChartParams {
-    dataX: Date[];
-    colorY1: string;
-    colorY2: string;
-    dataY1: number[];
-    dataY2: number[];
-}
 /**
  * Add a line to a BaseLineChart object. The line ID will be denoted by {BaseLineChartID_AssignedLineID}.
  * @param id the ID we wish to assign to the line we will be appending on to the chart. This will be AssignedLineID stated in the desc above.

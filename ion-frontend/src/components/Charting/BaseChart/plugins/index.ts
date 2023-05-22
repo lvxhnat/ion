@@ -1,7 +1,17 @@
-import addOHLC from './addOHLC';
 import styleGrid from './styleGrid';
+import addMinMaxTag from './addTags';
 import addLineTracker from './addLineTracker';
-import addDrag from './addDrag';
-import addLegend from './addLegend';
+import {
+    addArea,
+    addLine,
+    removeLine,
+} from './editChart';
 
-export { addOHLC, addDrag, addLegend, styleGrid, addLineTracker };
+export {
+    addMinMaxTag,
+    styleGrid,
+    addLineTracker,
+    addArea,
+    addLine,
+    removeLine,
+};

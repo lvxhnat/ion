@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 
+export const isArray = function (a: any) {
+    return (!!a) && (a.constructor === Array);
+};
 /**
  * Create a hexadecimal colour based on a string
  * @param str

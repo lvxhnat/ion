@@ -1,24 +1,24 @@
 import * as d3 from 'd3';
 import { ColorsEnum } from 'common/theme';
 import { CHARTCONFIGS, CHARTIDS } from '../../config';
-import { returnChartAxis } from '../../BaseChart';
 import {
     TickerMetricStoreFormat,
     useChartStore,
     useLiveMovesStore,
-    useMetricStore,
     useTickerDataStore,
 } from 'store/chartview/chartview';
 
 export const addLineTracker = (props: {
+    x: d3.ScaleTime<number, number, never>;
+    y: d3.ScaleLinear<number, number, never>;
     ticker: string;
     baseId: string;
     metrics: TickerMetricStoreFormat[];
+    draw?: boolean;
 }) => {
     // Get the required states for initiating our tooltips
     const data = useTickerDataStore.getState().data[props.ticker];
     const setLiveMoves = useLiveMovesStore.getState().setLiveMoves;
-    const draw = useChartStore.getState().charts[props.ticker].draw;
 
     // Retrieve the SVG
     const svg = d3.selectAll(`#${props.baseId}`);
@@ -41,13 +41,6 @@ export const addLineTracker = (props: {
         .clientHeight;
 
     const dates = data.dataX;
-
-    const { x, y } = returnChartAxis({
-        baseId: props.baseId,
-        dataX: data.dataX,
-        dataY: data.dataY,
-        zeroAxis: false,
-    });
 
     const focus = svg
         .append('g')
@@ -90,12 +83,12 @@ export const addLineTracker = (props: {
         .attr('x2', width);
 
     function mousemove(event: MouseEvent) {
-        const x0 = x.invert(d3.pointer(event, svg.node())[0]);
+        const x0 = props.x.invert(d3.pointer(event, svg.node())[0]);
         const i = bisect(dates, x0, 1);
-        focus.selectAll(`.${lineClassname}_y`).attr('transform', `translate(${x(dates[i])}, 0)`);
+        focus.selectAll(`.${lineClassname}_y`).attr('transform', `translate(${props.x(dates[i])}, 0)`);
         focus
             .selectAll(`.${lineClassname}_x`)
-            .attr('transform', `translate(0, ${y(data.dataY[i])})`);
+            .attr('transform', `translate(0, ${props.y(data.dataY[i])})`);
         clearTimeout(mouseMoveTimeout);
         mouseMoveTimeout = setTimeout(() => {
             // To make calls more efficient, we add debounce
@@ -130,7 +123,7 @@ export const addLineTracker = (props: {
         e.stopPropagation();
         e.stopImmediatePropagation();
         e.preventDefault();
-        if (draw) {
+        if (props.draw) {
             if (startDraw) {
                 const m = d3.pointer(e);
                 const line = svg

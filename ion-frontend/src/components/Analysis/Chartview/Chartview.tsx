@@ -33,6 +33,7 @@ export default function Chartview(props: {
     ticker?: string;
 }) {
     const [data, setData] = useTickerDataStore(state => [state.data, state.setData]);
+    const [loading, setLoading] = React.useState<boolean>(true);
     const [rawData, setRawData] = React.useState<{ [col: string]: any }[]>([]);
     const [showSidebar, setShowSidebar] = React.useState<boolean>(false);
     const addChart = useChartStore(state => state.setChart);
@@ -40,6 +41,7 @@ export default function Chartview(props: {
     const baseLineChartId: string = getChartviewBaseChartId(props.ticker);
 
     React.useEffect(() => {
+        setLoading(true)
         const ticker = props.ticker ? props.ticker : 'SPY';
         const assetType: keyof typeof ASSET_TYPES = props.assetType
             ? props.assetType
@@ -73,6 +75,7 @@ export default function Chartview(props: {
                     } as DefaultDataProps,
                 });
                 setRawData(res.data);
+                setLoading(false)
             });
         } else if (assetType === ASSET_TYPES.EQUITY) {
             getCandles(ticker).then(res => {
@@ -90,19 +93,20 @@ export default function Chartview(props: {
                     } as DefaultDataProps,
                 });
                 setRawData(data);
+                setLoading(false)
             });
         }
     }, []);
 
     return (
         <Item>
-            <ChartviewToolbar
+            {loading ? null : <ChartviewToolbar
                 ticker={props.ticker}
                 baseId={baseLineChartId}
                 assetType={props.assetType}
                 showSidebar={showSidebar}
                 setShowSidebar={setShowSidebar}
-            />
+            />}
             {props.ticker && data[props.ticker] && rawData.length !== 0 ? (
                 <div style={{ height: '100%', display: 'flex' }}>
                     <div style={{ width: '25%', display: showSidebar ? 'flex' : 'none' }}>

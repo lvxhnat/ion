@@ -9,17 +9,23 @@ import { FaChartArea, FaChartLine, FaBroom } from 'react-icons/fa';
 import { MdDraw, MdCancel, MdOutlineUndo, MdOutlineBackupTable } from 'react-icons/md';
 
 import { useThemeStore } from 'store/theme';
-import { useChartStore, useTickerDataStore } from 'store/chartview/chartview';
+import { useChartStore, useMetricStore, useTickerDataStore } from 'store/chartview/chartview';
 
 import ChartviewLabPopup from './ChartviewLabPopup';
 import { ColorsEnum } from 'common/theme';
 import { TickerSearch } from 'components/Search/Search';
-import { removeLine } from 'components/Charting/BaseChart/plugins/editChart/removeChart';
+import { removeLine } from 'components/Charting/BaseChart/plugins/editChart/removeLine';
 import { CHARTIDS } from 'components/Charting/BaseChart/config';
+import { useBaseChartStore } from 'store/chartview/basechart';
+import { getChartviewBaseChartId } from './Chartview';
+import { addChart } from 'components/Charting/BaseChart/actions';
+import { addLineTracker } from 'components/Charting/BaseChart/plugins';
 
 const DrawLinesButton = (props: { ticker: string; baseId: string }) => {
     const [menu, setMenu] = React.useState<boolean>(false);
     const [charts, setChart] = useChartStore(state => [state.charts, state.setChart]);
+    const metrics = useMetricStore(state => state.metrics)[props.ticker];
+    const baseChartStoreState = useBaseChartStore(state => state.charts)[props.baseId]
 
     if (charts[props.ticker])
         return (
@@ -47,7 +53,18 @@ const DrawLinesButton = (props: { ticker: string; baseId: string }) => {
                                     draw: !charts[props.ticker].draw,
                                 },
                             });
-                            setMenu(false);
+                            if (baseChartStoreState) {
+                                const {x, y} = baseChartStoreState;
+                                addLineTracker({
+                                    x: x, 
+                                    y: y,
+                                    ticker: props.ticker,
+                                    baseId: props.baseId, 
+                                    metrics: metrics,
+                                    draw: !charts[props.ticker].draw,
+                                })
+                                setMenu(false);
+                            }
                         }}
                     >
                         {charts[props.ticker].draw ? (
@@ -108,18 +125,37 @@ const ModifiedStudiesButton = (props: { [others: string]: any }) => {
 const ChartTypeButton = (props: { baseId: string; ticker: string }) => {
     const [showArea, setShowArea] = React.useState<boolean>(false);
     const [chart, setChart] = useChartStore(state => [state.charts[props.ticker], state.setChart]);
+    
+    const data = useTickerDataStore(state => state.data)[props.ticker]
+    const baseChartStoreState = useBaseChartStore(state => state.charts)[props.baseId]
 
     const handleClick = () => {
-        setShowArea(!showArea);
-        setChart({
-            ticker: props.ticker,
-            chart: {
-                color: chart.color,
-                type: !showArea ? 'area' : 'line',
-            },
-        });
-    };
-
+        if (baseChartStoreState) {
+            const { x, y, dataX } = baseChartStoreState
+            const chartType = !showArea ? 'area' : 'line'
+            setShowArea(!showArea);
+            setChart({
+                ticker: props.ticker,
+                chart: {
+                    color: chart.color,
+                    type: chartType,
+                },
+            });
+            const baseId = getChartviewBaseChartId(props.ticker)
+            removeLine({ baseId: baseId, id: data.id, selectAll: true });
+            addChart({
+                x: x,
+                y: y,
+                id: data.id,
+                baseId: baseId,
+                type: chartType,
+                color: 'white',
+                dataX: dataX,
+                dataY: data.dataY,
+            });
+        }
+    }
+    
     return (
         <S.ButtonWrapper onClick={handleClick} {...props}>
             {showArea ? (
