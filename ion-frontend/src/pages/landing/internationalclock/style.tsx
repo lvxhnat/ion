@@ -46,6 +46,7 @@ export const WeatherTextWrapper = styled('div')(({ theme }) => ({
     color: ColorsEnum.coolgray5,
     backgroundColor: ColorsEnum.warmgray6,
     gap: 25,
+    fontSize: 12,
 }));
 
 export const LeftWeatherWrapper = styled('div')(({ theme }) => ({

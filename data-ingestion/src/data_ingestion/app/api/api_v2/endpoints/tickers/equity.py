@@ -20,6 +20,11 @@ def health_check():
     return {"status": "healthy"}
 
 
+@router.get("/historical/frequencies")
+def get_historical_frequencies():
+    return {}
+
+
 @router.post("/historical")
 def get_historical_equity_data(
     params: HistoricalEquityParams,

@@ -6,8 +6,8 @@ import asyncio
 import warnings
 import requests
 import numpy as np
+from datetime import datetime, timedelta, timezone
 from typing import Callable, List, Iterator, Optional
-from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor
 
 from ion_clients.clients.oanda.configs.responses import (
@@ -126,8 +126,13 @@ def _get_oanda_historical_data(
 ) -> OandaBaseDataResponse:
     """Parallelised for multiple calls when the request boundaries fall out of the range accepted by the API parameters."""
     try:
-        from_date: datetime = datetime.strptime(from_date, "%Y-%m-%d")
-        to_date: datetime = datetime.strptime(to_date, "%Y-%m-%d")
+        if not to_date:
+            to_date: datetime = datetime.now(timezone.utc)
+        if not isinstance(from_date, datetime):
+            from_date: datetime = datetime.strptime(from_date, "%Y-%m-%d")
+        if not isinstance(to_date, datetime):
+            print(type(to_date))
+            to_date: datetime = datetime.strptime(to_date, "%Y-%m-%d")
     except ValueError as exc:
         raise ValueError(
             "Check datetime format for from_date \
@@ -213,9 +218,9 @@ def _get_oanda_historical_single_request_data(
     to_date: datetime = None,
     granularity: OandaReqGranularities = "S5",
 ) -> OandaBaseDataResponse:
-    
-    """Get data based on the limits of a single request"""    
-    
+
+    """Get data based on the limits of a single request"""
+
     price_type: str = "M"
 
     if count is None and from_date is None and to_date is None:
@@ -231,11 +236,13 @@ def _get_oanda_historical_single_request_data(
 
     # Request Structuring
 
-    if from_date and to_date:
+    if from_date:
         oanda_params = {
             "price": price_type,
             "from": int(from_date.timestamp()),
-            "to": int(to_date.timestamp()),
+            "to": int(to_date.timestamp())
+            if to_date
+            else int(datetime.today().timestamp()),
             "granularity": granularity,
         }
     else:

@@ -3,6 +3,7 @@ import * as S from './style';
 import moment from 'moment';
 
 import Typography from '@mui/material/Typography';
+import InfoIcon from '@mui/icons-material/Info';
 import { WiStrongWind, WiRaindrop, WiThermometer } from 'react-icons/wi';
 import { MdWavingHand } from 'react-icons/md';
 
@@ -12,6 +13,8 @@ import { geoMapping } from './mappings';
 import { getCurrentWeather } from 'endpoints/clients/weather';
 import { CurrentWeatherSchema } from 'endpoints/schema/weather';
 import { capitalizeString } from 'common/helper/general';
+import { Tooltip } from '@mui/material';
+import { formatDate } from 'common/constant/dates';
 
 // https://colordesigner.io/gradient-generator
 // https://momentjs.com/timezone/
@@ -52,6 +55,7 @@ function TimePiece(props: { timeZoneName: string; timeZone: string }) {
 // https://colordesigner.io/gradient-generator
 // https://momentjs.com/timezone/
 export default function InternationalClock(props: { timeZoneName: string }) {
+    const [lastUpdated, setLastUpdated] = React.useState<Date>(new Date());
     const [weatherData, setWeatherData] = React.useState<CurrentWeatherSchema>();
     const [weatherLoading, setWeatherLoading] = React.useState<boolean>(false);
 
@@ -69,6 +73,7 @@ export default function InternationalClock(props: { timeZoneName: string }) {
         updateWeatherData();
         const interval = setInterval(() => {
             updateWeatherData();
+            setLastUpdated(new Date());
         }, 1000 * 60 * 60);
         return () => clearInterval(interval);
     }, []);
@@ -79,12 +84,19 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                 timeZoneName={weatherData ? weatherData.city : props.timeZoneName}
                 timeZone={geoMapping[props.timeZoneName].timeZone}
             />
-            <S.WeatherTextWrapper>
+            <S.WeatherTextWrapper style={{ gap: 0 }}>
+                <Tooltip title={`Last updated at ${formatDate(lastUpdated)}`}>
+                    <InfoIcon fontSize="inherit"/>
+                </Tooltip>
                 <Typography
                     noWrap
                     variant="h4"
                     align="left"
-                    sx={{ color: ColorsEnum.coolgray4, padding: 1 }}
+                    sx={{ 
+                        color: ColorsEnum.coolgray4, 
+                        gap: 1, 
+                        padding: 1
+                }}
                 >
                     {weatherData ? capitalizeString(weatherData.weather_condition) : null}
                 </Typography>
