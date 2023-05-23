@@ -54,7 +54,7 @@ export interface EditLiveMovePropTypes {
     metricId: string;
     value: AllowedLiveMoveValueTypes;
 }
-export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> { }
+export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> {}
 
 export interface EditLiveMoveTypes {
     liveMoves: {
@@ -121,11 +121,7 @@ export const useChartStore = create<ChartStoreTypes>(set => ({
  * field: The data field belonging to the ticker that we will use to calculate the metric on. Must be a continuous time series of number[].
  * values: The calculated array of __field__ that we have calculated the metric on.
  */
-const initiateMetric = (props: {
-    ticker: string;
-    newEntry: any;
-    newMetrics: any;
-}) => {
+const initiateMetric = (props: { ticker: string; newEntry: any; newMetrics: any }) => {
     const baseChartId: string = getChartviewBaseChartId(props.ticker);
     const { x, y, dataX } = useBaseChartStore.getState().charts[baseChartId];
 
@@ -162,7 +158,7 @@ const initiateMetric = (props: {
         ticker: props.ticker,
         metrics: props.newMetrics[props.ticker],
     });
-}
+};
 export type MetricCalculableFields = 'price' | 'lower' | 'volume';
 export type TechnicalIndicatorsKeys = Extract<keyof typeof technicalIndicators, string>;
 
@@ -238,7 +234,7 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
                     ticker: props.ticker,
                     newEntry: newEntry,
                     newMetrics: newMetrics,
-                })
+                });
 
                 return { metrics: newMetrics };
             }
@@ -269,7 +265,7 @@ export const useMetricStore = create<MetricStoreTypes>(set => ({
                 ticker: props.ticker,
                 newEntry: props.value,
                 newMetrics: newMetrics,
-            })
+            });
 
             return { metrics: newMetrics };
         }),

@@ -6,6 +6,14 @@ interface FlexRowProps {
     alternate?: boolean;
 }
 
+export const ChangeRows = styled('div')(({ theme }) => ({
+    fontSize: 8,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+}));
+
 export const FlexRow = styled('div')<FlexRowProps>(({ theme, alternate }) => ({
     gap: 5,
     display: 'flex',

@@ -8,16 +8,17 @@ export const getHistoricalForex = (props: {
     granularity: string;
     period?: string;
     count?: number;
+    fromDate?: Date;
 }) => {
     const dI: any = {};
-    if (props.period) dI.period = props.period;
-    if (props.count) dI.count = props.count;
     return dataIngestionRequest.post<ForexHistoricalDTO[]>(
         ENDPOINTS.PRIVATE.FOREX_HISTORICAL_ENDPOINT,
         {
             symbol: props.symbol,
             granularity: props.granularity,
-            ...dI,
+            period: props.period,
+            count: props.count,
+            from_date: props.fromDate,
         }
     );
 };

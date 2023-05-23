@@ -1,3 +1,3 @@
-import { addMinMaxTag } from "./addTags";
+import { addMinMaxTag } from './addTags';
 
-export default addMinMaxTag
+export default addMinMaxTag;

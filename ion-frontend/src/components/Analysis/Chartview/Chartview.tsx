@@ -41,7 +41,8 @@ export default function Chartview(props: {
     const baseLineChartId: string = getChartviewBaseChartId(props.ticker);
 
     React.useEffect(() => {
-        setLoading(true)
+        setLoading(true);
+        const fromDate = new Date('2022-01-01');
         const ticker = props.ticker ? props.ticker : 'SPY';
         const assetType: keyof typeof ASSET_TYPES = props.assetType
             ? props.assetType
@@ -59,8 +60,8 @@ export default function Chartview(props: {
         if (assetType === ASSET_TYPES.FOREX) {
             getHistoricalForex({
                 symbol: ticker,
-                count: 50,
                 granularity: 'D',
+                fromDate: fromDate,
             }).then(res => {
                 setData({
                     ticker: ticker as string,
@@ -75,7 +76,7 @@ export default function Chartview(props: {
                     } as DefaultDataProps,
                 });
                 setRawData(res.data);
-                setLoading(false)
+                setLoading(false);
             });
         } else if (assetType === ASSET_TYPES.EQUITY) {
             getCandles(ticker).then(res => {
@@ -93,20 +94,22 @@ export default function Chartview(props: {
                     } as DefaultDataProps,
                 });
                 setRawData(data);
-                setLoading(false)
+                setLoading(false);
             });
         }
     }, []);
 
     return (
         <Item>
-            {loading ? null : <ChartviewToolbar
-                ticker={props.ticker}
-                baseId={baseLineChartId}
-                assetType={props.assetType}
-                showSidebar={showSidebar}
-                setShowSidebar={setShowSidebar}
-            />}
+            {loading ? null : (
+                <ChartviewToolbar
+                    ticker={props.ticker}
+                    baseId={baseLineChartId}
+                    assetType={props.assetType}
+                    showSidebar={showSidebar}
+                    setShowSidebar={setShowSidebar}
+                />
+            )}
             {props.ticker && data[props.ticker] && rawData.length !== 0 ? (
                 <div style={{ height: '100%', display: 'flex' }}>
                     <div style={{ width: '25%', display: showSidebar ? 'flex' : 'none' }}>
@@ -120,6 +123,7 @@ export default function Chartview(props: {
                             showGrid
                             showAverage
                             showTooltip
+                            showEndTags
                             baseId={baseLineChartId}
                             defaultData={data[props.ticker]}
                         />

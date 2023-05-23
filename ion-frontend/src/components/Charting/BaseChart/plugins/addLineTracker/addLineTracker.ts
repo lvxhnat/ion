@@ -85,7 +85,9 @@ export const addLineTracker = (props: {
     function mousemove(event: MouseEvent) {
         const x0 = props.x.invert(d3.pointer(event, svg.node())[0]);
         const i = bisect(dates, x0, 1);
-        focus.selectAll(`.${lineClassname}_y`).attr('transform', `translate(${props.x(dates[i])}, 0)`);
+        focus
+            .selectAll(`.${lineClassname}_y`)
+            .attr('transform', `translate(${props.x(dates[i])}, 0)`);
         focus
             .selectAll(`.${lineClassname}_x`)
             .attr('transform', `translate(0, ${props.y(data.dataY[i])})`);

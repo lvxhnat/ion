@@ -25,7 +25,7 @@ const DrawLinesButton = (props: { ticker: string; baseId: string }) => {
     const [menu, setMenu] = React.useState<boolean>(false);
     const [charts, setChart] = useChartStore(state => [state.charts, state.setChart]);
     const metrics = useMetricStore(state => state.metrics)[props.ticker];
-    const baseChartStoreState = useBaseChartStore(state => state.charts)[props.baseId]
+    const baseChartStoreState = useBaseChartStore(state => state.charts)[props.baseId];
 
     if (charts[props.ticker])
         return (
@@ -54,15 +54,15 @@ const DrawLinesButton = (props: { ticker: string; baseId: string }) => {
                                 },
                             });
                             if (baseChartStoreState) {
-                                const {x, y} = baseChartStoreState;
+                                const { x, y } = baseChartStoreState;
                                 addLineTracker({
-                                    x: x, 
+                                    x: x,
                                     y: y,
                                     ticker: props.ticker,
-                                    baseId: props.baseId, 
+                                    baseId: props.baseId,
                                     metrics: metrics,
                                     draw: !charts[props.ticker].draw,
-                                })
+                                });
                                 setMenu(false);
                             }
                         }}
@@ -125,14 +125,14 @@ const ModifiedStudiesButton = (props: { [others: string]: any }) => {
 const ChartTypeButton = (props: { baseId: string; ticker: string }) => {
     const [showArea, setShowArea] = React.useState<boolean>(false);
     const [chart, setChart] = useChartStore(state => [state.charts[props.ticker], state.setChart]);
-    
-    const data = useTickerDataStore(state => state.data)[props.ticker]
-    const baseChartStoreState = useBaseChartStore(state => state.charts)[props.baseId]
+
+    const data = useTickerDataStore(state => state.data)[props.ticker];
+    const baseChartStoreState = useBaseChartStore(state => state.charts)[props.baseId];
 
     const handleClick = () => {
         if (baseChartStoreState) {
-            const { x, y, dataX } = baseChartStoreState
-            const chartType = !showArea ? 'area' : 'line'
+            const { x, y, dataX } = baseChartStoreState;
+            const chartType = !showArea ? 'area' : 'line';
             setShowArea(!showArea);
             setChart({
                 ticker: props.ticker,
@@ -141,7 +141,7 @@ const ChartTypeButton = (props: { baseId: string; ticker: string }) => {
                     type: chartType,
                 },
             });
-            const baseId = getChartviewBaseChartId(props.ticker)
+            const baseId = getChartviewBaseChartId(props.ticker);
             removeLine({ baseId: baseId, id: data.id, selectAll: true });
             addChart({
                 x: x,
@@ -154,8 +154,8 @@ const ChartTypeButton = (props: { baseId: string; ticker: string }) => {
                 dataY: data.dataY,
             });
         }
-    }
-    
+    };
+
     return (
         <S.ButtonWrapper onClick={handleClick} {...props}>
             {showArea ? (
@@ -183,6 +183,24 @@ export default function ChartviewToolbar(props: {
     const { mode } = useThemeStore();
     const data = useTickerDataStore(state => state.data);
     const [showLab, setShowLab] = React.useState<boolean>(false);
+
+    let absoluteChange: number | null = null;
+    let pctChange: number | null = null;
+    let changeColor: string = 'white';
+    if (props.ticker) {
+        absoluteChange =
+            data[props.ticker].dataY[data[props.ticker].dataY.length - 1] -
+            data[props.ticker].dataY[data[props.ticker].dataY.length - 2];
+        pctChange =
+            (100 * absoluteChange) / data[props.ticker].dataY[data[props.ticker].dataY.length - 2];
+        changeColor =
+            data[props.ticker].dataY[data[props.ticker].dataY.length - 1] >
+            data[props.ticker].dataY[data[props.ticker].dataY.length - 2]
+                ? ColorsEnum.upHint
+                : ColorsEnum.downHint;
+    }
+    let decimalPoints = 2;
+    if (absoluteChange && absoluteChange < 0.1) decimalPoints = 5;
 
     return (
         <div
@@ -224,38 +242,27 @@ export default function ChartviewToolbar(props: {
                             {props.ticker.toUpperCase()}
                         </Typography>
                         <Typography
-                            variant="subtitle1"
-                            component="div"
-                            style={{
-                                color: 'white',
-                                fontWeight: 'bold',
-                            }}
+                            variant="subtitle2"
+                            style={{ color: 'white', fontWeight: 'bold' }}
                         >
                             {data[props.ticker].dataY[data[props.ticker].dataY.length - 1].toFixed(
-                                2
+                                decimalPoints
                             )}
                         </Typography>
-                        <Typography
-                            variant="subtitle1"
-                            component="div"
+                        <div
                             style={{
-                                color:
-                                    data[props.ticker].dataY[data[props.ticker].dataY.length - 1] >
-                                    data[props.ticker].dataY[data[props.ticker].dataY.length - 2]
-                                        ? ColorsEnum.upHint
-                                        : ColorsEnum.downHint,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
                             }}
                         >
-                            {(
-                                (100 *
-                                    (data[props.ticker].dataY[data[props.ticker].dataY.length - 1] -
-                                        data[props.ticker].dataY[
-                                            data[props.ticker].dataY.length - 2
-                                        ])) /
-                                data[props.ticker].dataY[data[props.ticker].dataY.length - 2]
-                            ).toFixed(2)}
-                            %
-                        </Typography>
+                            <S.ChangeRows style={{ color: changeColor }}>
+                                {absoluteChange?.toFixed(decimalPoints)}
+                            </S.ChangeRows>
+                            <S.ChangeRows style={{ color: changeColor }}>
+                                {pctChange?.toFixed(2)}%
+                            </S.ChangeRows>
+                        </div>
                     </>
                 ) : undefined}
             </div>

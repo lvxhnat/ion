@@ -14,14 +14,19 @@ import { useBaseChartStore } from 'store/chartview/basechart';
 const determineStartY = (zeroAxis: boolean, minValue: number, maxValue: number) => {
     const minBoundary = (maxValue - minValue) * 0.3;
     return zeroAxis && minBoundary > 3 ? 0 : minValue - minBoundary;
-}
+};
 
 const determineEndY = (minValue: number, maxValue: number) => {
     const minBoundary = (maxValue - minValue) * 0.1;
     return maxValue + minBoundary;
-}
+};
 
-const determineDatetimeFormat = (startDate: Date, endDate: Date, count: number, numTicks: number) => {
+const determineDatetimeFormat = (
+    startDate: Date,
+    endDate: Date,
+    count: number,
+    numTicks: number
+) => {
     const timeDifference: number =
         ((count / numTicks) * Math.abs(endDate.getTime() - startDate.getTime())) / 1000;
     let format: string = '%Y';
@@ -30,10 +35,10 @@ const determineDatetimeFormat = (startDate: Date, endDate: Date, count: number, 
     else if (timeDifference >= 60 * 60) format = '%d %b %H:%M';
     else format = '%M:%S';
     return format;
-}
+};
 
 export function returnChartAxis(props: {
-    width: number; 
+    width: number;
     height: number;
     baseId: string;
     dataX: Date[];
@@ -82,6 +87,7 @@ export default function BaseChart({
     showXAxis = CHARTCONFIGS.DEFAULT_SHOW_AXIS,
     showYAxis = CHARTCONFIGS.DEFAULT_SHOW_AXIS,
     showTooltip = CHARTCONFIGS.DEFAULT_SHOW_TOOLTIP,
+    showEndTags = CHARTCONFIGS.DEFAULT_SHOW_ENDTAGS,
 }: LineChartProps): React.ReactElement {
     const numTicks: number = 10;
     const tickerSymbol: string = baseId.split('__')[0];
@@ -100,7 +106,7 @@ export default function BaseChart({
             CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH =
                 strokeWidth ?? CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH;
 
-            const dataX = defaultData.dataX;
+            const dataX = defaultData.dataX.map(date => new Date(date));
             const dataY = defaultData.dataY;
 
             const width = document.getElementById(baseId)!.parentNode!.parentElement!.clientWidth;
@@ -160,7 +166,7 @@ export default function BaseChart({
                 .attr('id', `${baseId}_${CHARTIDS.XAXIS_ID}`) // Sets a class name for our x axis
                 .call(xAxis)
                 .style('font-size', CHARTCONFIGS.DEFAULT_AXIS_FONTSIZE);
-            
+
             svg.append('g')
                 .attr('id', `${baseId}_${CHARTIDS.YAXIS_ID}`) // Set a class name for our y axis
                 .call(yAxis)
@@ -189,13 +195,15 @@ export default function BaseChart({
                 });
             }
 
-            addMinMaxTag({
-                baseId: baseId,
-                x: x,
-                y: y,
-                dataX: dataX,
-                dataY: dataY,
-            })
+            if (showEndTags) {
+                addMinMaxTag({
+                    baseId: baseId,
+                    x: x,
+                    y: y,
+                    dataX: dataX,
+                    dataY: dataY,
+                });
+            }
 
             addChart({
                 x: x,
@@ -207,10 +215,10 @@ export default function BaseChart({
                 dataX: dataX,
                 dataY: dataY,
             });
-            
+
             if (showTooltip) {
                 addLineTracker({
-                    x: x, 
+                    x: x,
                     y: y,
                     ticker: tickerSymbol,
                     baseId: baseId,
