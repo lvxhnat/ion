@@ -12,6 +12,8 @@ import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
 import { StyledTableCell, StyledChartCell } from 'components/Tables/BaseTable/StyledTableCell';
 import { getTable } from 'endpoints/clients/database/postgres/general';
 import BaseLineChart from 'components/Charting/BaseChart';
+import { Tooltip } from '@mui/material';
+import { formatDate } from 'common/constant/dates';
 
 export default function TreasuryTable(props: TreasuryTableProps) {
     const [data, setData] = React.useState<any>({});
@@ -67,34 +69,36 @@ export default function TreasuryTable(props: TreasuryTableProps) {
                             if (new Set(data[column]).size !== 1) {
                                 if (!["_date", "_last_updated", "uuid"].includes(column)) {
                                     return (
-                                        <StyledTableRow key={`treasury_row_${index}`}>
-                                            <StyledTableCell key={`tLabel_${index}`}>
-                                                {' '}
-                                                {processString(column)}{' '}
-                                            </StyledTableCell>
-                                            <StyledTableCell key={`tRate_${index}`}>
-                                                {' '}
-                                                {data[column][0]}%{' '}
-                                            </StyledTableCell>
-                                            <StyledChartCell key={`tChart_${index}`}>
-                                                {index !== 0 ? (
-                                                    <div style={{ height: '25px' }}>
-                                                        <BaseLineChart
-                                                            baseId={`${column}_treasury_chart`}
-                                                            defaultData={{
-                                                                id: column,
-                                                                name: column,
-                                                                parent: true,
-                                                                dataX: data._date,
-                                                                dataY: data[column],
-                                                                color: 'white',
-                                                                type: 'line',
-                                                            }}
-                                                        />
-                                                    </div>
-                                                ) : null}
-                                            </StyledChartCell>
-                                        </StyledTableRow>
+                                        <Tooltip title={`Last updated at ${formatDate(data["_last_updated"][0])}`}>
+                                            <StyledTableRow key={`treasury_row_${index}`}>
+                                                <StyledTableCell key={`tLabel_${index}`}>
+                                                    {' '}
+                                                    {processString(column)}{' '}
+                                                </StyledTableCell>
+                                                <StyledTableCell key={`tRate_${index}`}>
+                                                    {' '}
+                                                    {data[column][0]}%{' '}
+                                                </StyledTableCell>
+                                                <StyledChartCell key={`tChart_${index}`}>
+                                                    {index !== 0 ? (
+                                                        <div style={{ height: '25px' }}>
+                                                            <BaseLineChart
+                                                                baseId={`${column}_treasury_chart`}
+                                                                defaultData={{
+                                                                    id: column,
+                                                                    name: column,
+                                                                    parent: true,
+                                                                    dataX: data._date,
+                                                                    dataY: data[column],
+                                                                    color: 'white',
+                                                                    type: 'line',
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    ) : null}
+                                                </StyledChartCell>
+                                            </StyledTableRow>
+                                        </Tooltip>
                                     );
                                 }
                             }
