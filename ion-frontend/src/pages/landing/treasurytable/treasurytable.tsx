@@ -19,7 +19,7 @@ export default function TreasuryTable(props: TreasuryTableProps) {
     const processString = (colName: string) =>
         colName
             .slice(1, colName.length)
-            .split('__')
+            .split('_')
             .map((token: string) => token.charAt(0).toUpperCase() + token.slice(1))
             .join(' ');
 
@@ -65,36 +65,38 @@ export default function TreasuryTable(props: TreasuryTableProps) {
                         .map((column: string, index: number) => {
                             // Set size ensures that the array does not consist of all nulls
                             if (new Set(data[column]).size !== 1) {
-                                return (
-                                    <StyledTableRow key={`treasury_row_${index}`}>
-                                        <StyledTableCell key={`tLabel_${index}`}>
-                                            {' '}
-                                            {processString(column)}{' '}
-                                        </StyledTableCell>
-                                        <StyledTableCell key={`tRate_${index}`}>
-                                            {' '}
-                                            {data[column][0]}%{' '}
-                                        </StyledTableCell>
-                                        <StyledChartCell key={`tChart_${index}`}>
-                                            {index !== 0 ? (
-                                                <div style={{ height: '25px' }}>
-                                                    <BaseLineChart
-                                                        baseId={`${column}_treasury_chart`}
-                                                        defaultData={{
-                                                            id: column,
-                                                            name: column,
-                                                            parent: true,
-                                                            dataX: data._date,
-                                                            dataY: data[column],
-                                                            color: 'white',
-                                                            type: 'line',
-                                                        }}
-                                                    />
-                                                </div>
-                                            ) : null}
-                                        </StyledChartCell>
-                                    </StyledTableRow>
-                                );
+                                if (!["_date", "_last_updated", "uuid"].includes(column)) {
+                                    return (
+                                        <StyledTableRow key={`treasury_row_${index}`}>
+                                            <StyledTableCell key={`tLabel_${index}`}>
+                                                {' '}
+                                                {processString(column)}{' '}
+                                            </StyledTableCell>
+                                            <StyledTableCell key={`tRate_${index}`}>
+                                                {' '}
+                                                {data[column][0]}%{' '}
+                                            </StyledTableCell>
+                                            <StyledChartCell key={`tChart_${index}`}>
+                                                {index !== 0 ? (
+                                                    <div style={{ height: '25px' }}>
+                                                        <BaseLineChart
+                                                            baseId={`${column}_treasury_chart`}
+                                                            defaultData={{
+                                                                id: column,
+                                                                name: column,
+                                                                parent: true,
+                                                                dataX: data._date,
+                                                                dataY: data[column],
+                                                                color: 'white',
+                                                                type: 'line',
+                                                            }}
+                                                        />
+                                                    </div>
+                                                ) : null}
+                                            </StyledChartCell>
+                                        </StyledTableRow>
+                                    );
+                                }
                             }
                         })}
                 </TableBody>
