@@ -10,7 +10,7 @@ import { ForexTableWidget } from './forextable';
 import { InternationalClockWidget } from './internationalclock';
 import { WatchlistWidget } from './watchlist';
 import { LivePlayerWidget } from './liveplayer';
-import { HealthCheckWidget } from 'pages/landing/healthchecks';
+import HealthChecks from './healthchecks';
 
 export default function Landing() {
     console.log(
@@ -22,7 +22,7 @@ export default function Landing() {
             <Navigation />
             <Grid container columns={25} spacing={1}>
                 <Grid item xs={5}>
-                    <HealthCheckWidget />
+                    <HealthChecks />
                     <WatchlistWidget />
                 </Grid>
                 <Grid item xs={14}>

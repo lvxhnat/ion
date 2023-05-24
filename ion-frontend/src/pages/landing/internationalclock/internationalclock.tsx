@@ -85,18 +85,20 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                 timeZone={geoMapping[props.timeZoneName].timeZone}
             />
             <S.WeatherTextWrapper style={{ gap: 0 }}>
-                <Tooltip title={`Data updated every 30 mins. Last updated at ${formatDate(lastUpdated)}`}>
-                    <InfoIcon fontSize="inherit"/>
+                <Tooltip
+                    title={`Data updated every 30 mins. Last updated at ${formatDate(lastUpdated)}`}
+                >
+                    <InfoIcon fontSize="inherit" />
                 </Tooltip>
                 <Typography
                     noWrap
                     variant="h4"
                     align="left"
-                    sx={{ 
-                        color: ColorsEnum.coolgray4, 
-                        gap: 1, 
-                        padding: 1
-                }}
+                    sx={{
+                        color: ColorsEnum.coolgray4,
+                        gap: 1,
+                        padding: 1,
+                    }}
                 >
                     {weatherData ? capitalizeString(weatherData.weather_condition) : null}
                 </Typography>

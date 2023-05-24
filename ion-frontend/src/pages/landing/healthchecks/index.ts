@@ -1,3 +1,3 @@
-import { HealthCheckWidget } from './widget';
+import HealthChecks from './healthchecks';
 
-export { HealthCheckWidget };
+export default HealthChecks;

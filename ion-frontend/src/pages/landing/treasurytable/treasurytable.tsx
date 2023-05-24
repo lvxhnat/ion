@@ -67,9 +67,13 @@ export default function TreasuryTable(props: TreasuryTableProps) {
                         .map((column: string, index: number) => {
                             // Set size ensures that the array does not consist of all nulls
                             if (new Set(data[column]).size !== 1) {
-                                if (!["_date", "_last_updated", "uuid"].includes(column)) {
+                                if (!['_date', '_last_updated', 'uuid'].includes(column)) {
                                     return (
-                                        <Tooltip title={`Last updated at ${formatDate(data["_last_updated"][0])}`}>
+                                        <Tooltip
+                                            title={`Last updated at ${formatDate(
+                                                data['_last_updated'][0]
+                                            )}`}
+                                        >
                                             <StyledTableRow key={`treasury_row_${index}`}>
                                                 <StyledTableCell key={`tLabel_${index}`}>
                                                     {' '}

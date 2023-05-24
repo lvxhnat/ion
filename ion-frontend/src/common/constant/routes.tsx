@@ -6,7 +6,7 @@ export const ROUTES = {
         SECURITIES: '/analysis/securities',
         FUNCTION: '/function/function-list',
         PORTFOLIO: '/function/portfolio-administration',
-        EXPLORE: '/function/etf-explore',
+        EXPLORER: '/function/explorer',
         HEALTHCHECK: '/function/health',
     },
     PUBLIC_REQUIRED_TOKEN: {},
@@ -41,6 +41,12 @@ export const ROUTE_METADATA = {
         DISPLAY_ROUTE: ROUTES.PUBLIC.HEALTHCHECK,
         NAME: 'Health Check',
         DESCRIPTION: 'Check the health of the current existing API endpoints and data ETLs',
+        TAG: [],
+    },
+    EXPLORER: {
+        DISPLAY_ROUTE: ROUTES.PUBLIC.EXPLORER,
+        NAME: 'Explore Assets',
+        DESCRIPTION: 'Explore the financial instruments.',
         TAG: [],
     },
 };

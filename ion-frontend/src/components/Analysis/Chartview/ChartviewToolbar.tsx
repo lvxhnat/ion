@@ -187,7 +187,7 @@ export default function ChartviewToolbar(props: {
     let absoluteChange: number | null = null;
     let pctChange: number | null = null;
     let changeColor: string = 'white';
-    if (props.ticker) {
+    if (props.ticker && data[props.ticker].dataY) {
         absoluteChange =
             data[props.ticker].dataY[data[props.ticker].dataY.length - 1] -
             data[props.ticker].dataY[data[props.ticker].dataY.length - 2];
@@ -200,7 +200,7 @@ export default function ChartviewToolbar(props: {
                 : ColorsEnum.downHint;
     }
     let decimalPoints = 2;
-    if (absoluteChange && absoluteChange < 0.1) decimalPoints = 5;
+    if (absoluteChange && Math.abs(absoluteChange) < 0.1) decimalPoints = 5;
 
     return (
         <div
