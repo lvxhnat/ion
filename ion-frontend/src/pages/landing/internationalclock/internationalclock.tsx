@@ -74,7 +74,7 @@ export default function InternationalClock(props: { timeZoneName: string }) {
         const interval = setInterval(() => {
             updateWeatherData();
             setLastUpdated(new Date());
-        }, 1000 * 60 * 60);
+        }, 1000 * 60 * 30);
         return () => clearInterval(interval);
     }, []);
 
@@ -85,7 +85,7 @@ export default function InternationalClock(props: { timeZoneName: string }) {
                 timeZone={geoMapping[props.timeZoneName].timeZone}
             />
             <S.WeatherTextWrapper style={{ gap: 0 }}>
-                <Tooltip title={`Last updated at ${formatDate(lastUpdated)}`}>
+                <Tooltip title={`Data updated every 30 mins. Last updated at ${formatDate(lastUpdated)}`}>
                     <InfoIcon fontSize="inherit"/>
                 </Tooltip>
                 <Typography

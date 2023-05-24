@@ -28,7 +28,7 @@ export default function WidgetContainer(props: {
                 <S.LeftPanel>
                     <Typography align="left" variant="h4" sx={{ color: ColorsEnum.warmgray4 }}>
                         {props.title
-                            .split('__')
+                            .split('_')
                             .map((s: string) =>
                                 s === 'us' || !isNaN(+s[0]) // Makes sure that country names and time stamps are not lowercased
                                     ? s.toUpperCase()
