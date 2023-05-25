@@ -11,9 +11,10 @@ import {
     GiFruiting,
     GiBallPyramid,
 } from 'react-icons/gi';
+import { RiBankFill } from 'react-icons/ri';
 import { ColorsEnum } from 'common/theme';
 
-type ChoiceTypes = 'allProducts' | 'etf' | 'equity' | 'forex' | 'commodities';
+type ChoiceTypes = 'allProducts' | 'etf' | 'equity' | 'forex' | 'commodities' | 'econs';
 
 const ExplorerToolbar = (props: {
     selected: ChoiceTypes;
@@ -27,6 +28,13 @@ const ExplorerToolbar = (props: {
             >
                 <GiBallPyramid style={{ color: ColorsEnum.youthPink, fontSize: 13 }} />
                 All Products
+            </S.ExplorerButton>
+            <S.ExplorerButton
+                selected={props.selected === 'econs'}
+                onClick={() => props.onClick('econs')}
+            >
+                <RiBankFill style={{ color: ColorsEnum.white, fontSize: 13 }} />
+                Economic Data
             </S.ExplorerButton>
             <S.ExplorerButton
                 selected={props.selected === 'etf'}

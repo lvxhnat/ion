@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from ion_clients.services.postgres.actions import order_query
 from ion_clients.services.postgres.postgres_service import get_session
 
-from data_ingestion.app.api.api_v2.postgres.models.infra.portfolio import (
+from ion_clients.services.postgres.models.infra.portfolio import (
     PortfolioAssets,
 )
 from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import (
@@ -16,11 +16,14 @@ from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import
     PortfolioSearchParams,
 )
 
-from data_ingestion.app.api.api_v2.configs.base_config import configs as base_configs
+from data_ingestion.app.api.api_v2.configs.base_config import (
+    configs as base_configs,
+)
 
 router = APIRouter(
     tags=["postgres"],
 )
+
 
 @router.get("/health")
 def health_check():
@@ -86,4 +89,6 @@ def update_postgres_table_entry(
     replacement_entry: PostgresTable,
     session: Session = Depends(get_session),
 ):
-    session.query(base_configs.POSTGRES_TABLES[table_name]).get(id).update(replacement_entry)
+    session.query(base_configs.POSTGRES_TABLES[table_name]).get(id).update(
+        replacement_entry
+    )

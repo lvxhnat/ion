@@ -6,12 +6,10 @@ from prefect.task_runners import ConcurrentTaskRunner
 
 from ion_provider.flows.shared import refresh_table
 
-from ion_provider.models.tickers.tickers import (
-    AssetMetaData,
-)
 from ion_clients.clients.alphavantage.alphavantage import (
     get_alphavantage_ticker_listings,
 )
+from ion_clients.services.postgres.models.data.tickers import AssetMetaData
 
 
 @task

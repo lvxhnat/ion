@@ -7,8 +7,8 @@ from prefect import task, flow
 from prefect.task_runners import ConcurrentTaskRunner
 
 from ion_provider.flows.shared import refresh_table
-from ion_provider.models.common.area_latlon import AreaLatLon
 from ion_clients.clients.common.area_latlon import geonames_info
+from ion_clients.services.postgres.models.data.area_latlon import AreaLatLon
 
 
 @task

@@ -1,13 +1,11 @@
 from pydantic import BaseSettings
 
-from data_ingestion.app.api.api_v2.postgres.models.data import (
+from ion_clients.services.postgres.models.data import (
     tickers,
     treasury,
     area_latlon,
 )
-from data_ingestion.app.api.api_v2.postgres.models.infra import (
-    portfolio
-)
+from ion_clients.services.postgres.models.infra import portfolio
 
 
 class BaseAPIConfigs(BaseSettings):

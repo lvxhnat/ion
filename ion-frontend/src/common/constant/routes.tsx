@@ -45,8 +45,8 @@ export const ROUTE_METADATA = {
     },
     EXPLORER: {
         DISPLAY_ROUTE: ROUTES.PUBLIC.EXPLORER,
-        NAME: 'Explore Assets',
-        DESCRIPTION: 'Explore the financial instruments.',
+        NAME: 'Explore Data',
+        DESCRIPTION: 'Explore the data available, including financial instruments and economic data.',
         TAG: [],
     },
 };

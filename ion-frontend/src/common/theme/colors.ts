@@ -89,7 +89,7 @@ export enum ColorsEnum {
     naver = '#3EAF0E',
     instagram = '#C13584',
     darkGrey = '#2b2b2b',
-    darkerGrey = '#232323',
+    darkerGrey = '#0E0E0E',
     darkMode = '#121212',
     economicBlue = '#01253F',
     limeGreen = '#E4F5D5',

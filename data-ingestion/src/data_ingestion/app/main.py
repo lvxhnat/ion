@@ -7,11 +7,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from data_ingestion.app.api.router_generator import api_router
 
-from data_ingestion.app.api.api_v2.postgres.models.base import Base
-from data_ingestion.app.api.api_v2.postgres.models.infra import portfolio
-
 from ion_clients.clients.oanda.instruments import stream_oanda_live_data
 from ion_clients.services.postgres.postgres_service import create_table
+from ion_clients.services.postgres.models.base import Base
+from ion_clients.services.postgres import models
 
 
 def create_app() -> FastAPI:
@@ -50,12 +49,12 @@ app: FastAPI = create_app()
 @app.on_event("startup")
 async def intialise_database_infra():
     """Initialise tables in Postgres if does not exist already"""
-    for _, cls in inspect.getmembers(
-        portfolio, lambda member: inspect.isclass(member)
-    ):
-        # Check for table attribute excludes the direct parent class
-        if issubclass(cls, Base) and hasattr(cls, "__table__"):
-            create_table(cls)
+    for _, submodule in inspect.getmembers(models):
+        for _, cls in inspect.getmembers(
+            submodule, lambda member: inspect.isclass(member)
+        ):
+            if issubclass(cls, Base) and hasattr(cls, "__table__"):
+                create_table(cls)
 
 
 @app.websocket("/oanda/ws")
@@ -80,4 +79,10 @@ async def stream_oanda_live_prices(websocket: WebSocket):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=1236, reload=True)
+    for _, submodule in inspect.getmembers(models):
+        for _, cls in inspect.getmembers(
+            submodule, lambda member: inspect.isclass(member)
+        ):
+            if issubclass(cls, Base) and hasattr(cls, "__table__"):
+                print(cls)
+    # uvicorn.run(app, host="0.0.0.0", port=1236, reload=True)

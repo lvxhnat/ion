@@ -22,7 +22,7 @@ export const ExplorerButton = (props: { children: any; selected?: boolean; [x: s
 
 const ExplorerExternalButton = styled('div')(({ theme }) => ({
     borderRight: `1px solid ${ColorsEnum.warmgray2}`,
-    padding: 3,
+    padding: 2,
     backgroundColor: ColorsEnum.warmgray1,
     '&:hover': {
         backgroundColor: ColorsEnum.warmgray2,
@@ -36,10 +36,13 @@ interface InternalbuttonProps {
 
 const ExplorerInternalButton = styled(Typography)<InternalbuttonProps>(({ theme, selected }) => ({
     gap: 5,
-    borderRadius: 4,
+    borderRadius: 5,
     padding: `${theme.spacing(0.2)} ${theme.spacing(1)}`,
-    backgroundColor: selected ? ColorsEnum.black : 'transparent',
+    backgroundColor: selected ? ColorsEnum.darkerGrey : 'transparent',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    '&:active': {
+        backgroundColor: ColorsEnum.darkGrey
+    }
 }));

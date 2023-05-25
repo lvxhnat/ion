@@ -1,5 +1,4 @@
 from typing import List
-from datetime import datetime
 
 from prefect import task, flow
 from prefect.task_runners import ConcurrentTaskRunner
@@ -12,7 +11,7 @@ from ion_clients.clients.usdept.types.treasury import (
     TreasuryYears,
     TreasuryTypes,
 )
-from ion_provider.models.government.treasury import (
+from ion_clients.services.postgres.models.data.treasury import (
     USTreasuryYield,
     USBillRates,
     USLongTermRates,

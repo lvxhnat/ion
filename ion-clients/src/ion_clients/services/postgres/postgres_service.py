@@ -34,7 +34,7 @@ def create_table(
         table_schema.__table__.create(postgres_engine)
         return
     else:
-        logger.warning(
+        logger.info(
             f"Table {table_schema.__tablename__} already exists. Skipping create_table action."
         )
 

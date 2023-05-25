@@ -1,7 +1,7 @@
 import numpy as np
 from sqlalchemy import Column, Float, String, Integer
 
-from ion_provider.models.base import Base
+from ion_clients.services.postgres.models.base import Base
 
 
 class AreaLatLon(Base):
