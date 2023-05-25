@@ -1,8 +1,8 @@
 from typing import Union
+from ion_clients.services.postgres.models.data.government import treasury
 from pydantic import BaseModel
 
 from ion_clients.services.postgres.models.data import (
-    treasury,
     area_latlon,
 )
 from data_ingestion.app.api.api_v2.postgres.schemas.infra.portfolio.params import (

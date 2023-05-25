@@ -1,8 +1,7 @@
 from datetime import datetime
 from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
 
-from ion_provider.models.base import Base
-
+from ion_clients.services.postgres.models.base import Base
 
 class ESRRegionType(Base):
     __tablename__ = "esr_region_type"

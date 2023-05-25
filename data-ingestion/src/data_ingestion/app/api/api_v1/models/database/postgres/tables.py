@@ -1,7 +1,7 @@
 from ion_clients.services.postgres.models.data import (
-    treasury,
     area_latlon,
 )
+from ion_clients.services.postgres.models.data.government import treasury
 
 tables = {
     treasury.USBillRates.__tablename__: treasury.USBillRates,
