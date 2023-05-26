@@ -43,6 +43,6 @@ const ExplorerInternalButton = styled(Typography)<InternalbuttonProps>(({ theme,
     alignItems: 'center',
     justifyContent: 'center',
     '&:active': {
-        backgroundColor: ColorsEnum.darkGrey
-    }
+        backgroundColor: ColorsEnum.darkGrey,
+    },
 }));

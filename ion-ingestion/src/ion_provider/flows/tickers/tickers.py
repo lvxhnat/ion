@@ -25,9 +25,11 @@ def ingest_asset_metadata():
 )
 def asset_ingestion_flow():
     asset_results: List[Dict[str, str]] = (
-        ingest_asset_metadata.submit()
+        ingest_asset_metadata
+        .submit()
         .result()
         .assign(last_updated=datetime.today())
+        .assign(source = "alphavantage")
         .to_dict("records")
     )
     refresh_table.submit(AssetMetaData, asset_results, True).result()

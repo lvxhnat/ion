@@ -1,5 +1,4 @@
 import uvicorn
-import inspect
 from typing import List
 
 from fastapi import FastAPI, WebSocket
@@ -8,9 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from data_ingestion.app.api.router_generator import api_router
 
 from ion_clients.clients.oanda.instruments import stream_oanda_live_data
-from ion_clients.services.postgres.postgres_service import create_table
-from ion_clients.services.postgres.models.base import Base
-from ion_clients.services.postgres import models
+from ion_clients.services.postgres.startup import initialise_raw_tables
 
 
 def create_app() -> FastAPI:
@@ -49,12 +46,7 @@ app: FastAPI = create_app()
 @app.on_event("startup")
 async def intialise_database_infra():
     """Initialise tables in Postgres if does not exist already"""
-    for _, submodule in inspect.getmembers(models):
-        for _, cls in inspect.getmembers(
-            submodule, lambda member: inspect.isclass(member)
-        ):
-            if issubclass(cls, Base) and hasattr(cls, "__table__"):
-                create_table(cls)
+    initialise_raw_tables()
 
 
 @app.websocket("/oanda/ws")
@@ -79,10 +71,4 @@ async def stream_oanda_live_prices(websocket: WebSocket):
 
 
 if __name__ == "__main__":
-    for _, submodule in inspect.getmembers(models):
-        for _, cls in inspect.getmembers(
-            submodule, lambda member: inspect.isclass(member)
-        ):
-            if issubclass(cls, Base) and hasattr(cls, "__table__"):
-                print(cls)
-    # uvicorn.run(app, host="0.0.0.0", port=1236, reload=True)
+    uvicorn.run(app, host="0.0.0.0", port=1236, reload=True)

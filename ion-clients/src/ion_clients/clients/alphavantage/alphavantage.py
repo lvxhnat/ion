@@ -210,9 +210,7 @@ def get_alphavantage_ticker_listings() -> pd.DataFrame:
 
     data = [i.split(",") for i in r.text.split("\r\n")]
     df: pd.DataFrame = pd.DataFrame(data[1:], columns=data[0]).dropna()
-    return (df
-            .assign(ipoDate=df["ipoDate"].apply(lambda x: datetime.strptime(x, "%Y-%m-%d")))
-            [df["name"].apply(lambda x: x.strip() != "")]
-            [["symbol", "name", "exchange", "assetType", "ipoDate"]]
-            .rename(columns={"assetType": "asset_class", "ipoDate": "ipo_date"})
+    return (df[df["name"].apply(lambda x: x.strip() != "")]
+            [["symbol", "name", "assetType"]]
+            .rename(columns={"assetType": "asset_class"})
     )

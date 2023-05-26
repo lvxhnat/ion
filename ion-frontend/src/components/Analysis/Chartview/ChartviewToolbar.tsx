@@ -20,6 +20,8 @@ import { useBaseChartStore } from 'store/chartview/basechart';
 import { getChartviewBaseChartId } from './Chartview';
 import { addChart } from 'components/Charting/BaseChart/actions';
 import { addLineTracker } from 'components/Charting/BaseChart/plugins';
+import { useNavigate } from 'react-router-dom';
+import { ASSET_TYPES, ROUTES } from 'common/constant';
 
 const DrawLinesButton = (props: { ticker: string; baseId: string }) => {
     const [menu, setMenu] = React.useState<boolean>(false);
@@ -176,6 +178,7 @@ const ChartTypeButton = (props: { baseId: string; ticker: string }) => {
 export default function ChartviewToolbar(props: {
     baseId: string;
     ticker: string | undefined;
+    tickerName: string | undefined;
     assetType: string | undefined;
     showSidebar: boolean;
     setShowSidebar: (show: boolean) => void;
@@ -183,6 +186,8 @@ export default function ChartviewToolbar(props: {
     const { mode } = useThemeStore();
     const data = useTickerDataStore(state => state.data);
     const [showLab, setShowLab] = React.useState<boolean>(false);
+
+    const navigate = useNavigate();
 
     let absoluteChange: number | null = null;
     let pctChange: number | null = null;
@@ -213,7 +218,12 @@ export default function ChartviewToolbar(props: {
                 alignItems: 'center',
             }}
         >
-            <TickerSearch selectedTicker={props.ticker} />
+            <TickerSearch
+                selectedTicker={props.ticker}
+                setSelectedOption={(ticker: string, asset_type: string) =>
+                    navigate(`${ROUTES.PUBLIC.SECURITIES}/${asset_type.toLowerCase()}/${ticker}`)
+                }
+            />
             <div
                 style={{
                     display: 'flex',
@@ -239,7 +249,7 @@ export default function ChartviewToolbar(props: {
                             {props.assetType?.charAt(0).toUpperCase() + props.assetType?.slice(1)}
                         </Typography>
                         <Typography variant="subtitle1" component="div">
-                            {props.ticker.toUpperCase()}
+                            {props.tickerName}
                         </Typography>
                         <Typography
                             variant="subtitle2"

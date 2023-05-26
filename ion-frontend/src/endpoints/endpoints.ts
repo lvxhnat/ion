@@ -13,6 +13,7 @@ export const ENDPOINTS = {
         AUTOCOMPLETE_TICKERS_ENDPOINT: 'database/autocomplete/query',
 
         QUERY_PORTFOLIO_ENDPOINT: 'database/postgres/query/portfolio',
+        QUERY_TICKER_ENDPOINT: 'database/postgres/query/ticker',
 
         SEARCH_FUNCTIONS: 'autocomplete/securityFunctions',
         ALL_FUNCTIONS: 'autocomplete/allFunctions',

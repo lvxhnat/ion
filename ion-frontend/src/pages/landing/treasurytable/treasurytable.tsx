@@ -73,8 +73,9 @@ export default function TreasuryTable(props: TreasuryTableProps) {
                                             title={`Last updated at ${formatDate(
                                                 data['_last_updated'][0]
                                             )}`}
+                                            key={`treasury_row_${index}`}
                                         >
-                                            <StyledTableRow key={`treasury_row_${index}`}>
+                                            <StyledTableRow>
                                                 <StyledTableCell key={`tLabel_${index}`}>
                                                     {' '}
                                                     {processString(column)}{' '}

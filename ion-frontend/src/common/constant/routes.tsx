@@ -46,13 +46,14 @@ export const ROUTE_METADATA = {
     EXPLORER: {
         DISPLAY_ROUTE: ROUTES.PUBLIC.EXPLORER,
         NAME: 'Explore Data',
-        DESCRIPTION: 'Explore the data available, including financial instruments and economic data.',
+        DESCRIPTION:
+            'Explore the data available, including financial instruments and economic data.',
         TAG: [],
     },
 };
 
 export const ASSET_TYPES = {
     FOREX: 'forex',
-    EQUITY: 'equity',
+    EQUITY: 'stock',
     ETF: 'etf',
 };

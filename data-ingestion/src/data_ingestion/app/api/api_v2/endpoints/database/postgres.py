@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 
@@ -7,13 +8,15 @@ from ion_clients.services.postgres.postgres_service import get_session
 from ion_clients.services.postgres.models.infra.portfolio import (
     PortfolioAssets,
 )
-from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import (
-    PostgresTable,
+from ion_clients.services.postgres.models.data.trading.tickers import (
+    AssetMetaData,
 )
 from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import (
+    PostgresTable,
     tables as postgres_tables,
     TableQueryParams,
     PortfolioSearchParams,
+    TickerQueryParams,
 )
 
 from data_ingestion.app.api.api_v2.configs.base_config import (
@@ -49,6 +52,17 @@ def query_portfolio_table(
         session.query(PortfolioAssets)
         .filter(PortfolioAssets.portfolio_id == params.id)
         .all()
+    )
+
+
+@router.post("/query/ticker")
+def query_ticker_name_table(
+    params: TickerQueryParams, session: Session = Depends(get_session)
+):
+    return (
+        session.query(AssetMetaData)
+        .filter(func.lower(AssetMetaData.symbol) == params.symbol.lower())
+        .first()
     )
 
 

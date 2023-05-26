@@ -1,4 +1,4 @@
-from ion_clients.services.postgres.models.data.area_latlon import (
+from ion_clients.services.postgres.models.data.common.area_latlon import (
     AreaLatLon,
 )
 from ion_clients.services.postgres.models.data.trading.tickers import (

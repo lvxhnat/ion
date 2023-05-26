@@ -54,7 +54,6 @@ def drop_table(
             f"No {table_schema.__tablename__} to drop. Skipping drop_table action."
         )
 
-
 def _get_postgres_engine(postgres_uri: str = None):
     if not postgres_uri:
         postgres_uri = postgres_config.POSTGRES_URI

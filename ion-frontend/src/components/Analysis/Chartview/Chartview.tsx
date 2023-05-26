@@ -16,6 +16,7 @@ import { ASSET_TYPES } from 'common/constant';
 import { getHistoricalForex } from 'endpoints/clients/forex';
 import DataTable from './datatable';
 import NoDataSkeleton from 'components/Skeletons/NoDataSkeleton';
+import { getTickerMetadata } from 'endpoints/clients/database/postgres/ticker';
 
 const Item = styled(Box)(({ theme }) => ({
     height: '100%',
@@ -36,6 +37,7 @@ export default function Chartview(props: {
     const [loading, setLoading] = React.useState<boolean>(true);
     const [rawData, setRawData] = React.useState<{ [col: string]: any }[]>([]);
     const [showSidebar, setShowSidebar] = React.useState<boolean>(false);
+    const [tickerName, setTickerName] = React.useState<string>('');
     const addChart = useChartStore(state => state.setChart);
 
     const baseLineChartId: string = getChartviewBaseChartId(props.ticker);
@@ -57,7 +59,16 @@ export default function Chartview(props: {
             },
         });
 
-        if (assetType === ASSET_TYPES.FOREX) {
+        if (props.ticker && props.assetType) {
+            getTickerMetadata({
+                symbol: props.ticker,
+                asset_class: props.assetType,
+            }).then(res => {
+                setTickerName(res.data.name);
+            });
+        }
+
+        if (assetType.toLowerCase() === ASSET_TYPES.FOREX.toLowerCase()) {
             getHistoricalForex({
                 symbol: ticker,
                 granularity: 'D',
@@ -78,7 +89,7 @@ export default function Chartview(props: {
                 setRawData(res.data);
                 setLoading(false);
             });
-        } else if (assetType === ASSET_TYPES.EQUITY) {
+        } else if (assetType.toLowerCase() === ASSET_TYPES.EQUITY.toLowerCase()) {
             getCandles(ticker).then(res => {
                 const data = res.data.data;
                 setData({
@@ -104,6 +115,7 @@ export default function Chartview(props: {
             {loading ? null : (
                 <ChartviewToolbar
                     ticker={props.ticker}
+                    tickerName={tickerName}
                     baseId={baseLineChartId}
                     assetType={props.assetType}
                     showSidebar={showSidebar}

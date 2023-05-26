@@ -2,7 +2,7 @@ from ion_clients.services.postgres.models.data.government import treasury
 from ion_clients.services.postgres.models.data.trading import tickers
 from pydantic import BaseSettings
 
-from ion_clients.services.postgres.models.data import (
+from ion_clients.services.postgres.models.data.common import (
     area_latlon,
 )
 from ion_clients.services.postgres.models.infra import portfolio

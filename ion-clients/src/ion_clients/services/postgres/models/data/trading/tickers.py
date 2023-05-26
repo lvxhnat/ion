@@ -10,7 +10,6 @@ class AssetMetaData(Base):
     symbol: str = Column(String, primary_key=True)
     asset_class: str = Column(String, nullable=True)
     name: str = Column(String, nullable=False)
-    description: str = Column(String, nullable=False)
     last_updated: datetime = Column(DateTime, nullable=False)
     source: str = Column(String, nullable=False)
 
@@ -23,6 +22,7 @@ class EquityMetaData(Base):
         nullable=False,
         primary_key=True,
     )
+    description: str = Column(String, nullable=False)
     cik: str = Column(String, nullable=False)
     sector: str = Column(String, nullable=False)
     industry: str = Column(String, nullable=False)
@@ -40,14 +40,15 @@ class ETFMetaData(Base):
         nullable=False,
         primary_key=True,
     )
+    description: str = Column(String, nullable=False)
     aum: float = Column(Float, nullable=False)
     expense_ratio: float = Column(Float, nullable=False)
     issuer: str = Column(String, nullable=False)
     inception: datetime = Column(DateTime, nullable=True)
     index_tracked: str = Column(String, nullable=False)
-    category: str = Column(String, nullable=False)
+    category: str = Column(String, nullable=True)
     asset_class: str = Column(String, nullable=False)
-    region: str = Column(String, nullable=False)
+    region: str = Column(String, nullable=True)
     segment_general: str = Column(String, nullable=True)
     segment_specific: str = Column(String, nullable=True)
 

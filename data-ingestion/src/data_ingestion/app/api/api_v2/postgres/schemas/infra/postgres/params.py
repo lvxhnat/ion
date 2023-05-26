@@ -2,7 +2,7 @@ from typing import Union
 from ion_clients.services.postgres.models.data.government import treasury
 from pydantic import BaseModel
 
-from ion_clients.services.postgres.models.data import (
+from ion_clients.services.postgres.models.data.common import (
     area_latlon,
 )
 from data_ingestion.app.api.api_v2.postgres.schemas.infra.portfolio.params import (
@@ -28,6 +28,11 @@ class TableQueryParams(BaseModel):
 
 class PortfolioSearchParams(BaseModel):
     id: str
+
+
+class TickerQueryParams(BaseModel):
+    symbol: str
+    asset_class: str
 
 
 class AssetSearchParams(TableQueryParams):

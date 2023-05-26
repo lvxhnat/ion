@@ -32,6 +32,10 @@ def _serialize(query) -> List[dict]:
         }
 
 
+def clear_table(session: Session, /, table_schema: Table):
+    return session.query(table_schema).delete()
+
+
 def entry_exists(
     session: Session,
     /,

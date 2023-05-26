@@ -4,9 +4,9 @@ from sqlalchemy import Table
 from ion_clients.services.postgres.actions import bulk_upsert, bulk_insert
 from ion_clients.services.postgres.postgres_service import (
     table_exists,
-    drop_table,
     SQLDatabase,
 )
+from ion_clients.services.postgres.actions import clear_table
 from ion_clients.services.postgres.schemas.params import WriteObjectType
 
 
@@ -26,7 +26,7 @@ def refresh_table(
         if table_exists(table_schema) and not coerce_refresh:
             bulk_upsert(**params)
         elif coerce_refresh:
-            drop_table(table_schema)
+            clear_table(session, table_schema)
             bulk_insert(**params)
         else:
             bulk_insert(**params)
