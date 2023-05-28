@@ -110,7 +110,6 @@ export function TickerSearch(props: {
                 {options.map((entry: any, index: number) => {
                     const assetSettings =
                         assetMapping[entry.asset_class.toLowerCase() as keyof typeof assetMapping];
-                    console.log(entry)
                     return (
                         <S.TableRowWrapper
                             overtColors={index % 2 === 0}

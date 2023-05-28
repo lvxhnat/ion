@@ -111,7 +111,7 @@ export default function Chartview(props: {
                 setLoading(false);
             });
         }
-    }, []);
+    }, [props.ticker]);
 
     return (
         <Item>
