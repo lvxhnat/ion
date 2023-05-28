@@ -5,7 +5,9 @@ Ion is a web application designed to leverage OSINT and APIs to create a central
 ![](./assets/pages/main-page-preview.gif)
 
 ## Features
+
 ---
+
 |          Home Page           |            Available Functions            |
 | :--------------------------: | :---------------------------------------: |
 | ![](./assets/pages/home.png) | ![](./assets/pages/function-explorer.png) |
@@ -70,7 +72,9 @@ yarn start
 <br clear="left"/>
 
 ## Data Sources
+
 ---
+
 |         Status         |                          Prompt                          |
 | :--------------------: | :------------------------------------------------------: |
 |         Online         | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) |
@@ -85,15 +89,17 @@ yarn start
 |         Geonames          | Geographical Names with Lat and Lon Data |   ion-clients   | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) | Home (Weather Widget) |       Scheduled       |
 |           ETFDB           |        ETF Metadata and Database         | pyETFDB-scraper | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) |       ETF List        | Scheduled + On-Demand |
 |        Finnhub API        |      Daily Historical Ticker Prices      |   ion-clients   | ![#00bd11](https://placehold.co/10x10/00bd11/00bd11.png) |       ETF List        |       On-Demand       |
-|        USDA ESR API       |  Agricultural Exports & Release Schedule |     usda-api    | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     | Scheduled + On-Demand |
-|        USDA GATS API      |         Agricultural Trade Data          |     usda-api    | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     | Scheduled + On-Demand |
-|        USDA PSD API       |       Agricultural S&D Forecasts Data    |     usda-api    | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     | Scheduled + On-Demand |
-|           FRED API        |       US Federal Reserve Economic Data   |     fred-api    | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     |       On-Demand       |
-|           EIA API         |     US Official Energy Statistics Data   |      eia-api    | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     |       On-Demand       |
-|           News API        |     Live Internet News Aggregated Data   |     news-api    | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     |       On-Demand       |
+|       USDA ESR API        | Agricultural Exports & Release Schedule  |    usda-api     | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     | Scheduled + On-Demand |
+|       USDA GATS API       |         Agricultural Trade Data          |    usda-api     | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     | Scheduled + On-Demand |
+|       USDA PSD API        |     Agricultural S&D Forecasts Data      |    usda-api     | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     | Scheduled + On-Demand |
+|         FRED API          |     US Federal Reserve Economic Data     |    fred-api     | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     |       On-Demand       |
+|          EIA API          |    US Official Energy Statistics Data    |     eia-api     | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     |       On-Demand       |
+|         News API          |    Live Internet News Aggregated Data    |    news-api     | ![#ffae00](https://placehold.co/10x10/ffae00/ffae00.png) |     To be Decided     |       On-Demand       |
 
-## References 
+## References
+
 ---
+
 **Academic Records**\
 Probability and Statistics for Finance - Svetlozar, Rachev, Markus Hoechstoetter\
 Stochastic calculus for finance I: The binomial asset pricing model - Steven E. Shreve\
@@ -105,10 +111,13 @@ Stochastic calculus for finance II Continuous time models - Steven E. Shreve\
 Bloomberg Charting
 
 ## Contributing
+
 ---
+
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
----
-[MIT](https://choosealicense.com/licenses/mit/)
 
+---
+
+[MIT](https://choosealicense.com/licenses/mit/)

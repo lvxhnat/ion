@@ -1,7 +1,6 @@
 version: "3"
 
 services:
-
   frontend:
     container_name: frontend
     build:
@@ -13,20 +12,20 @@ services:
       NODE_ENV: development
       REACT_APP_DATA_INGESTION_BASE_URL: http://backend:1236/v2/
       REACT_APP_WEBSOCKET_URL: ws://backend:1236/
-    depends_on: 
+    depends_on:
       backend:
         condition: service_started
 
   backend:
     container_name: backend
-    build: 
+    build:
       context: ../
       dockerfile: docker/main-services/backend/Dockerfile
     ports:
       - 1236:1236
     environment:
       POSTGRES_URI: postgresql://guest:guest@postgres-database:5432/postgres
-    depends_on: 
+    depends_on:
       postgres-database:
         condition: service_started
 

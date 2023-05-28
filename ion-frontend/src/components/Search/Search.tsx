@@ -95,8 +95,11 @@ export function TickerSearch(props: {
                     <S.TableRowItemWrapper style={{ width: '15%', fontWeight: 'bold' }}>
                         <Typography variant="subtitle2">Symbol</Typography>
                     </S.TableRowItemWrapper>
-                    <S.TableRowItemWrapper style={{ width: '75%', fontWeight: 'bold' }}>
+                    <S.TableRowItemWrapper style={{ width: '65%', fontWeight: 'bold' }}>
                         <Typography variant="subtitle2">Description</Typography>
+                    </S.TableRowItemWrapper>
+                    <S.TableRowItemWrapper style={{ width: '10%', fontWeight: 'bold' }}>
+                        <Typography variant="subtitle2">Source</Typography>
                     </S.TableRowItemWrapper>
                     <S.TableRowItemWrapper
                         style={{ width: '10%', fontWeight: 'bold', justifyContent: 'center' }}
@@ -107,6 +110,7 @@ export function TickerSearch(props: {
                 {options.map((entry: any, index: number) => {
                     const assetSettings =
                         assetMapping[entry.asset_class.toLowerCase() as keyof typeof assetMapping];
+                    console.log(entry)
                     return (
                         <S.TableRowWrapper
                             overtColors={index % 2 === 0}
@@ -120,10 +124,13 @@ export function TickerSearch(props: {
                             <S.TableRowItemWrapper style={{ width: '15%' }}>
                                 <Typography variant="subtitle2">{entry.symbol}</Typography>
                             </S.TableRowItemWrapper>
-                            <S.TableRowItemWrapper style={{ width: '75%' }}>
+                            <S.TableRowItemWrapper style={{ width: '65%' }}>
                                 <Typography variant="subtitle2" noWrap>
                                     {entry.name.toUpperCase()}
                                 </Typography>
+                            </S.TableRowItemWrapper>
+                            <S.TableRowItemWrapper style={{ width: '10%' }}>
+                                <Typography variant="subtitle2" align="left">{entry.source.slice(0, 3).toUpperCase()}</Typography>
                             </S.TableRowItemWrapper>
                             <S.TableRowItemWrapper
                                 style={{

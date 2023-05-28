@@ -192,7 +192,7 @@ export default function ChartviewToolbar(props: {
     let absoluteChange: number | null = null;
     let pctChange: number | null = null;
     let changeColor: string = 'white';
-    if (props.ticker && data[props.ticker].dataY) {
+    if (props.ticker && data[props.ticker] && data[props.ticker].dataY) {
         absoluteChange =
             data[props.ticker].dataY[data[props.ticker].dataY.length - 1] -
             data[props.ticker].dataY[data[props.ticker].dataY.length - 2];

@@ -89,7 +89,10 @@ export default function Chartview(props: {
                 setRawData(res.data);
                 setLoading(false);
             });
-        } else if (assetType.toLowerCase() === ASSET_TYPES.EQUITY.toLowerCase()) {
+        } else if (
+            assetType.toLowerCase() === ASSET_TYPES.EQUITY.toLowerCase() ||
+            assetType.toLowerCase() === ASSET_TYPES.ETF.toLowerCase()
+        ) {
             getCandles(ticker).then(res => {
                 const data = res.data.data;
                 setData({

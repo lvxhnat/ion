@@ -22,6 +22,7 @@ class EquityMetaData(Base):
         nullable=False,
         primary_key=True,
     )
+    last_updated: datetime = Column(DateTime, nullable=False)
     description: str = Column(String, nullable=False)
     cik: str = Column(String, nullable=False)
     sector: str = Column(String, nullable=False)
@@ -40,25 +41,27 @@ class ETFMetaData(Base):
         nullable=False,
         primary_key=True,
     )
-    description: str = Column(String, nullable=False)
-    aum: float = Column(Float, nullable=False)
-    expense_ratio: float = Column(Float, nullable=False)
-    issuer: str = Column(String, nullable=False)
+    last_updated: datetime = Column(DateTime, nullable=False)
+    description: str = Column(String, nullable=True)
+    aum: float = Column(Float, nullable=True)
+    expense_ratio: float = Column(Float, nullable=True)
+    issuer: str = Column(String, nullable=True)
     inception: datetime = Column(DateTime, nullable=True)
-    index_tracked: str = Column(String, nullable=False)
+    index_tracked: str = Column(String, nullable=True)
     category: str = Column(String, nullable=True)
-    asset_class: str = Column(String, nullable=False)
+    asset_class: str = Column(String, nullable=True)
     region: str = Column(String, nullable=True)
-    segment_general: str = Column(String, nullable=True)
-    segment_specific: str = Column(String, nullable=True)
+    segment: str = Column(String, nullable=True)
+    strategy: str = Column(String, nullable=True)
 
 
 class ETFHoldings(Base):
     __tablename__ = "etf_holdings"
     uuid: str = Column(String, nullable=False, primary_key=True)
+    last_updated: datetime = Column(DateTime, nullable=False)
     symbol: str = Column(
         String, ForeignKey(ETFMetaData.symbol), nullable=False
     )
-    holding_symbol: str = Column(String, nullable=False)
+    holding_symbol: str = Column(String, nullable=True)
     holding_name: str = Column(String, nullable=False)
     share: float = Column(Float, nullable=False)

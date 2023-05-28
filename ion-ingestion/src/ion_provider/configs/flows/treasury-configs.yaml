@@ -1,7 +1,7 @@
 scrapers:
   usgov:
     treasury_info:
-      params: 
+      params:
         year:
           - 2018
           - 2019

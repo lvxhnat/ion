@@ -23,7 +23,7 @@ from ion_clients.services.postgres.actions import create_table
 
 portfolio_sequence = [Portfolio, PortfolioAssets]
 common_sequence = [AreaLatLon]
-tickers_sequence = [AssetMetaData, ETFMetaData, EquityMetaData, ETFHoldings]
+tickers_sequence = [AssetMetaData, EquityMetaData, ETFMetaData, ETFHoldings]
 treasury_sequence = [
     USBillRates,
     USLongTermRates,

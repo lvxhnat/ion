@@ -9,6 +9,19 @@ from bs4 import BeautifulSoup, Tag
 from urllib3.exceptions import NewConnectionError
 
 
+def return_on_failure(value):
+    def decorate(f):
+        def applicator(*args, **kwargs):
+            try:
+                return f(*args, **kwargs)
+            except:
+                return {}
+
+        return applicator
+
+    return decorate
+
+
 class ETFScraper(object):
     def __init__(self):
 
@@ -145,7 +158,7 @@ class ETFScraper(object):
         )
 
     def get_ticker_list(self):
-        data = requests.post(
+        with requests.post(
             self.api_url,
             json={
                 "tab": "returns",
@@ -156,50 +169,23 @@ class ETFScraper(object):
             headers={
                 "User-Agent": next(self.user_agents),
             },
-        ).json()
-        return [
-            *map(
-                lambda entry: {
-                    "symbol": entry["symbol"]["text"],
-                    "name": entry["name"]["text"],
-                },
-                data["data"],
-            )
-        ]
+        ) as response:
+            data = response.json()
+            return [
+                *map(
+                    lambda entry: {
+                        "symbol": entry["symbol"]["text"],
+                        "name": entry["name"]["text"],
+                    },
+                    data["data"],
+                )
+            ]
 
     def get_ticker(self, ticker: str):
         soup = self.__request_ticker(ticker)
         etf_ticker_body_soup = soup.find("div", {"id": "etf-ticker-body"})
-        return {
-            "etf_name": " ".join(
-                etf_ticker_body_soup.find("h2").contents
-            ).replace("\n", ""),
-            "description": self._get_analyst_report(etf_ticker_body_soup),
-            **self._scrape_div_class_ticker_assets(
-                etf_ticker_body_soup, self.vitals_regex_header
-            ),
-            **self._scrape_div_class_ticker_assets(
-                etf_ticker_body_soup, self.dbtheme_regex_header
-            ),
-            **self._scrape_table(
-                etf_ticker_body_soup, text=self.factset_regex_header
-            ),
-            **self._scrape_table(
-                etf_ticker_body_soup, text=self.altetfs_regex_header, columns=6
-            ),
-            **self._scrape_table(
-                etf_ticker_body_soup,
-                text=self.altetfs2_regex_header,
-                columns=6,
-            ),
-            **self._scrape_table(
-                etf_ticker_body_soup,
-                tag=etf_ticker_body_soup.find(
-                    "div", {"id": "expense_tab"}
-                ).find("table"),
-                text=self.taxanalysis_regex_header,
-            ),
-            "expense_ratio": [
+        try:
+            expense_ratio = [
                 {"".join(entry[0].contents): "".join(entry[3].contents)}
                 for entry in [
                     [*filter(lambda s: isinstance(s, Tag), tag.contents)]
@@ -209,7 +195,39 @@ class ETFScraper(object):
                     .find_all("div", class_="row")[3]
                     .find_all("div", {"class": "col-md-4 col-sm-4 col-xs-4"})
                 ]
-            ],
+            ]
+        except:
+            expense_ratio = []
+        return {
+            "etf_name": " ".join(
+                etf_ticker_body_soup.find("h2").contents
+            ).replace("\n", ""),
+            "description": self._get_analyst_report(etf_ticker_body_soup),
+            "vitals": self._scrape_div_class_ticker_assets(
+                etf_ticker_body_soup, self.vitals_regex_header
+            ),
+            "dbtheme": self._scrape_div_class_ticker_assets(
+                etf_ticker_body_soup, self.dbtheme_regex_header
+            ),
+            "factset": self._scrape_table(
+                etf_ticker_body_soup, text=self.factset_regex_header
+            ),
+            "alternative_etfs": self._scrape_table(
+                etf_ticker_body_soup, text=self.altetfs_regex_header, columns=6
+            ),
+            "alternative_etfs_2": self._scrape_table(
+                etf_ticker_body_soup,
+                text=self.altetfs2_regex_header,
+                columns=6,
+            ),
+            "tax_analysis": self._scrape_table(
+                etf_ticker_body_soup,
+                tag=etf_ticker_body_soup.find(
+                    "div", {"id": "expense_tab"}
+                ).find("table"),
+                text=self.taxanalysis_regex_header,
+            ),
+            "expense_ratio": expense_ratio,
             "top_holdings": self._get_top_holdings(etf_ticker_body_soup),
             "holding_comparison": self._scrape_table(
                 etf_ticker_body_soup,
@@ -228,8 +246,85 @@ class ETFScraper(object):
             "holding_analyis": self._get_holdings_analysis(
                 etf_ticker_body_soup
             ),
+            "trade_data": self._get_trade_data(etf_ticker_body_soup),
+            "historical_trade_data": self._get_historical_trade_data(
+                etf_ticker_body_soup
+            ),
         }
 
+    def _get_trade_data(self, ticker_profile_soup):
+        """
+        Example Return
+        ===============
+        {
+            'Open': '',
+            'Volume': '',
+            'Day Lo': '',
+            'Day Hi': '',
+            '52 Week Lo': '$30.69',
+            '52 Week Hi': '$39.36',
+            'AUM': '$28,058.7 M',
+            'Shares': '768.1 M'
+        },
+        """
+
+        list_tag: Tag = self._jump_siblings(
+            ticker_profile_soup.find(
+                "h3", class_=self.h4_regex, text=self.tradedata_regex_header
+            ),
+            4,
+        )
+        list_rows = list_tag.find_all("li")
+        aum_rows = self._jump_siblings(list_tag, 4)
+        aum_rows = aum_rows.find_all("li") if aum_rows else []
+        list_rows += aum_rows
+
+        list_dict = {}
+
+        for i in range(0, len(list_rows)):
+            cleaned_content = [
+                "".join(i.contents) for i in list_rows[i] if isinstance(i, Tag)
+            ]
+            list_dict[cleaned_content[0]] = cleaned_content[1]
+
+        return {
+            "type": "list",
+            "data": list_dict,
+            "header": "Historical Trade Data",
+        }
+
+    def _get_historical_trade_data(self, ticker_profile_soup):
+        """
+        Example Return
+        ===============
+        {'type': 'list',
+        'data': {'1 Month Avg. Volume': '80,971,624',
+        '3 Month Avg. Volume': '82,142,920'},
+        'header': 'Historical Trade Data'}
+        """
+        list_tag = self._jump_siblings(
+            ticker_profile_soup.find(
+                "h3", class_=self.h4_regex, text=self.histdata_regex_header
+            ),
+            2,
+        )
+        list_rows = list_tag.find_all("li")
+
+        list_dict = {}
+
+        for i in range(0, len(list_rows)):
+            cleaned_content = [
+                "".join(i.contents) for i in list_rows[i] if isinstance(i, Tag)
+            ]
+            list_dict[cleaned_content[0]] = cleaned_content[1]
+
+        return {
+            "type": "list",
+            "data": list_dict,
+            "header": "Historical Trade Data",
+        }
+
+    @return_on_failure("")
     def _get_holdings_analysis(self, ticker_profile_soup):
 
         charts_data = ticker_profile_soup.find_all(
@@ -244,6 +339,7 @@ class ETFScraper(object):
 
         return parse_data
 
+    @return_on_failure("")
     def _get_top_holdings(self, ticker_profile_soup):
         results = []
         try:
@@ -272,6 +368,7 @@ class ETFScraper(object):
 
         return results
 
+    @return_on_failure("")
     def _get_analyst_report(self, ticker_profile_soup) -> str:
         """Get the text description of the ETF based on Analyst Report
 
@@ -300,32 +397,32 @@ class ETFScraper(object):
     def __request_ticker(self, ticker: str, retries: int = 3) -> BeautifulSoup:
         scrape_url: str = f"{self.base_url}/{ticker}"
         try:
-            response: requests.Response = requests.get(
+            with requests.get(
                 scrape_url,
                 headers={
                     "User-Agent": next(self.user_agents),
                 },
-            )
-            if response.status_code == 200:
-                soup = BeautifulSoup(response.text)
-                return soup
-            elif response.status_code == 429:
-                warnings.warn(
-                    "Too many requests. Sleeping for 60 seconds and retrying..."
-                )
-                time.sleep(60)
-                response: requests.Response = requests.get(
-                    scrape_url,
-                    headers={
-                        "User-Agent": next(self.user_agents),
-                    },
-                )
-                soup = BeautifulSoup(response.text)
-                return soup
-            else:
-                raise Exception(
-                    f"Request failed for {scrape_url}. Response code {str(response.status_code)}. Error string {response.text}"
-                )
+            ) as response:
+                if response.status_code == 200:
+                    soup = BeautifulSoup(response.text)
+                    return soup
+                elif response.status_code == 429:
+                    warnings.warn(
+                        "Too many requests. Sleeping for 60 seconds and retrying..."
+                    )
+                    time.sleep(60)
+                    response: requests.Response = requests.get(
+                        scrape_url,
+                        headers={
+                            "User-Agent": next(self.user_agents),
+                        },
+                    )
+                    soup = BeautifulSoup(response.text)
+                    return soup
+                else:
+                    raise Exception(
+                        f"Request failed for {scrape_url}. Response code {str(response.status_code)}. Error string {response.text}"
+                    )
         except OSError as oex:
             if retries:
                 self.__request_ticker(ticker, retries=retries - 1)
@@ -340,6 +437,7 @@ class ETFScraper(object):
         except Exception:
             raise
 
+    @return_on_failure("")
     def _scrape_div_class_ticker_assets(
         self,
         soup,
@@ -359,6 +457,7 @@ class ETFScraper(object):
 
         return g_dict
 
+    @return_on_failure("")
     def _scrape_table(
         self,
         ticker_profile_soup,
@@ -374,7 +473,7 @@ class ETFScraper(object):
             if header_tag:
                 table_rows = self._jump_siblings(header_tag, 2)
             else:
-                return None
+                return {}
         if tag:
             if isinstance(tag, Tag):
                 table_rows = tag
@@ -383,40 +482,45 @@ class ETFScraper(object):
                     f"Tag provided if of type {str(type(tag))} which is not allowed."
                 )
 
-        table_dict = {}
-        table_content = []
+        try:
+            table_dict = {}
+            table_content = []
 
-        table_rows = table_rows.find_all("td")
+            table_rows = table_rows.find_all("td")
 
-        for i in range(0, len(table_rows), columns):
-            # print(table_rows[i])
-            if table_rows[i + 1].has_attr("data-th"):
-                entry = {}
-                for inc in range(columns):
-                    # Remove new line if it is a string, otherwise get the contents of the inner tag
-                    cleaned_content = [
-                        *map(
-                            self._unpack_tag_contents,
-                            table_rows[i + inc].contents,
+            for i in range(0, len(table_rows), columns):
+                # print(table_rows[i])
+                if table_rows[i + 1].has_attr("data-th"):
+                    entry = {}
+                    for inc in range(columns):
+                        # Remove new line if it is a string, otherwise get the contents of the inner tag
+                        cleaned_content = [
+                            *map(
+                                self._unpack_tag_contents,
+                                table_rows[i + inc].contents,
+                            )
+                        ]
+                        entry_contents = [
+                            item for item in cleaned_content if item
+                        ]
+                        entry[table_rows[i + inc]["data-th"]] = (
+                            entry_contents[0].replace("\n", "")
+                            if entry_contents
+                            else ""
                         )
+                    table_content.append(entry)
+                else:
+                    table_dict[table_rows[i].contents[0].replace("\n", "")] = [
+                        table_rows[i + inc].contents[0].replace("\n", "")
+                        for inc in range(1, columns)
                     ]
-                    entry_contents = [item for item in cleaned_content if item]
-                    entry[table_rows[i + inc]["data-th"]] = (
-                        entry_contents[0].replace("\n", "")
-                        if entry_contents
-                        else ""
-                    )
-                table_content.append(entry)
-            else:
-                table_dict[table_rows[i].contents[0].replace("\n", "")] = [
-                    table_rows[i + inc].contents[0].replace("\n", "")
-                    for inc in range(1, columns)
-                ]
 
-        if table_rows[i + 1].has_attr("data-th"):
-            return {text.pattern: table_content}
-        else:
-            return table_dict
+            if table_rows[i + 1].has_attr("data-th"):
+                return {text.pattern: table_content}
+            else:
+                return table_dict
+        except:
+            return {}
 
     def _jump_siblings(self, root_tag: Tag, jumps: int) -> Union[Tag, str]:
         """Jump to the next ```jump``` sibling (The number of element tag after the current one stated)"""
