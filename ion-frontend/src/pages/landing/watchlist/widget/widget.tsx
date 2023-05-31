@@ -61,7 +61,9 @@ function WidgetTickerRow(props: { ticker: string }) {
             <StyledTableCell color={data.pct_change > 0 ? ColorsEnum.upHint : ColorsEnum.downHint}>
                 {data.pct_change.toFixed(2)}%
             </StyledTableCell>
-            <StyledTableCell>{data.last_close}</StyledTableCell>
+            <StyledTableCell color={ColorsEnum.white}>
+                {data.last_close}
+            </StyledTableCell>
             <TableCellWrapper id={`${data.ticker}_tickerChartWrapper`}>
                 <div style={{ height: '25px' }}>
                     <BaseLineChart

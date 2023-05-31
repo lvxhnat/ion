@@ -13,6 +13,7 @@ import { useThemeStore } from 'store/theme';
 import { ColorsEnum } from 'common/theme';
 import { getTickerSearchAutocomplete } from 'endpoints/clients/autocomplete';
 import { Typography } from '@mui/material';
+import { TickerMetadataDTO } from 'endpoints/clients/database/postgres/ticker';
 
 interface SearchProps {
     placeholder?: string;
@@ -32,7 +33,7 @@ const assetMapping = {
 };
 
 export function TickerSearch(props: {
-    selectedTicker?: string;
+    tickerMetadata?: TickerMetadataDTO;
     setSelectedOption?: (ticker: string, asset_type: string) => void;
 }) {
     const { mode } = useThemeStore();
@@ -71,7 +72,7 @@ export function TickerSearch(props: {
                         setShowMenu(true);
                         setQuery(event.target.value);
                     }}
-                    placeholder={props.selectedTicker ?? 'Enter Symbol'}
+                    placeholder={props.tickerMetadata ? `${props.tickerMetadata.symbol}:${props.tickerMetadata.source.slice(0,3).toUpperCase()}` : 'Enter Symbol'}
                 />
                 <S.SelectArrowWrapper
                     onClick={() => {

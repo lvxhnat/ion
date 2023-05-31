@@ -7,9 +7,11 @@ from ion_clients.clients.oanda.types.candles import (
     OandaReqGranularities,
 )
 
-class InfoETFParams(BaseModel):
+class ETFInfoParams(BaseModel):
     ticker: str
 
+class ETFInfosParams(BaseModel):
+    pass
 
 class HistoricalEquityParams(BaseModel):
 

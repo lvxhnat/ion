@@ -70,6 +70,9 @@ const ExplorerToolbar = (props: {
 
 export default function Explorer() {
     const [choice, setChoice] = React.useState<ChoiceTypes>('allProducts');
+    React.useEffect(() => {
+        
+    }, [])
     return (
         <div>
             <CssBaseline />

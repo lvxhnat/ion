@@ -22,6 +22,7 @@ import { addChart } from 'components/Charting/BaseChart/actions';
 import { addLineTracker } from 'components/Charting/BaseChart/plugins';
 import { useNavigate } from 'react-router-dom';
 import { ASSET_TYPES, ROUTES } from 'common/constant';
+import { TickerMetadataDTO } from 'endpoints/clients/database/postgres/ticker';
 
 const DrawLinesButton = (props: { ticker: string; baseId: string }) => {
     const [menu, setMenu] = React.useState<boolean>(false);
@@ -29,13 +30,15 @@ const DrawLinesButton = (props: { ticker: string; baseId: string }) => {
     const metrics = useMetricStore(state => state.metrics)[props.ticker];
     const baseChartStoreState = useBaseChartStore(state => state.charts)[props.baseId];
 
-    if (charts[props.ticker])
+    const ticker = props.ticker;
+
+    if (charts[ticker])
         return (
             <div>
                 <S.ButtonWrapper onClick={() => setMenu(!menu)}>
-                    {charts[props.ticker].draw ? <MdDraw /> : <TbClick />}
+                    {charts[ticker].draw ? <MdDraw /> : <TbClick />}
                     <Typography variant="subtitle2">
-                        {charts[props.ticker].draw ? 'Drawing' : 'Draw'}
+                        {charts[ticker].draw ? 'Drawing' : 'Draw'}
                     </Typography>
                 </S.ButtonWrapper>
                 <div
@@ -49,10 +52,10 @@ const DrawLinesButton = (props: { ticker: string; baseId: string }) => {
                         alternate
                         onClick={() => {
                             setChart({
-                                ticker: props.ticker,
+                                ticker: ticker,
                                 chart: {
-                                    ...charts[props.ticker],
-                                    draw: !charts[props.ticker].draw,
+                                    ...charts[ticker],
+                                    draw: !charts[ticker].draw,
                                 },
                             });
                             if (baseChartStoreState) {
@@ -60,16 +63,16 @@ const DrawLinesButton = (props: { ticker: string; baseId: string }) => {
                                 addLineTracker({
                                     x: x,
                                     y: y,
-                                    ticker: props.ticker,
+                                    ticker: ticker,
                                     baseId: props.baseId,
                                     metrics: metrics,
-                                    draw: !charts[props.ticker].draw,
+                                    draw: !charts[ticker].draw,
                                 });
                                 setMenu(false);
                             }
                         }}
                     >
-                        {charts[props.ticker].draw ? (
+                        {charts[ticker].draw ? (
                             <>
                                 <MdCancel />
                                 <Typography variant="subtitle2">Disable Draw</Typography>
@@ -177,30 +180,32 @@ const ChartTypeButton = (props: { baseId: string; ticker: string }) => {
 
 export default function ChartviewToolbar(props: {
     baseId: string;
-    ticker: string | undefined;
-    tickerName: string | undefined;
-    assetType: string | undefined;
     showSidebar: boolean;
+    tickerMetadata: TickerMetadataDTO;
     setShowSidebar: (show: boolean) => void;
 }) {
     const { mode } = useThemeStore();
     const data = useTickerDataStore(state => state.data);
     const [showLab, setShowLab] = React.useState<boolean>(false);
+    
+    const ticker = props.tickerMetadata.symbol;
+    const assetType = props.tickerMetadata.asset_class;
+    const tickerName = props.tickerMetadata.name;
 
     const navigate = useNavigate();
 
     let absoluteChange: number | null = null;
     let pctChange: number | null = null;
     let changeColor: string = 'white';
-    if (props.ticker && data[props.ticker] && data[props.ticker].dataY) {
+    if (ticker && data[ticker] && data[ticker].dataY) {
         absoluteChange =
-            data[props.ticker].dataY[data[props.ticker].dataY.length - 1] -
-            data[props.ticker].dataY[data[props.ticker].dataY.length - 2];
+            data[ticker].dataY[data[ticker].dataY.length - 1] -
+            data[ticker].dataY[data[ticker].dataY.length - 2];
         pctChange =
-            (100 * absoluteChange) / data[props.ticker].dataY[data[props.ticker].dataY.length - 2];
+            (100 * absoluteChange) / data[ticker].dataY[data[ticker].dataY.length - 2];
         changeColor =
-            data[props.ticker].dataY[data[props.ticker].dataY.length - 1] >
-            data[props.ticker].dataY[data[props.ticker].dataY.length - 2]
+            data[ticker].dataY[data[ticker].dataY.length - 1] >
+            data[ticker].dataY[data[ticker].dataY.length - 2]
                 ? ColorsEnum.upHint
                 : ColorsEnum.downHint;
     }
@@ -218,12 +223,12 @@ export default function ChartviewToolbar(props: {
                 alignItems: 'center',
             }}
         >
-            <TickerSearch
-                selectedTicker={props.ticker}
+            { props.tickerMetadata ? <TickerSearch
+                tickerMetadata={props.tickerMetadata}
                 setSelectedOption={(ticker: string, asset_type: string) =>
                     navigate(`${ROUTES.PUBLIC.SECURITIES}/${asset_type.toLowerCase()}/${ticker}`)
                 }
-            />
+            /> : null}
             <div
                 style={{
                     display: 'flex',
@@ -234,7 +239,7 @@ export default function ChartviewToolbar(props: {
                     paddingLeft: 10,
                 }}
             >
-                {props.ticker && props.assetType && data[props.ticker] ? (
+                {ticker && assetType && data[ticker] ? (
                     <>
                         <Typography
                             variant="subtitle2"
@@ -246,16 +251,16 @@ export default function ChartviewToolbar(props: {
                                 paddingRight: 5,
                             }}
                         >
-                            {props.assetType?.charAt(0).toUpperCase() + props.assetType?.slice(1)}
+                            {assetType?.charAt(0).toUpperCase() + assetType?.slice(1)}
                         </Typography>
                         <Typography variant="subtitle1" component="div">
-                            {props.tickerName}
+                            {tickerName}
                         </Typography>
                         <Typography
                             variant="subtitle2"
                             style={{ color: 'white', fontWeight: 'bold' }}
                         >
-                            {data[props.ticker].dataY[data[props.ticker].dataY.length - 1].toFixed(
+                            {data[ticker].dataY[data[ticker].dataY.length - 1].toFixed(
                                 decimalPoints
                             )}
                         </Typography>
@@ -286,7 +291,7 @@ export default function ChartviewToolbar(props: {
                     justifyContent: 'flex-end',
                 }}
             >
-                {props.ticker ? (
+                {ticker ? (
                     <>
                         <Tooltip title="Show Side Table" followCursor>
                             <S.ButtonWrapper
@@ -300,18 +305,18 @@ export default function ChartviewToolbar(props: {
                                 <MdOutlineBackupTable />
                             </S.ButtonWrapper>
                         </Tooltip>
-                        <ChartTypeButton ticker={props.ticker} baseId={props.baseId} />
-                        <DrawLinesButton ticker={props.ticker} baseId={props.baseId} />
+                        <ChartTypeButton ticker={ticker} baseId={props.baseId} />
+                        <DrawLinesButton ticker={ticker} baseId={props.baseId} />
                         <ModifiedStudiesButton onClick={() => setShowLab(true)} />
                     </>
                 ) : undefined}
             </div>
-            {props.ticker ? (
+            {ticker ? (
                 <ChartviewLabPopup
                     baseId={props.baseId}
                     show={showLab}
                     setShow={setShowLab}
-                    ticker={props.ticker}
+                    ticker={ticker}
                 />
             ) : undefined}
         </div>

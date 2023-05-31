@@ -16,7 +16,7 @@ import { ASSET_TYPES } from 'common/constant';
 import { getHistoricalForex } from 'endpoints/clients/forex';
 import DataTable from './datatable';
 import NoDataSkeleton from 'components/Skeletons/NoDataSkeleton';
-import { getTickerMetadata } from 'endpoints/clients/database/postgres/ticker';
+import { TickerMetadataDTO, getTickerMetadata } from 'endpoints/clients/database/postgres/ticker';
 
 const Item = styled(Box)(({ theme }) => ({
     height: '100%',
@@ -37,7 +37,7 @@ export default function Chartview(props: {
     const [loading, setLoading] = React.useState<boolean>(true);
     const [rawData, setRawData] = React.useState<{ [col: string]: any }[]>([]);
     const [showSidebar, setShowSidebar] = React.useState<boolean>(false);
-    const [tickerName, setTickerName] = React.useState<string>('');
+    const [tickerMetadata, setTickerMetadata] = React.useState<TickerMetadataDTO>();
     const addChart = useChartStore(state => state.setChart);
 
     const baseLineChartId: string = getChartviewBaseChartId(props.ticker);
@@ -64,7 +64,7 @@ export default function Chartview(props: {
                 symbol: props.ticker,
                 asset_class: props.assetType,
             }).then(res => {
-                setTickerName(res.data.name);
+                setTickerMetadata(res.data);
             });
         }
 
@@ -115,16 +115,14 @@ export default function Chartview(props: {
 
     return (
         <Item>
-            {loading ? null : (
+            {(!loading && tickerMetadata) ? (
                 <ChartviewToolbar
-                    ticker={props.ticker}
-                    tickerName={tickerName}
                     baseId={baseLineChartId}
-                    assetType={props.assetType}
                     showSidebar={showSidebar}
+                    tickerMetadata={tickerMetadata}
                     setShowSidebar={setShowSidebar}
                 />
-            )}
+            ) : null}
             {props.ticker && data[props.ticker] && rawData.length !== 0 ? (
                 <div style={{ height: '100%', display: 'flex' }}>
                     <div style={{ width: '25%', display: showSidebar ? 'flex' : 'none' }}>
