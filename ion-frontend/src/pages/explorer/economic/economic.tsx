@@ -189,25 +189,37 @@ export default function Economic() {
                                       return (
                                           <div
                                               key={`${nodes.value.selection.id}_${series.id}`}
-                                              style={{ padding: 5 }}
+                                              style={{ padding: 10 }}
                                           >
-                                              <div style={{ display: 'flex', gap: 10 }}>
-                                                  <Typography
-                                                      variant="subtitle2"
-                                                      style={{ color: ColorsEnum.coolgray1 }}
-                                                  >{`${series.id}:FRED`}</Typography>
-                                                  <Typography variant="subtitle2">{`${series.title}`}</Typography>
+                                              <div style={{ display: 'flex' }}>
+                                                  <div style={{ display: 'flex', width: '70%', gap: 10 }}>
+                                                    <Typography
+                                                        variant="subtitle2"
+                                                          style={{ color: ColorsEnum.coolgray1 }}
+                                                    >{`${series.id}:FRED`}</Typography>
+                                                    <Typography variant="subtitle2">{`${series.title}`}</Typography>
+                                                  </div>
+                                                  <div style={{ display: 'flex', width: '30%' }}>
+                                                    <Typography variant="subtitle2" align="right" style={{ width: '100%'}}>
+                                                        {formatDate(series.last_updated)}
+                                                    </Typography>
+                                                  </div>
                                               </div>
                                               <Typography
                                                   variant="subtitle2"
                                                   noWrap
                                                   style={{
                                                       width: '100%',
-                                                      color: ColorsEnum.warmgray3,
+                                                      color: ColorsEnum.coolgray5,
                                                   }}
                                               >
                                                   {series.notes}
                                               </Typography>
+                                              <div>
+                                                    <Typography variant="subtitle2" style={{ color: ColorsEnum.warmgray3 }}>
+                                                        Observation Frequency: {series.frequency}  
+                                                    </Typography>
+                                                  </div>
                                           </div>
                                       );
                                   })
