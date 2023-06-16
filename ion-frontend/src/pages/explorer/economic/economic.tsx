@@ -142,8 +142,8 @@ export default function Economic() {
                           })
                     : null}
             </div>
+            {nodes && nodes.value.selection.id !== 0 ? (
             <S.PanelOpener>
-                {nodes && nodes.value.selection.id !== 0 ? (
                     <>
                         <S.SidePanelOpener>
                             <S.ChildNodesPanel>
@@ -226,8 +226,8 @@ export default function Economic() {
                                 : null}
                         </S.MainPanelOpener>
                     </>
-                ) : null}
             </S.PanelOpener>
+            ) : null}
         </div>
     );
 }
