@@ -34,6 +34,7 @@ def create_table(
         table_schema.__table__.create(postgres_engine)
         return
     else:
+        logger.setLevel("DEBUG")
         logger.info(
             f"Table {table_schema.__tablename__} already exists. Skipping create_table action."
         )
@@ -53,6 +54,7 @@ def drop_table(
         logger.warning(
             f"No {table_schema.__tablename__} to drop. Skipping drop_table action."
         )
+
 
 def _get_postgres_engine(postgres_uri: str = None):
     if not postgres_uri:

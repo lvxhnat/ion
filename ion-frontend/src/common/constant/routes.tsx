@@ -2,12 +2,12 @@ export const ROUTES = {
     PRIVATE: {},
     PUBLIC: {
         LANDING: '/',
-        GEOPOLITICS: '/analysis/geopolitics',
-        SECURITIES: '/analysis/securities',
-        FUNCTION: '/function/function-list',
-        PORTFOLIO: '/function/portfolio-administration',
-        EXPLORER: '/function/explorer',
-        HEALTHCHECK: '/function/health',
+        GEOPOLITICS: '/geopolitics',
+        SECURITIES: '/securities',
+        FUNCTION: '/function-list',
+        PORTFOLIO: '/portfolio-administration',
+        EXPLORER: '/explorer',
+        HEALTHCHECK: '/health',
     },
     PUBLIC_REQUIRED_TOKEN: {},
 };

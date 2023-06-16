@@ -13,8 +13,19 @@ import {
 } from 'react-icons/gi';
 import { RiBankFill } from 'react-icons/ri';
 import { ColorsEnum } from 'common/theme';
+import HexLayer from 'components/Charting/HexLayer';
+import Economic from './economic';
 
 type ChoiceTypes = 'allProducts' | 'etf' | 'equity' | 'forex' | 'commodities' | 'econs';
+
+const pages: { [type in ChoiceTypes]: React.ReactElement } = {
+    econs: <Economic />,
+    allProducts: <></>,
+    etf: <></>,
+    equity: <></>,
+    forex: <></>,
+    commodities: <></>,
+};
 
 const ExplorerToolbar = (props: {
     selected: ChoiceTypes;
@@ -70,14 +81,14 @@ const ExplorerToolbar = (props: {
 
 export default function Explorer() {
     const [choice, setChoice] = React.useState<ChoiceTypes>('allProducts');
-    React.useEffect(() => {
-        
-    }, [])
+
     return (
         <div>
             <CssBaseline />
             <Navigation />
             <ExplorerToolbar selected={choice} onClick={setChoice} />
+            {choice === 'allProducts' ? <HexLayer baseId="explorerHex" title="" /> : null}
+            {pages[choice]}
         </div>
     );
 }

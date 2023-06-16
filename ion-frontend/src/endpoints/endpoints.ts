@@ -12,6 +12,9 @@ export const ENDPOINTS = {
         BASE_POSTGRES_ENDPOINT: 'database/postgres/', // Use for CRUD Operations. Officially 'postgres/{table_name}'
         AUTOCOMPLETE_TICKERS_ENDPOINT: 'database/autocomplete/query',
 
+        FRED_PARENT_NODES_ENDPOINT: 'government/fred/root',
+        FRED_CHILD_NODES_ENDPOINT: 'government/fred/child',
+
         QUERY_PORTFOLIO_ENDPOINT: 'database/postgres/query/portfolio',
         QUERY_TICKER_ENDPOINT: 'database/postgres/query/ticker',
 

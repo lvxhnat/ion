@@ -187,7 +187,7 @@ export default function ChartviewToolbar(props: {
     const { mode } = useThemeStore();
     const data = useTickerDataStore(state => state.data);
     const [showLab, setShowLab] = React.useState<boolean>(false);
-    
+
     const ticker = props.tickerMetadata.symbol;
     const assetType = props.tickerMetadata.asset_class;
     const tickerName = props.tickerMetadata.name;
@@ -201,8 +201,7 @@ export default function ChartviewToolbar(props: {
         absoluteChange =
             data[ticker].dataY[data[ticker].dataY.length - 1] -
             data[ticker].dataY[data[ticker].dataY.length - 2];
-        pctChange =
-            (100 * absoluteChange) / data[ticker].dataY[data[ticker].dataY.length - 2];
+        pctChange = (100 * absoluteChange) / data[ticker].dataY[data[ticker].dataY.length - 2];
         changeColor =
             data[ticker].dataY[data[ticker].dataY.length - 1] >
             data[ticker].dataY[data[ticker].dataY.length - 2]
@@ -223,12 +222,16 @@ export default function ChartviewToolbar(props: {
                 alignItems: 'center',
             }}
         >
-            { props.tickerMetadata ? <TickerSearch
-                tickerMetadata={props.tickerMetadata}
-                setSelectedOption={(ticker: string, asset_type: string) =>
-                    navigate(`${ROUTES.PUBLIC.SECURITIES}/${asset_type.toLowerCase()}/${ticker}`)
-                }
-            /> : null}
+            {props.tickerMetadata ? (
+                <TickerSearch
+                    tickerMetadata={props.tickerMetadata}
+                    setSelectedOption={(ticker: string, asset_type: string) =>
+                        navigate(
+                            `${ROUTES.PUBLIC.SECURITIES}/${asset_type.toLowerCase()}/${ticker}`
+                        )
+                    }
+                />
+            ) : null}
             <div
                 style={{
                     display: 'flex',
