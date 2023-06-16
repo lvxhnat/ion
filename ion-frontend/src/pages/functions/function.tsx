@@ -12,6 +12,7 @@ import { useThemeStore } from 'store/theme';
 import HexLayer from 'components/Charting/HexLayer';
 import Navigation from 'components/Navigation';
 import { ROUTES, ROUTE_METADATA } from 'common/constant';
+import MasterSearch from 'components/Navigation/MasterSearch';
 
 export default function Function() {
     const { mode } = useThemeStore();
@@ -21,7 +22,11 @@ export default function Function() {
         <>
             <CssBaseline />
             <Navigation />
-            <HexLayer baseId="functionExplorerHex" theme={mode!} title="Functions" />
+            <HexLayer
+                baseId="functionExplorerHex"
+                title="Functions"
+                searchComponent={<MasterSearch />}
+            />
             <Grid container sx={{ padding: 2 }}>
                 <Grid item xs={6}>
                     <Typography

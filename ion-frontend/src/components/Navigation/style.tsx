@@ -32,4 +32,5 @@ export const RightPanel = styled('div')(({ theme }) => ({
 export const LeftPanel = styled('div')(({ theme }) => ({
     display: 'flex',
     width: '50%',
+    gap: 5,
 }));

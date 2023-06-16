@@ -1,5 +1,5 @@
 import pandas as pd
-from typing import List
+from typing import List, Union
 
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import InstrumentedAttribute
@@ -9,9 +9,11 @@ from ion_clients.services.logging import get_logger
 from ion_clients.services.postgres.postgres_service import (
     create_table,
 )
-from ion_clients.services.postgres.schemas.params import WriteObjectType
 
-logger = get_logger()
+logger = get_logger(__name__)
+WriteObjectType = Union[
+    List[dict], List[Table], pd.DataFrame
+]  # List[sqlalchemy.Table]
 
 
 def _serialize(query) -> List[dict]:

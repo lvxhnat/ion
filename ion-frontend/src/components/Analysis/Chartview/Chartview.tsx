@@ -115,7 +115,7 @@ export default function Chartview(props: {
 
     return (
         <Item>
-            {(!loading && tickerMetadata) ? (
+            {!loading && tickerMetadata ? (
                 <ChartviewToolbar
                     baseId={baseLineChartId}
                     showSidebar={showSidebar}

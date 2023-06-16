@@ -72,7 +72,13 @@ export function TickerSearch(props: {
                         setShowMenu(true);
                         setQuery(event.target.value);
                     }}
-                    placeholder={props.tickerMetadata ? `${props.tickerMetadata.symbol}:${props.tickerMetadata.source.slice(0,3).toUpperCase()}` : 'Enter Symbol'}
+                    placeholder={
+                        props.tickerMetadata
+                            ? `${props.tickerMetadata.symbol}:${props.tickerMetadata.source
+                                  .slice(0, 3)
+                                  .toUpperCase()}`
+                            : 'Enter Symbol'
+                    }
                 />
                 <S.SelectArrowWrapper
                     onClick={() => {
@@ -130,7 +136,9 @@ export function TickerSearch(props: {
                                 </Typography>
                             </S.TableRowItemWrapper>
                             <S.TableRowItemWrapper style={{ width: '10%' }}>
-                                <Typography variant="subtitle2" align="left">{entry.source.slice(0, 3).toUpperCase()}</Typography>
+                                <Typography variant="subtitle2" align="left">
+                                    {entry.source.slice(0, 3).toUpperCase()}
+                                </Typography>
                             </S.TableRowItemWrapper>
                             <S.TableRowItemWrapper
                                 style={{

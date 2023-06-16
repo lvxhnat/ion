@@ -17,8 +17,7 @@ from pandas.api.types import is_string_dtype
 from ion_clients.services.logging import get_logger
 from ion_clients.clients.twitter.configs.config import TWITTER_KEYS
 
-logger = get_logger()
-
+logger = get_logger(__name__)
 
 class TwitterMultiClient:
     """Twitter concurrent client to handle user and post extraction and

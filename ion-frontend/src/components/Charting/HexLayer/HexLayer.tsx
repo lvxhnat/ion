@@ -4,15 +4,20 @@ import * as React from 'react';
 
 import { useD3 } from 'common/hooks/useD3';
 import { ColorsEnum } from 'common/theme';
-import MasterSearch from 'components/Navigation/MasterSearch';
+import { useThemeStore } from 'store/theme';
 
 interface HexLayerProps {
     baseId: string;
-    theme: 'light' | 'dark';
     title?: string;
+    searchComponent?: React.ReactElement;
 }
 
-export default function HexLayer({ baseId, theme, title }: HexLayerProps): React.ReactElement {
+export default function HexLayer({
+    baseId,
+    title,
+    searchComponent,
+}: HexLayerProps): React.ReactElement {
+    const { mode } = useThemeStore();
     const ref = useD3(
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
             // Ensure rerender does not duplicate chart
@@ -73,7 +78,7 @@ export default function HexLayer({ baseId, theme, title }: HexLayerProps): React
                     return 'translate(' + d.x + ',' + d.y + ')';
                 })
                 .attr('fill', function (_: any) {
-                    return theme === 'light'
+                    return mode === 'light'
                         ? Math.random() > 0.3
                             ? ColorsEnum.limeGreen
                             : ColorsEnum.lightLime
@@ -82,9 +87,9 @@ export default function HexLayer({ baseId, theme, title }: HexLayerProps): React
                         : ColorsEnum.geekBlue;
                 })
                 .attr('stroke', function (_: any) {
-                    return theme === 'dark' ? ColorsEnum.black : ColorsEnum.white;
+                    return mode === 'dark' ? ColorsEnum.black : ColorsEnum.white;
                 })
-                .attr('stroke-width', theme === 'light' ? 1 : 0.3);
+                .attr('stroke-width', mode === 'light' ? 1 : 0.3);
 
             if (title) {
                 svg.append('text')
@@ -95,10 +100,10 @@ export default function HexLayer({ baseId, theme, title }: HexLayerProps): React
                     .style('text-anchor', 'middle')
                     .style('font-weight', 'bold')
                     .style('font-size', 'calc(12px + 0.2vw)')
-                    .style('fill', theme === 'dark' ? ColorsEnum.white : ColorsEnum.black);
+                    .style('fill', mode === 'dark' ? ColorsEnum.white : ColorsEnum.black);
             }
         },
-        [theme]
+        [mode]
     );
 
     return (
@@ -113,7 +118,7 @@ export default function HexLayer({ baseId, theme, title }: HexLayerProps): React
                     justifyContent: 'center',
                 }}
             >
-                <MasterSearch />
+                {searchComponent}
             </div>
         </div>
     );

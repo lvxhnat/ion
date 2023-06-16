@@ -11,7 +11,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from ion_clients.clients.configs import ingestion_settings
 from ion_clients.services.logging import get_logger
 
-logger = get_logger("WARNING")
+logger = get_logger(__name__)
 
 
 class AssetHistoricalData(BaseModel):
