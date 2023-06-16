@@ -23,14 +23,11 @@ def get_children_category_ids(category_id: str) -> List[dict]:
         )
     ]
     if len(processed_json_data) == 0:
-        request_path: str = (
-            f"{CATEGORY_ROOT_PATH('series')}&category_id={category_id}"
-        )
+        request_path: str = f"{CATEGORY_ROOT_PATH('series')}&category_id={category_id}&limit=100"
         json_data: List[dict] = requests.get(request_path).json()["seriess"]
-        print(json_data)
         return {
             "type": "series",
-            "data": processed_json_data,
+            "data": json_data,
         }
     else:
         # If the json data is not zero, that means that the category id exists. If it doesnt, we move on to get the series available.

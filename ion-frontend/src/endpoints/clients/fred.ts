@@ -1,14 +1,36 @@
 import { ENDPOINTS } from 'endpoints/endpoints';
 import { dataIngestionRequest } from 'services/request';
 
-export interface FredEntry {
+export interface FredCategoryEntry {
     id: number;
     parent_id: number;
     name: string;
     last_updated: string;
 }
 
-export type FredParentNodeDTO = { parent_node: FredEntry; child_node: FredEntry[] }[];
+export interface FredSeriesEntry {
+    id: string;
+    realtime_start: string;
+    realtime_end: string;
+    title: string;
+    observation_start: string;
+    observation_end: string;
+    frequency: string;
+    frequency_short: string;
+    units: string;
+    units_short: string;
+    seasonal_adjustment: string;
+    seasonal_adjustment_short: string;
+    last_updated: string;
+    popularity: number;
+    group_popularity: number;
+    notes: string;
+}
+
+export type FredParentNodeDTO = {
+    parent_node: FredCategoryEntry;
+    child_node: FredCategoryEntry[];
+}[];
 
 export const getFredParentNodes = () => {
     return dataIngestionRequest.get<FredParentNodeDTO>(
@@ -18,7 +40,7 @@ export const getFredParentNodes = () => {
 
 export interface FredChildNodeDTO {
     type: 'series' | 'category';
-    data: FredEntry[];
+    data: FredCategoryEntry[] | FredSeriesEntry[];
 }
 
 export const getFredChildNodes = (category_id: number) => {
