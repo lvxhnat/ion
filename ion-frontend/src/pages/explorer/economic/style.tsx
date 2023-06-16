@@ -21,6 +21,7 @@ export const FredRow = (props: FredRowProps) => {
 export const PanelOpener = styled('div')(({ theme }) => ({
     display: 'flex',
     width: '100%',
+    height: '75vh'
 }));
 
 export const SidePanelOpener = styled('div')(({ theme }) => ({
@@ -33,6 +34,9 @@ export const SidePanelOpener = styled('div')(({ theme }) => ({
 
 export const MainPanelOpener = styled('div')(({ theme }) => ({
     width: '75%',
+    height: '100%',
+    overflowY: 'auto',
+    '&::-webkit-scrollbar': { display: 'none' },
 }));
 
 export const UpdateBar = styled(Typography)(({ theme }) => ({
