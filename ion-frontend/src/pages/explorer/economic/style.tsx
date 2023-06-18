@@ -21,7 +21,7 @@ export const FredRow = (props: FredRowProps) => {
 export const PanelOpener = styled('div')(({ theme }) => ({
     display: 'flex',
     width: '100%',
-    height: '75vh'
+    height: '100%',
 }));
 
 export const SidePanelOpener = styled('div')(({ theme }) => ({
@@ -30,27 +30,40 @@ export const SidePanelOpener = styled('div')(({ theme }) => ({
     overflowY: 'auto',
     backgroundColor: ColorsEnum.darkerGrey,
     '&::-webkit-scrollbar': { display: 'none' },
+    display: 'flex',
+    flexDirection: 'column',
 }));
 
 export const MainPanelOpener = styled('div')(({ theme }) => ({
     width: '75%',
     height: '100%',
-    overflowY: 'auto',
+    overflowY: 'hidden',
+    display: 'flex',
+    flexDirection: 'column',
     '&::-webkit-scrollbar': { display: 'none' },
 }));
 
-export const UpdateBar = styled(Typography)(({ theme }) => ({
+export const UpdateBar = styled('div')(({ theme }) => ({
     display: 'flex',
     width: '100%',
     padding: 5,
     gap: 10,
     backgroundColor: ColorsEnum.warmgray6,
+    justifyContent: 'flex-end',
 }));
 
 export const ChildNodesPanel = styled('div')(({ theme }) => ({
+    flexGrow: 1,
     overflowY: 'auto',
-    height: '85vh',
     '&::-webkit-scrollbar': { display: 'none' },
+}));
+
+export const SeriesContainer = styled('div')(({ theme }) => ({
+    padding: `${theme.spacing(1)} ${theme.spacing(1)}`,
+    '&:hover': {
+        cursor: 'pointer',
+        backgroundColor: ColorsEnum.warmgray6,
+    },
 }));
 
 export const IconButtonWrapper = styled('div')(({ theme }) => ({

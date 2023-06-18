@@ -98,10 +98,8 @@ export default function BaseChart({
         (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
             // Ensure rerender does not duplicate chart
             if (!svg.selectAll('*').empty()) svg.selectAll('*').remove(); // removes any overlapping versions of the svgs
-
-            if (showLegend && showTooltip && showPricing) {
+            if (showLegend && showTooltip && showPricing)
                 throw new Error('Pick either show legend and tooltips or pricing only.');
-            }
 
             CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH =
                 strokeWidth ?? CHARTCONFIGS.DEFAULT_LINE_STROKE_WIDTH;

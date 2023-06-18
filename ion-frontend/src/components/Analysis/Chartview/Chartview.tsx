@@ -17,6 +17,7 @@ import { getHistoricalForex } from 'endpoints/clients/forex';
 import DataTable from './datatable';
 import NoDataSkeleton from 'components/Skeletons/NoDataSkeleton';
 import { TickerMetadataDTO, getTickerMetadata } from 'endpoints/clients/database/postgres/ticker';
+import { FredSeriesDataEntry, getFredSeries } from 'endpoints/clients/fred';
 
 const Item = styled(Box)(({ theme }) => ({
     height: '100%',
@@ -30,8 +31,8 @@ export const getChartviewBaseChartId = (ticker: string | undefined) => `${ticker
  * @returns
  */
 export default function Chartview(props: {
-    assetType?: keyof typeof ASSET_TYPES;
     ticker?: string;
+    assetType?: keyof typeof ASSET_TYPES;
 }) {
     const [data, setData] = useTickerDataStore(state => [state.data, state.setData]);
     const [loading, setLoading] = React.useState<boolean>(true);
@@ -68,7 +69,7 @@ export default function Chartview(props: {
             });
         }
 
-        if (assetType.toLowerCase() === ASSET_TYPES.FOREX.toLowerCase()) {
+        if (assetType === ASSET_TYPES.FOREX) {
             getHistoricalForex({
                 symbol: ticker,
                 granularity: 'D',
@@ -89,10 +90,7 @@ export default function Chartview(props: {
                 setRawData(res.data);
                 setLoading(false);
             });
-        } else if (
-            assetType.toLowerCase() === ASSET_TYPES.EQUITY.toLowerCase() ||
-            assetType.toLowerCase() === ASSET_TYPES.ETF.toLowerCase()
-        ) {
+        } else if (assetType === ASSET_TYPES.EQUITY || assetType === ASSET_TYPES.ETF) {
             getCandles(ticker).then(res => {
                 const data = res.data.data;
                 setData({
@@ -110,6 +108,19 @@ export default function Chartview(props: {
                 setRawData(data);
                 setLoading(false);
             });
+        } else if (assetType === ASSET_TYPES.FRED) {
+            getFredSeries(ticker).then(res => {
+                const dataSeries: DefaultDataProps = {
+                    name: ticker,
+                    id: getChartviewBaseChartId(ticker),
+                    parent: true,
+                    dataX: res.data.map((d: FredSeriesDataEntry) => parseTime(d.date) as Date),
+                    dataY: res.data.map((d: FredSeriesDataEntry) => d.value),
+                    color: 'white',
+                    type: 'line',
+                };
+                setData({ ticker: ticker, data: dataSeries });
+            });
         }
     }, [props.ticker]);
 
@@ -123,11 +134,13 @@ export default function Chartview(props: {
                     setShowSidebar={setShowSidebar}
                 />
             ) : null}
-            {props.ticker && data[props.ticker] && rawData.length !== 0 ? (
+            {props.ticker && data[props.ticker] ? (
                 <div style={{ height: '100%', display: 'flex' }}>
-                    <div style={{ width: '25%', display: showSidebar ? 'flex' : 'none' }}>
-                        <DataTable data={rawData} columns={Object.keys(rawData[0])} />
-                    </div>
+                    {rawData.length !== 0 ? (
+                        <div style={{ width: '25%', display: showSidebar ? 'flex' : 'none' }}>
+                            <DataTable data={rawData} columns={Object.keys(rawData[0])} />
+                        </div>
+                    ) : null}
                     <div style={{ width: showSidebar ? '75%' : '100%', height: '100%' }}>
                         <ChartviewPriceShower ticker={props.ticker} />
                         <BaseLineChart

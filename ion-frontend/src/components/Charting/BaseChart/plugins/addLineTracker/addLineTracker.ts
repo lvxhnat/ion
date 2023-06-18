@@ -3,10 +3,10 @@ import { ColorsEnum } from 'common/theme';
 import { CHARTCONFIGS, CHARTIDS } from '../../config';
 import {
     TickerMetricStoreFormat,
-    useChartStore,
     useLiveMovesStore,
     useTickerDataStore,
 } from 'store/chartview/chartview';
+import { DefaultDataProps } from '../../schema/schema';
 
 export const addLineTracker = (props: {
     x: d3.ScaleTime<number, number, never>;
@@ -17,7 +17,7 @@ export const addLineTracker = (props: {
     draw?: boolean;
 }) => {
     // Get the required states for initiating our tooltips
-    const data = useTickerDataStore.getState().data[props.ticker];
+    const data: DefaultDataProps = useTickerDataStore.getState().data[props.ticker];
     const setLiveMoves = useLiveMovesStore.getState().setLiveMoves;
 
     // Retrieve the SVG

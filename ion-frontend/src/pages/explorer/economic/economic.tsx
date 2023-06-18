@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as S from './style';
+import * as d3 from 'd3';
 
 import Typography from '@mui/material/Typography';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -11,9 +12,11 @@ import {
     getFredChildNodes,
     getFredParentNodes,
 } from 'endpoints/clients/fred';
+import { ColorsEnum } from 'common/theme';
 import { formatDate } from 'common/constant/dates';
 import HexLayer from 'components/Charting/HexLayer';
-import { ColorsEnum } from 'common/theme';
+import Chartview from 'components/Analysis/Chartview';
+import { ASSET_TYPES } from 'common/constant';
 
 class NodeValue {
     type: 'series' | 'category'; // Whether this current node is a series or category
@@ -40,6 +43,7 @@ class DoublyLinkedListNode {
 
 export default function Economic() {
     const [titles, setTitles] = React.useState<FredParentNodeDTO>([]);
+    const [seriesSelected, setSeriesSelected] = React.useState<FredSeriesEntry>();
 
     const [categoryLoading, setCategoryLoading] = React.useState<boolean>(false);
 
@@ -63,6 +67,7 @@ export default function Economic() {
         if (newNodes && newNodes.prev) {
             setNodes(DoublyLinkedListNode.fromNode(newNodes.prev));
         }
+        setSeriesSelected(undefined);
     };
 
     const handleClick = (entry: FredCategoryEntry) => {
@@ -75,7 +80,6 @@ export default function Economic() {
             setNodes(newNodes);
         } else {
             getFredChildNodes(entry.id).then(res => {
-                console.log(res.data);
                 newNodes.next = new DoublyLinkedListNode({
                     type: res.data.type,
                     selection: entry,
@@ -92,58 +96,56 @@ export default function Economic() {
     };
 
     return (
-        <div style={{ width: '100%', height: '90vh' }}>
-            <HexLayer baseId={'economicSearch'} />
-            <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
-                {categoryLoading
-                    ? 'Loading'
-                    : nodes && nodes.value.selection.id === 0
-                    ? Array(titles.length / 2)
-                          .fill(0)
-                          .map((_, index) => {
-                              const entry = titles[index * 2];
-                              const nextEntry = titles[index * 2 + 1];
-                              return (
-                                  <div
-                                      key={`${entry.parent_node.id}_FredChildDiv`}
-                                      style={{ width: '25%' }}
-                                  >
-                                      <div style={{ paddingBottom: 25, paddingTop: 10 }}>
-                                          <S.FredRow
-                                              isTitle
-                                              key={`${entry.parent_node.id}_FredParentRow`}
-                                          >
-                                              {entry.parent_node.name}
-                                          </S.FredRow>
-                                          {entry.child_node.map(
-                                              (child_entry: FredCategoryEntry) => (
-                                                  <S.FredRow
-                                                      key={`${child_entry.id}_FredChildRow`}
-                                                      onClick={() => handleClick(child_entry)}
-                                                  >
-                                                      {child_entry.name}
-                                                  </S.FredRow>
-                                              )
-                                          )}
-                                      </div>
-                                      <S.FredRow
-                                          isTitle
-                                          key={`${nextEntry.parent_node.id}_FredParentRow`}
-                                      >
-                                          {nextEntry.parent_node.name}
-                                      </S.FredRow>
-                                      {nextEntry.child_node.map(child_entry => (
-                                          <S.FredRow key={`${child_entry.id}_FredChildRow`}>
-                                              {child_entry.name}
-                                          </S.FredRow>
-                                      ))}
-                                  </div>
-                              );
-                          })
-                    : null}
-            </div>
+        <div style={{ width: '100%', height: '92vh' }}>
+            {categoryLoading ? (
+                'Loading'
+            ) : nodes && nodes.value.selection.id === 0 ? (
+                <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
+                    <HexLayer baseId={'economicSearch'} />
+                    {Array(titles.length / 2)
+                        .fill(0)
+                        .map((_, index) => {
+                            const entry = titles[index * 2];
+                            const nextEntry = titles[index * 2 + 1];
+                            return (
+                                <div
+                                    key={`${entry.parent_node.id}_FredChildDiv`}
+                                    style={{ width: '25%' }}
+                                >
+                                    <div style={{ paddingBottom: 25, paddingTop: 10 }}>
+                                        <S.FredRow
+                                            isTitle
+                                            key={`${entry.parent_node.id}_FredParentRow`}
+                                        >
+                                            {entry.parent_node.name}
+                                        </S.FredRow>
+                                        {entry.child_node.map((child_entry: FredCategoryEntry) => (
+                                            <S.FredRow
+                                                key={`${child_entry.id}_FredChildRow`}
+                                                onClick={() => handleClick(child_entry)}
+                                            >
+                                                {child_entry.name}
+                                            </S.FredRow>
+                                        ))}
+                                    </div>
+                                    <S.FredRow
+                                        isTitle
+                                        key={`${nextEntry.parent_node.id}_FredParentRow`}
+                                    >
+                                        {nextEntry.parent_node.name}
+                                    </S.FredRow>
+                                    {nextEntry.child_node.map(child_entry => (
+                                        <S.FredRow key={`${child_entry.id}_FredChildRow`}>
+                                            {child_entry.name}
+                                        </S.FredRow>
+                                    ))}
+                                </div>
+                            );
+                        })}
+                </div>
+            ) : null}
             {nodes && nodes.value.selection.id !== 0 ? (
-            <S.PanelOpener>
+                <S.PanelOpener>
                     <>
                         <S.SidePanelOpener>
                             <S.ChildNodesPanel>
@@ -173,60 +175,127 @@ export default function Economic() {
                                           );
                                       })}
                             </S.ChildNodesPanel>
-                            <S.UpdateBar variant="subtitle2" align="right">
-                                <div style={{ width: '100%' }}>
+                            <S.UpdateBar>
+                                <Typography variant="subtitle2" align="right" component="div">
                                     <strong>Last Updated:</strong>{' '}
                                     {titles.length !== 0
                                         ? formatDate(titles[0].parent_node.last_updated)
                                         : null}{' '}
-                                </div>
+                                </Typography>
                             </S.UpdateBar>
                         </S.SidePanelOpener>
                         <S.MainPanelOpener>
-                            {nodes && nodes.value.type === 'series'
-                                ? nodes.value.entries.map(seriesEntry => {
-                                      const series = seriesEntry as FredSeriesEntry;
-                                      return (
-                                          <div
-                                              key={`${nodes.value.selection.id}_${series.id}`}
-                                              style={{ padding: 10 }}
-                                          >
-                                              <div style={{ display: 'flex' }}>
-                                                  <div style={{ display: 'flex', width: '70%', gap: 10 }}>
-                                                    <Typography
-                                                        variant="subtitle2"
-                                                          style={{ color: ColorsEnum.coolgray1 }}
-                                                    >{`${series.id}:FRED`}</Typography>
-                                                    <Typography variant="subtitle2">{`${series.title}`}</Typography>
-                                                  </div>
-                                                  <div style={{ display: 'flex', width: '30%' }}>
-                                                    <Typography variant="subtitle2" align="right" style={{ width: '100%'}}>
-                                                        {formatDate(series.last_updated)}
-                                                    </Typography>
-                                                  </div>
-                                              </div>
-                                              <Typography
-                                                  variant="subtitle2"
-                                                  noWrap
-                                                  style={{
-                                                      width: '100%',
-                                                      color: ColorsEnum.coolgray5,
-                                                  }}
+                            {seriesSelected ? (
+                                <div style={{ paddingBottom: 100, padding: 5 }}>
+                                    <div style={{ width: '100%', display: 'flex' }}>
+                                        <Typography
+                                            variant="subtitle1"
+                                            style={{ color: ColorsEnum.beer, width: '50%' }}
+                                        >
+                                            {' '}
+                                            {seriesSelected.title}{' '}
+                                        </Typography>
+                                        <Typography
+                                            variant="subtitle1"
+                                            align="right"
+                                            style={{ width: '50%' }}
+                                        >
+                                            {' '}
+                                            {seriesSelected.last_updated}{' '}
+                                        </Typography>
+                                    </div>
+                                    <Chartview
+                                        ticker={seriesSelected.id}
+                                        assetType={ASSET_TYPES.FRED as keyof typeof ASSET_TYPES}
+                                    />
+                                    <div>
+                                        <Typography
+                                            variant="subtitle2"
+                                            style={{ color: ColorsEnum.warmgray3 }}
+                                        >
+                                            {' '}
+                                            {seriesSelected.notes}{' '}
+                                        </Typography>
+                                    </div>
+                                </div>
+                            ) : null}
+                            <div style={{ overflowY: 'auto' }}>
+                                {nodes && nodes.value.type === 'series'
+                                    ? nodes.value.entries.map(seriesEntry => {
+                                          const series = seriesEntry as FredSeriesEntry;
+                                          return (
+                                              <S.SeriesContainer
+                                                  onClick={() => setSeriesSelected(series)}
+                                                  key={`${nodes.value.selection.id}_${series.id}`}
                                               >
-                                                  {series.notes}
-                                              </Typography>
-                                              <div>
-                                                    <Typography variant="subtitle2" style={{ color: ColorsEnum.warmgray3 }}>
-                                                        Observation Frequency: {series.frequency}  
-                                                    </Typography>
+                                                  <div style={{ display: 'flex' }}>
+                                                      <div
+                                                          style={{
+                                                              display: 'flex',
+                                                              width: '70%',
+                                                              gap: 10,
+                                                          }}
+                                                      >
+                                                          <Typography
+                                                              variant="subtitle2"
+                                                              style={{
+                                                                  color: ColorsEnum.coolgray1,
+                                                              }}
+                                                          >{`${series.id}:FRED`}</Typography>
+                                                          <Typography variant="subtitle2">{`${series.title} (${series.units_short})`}</Typography>
+                                                      </div>
+                                                      <div
+                                                          style={{ display: 'flex', width: '30%' }}
+                                                      >
+                                                          <Typography
+                                                              variant="subtitle2"
+                                                              align="right"
+                                                              style={{ width: '100%' }}
+                                                          >
+                                                              Last Updated:{' '}
+                                                              {formatDate(series.last_updated)}
+                                                          </Typography>
+                                                      </div>
                                                   </div>
-                                          </div>
-                                      );
-                                  })
-                                : null}
+                                                  <Typography
+                                                      variant="subtitle2"
+                                                      noWrap
+                                                      style={{
+                                                          width: '100%',
+                                                          color: ColorsEnum.coolgray5,
+                                                      }}
+                                                  >
+                                                      {series.notes}
+                                                  </Typography>
+                                                  <div
+                                                      style={{
+                                                          display: 'flex',
+                                                          width: '100%',
+                                                          color: ColorsEnum.warmgray3,
+                                                      }}
+                                                  >
+                                                      <Typography
+                                                          variant="subtitle2"
+                                                          style={{ width: '50%' }}
+                                                      >
+                                                          Observation Frequency: {series.frequency}
+                                                      </Typography>
+                                                      <Typography
+                                                          variant="subtitle2"
+                                                          align="right"
+                                                          style={{ width: '50%' }}
+                                                      >
+                                                          {`Period: ${series.realtime_start} to ${series.realtime_end}`}
+                                                      </Typography>
+                                                  </div>
+                                              </S.SeriesContainer>
+                                          );
+                                      })
+                                    : null}
+                            </div>
                         </S.MainPanelOpener>
                     </>
-            </S.PanelOpener>
+                </S.PanelOpener>
             ) : null}
         </div>
     );
