@@ -1,13 +1,13 @@
 import pandas as pd
-from typing import List
 from fastapi import APIRouter
 from datetime import datetime, timedelta
 
-from ion_clients.clients.fred import get_children_category_ids
+from ion_clients.clients.fred import get_children_category_ids, get_series_data
 from ion_clients.services.postgres.models.data.government import FredMetaData
 from ion_clients.services.postgres.postgres_service import _get_postgres_engine
 from data_ingestion.app.api.api_v2.postgres.schemas.data.government.params import (
     FredChildParams,
+    FredSeriesParams,
 )
 
 router = APIRouter(
@@ -18,6 +18,11 @@ router = APIRouter(
 @router.get("/health")
 def health_check():
     return {"status": "healthy"}
+
+
+@router.post("/series")
+def get_series(params: FredSeriesParams):
+    return get_series_data(params.series_id)
 
 
 @router.post("/child")
