@@ -37,6 +37,25 @@ const determineDatetimeFormat = (
     return format;
 };
 
+export const determineNumericalFormat = (value: number): string => {
+    let prefix: number = value;
+    let suffix: string = '';
+    if (Math.abs(value) >= 1_000_000_000) {
+        prefix = value / 1_000_000_000;
+        suffix = 'B';
+    } else if (Math.abs(value) >= 1_000_000) {
+        prefix = value / 1_000_000;
+        suffix = 'M';
+    } else if (Math.abs(value) >= 1_000) {
+        prefix = value / 1_000;
+        suffix = 'K';
+    }
+    if (prefix - Math.floor(prefix) !== 0) {
+        return `${prefix.toFixed(2)}${suffix}`;
+    }
+    return `${prefix}${suffix}`;
+};
+
 export function returnChartAxis(props: {
     width: number;
     height: number;
@@ -58,7 +77,7 @@ export function returnChartAxis(props: {
     const x = d3.scaleTime().range([0, props.width]).domain([minDate, maxDate]);
     const y = d3
         .scaleLinear()
-        .range([props.height, 0])
+        .range([props.height - CHARTCONFIGS.DEFAULT_MARGIN.BOTTOM, CHARTCONFIGS.DEFAULT_MARGIN.TOP])
         .domain([
             determineStartY(props.zeroAxis, minValue, maxValue),
             determineEndY(minValue, maxValue),
@@ -107,14 +126,14 @@ export default function BaseChart({
             const dataX = defaultData.dataX.map(date => new Date(date));
             const dataY = defaultData.dataY;
 
-            const width = document.getElementById(baseId)!.parentNode!.parentElement!.clientWidth;
-            const height = document.getElementById(baseId)!.parentNode!.parentElement!.clientHeight;
+            const width = document.getElementById(baseId)!.parentElement!.clientWidth;
+            const height = document.getElementById(baseId)!.parentElement!.clientHeight;
 
             svg.attr('viewBox', [
                 0,
                 0,
                 width + (showXAxis ? 30 : 0), // Fixed sizing seems to work better than scaling with multiplication for showing of axis
-                height + (showYAxis ? 15 : 0),
+                height + (showYAxis ? 10 : 0),
             ])
                 .attr('preserveAspectRatio', 'xMidYMid meet')
                 .classed('svg-content-responsive', true)
@@ -134,7 +153,11 @@ export default function BaseChart({
                 configs: { x: x, y: y, dataX: dataX },
             });
 
-            const yAxis = d3.axisRight(y).tickSize(width).ticks(0);
+            const yAxis = d3
+                .axisRight(y)
+                .tickFormat((value: d3.NumberValue) => determineNumericalFormat(value as number))
+                .tickSize(width)
+                .ticks(0);
 
             const xAxis = d3
                 .axisBottom(x)

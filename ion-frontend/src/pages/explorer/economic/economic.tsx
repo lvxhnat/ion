@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as S from './style';
-import * as d3 from 'd3';
 
 import Typography from '@mui/material/Typography';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -174,6 +173,67 @@ export default function Economic() {
                                               </S.FredRow>
                                           );
                                       })}
+                                {/* Generate side panel texts to describe series when series are selected */}
+                                {seriesSelected ? (
+                                    <div style={{ padding: 10 }}>
+                                        <Typography
+                                            variant="subtitle1"
+                                            style={{ color: ColorsEnum.beer, paddingBottom: 15 }}
+                                        >
+                                            {' '}
+                                            {seriesSelected.title}{' '}
+                                        </Typography>
+                                        <Typography
+                                            variant="subtitle2"
+                                            style={{
+                                                color: ColorsEnum.warmgray2,
+                                                paddingBottom: 10,
+                                            }}
+                                        >
+                                            {seriesSelected.notes}
+                                        </Typography>
+                                        <Typography variant="subtitle2" variantMapping={{
+                                                subtitle2: 'span', // or any other variant you want to use
+                                              }}>
+                                            <span style={{ fontWeight: 'bold' }}> Units: </span>
+                                             {seriesSelected.units} (
+                                            {seriesSelected.units_short})
+                                        </Typography>
+                                        <Typography 
+                                        component="div"
+                                        variant="subtitle2" 
+                                        variantMapping={{
+                                                subtitle2: 'span', // or any other variant you want to use
+                                              }}>
+                                                <span style={{ fontWeight: 'bold' }}>  Seasonal Adjustment:{' '} </span>
+                                            {seriesSelected.seasonal_adjustment} (
+                                            {seriesSelected.seasonal_adjustment_short})
+                                        </Typography>
+                                        <Typography variant="subtitle2">
+                                        <span style={{ fontWeight: 'bold' }}>  Series Search Popularity:{' '} </span>
+                                            {seriesSelected.popularity}
+                                        </Typography>
+
+                                        <Typography variant="subtitle2" style={{ paddingTop: 10 }}>
+                                        <span style={{ fontWeight: 'bold' }}> Observation Period:{' '} </span>
+                                             {seriesSelected.observation_start}{' '}
+                                            to {seriesSelected.observation_end}
+                                        </Typography>
+                                        <Typography variant="subtitle2">
+                                        <span style={{ fontWeight: 'bold' }}> Observation Frequency:{' '} </span>
+                                            {seriesSelected.frequency} (
+                                            {seriesSelected.frequency_short})
+                                        </Typography>
+                                        <Typography
+                                            variant="subtitle2"
+                                            style={{ color: ColorsEnum.warmgray5, paddingTop: 10 }}
+                                        >
+                                            <span style={{ fontWeight: 'bold' }}> Observation Frequency:{' '} </span>
+                                            
+                                            {formatDate(seriesSelected.last_updated)}
+                                        </Typography>
+                                    </div>
+                                ) : null}
                             </S.ChildNodesPanel>
                             <S.UpdateBar>
                                 <Typography variant="subtitle2" align="right" component="div">
@@ -186,40 +246,22 @@ export default function Economic() {
                         </S.SidePanelOpener>
                         <S.MainPanelOpener>
                             {seriesSelected ? (
-                                <div style={{ paddingBottom: 100, padding: 5 }}>
-                                    <div style={{ width: '100%', display: 'flex' }}>
-                                        <Typography
-                                            variant="subtitle1"
-                                            style={{ color: ColorsEnum.beer, width: '50%' }}
-                                        >
-                                            {' '}
-                                            {seriesSelected.title}{' '}
-                                        </Typography>
-                                        <Typography
-                                            variant="subtitle1"
-                                            align="right"
-                                            style={{ width: '50%' }}
-                                        >
-                                            {' '}
-                                            {seriesSelected.last_updated}{' '}
-                                        </Typography>
-                                    </div>
+                                <div style={{ padding: 10 }}>
                                     <Chartview
                                         ticker={seriesSelected.id}
                                         assetType={ASSET_TYPES.FRED as keyof typeof ASSET_TYPES}
                                     />
-                                    <div>
-                                        <Typography
-                                            variant="subtitle2"
-                                            style={{ color: ColorsEnum.warmgray3 }}
-                                        >
-                                            {' '}
-                                            {seriesSelected.notes}{' '}
-                                        </Typography>
-                                    </div>
                                 </div>
-                            ) : null}
-                            <div style={{ overflowY: 'auto' }}>
+                            ) : (
+                                <></>
+                            )}
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    overflowY: 'scroll',
+                                }}
+                            >
                                 {nodes && nodes.value.type === 'series'
                                     ? nodes.value.entries.map(seriesEntry => {
                                           const series = seriesEntry as FredSeriesEntry;

@@ -25,10 +25,10 @@ export const CHARTIDS = {
 
 export const CHARTCONFIGS = {
     DEFAULT_MARGIN: {
-        left: 0.05,
-        right: 0.05,
-        top: 0.02,
-        bottom: 0.03,
+        LEFT: 0.05,
+        RIGHT: 0.05,
+        TOP: 20,
+        BOTTOM: 20,
     },
     DEFAULT_DATA: [], // No additional data, plot only one line
     DEFAULT_CHART_FONTSIZE: 'calc(0.5rem + 0.3vw)',

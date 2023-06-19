@@ -1,6 +1,7 @@
 import { ColorsEnum } from 'common/theme';
 import { typographyTheme } from 'common/theme/typography';
 import * as d3 from 'd3';
+import { determineNumericalFormat } from '../../BaseChart';
 
 interface BaseTagParams {
     baseId: string;
@@ -35,8 +36,8 @@ export const addMinMaxTag = (props: AddMinMaxTagParams) => {
     });
 
     const tagColor = 'white';
-    const minTagName = `Lo: $${min[1]}`;
-    const maxTagName = `Hi: $${max[1]}`;
+    const minTagName = `Lo: $${determineNumericalFormat(min[1])}`;
+    const maxTagName = `Hi: $${determineNumericalFormat(max[1])}`;
 
     const baseKwargs = {
         baseId: props.baseId,

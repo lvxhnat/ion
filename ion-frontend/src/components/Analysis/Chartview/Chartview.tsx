@@ -140,7 +140,9 @@ export default function Chartview(props: {
                         <div style={{ width: '25%', display: showSidebar ? 'flex' : 'none' }}>
                             <DataTable data={rawData} columns={Object.keys(rawData[0])} />
                         </div>
-                    ) : null}
+                    ) : (
+                        <></>
+                    )}
                     <div style={{ width: showSidebar ? '75%' : '100%', height: '100%' }}>
                         <ChartviewPriceShower ticker={props.ticker} />
                         <BaseLineChart
