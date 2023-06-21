@@ -192,35 +192,50 @@ export default function Economic() {
                                         >
                                             {seriesSelected.notes}
                                         </Typography>
-                                        <Typography variant="subtitle2" variantMapping={{
+                                        <Typography
+                                            variant="subtitle2"
+                                            variantMapping={{
                                                 subtitle2: 'span', // or any other variant you want to use
-                                              }}>
+                                            }}
+                                        >
                                             <span style={{ fontWeight: 'bold' }}> Units: </span>
-                                             {seriesSelected.units} (
-                                            {seriesSelected.units_short})
+                                            {seriesSelected.units} ({seriesSelected.units_short})
                                         </Typography>
-                                        <Typography 
-                                        component="div"
-                                        variant="subtitle2" 
-                                        variantMapping={{
+                                        <Typography
+                                            component="div"
+                                            variant="subtitle2"
+                                            variantMapping={{
                                                 subtitle2: 'span', // or any other variant you want to use
-                                              }}>
-                                                <span style={{ fontWeight: 'bold' }}>  Seasonal Adjustment:{' '} </span>
+                                            }}
+                                        >
+                                            <span style={{ fontWeight: 'bold' }}>
+                                                {' '}
+                                                Seasonal Adjustment:{' '}
+                                            </span>
                                             {seriesSelected.seasonal_adjustment} (
                                             {seriesSelected.seasonal_adjustment_short})
                                         </Typography>
                                         <Typography variant="subtitle2">
-                                        <span style={{ fontWeight: 'bold' }}>  Series Search Popularity:{' '} </span>
+                                            <span style={{ fontWeight: 'bold' }}>
+                                                {' '}
+                                                Series Search Popularity:{' '}
+                                            </span>
                                             {seriesSelected.popularity}
                                         </Typography>
 
                                         <Typography variant="subtitle2" style={{ paddingTop: 10 }}>
-                                        <span style={{ fontWeight: 'bold' }}> Observation Period:{' '} </span>
-                                             {seriesSelected.observation_start}{' '}
-                                            to {seriesSelected.observation_end}
+                                            <span style={{ fontWeight: 'bold' }}>
+                                                {' '}
+                                                Observation Period:{' '}
+                                            </span>
+                                            {seriesSelected.observation_start} to{' '}
+                                            {seriesSelected.observation_end}
                                         </Typography>
                                         <Typography variant="subtitle2">
-                                        <span style={{ fontWeight: 'bold' }}> Observation Frequency:{' '} </span>
+                                            <span style={{ fontWeight: 'bold' }}>
+                                                {' '}
+                                                Observation Frequency:{' '}
+                                            </span>
                                             {seriesSelected.frequency} (
                                             {seriesSelected.frequency_short})
                                         </Typography>
@@ -228,8 +243,11 @@ export default function Economic() {
                                             variant="subtitle2"
                                             style={{ color: ColorsEnum.warmgray5, paddingTop: 10 }}
                                         >
-                                            <span style={{ fontWeight: 'bold' }}> Observation Frequency:{' '} </span>
-                                            
+                                            <span style={{ fontWeight: 'bold' }}>
+                                                {' '}
+                                                Observation Frequency:{' '}
+                                            </span>
+
                                             {formatDate(seriesSelected.last_updated)}
                                         </Typography>
                                     </div>
@@ -255,13 +273,7 @@ export default function Economic() {
                             ) : (
                                 <></>
                             )}
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    overflowY: 'scroll',
-                                }}
-                            >
+                            <S.SeriesPanel>
                                 {nodes && nodes.value.type === 'series'
                                     ? nodes.value.entries.map(seriesEntry => {
                                           const series = seriesEntry as FredSeriesEntry;
@@ -334,7 +346,7 @@ export default function Economic() {
                                           );
                                       })
                                     : null}
-                            </div>
+                            </S.SeriesPanel>
                         </S.MainPanelOpener>
                     </>
                 </S.PanelOpener>

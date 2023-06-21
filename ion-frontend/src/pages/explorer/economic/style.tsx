@@ -24,6 +24,13 @@ export const PanelOpener = styled('div')(({ theme }) => ({
     height: '100%',
 }));
 
+export const SeriesPanel = styled('div')(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    overflowY: 'scroll',
+    '&::-webkit-scrollbar': { display: 'none' },
+}));
+
 export const SidePanelOpener = styled('div')(({ theme }) => ({
     width: '25%',
     height: '100%',
