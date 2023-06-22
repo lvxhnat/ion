@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as S from './style';
 
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 import Typography from '@mui/material/Typography';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
@@ -94,6 +95,10 @@ export default function Economic() {
         setCategoryLoading(false);
     };
 
+    const handleWatchlist = () => {
+
+    }
+
     return (
         <div style={{ width: '100%', height: '92vh' }}>
             {categoryLoading ? (
@@ -148,7 +153,7 @@ export default function Economic() {
                     <>
                         <S.SidePanelOpener>
                             <S.ChildNodesPanel>
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <S.BaseDivClass>
                                     <S.IconButtonWrapper onClick={handleBack}>
                                         <ArrowBackIosIcon fontSize="inherit" />
                                     </S.IconButtonWrapper>
@@ -158,7 +163,7 @@ export default function Economic() {
                                     >
                                         {nodes.value.selection.name}
                                     </S.FredRow>
-                                </div>
+                                </S.BaseDivClass>
                                 {nodes.value.type === 'series'
                                     ? null
                                     : nodes.value.entries.map(entry => {
@@ -282,11 +287,10 @@ export default function Economic() {
                                                   onClick={() => setSeriesSelected(series)}
                                                   key={`${nodes.value.selection.id}_${series.id}`}
                                               >
-                                                  <div style={{ display: 'flex' }}>
-                                                      <div
+                                                  <S.BaseDivClass>
+                                                      <S.BaseDivClass
                                                           style={{
-                                                              display: 'flex',
-                                                              width: '70%',
+                                                              width: '75%',
                                                               gap: 10,
                                                           }}
                                                       >
@@ -297,9 +301,9 @@ export default function Economic() {
                                                               }}
                                                           >{`${series.id}:FRED`}</Typography>
                                                           <Typography variant="subtitle2">{`${series.title} (${series.units_short})`}</Typography>
-                                                      </div>
-                                                      <div
-                                                          style={{ display: 'flex', width: '30%' }}
+                                                      </S.BaseDivClass>
+                                                      <S.BaseDivClass
+                                                          style={{ width: '25%' }}
                                                       >
                                                           <Typography
                                                               variant="subtitle2"
@@ -309,8 +313,8 @@ export default function Economic() {
                                                               Last Updated:{' '}
                                                               {formatDate(series.last_updated)}
                                                           </Typography>
-                                                      </div>
-                                                  </div>
+                                                      </S.BaseDivClass>
+                                                  </S.BaseDivClass>
                                                   <Typography
                                                       variant="subtitle2"
                                                       noWrap

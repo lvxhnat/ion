@@ -18,13 +18,12 @@ import DataTable from './datatable';
 import NoDataSkeleton from 'components/Skeletons/NoDataSkeleton';
 import { TickerMetadataDTO, getTickerMetadata } from 'endpoints/clients/database/postgres/ticker';
 import { FredSeriesDataEntry, getFredSeries } from 'endpoints/clients/fred';
+import { getChartviewBaseChartId } from 'common/constant/ids';
 
 const Item = styled(Box)(({ theme }) => ({
     height: '100%',
     color: theme.palette.text.secondary,
 }));
-
-export const getChartviewBaseChartId = (ticker: string | undefined) => `${ticker}__tickerChart`;
 
 /**
  * Provides a historical chart view of a single security selected.

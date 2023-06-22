@@ -1,4 +1,4 @@
-import { getChartviewBaseChartId } from 'components/Analysis/Chartview/Chartview';
+import { getChartviewBaseChartId } from 'common/constant/ids';
 import { technicalIndicators } from 'components/Analysis/Chartview/calculations/metrics';
 import { MovingAverageProps } from 'components/Analysis/Chartview/calculations/schemas/props/schema';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
@@ -54,7 +54,7 @@ export interface EditLiveMovePropTypes {
     metricId: string;
     value: AllowedLiveMoveValueTypes;
 }
-export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> {}
+export interface RemoveLiveMoveMetricPropTypes extends Omit<EditLiveMovePropTypes, 'value'> { }
 
 export interface EditLiveMoveTypes {
     liveMoves: {

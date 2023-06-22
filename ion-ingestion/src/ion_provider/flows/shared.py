@@ -7,22 +7,43 @@ from ion_clients.services.postgres.actions import bulk_upsert, bulk_insert
 from ion_clients.services.postgres.postgres_service import (
     table_exists,
     SQLDatabase,
-    _get_postgres_engine
+    _get_postgres_engine,
 )
 from ion_clients.services.postgres.actions import clear_table
 
-WriteObjectType = Union[List[dict], List[Table], pd.DataFrame] # List[sqlalchemy.Table]
+WriteObjectType = Union[List[dict], List[Table], pd.DataFrame]  # List[sqlalchemy.Table]
+
 
 @task
 def sql_refresh_table(
     df: pd.DataFrame,
     table_schema: Table,
 ):
+    """Use SQL Connectors provided by pandas to update our tables, instead of using the orm itself."""
     if not isinstance(df, pd.DataFrame):
-        raise TypeError(f"Df needs to be of type pd.DataFrame, received {str(type(df))} instead.")
-    with _get_postgres_engine() as conn:
+        raise TypeError(
+            f"Df needs to be of type pd.DataFrame, received {str(type(df))} instead."
+        )
+    with _get_postgres_engine().connect() as conn:
         df.to_sql(table_schema.__tablename__, conn)
-        
+
+
+@task
+def sql_update_table(
+    df: pd.DataFrame,
+    filter_column: str,
+    table_schema: Table,
+):
+    if not isinstance(df, pd.DataFrame):
+        raise TypeError(
+            f"Df needs to be of type pd.DataFrame, received {str(type(df))} instead."
+        )
+    with _get_postgres_engine().connect() as conn:
+        table_df: pd.DataFrame = pd.read_sql(table_schema.__tablename__, conn)
+        df = df[~df[filter_column].isin(table_df[filter_column])]
+        df.to_sql(table_schema.__tablename__, conn, if_exists="append")
+
+
 @task
 def refresh_table(
     table_schema: Table,

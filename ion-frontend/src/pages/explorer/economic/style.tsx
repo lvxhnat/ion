@@ -8,6 +8,11 @@ interface FredRowProps {
     [x: string]: any;
 }
 
+export const BaseDivClass = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+}));
+
 export const FredRow = (props: FredRowProps) => {
     return (
         <BaseFredRow {...props}>
@@ -29,7 +34,7 @@ export const SeriesPanel = styled('div')(({ theme }) => ({
     flexDirection: 'column',
     overflowY: 'scroll',
     '&::-webkit-scrollbar': { display: 'none' },
-}));
+}))
 
 export const SidePanelOpener = styled('div')(({ theme }) => ({
     width: '25%',
@@ -66,6 +71,7 @@ export const ChildNodesPanel = styled('div')(({ theme }) => ({
 }));
 
 export const SeriesContainer = styled('div')(({ theme }) => ({
+    width: '100%',
     padding: `${theme.spacing(1)} ${theme.spacing(1)}`,
     '&:hover': {
         cursor: 'pointer',

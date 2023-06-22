@@ -17,11 +17,11 @@ import { TickerSearch } from 'components/Search/Search';
 import { removeLine } from 'components/Charting/BaseChart/plugins/editChart/removeLine';
 import { CHARTIDS } from 'components/Charting/BaseChart/config';
 import { useBaseChartStore } from 'store/chartview/basechart';
-import { getChartviewBaseChartId } from './Chartview';
+import { getChartviewBaseChartId } from 'common/constant/ids';
 import { addChart } from 'components/Charting/BaseChart/actions';
 import { addLineTracker } from 'components/Charting/BaseChart/plugins';
 import { useNavigate } from 'react-router-dom';
-import { ASSET_TYPES, ROUTES } from 'common/constant';
+import { ROUTES } from 'common/constant';
 import { TickerMetadataDTO } from 'endpoints/clients/database/postgres/ticker';
 
 const DrawLinesButton = (props: { ticker: string; baseId: string }) => {
