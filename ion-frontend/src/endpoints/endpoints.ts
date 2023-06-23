@@ -18,6 +18,7 @@ export const ENDPOINTS = {
 
         QUERY_PORTFOLIO_ENDPOINT: 'database/postgres/query/portfolio',
         QUERY_TICKER_ENDPOINT: 'database/postgres/query/ticker',
+        QUERY_WATCHLIST_ENDPOINT: 'database/postgres/query/watchlist',
 
         SEARCH_FUNCTIONS: 'autocomplete/securityFunctions',
         ALL_FUNCTIONS: 'autocomplete/allFunctions',

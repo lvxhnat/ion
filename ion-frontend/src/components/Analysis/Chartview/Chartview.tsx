@@ -16,7 +16,7 @@ import { ASSET_TYPES } from 'common/constant';
 import { getHistoricalForex } from 'endpoints/clients/forex';
 import DataTable from './datatable';
 import NoDataSkeleton from 'components/Skeletons/NoDataSkeleton';
-import { TickerMetadataDTO, getTickerMetadata } from 'endpoints/clients/database/postgres/ticker';
+import { TickerMetadataDTO, getTickerMetadata } from 'endpoints/clients/database/postgres/query';
 import { FredSeriesDataEntry, getFredSeries } from 'endpoints/clients/fred';
 import { getChartviewBaseChartId } from 'common/constant/ids';
 

@@ -11,7 +11,7 @@ import PopupButton from 'components/Button';
 import { insertTable, getTable } from 'endpoints/clients/database/postgres/general';
 import { usePortfolioStore } from 'store/portfolio/portfolio';
 import { PostgresTablesEnum } from 'endpoints/schema/database/postgres/props';
-import { PortfolioTableEntry } from 'endpoints/schema/database/postgres/portfolio/props';
+import { PortfolioTableEntry } from 'endpoints/schema/database/postgres/portfolio';
 
 function PortfolioPopupOptionRow(props: {
     title: string;

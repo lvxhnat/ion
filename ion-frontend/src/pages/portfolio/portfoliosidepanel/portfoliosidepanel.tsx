@@ -15,9 +15,9 @@ import PopupButton from 'components/Button';
 import { deleteTable, insertTable } from 'endpoints/clients/database/postgres/general';
 import { MainDataTableHeaderType } from 'components/Tables/MainDataTable/MainDataTable';
 
-import { PortfolioAssetTableEntry } from 'endpoints/schema/database/postgres/portfolio/props';
+import { PortfolioAssetTableEntry } from 'endpoints/schema/database/postgres/portfolio';
 import { PostgresTablesEnum } from 'endpoints/schema/database/postgres/props';
-import { getPortfolioAssets } from 'endpoints/clients/database/postgres/portfolio';
+import { getPortfolioAssets } from 'endpoints/clients/database/postgres/query';
 
 /**
  * Initialise Portfolio Entry for insertion into portfolio_assets database

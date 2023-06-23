@@ -9,6 +9,9 @@ from data_ingestion.app.api.api_v2.postgres.schemas.infra.portfolio.params impor
     PortfolioAssetParams,
     PortfolioParams,
 )
+from data_ingestion.app.api.api_v2.postgres.schemas.infra.watchlist.params import (
+    WatchlistParams,
+)
 
 tables = {
     treasury.USBillRates.__tablename__: treasury.USBillRates,
@@ -19,7 +22,7 @@ tables = {
     area_latlon.AreaLatLon.__tablename__: area_latlon.AreaLatLon,
 }
 
-PostgresTable = Union[PortfolioParams, PortfolioAssetParams]
+PostgresTable = Union[PortfolioParams, PortfolioAssetParams, WatchlistParams]
 
 
 class TableQueryParams(BaseModel):
@@ -28,6 +31,10 @@ class TableQueryParams(BaseModel):
 
 class PortfolioSearchParams(BaseModel):
     id: str
+
+
+class WatchlistQueryParams(BaseModel):
+    symbol: str
 
 
 class TickerQueryParams(BaseModel):

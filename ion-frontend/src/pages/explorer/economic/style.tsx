@@ -8,6 +8,29 @@ interface FredRowProps {
     [x: string]: any;
 }
 
+export const ButtonWrapper = styled('div')<{ disabled?: boolean; selected?: boolean }>(
+    ({ theme, disabled = false, selected = false }) => ({
+        gap: 3,
+        width: 130,
+        height: 25,
+        borderRadius: 5,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontColor: ColorsEnum.white,
+        backgroundColor: selected ? ColorsEnum.warmgray1 : 'transparent',
+        border: selected ? 'none' : `1px solid ${ColorsEnum.warmgray2}`,
+        opacity: !disabled ? 1 : 0.4,
+        padding: `${theme.spacing(0.5)} ${theme.spacing(1)}`,
+        '&:hover': !disabled
+            ? {
+                  backgroundColor: ColorsEnum.warmgray2,
+                  cursor: 'pointer',
+              }
+            : undefined,
+    })
+);
+
 export const BaseDivClass = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
@@ -34,7 +57,7 @@ export const SeriesPanel = styled('div')(({ theme }) => ({
     flexDirection: 'column',
     overflowY: 'scroll',
     '&::-webkit-scrollbar': { display: 'none' },
-}))
+}));
 
 export const SidePanelOpener = styled('div')(({ theme }) => ({
     width: '25%',

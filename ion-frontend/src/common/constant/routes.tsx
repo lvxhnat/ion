@@ -58,3 +58,12 @@ export const ASSET_TYPES = {
     ETF: 'ETF',
     FRED: 'FRED',
 };
+
+export const SOURCE_TYPES = {
+    FINNHUB: 'FINNHUB',
+    FRED: 'FRED',
+    ALPHAVANTAGE: 'ALPHAVANTAGE',
+    EIA: 'EIA',
+    USDA: 'USDA',
+    OANDA: 'OANDA',
+};

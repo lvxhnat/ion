@@ -5,8 +5,9 @@ from fastapi import APIRouter, Depends
 from ion_clients.services.postgres.actions import order_query
 from ion_clients.services.postgres.postgres_service import get_session
 
-from ion_clients.services.postgres.models.infra.portfolio import (
+from ion_clients.services.postgres.models.infra import (
     PortfolioAssets,
+    Watchlist,
 )
 from ion_clients.services.postgres.models.data.trading.tickers import (
     AssetMetaData,
@@ -16,6 +17,7 @@ from data_ingestion.app.api.api_v2.postgres.schemas.infra.postgres.params import
     tables as postgres_tables,
     TableQueryParams,
     PortfolioSearchParams,
+    WatchlistQueryParams,
     TickerQueryParams,
 )
 
@@ -52,6 +54,17 @@ def query_portfolio_table(
         session.query(PortfolioAssets)
         .filter(PortfolioAssets.portfolio_id == params.id)
         .all()
+    )
+
+
+@router.post("/query/watchlist")
+def query_ticker_name_table(
+    params: WatchlistQueryParams, session: Session = Depends(get_session)
+):
+    return (
+        session.query(Watchlist)
+        .filter(func.lower(Watchlist.symbol) == params.symbol.lower())
+        .first()
     )
 
 

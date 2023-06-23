@@ -1,8 +1,9 @@
 import * as React from 'react';
 import * as S from './style';
 
-import StarBorderIcon from '@mui/icons-material/StarBorder';
 import Typography from '@mui/material/Typography';
+import AddIcon from '@mui/icons-material/Add';
+import DoneIcon from '@mui/icons-material/Done';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import {
@@ -16,7 +17,11 @@ import { ColorsEnum } from 'common/theme';
 import { formatDate } from 'common/constant/dates';
 import HexLayer from 'components/Charting/HexLayer';
 import Chartview from 'components/Analysis/Chartview';
-import { ASSET_TYPES } from 'common/constant';
+import { ASSET_TYPES, SOURCE_TYPES } from 'common/constant';
+import { deleteTable, getTable, insertTable } from 'endpoints/clients/database/postgres/general';
+import { PostgresTablesEnum } from 'endpoints/schema/database/postgres/props';
+import { getWatchlistAssets } from 'endpoints/clients/database/postgres/query';
+import { getUniqueTickerId } from 'common/constant/ids';
 
 class NodeValue {
     type: 'series' | 'category'; // Whether this current node is a series or category
@@ -40,6 +45,46 @@ class DoublyLinkedListNode {
         return newNode;
     }
 }
+
+const AddToWatchlistButton = (props: { symbol: string }) => {
+    const [watchlistAdded, setWatchlistAdded] = React.useState<boolean>(false);
+
+    React.useEffect(() => {
+        getWatchlistAssets({ symbol: props.symbol }).then(res => {
+            setWatchlistAdded(!!res.data);
+        });
+    }, [props.symbol]);
+
+    const handleWatchlist = () => {
+        setWatchlistAdded(!watchlistAdded);
+        getWatchlistAssets({ symbol: props.symbol }).then(res => {
+            if (!res.data) {
+                insertTable({
+                    tableName: PostgresTablesEnum.WATCHLIST,
+                    entry: {
+                        symbol: props.symbol,
+                        date_added: new Date(),
+                        source: SOURCE_TYPES.FRED as keyof typeof SOURCE_TYPES,
+                    },
+                });
+            } else {
+                deleteTable({
+                    tableName: PostgresTablesEnum.WATCHLIST,
+                    id: props.symbol,
+                });
+            }
+        });
+    };
+
+    return (
+        <S.ButtonWrapper selected={watchlistAdded} onClick={handleWatchlist}>
+            {watchlistAdded ? <DoneIcon fontSize="inherit" /> : <AddIcon fontSize="inherit" />}
+            <Typography variant="subtitle2">
+                {watchlistAdded ? 'Added to Watchlist' : 'Add to Watchlist'}
+            </Typography>
+        </S.ButtonWrapper>
+    );
+};
 
 export default function Economic() {
     const [titles, setTitles] = React.useState<FredParentNodeDTO>([]);
@@ -94,10 +139,6 @@ export default function Economic() {
         }
         setCategoryLoading(false);
     };
-
-    const handleWatchlist = () => {
-
-    }
 
     return (
         <div style={{ width: '100%', height: '92vh' }}>
@@ -182,11 +223,20 @@ export default function Economic() {
                                 {seriesSelected ? (
                                     <div style={{ padding: 10 }}>
                                         <Typography
+                                            variant="body1"
+                                            style={{ color: ColorsEnum.beer }}
+                                        >
+                                            {getUniqueTickerId(
+                                                SOURCE_TYPES.FRED as keyof typeof SOURCE_TYPES,
+                                                seriesSelected.id
+                                            )}
+                                        </Typography>
+                                        <Typography
                                             variant="subtitle1"
-                                            style={{ color: ColorsEnum.beer, paddingBottom: 15 }}
+                                            style={{ color: ColorsEnum.beer10, paddingBottom: 15 }}
                                         >
                                             {' '}
-                                            {seriesSelected.title}{' '}
+                                            {seriesSelected.title} ({seriesSelected.units_short}){' '}
                                         </Typography>
                                         <Typography
                                             variant="subtitle2"
@@ -255,6 +305,9 @@ export default function Economic() {
 
                                             {formatDate(seriesSelected.last_updated)}
                                         </Typography>
+                                        <div style={{ paddingTop: 10 }}>
+                                            <AddToWatchlistButton symbol={seriesSelected.id} />
+                                        </div>
                                     </div>
                                 ) : null}
                             </S.ChildNodesPanel>
@@ -302,9 +355,7 @@ export default function Economic() {
                                                           >{`${series.id}:FRED`}</Typography>
                                                           <Typography variant="subtitle2">{`${series.title} (${series.units_short})`}</Typography>
                                                       </S.BaseDivClass>
-                                                      <S.BaseDivClass
-                                                          style={{ width: '25%' }}
-                                                      >
+                                                      <S.BaseDivClass style={{ width: '25%' }}>
                                                           <Typography
                                                               variant="subtitle2"
                                                               align="right"

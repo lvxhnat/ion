@@ -5,7 +5,7 @@ from pydantic import BaseSettings
 from ion_clients.services.postgres.models.data.common import (
     area_latlon,
 )
-from ion_clients.services.postgres.models.infra import portfolio
+from ion_clients.services.postgres.models.infra import portfolio, watchlist
 
 
 class BaseAPIConfigs(BaseSettings):
@@ -22,6 +22,7 @@ class BaseAPIConfigs(BaseSettings):
         portfolio.Portfolio.__tablename__: portfolio.Portfolio,
         portfolio.PortfolioAssets.__tablename__: portfolio.PortfolioAssets,
         tickers.AssetMetaData.__tablename__: tickers.AssetMetaData,
+        watchlist.Watchlist.__tablename__: watchlist.Watchlist,
     }
 
 

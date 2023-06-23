@@ -22,100 +22,94 @@ import { addChart } from 'components/Charting/BaseChart/actions';
 import { addLineTracker } from 'components/Charting/BaseChart/plugins';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from 'common/constant';
-import { TickerMetadataDTO } from 'endpoints/clients/database/postgres/ticker';
+import { TickerMetadataDTO } from 'endpoints/clients/database/postgres/query';
+import DropdownButton from 'components/Button/DropdownButton';
 
 const DrawLinesButton = (props: { ticker: string; baseId: string }) => {
-    const [menu, setMenu] = React.useState<boolean>(false);
     const [charts, setChart] = useChartStore(state => [state.charts, state.setChart]);
     const metrics = useMetricStore(state => state.metrics)[props.ticker];
     const baseChartStoreState = useBaseChartStore(state => state.charts)[props.baseId];
 
-    const ticker = props.ticker;
+    const handleDrawLine = () => {
+        setChart({
+            ticker: props.ticker,
+            chart: {
+                ...charts[props.ticker],
+                draw: !charts[props.ticker].draw,
+            },
+        });
+        if (baseChartStoreState) {
+            const { x, y } = baseChartStoreState;
+            addLineTracker({
+                x: x,
+                y: y,
+                ticker: props.ticker,
+                baseId: props.baseId,
+                metrics: metrics,
+                draw: !charts[props.ticker].draw,
+            });
+        }
+    };
 
-    if (charts[ticker])
-        return (
-            <div>
-                <S.ButtonWrapper onClick={() => setMenu(!menu)}>
-                    {charts[ticker].draw ? <MdDraw /> : <TbClick />}
+    const handleUndoDraw = () => {
+        removeLine({
+            baseId: props.baseId,
+            class: CHARTIDS.DRAW_LINE_CLASS,
+        });
+    };
+
+    const handleCleanLines = () => {
+        removeLine({
+            baseId: props.baseId,
+            class: CHARTIDS.DRAW_LINE_CLASS,
+            selectAll: true,
+        });
+    };
+
+    return (
+        <DropdownButton
+            options={[
+                {
+                    children: charts[props.ticker].draw ? (
+                        <>
+                            <MdCancel />
+                            <Typography variant="subtitle2">Disable Draw</Typography>
+                        </>
+                    ) : (
+                        <>
+                            <MdDraw />
+                            <Typography variant="subtitle2">Draw Line</Typography>
+                        </>
+                    ),
+                    onClick: handleDrawLine,
+                },
+                {
+                    children: (
+                        <>
+                            <MdOutlineUndo /> <Typography variant="subtitle2">Undo Draw</Typography>
+                        </>
+                    ),
+                    onClick: handleUndoDraw,
+                },
+                {
+                    children: (
+                        <>
+                            <FaBroom /> <Typography variant="subtitle2">Clean Lines</Typography>
+                        </>
+                    ),
+                    onClick: handleCleanLines,
+                },
+            ]}
+            children={
+                <>
+                    {charts[props.ticker].draw ? <MdDraw /> : <TbClick />}
                     <Typography variant="subtitle2">
-                        {charts[ticker].draw ? 'Drawing' : 'Draw'}
+                        {charts[props.ticker].draw ? 'Drawing' : 'Draw'}
                     </Typography>
-                </S.ButtonWrapper>
-                <div
-                    style={{
-                        zIndex: 10,
-                        position: 'absolute',
-                        display: menu ? 'block' : 'none',
-                    }}
-                >
-                    <S.FlexRow
-                        alternate
-                        onClick={() => {
-                            setChart({
-                                ticker: ticker,
-                                chart: {
-                                    ...charts[ticker],
-                                    draw: !charts[ticker].draw,
-                                },
-                            });
-                            if (baseChartStoreState) {
-                                const { x, y } = baseChartStoreState;
-                                addLineTracker({
-                                    x: x,
-                                    y: y,
-                                    ticker: ticker,
-                                    baseId: props.baseId,
-                                    metrics: metrics,
-                                    draw: !charts[ticker].draw,
-                                });
-                                setMenu(false);
-                            }
-                        }}
-                    >
-                        {charts[ticker].draw ? (
-                            <>
-                                <MdCancel />
-                                <Typography variant="subtitle2">Disable Draw</Typography>
-                            </>
-                        ) : (
-                            <>
-                                <MdDraw />
-                                <Typography variant="subtitle2">Draw Line</Typography>
-                            </>
-                        )}
-                    </S.FlexRow>
-                    <S.FlexRow
-                        onClick={() => {
-                            removeLine({
-                                baseId: props.baseId,
-                                class: CHARTIDS.DRAW_LINE_CLASS,
-                            });
-                            setMenu(false);
-                        }}
-                    >
-                        {' '}
-                        <MdOutlineUndo /> <Typography variant="subtitle2">
-                            Undo Draw
-                        </Typography>{' '}
-                    </S.FlexRow>
-                    <S.FlexRow
-                        alternate
-                        onClick={() => {
-                            removeLine({
-                                baseId: props.baseId,
-                                class: CHARTIDS.DRAW_LINE_CLASS,
-                                selectAll: true,
-                            });
-                            setMenu(false);
-                        }}
-                    >
-                        {' '}
-                        <FaBroom /> <Typography variant="subtitle2">Clean Lines</Typography>{' '}
-                    </S.FlexRow>
-                </div>
-            </div>
-        );
-    else return <div></div>;
+                </>
+            }
+        />
+    );
 };
 
 const ModifiedStudiesButton = (props: { [others: string]: any }) => {

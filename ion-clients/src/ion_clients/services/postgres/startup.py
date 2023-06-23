@@ -19,11 +19,12 @@ from ion_clients.services.postgres.models.data import (
 from ion_clients.services.postgres.models.infra import (
     Portfolio,
     PortfolioAssets,
+    Watchlist,
 )
 from ion_clients.services.postgres.actions import create_table
 from ion_clients.services.logging import get_logger
 
-portfolio_sequence = [Portfolio, PortfolioAssets]
+infra_sequence = [Portfolio, PortfolioAssets, Watchlist]
 common_sequence = [AreaLatLon]
 tickers_sequence = [AssetMetaData, EquityMetaData, ETFMetaData, ETFHoldings]
 treasury_sequence = [
@@ -33,9 +34,7 @@ treasury_sequence = [
     USRealYieldCurve,
     USTreasuryYield,
 ]
-government_sequence = [
-    FredMetaData
-]
+government_sequence = [FredMetaData]
 
 logger = get_logger(__name__)
 
@@ -49,8 +48,13 @@ def initialise_raw_tables():
             if issubclass(cls, Base) and hasattr(cls, "__table__"):
                 postgres_tables.append(cls)
 
-    data_tables = tickers_sequence + treasury_sequence + common_sequence + government_sequence
-    infra_tables = portfolio_sequence
+    data_tables = (
+        tickers_sequence
+        + treasury_sequence
+        + common_sequence
+        + government_sequence
+    )
+    infra_tables = infra_sequence
 
     tables = infra_tables + data_tables
 

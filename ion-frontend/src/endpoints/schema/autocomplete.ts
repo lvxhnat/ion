@@ -1,4 +1,4 @@
-import { IntRange } from 'common/types';
+import { ASSET_TYPES } from 'common/constant';
 
 export interface ETFInfoRequestProps {
     filter: { [field: string]: string }[];
@@ -15,7 +15,7 @@ export interface ETFInfoDTO {
     inception: string;
     index_tracked: string;
     category: string;
-    asset_class: string;
+    asset_class: typeof ASSET_TYPES;
     asset_class_size: string;
     asset_class_style: string;
     region_general: string;
