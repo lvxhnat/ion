@@ -140,13 +140,16 @@ export default function Economic() {
         setCategoryLoading(false);
     };
 
-    const sortSeriesEntries = (a: FredCategoryEntry | FredSeriesEntry, b: FredCategoryEntry | FredSeriesEntry) => {
+    const sortSeriesEntries = (
+        a: FredCategoryEntry | FredSeriesEntry,
+        b: FredCategoryEntry | FredSeriesEntry
+    ) => {
         const firstEntry = a as FredSeriesEntry;
         const secondEntry = b as FredSeriesEntry;
-        if (firstEntry.popularity > secondEntry.popularity) return -1 
-        if (firstEntry.popularity < secondEntry.popularity) return 1
+        if (firstEntry.popularity > secondEntry.popularity) return -1;
+        if (firstEntry.popularity < secondEntry.popularity) return 1;
         return 0;
-    }
+    };
 
     return (
         <div style={{ width: '100%', height: '92vh' }}>
@@ -344,73 +347,76 @@ export default function Economic() {
                             )}
                             <S.SeriesPanel>
                                 {nodes && nodes.value.type === 'series'
-                                    ? nodes.value.entries.sort(sortSeriesEntries).map(seriesEntry => {
-                                          const series = seriesEntry as FredSeriesEntry;
-                                          return (
-                                              <S.SeriesContainer
-                                                  onClick={() => setSeriesSelected(series)}
-                                                  key={`${nodes.value.selection.id}_${series.id}`}
-                                              >
-                                                  <S.BaseDivClass>
-                                                      <S.BaseDivClass
+                                    ? nodes.value.entries
+                                          .sort(sortSeriesEntries)
+                                          .map(seriesEntry => {
+                                              const series = seriesEntry as FredSeriesEntry;
+                                              return (
+                                                  <S.SeriesContainer
+                                                      onClick={() => setSeriesSelected(series)}
+                                                      key={`${nodes.value.selection.id}_${series.id}`}
+                                                  >
+                                                      <S.BaseDivClass>
+                                                          <S.BaseDivClass
+                                                              style={{
+                                                                  width: '75%',
+                                                                  gap: 10,
+                                                              }}
+                                                          >
+                                                              <Typography
+                                                                  variant="subtitle2"
+                                                                  style={{
+                                                                      color: ColorsEnum.coolgray1,
+                                                                  }}
+                                                              >{`${series.id}:FRED`}</Typography>
+                                                              <Typography variant="subtitle2">{`${series.title} (${series.units_short})`}</Typography>
+                                                          </S.BaseDivClass>
+                                                          <S.BaseDivClass style={{ width: '25%' }}>
+                                                              <Typography
+                                                                  variant="subtitle2"
+                                                                  align="right"
+                                                                  style={{ width: '100%' }}
+                                                              >
+                                                                  Last Updated:{' '}
+                                                                  {formatDate(series.last_updated)}
+                                                              </Typography>
+                                                          </S.BaseDivClass>
+                                                      </S.BaseDivClass>
+                                                      <Typography
+                                                          variant="subtitle2"
+                                                          noWrap
                                                           style={{
-                                                              width: '75%',
-                                                              gap: 10,
+                                                              width: '100%',
+                                                              color: ColorsEnum.coolgray5,
+                                                          }}
+                                                      >
+                                                          {series.notes}
+                                                      </Typography>
+                                                      <div
+                                                          style={{
+                                                              display: 'flex',
+                                                              width: '100%',
+                                                              color: ColorsEnum.warmgray3,
                                                           }}
                                                       >
                                                           <Typography
                                                               variant="subtitle2"
-                                                              style={{
-                                                                  color: ColorsEnum.coolgray1,
-                                                              }}
-                                                          >{`${series.id}:FRED`}</Typography>
-                                                          <Typography variant="subtitle2">{`${series.title} (${series.units_short})`}</Typography>
-                                                      </S.BaseDivClass>
-                                                      <S.BaseDivClass style={{ width: '25%' }}>
+                                                              style={{ width: '50%' }}
+                                                          >
+                                                              Observation Frequency:{' '}
+                                                              {series.frequency}
+                                                          </Typography>
                                                           <Typography
                                                               variant="subtitle2"
                                                               align="right"
-                                                              style={{ width: '100%' }}
+                                                              style={{ width: '50%' }}
                                                           >
-                                                              Last Updated:{' '}
-                                                              {formatDate(series.last_updated)}
+                                                              {`Period: ${series.realtime_start} to ${series.realtime_end}`}
                                                           </Typography>
-                                                      </S.BaseDivClass>
-                                                  </S.BaseDivClass>
-                                                  <Typography
-                                                      variant="subtitle2"
-                                                      noWrap
-                                                      style={{
-                                                          width: '100%',
-                                                          color: ColorsEnum.coolgray5,
-                                                      }}
-                                                  >
-                                                      {series.notes}
-                                                  </Typography>
-                                                  <div
-                                                      style={{
-                                                          display: 'flex',
-                                                          width: '100%',
-                                                          color: ColorsEnum.warmgray3,
-                                                      }}
-                                                  >
-                                                      <Typography
-                                                          variant="subtitle2"
-                                                          style={{ width: '50%' }}
-                                                      >
-                                                          Observation Frequency: {series.frequency}
-                                                      </Typography>
-                                                      <Typography
-                                                          variant="subtitle2"
-                                                          align="right"
-                                                          style={{ width: '50%' }}
-                                                      >
-                                                          {`Period: ${series.realtime_start} to ${series.realtime_end}`}
-                                                      </Typography>
-                                                  </div>
-                                              </S.SeriesContainer>
-                                          );
-                                      })
+                                                      </div>
+                                                  </S.SeriesContainer>
+                                              );
+                                          })
                                     : null}
                             </S.SeriesPanel>
                         </S.MainPanelOpener>
