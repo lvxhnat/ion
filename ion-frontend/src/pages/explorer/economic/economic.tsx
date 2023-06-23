@@ -140,6 +140,14 @@ export default function Economic() {
         setCategoryLoading(false);
     };
 
+    const sortSeriesEntries = (a: FredCategoryEntry | FredSeriesEntry, b: FredCategoryEntry | FredSeriesEntry) => {
+        const firstEntry = a as FredSeriesEntry;
+        const secondEntry = b as FredSeriesEntry;
+        if (firstEntry.popularity > secondEntry.popularity) return -1 
+        if (firstEntry.popularity < secondEntry.popularity) return 1
+        return 0;
+    }
+
     return (
         <div style={{ width: '100%', height: '92vh' }}>
             {categoryLoading ? (
@@ -180,7 +188,10 @@ export default function Economic() {
                                         {nextEntry.parent_node.name}
                                     </S.FredRow>
                                     {nextEntry.child_node.map(child_entry => (
-                                        <S.FredRow key={`${child_entry.id}_FredChildRow`}>
+                                        <S.FredRow
+                                            key={`${child_entry.id}_FredChildRow`}
+                                            onClick={() => handleClick(child_entry)}
+                                        >
                                             {child_entry.name}
                                         </S.FredRow>
                                     ))}
@@ -333,7 +344,7 @@ export default function Economic() {
                             )}
                             <S.SeriesPanel>
                                 {nodes && nodes.value.type === 'series'
-                                    ? nodes.value.entries.map(seriesEntry => {
+                                    ? nodes.value.entries.sort(sortSeriesEntries).map(seriesEntry => {
                                           const series = seriesEntry as FredSeriesEntry;
                                           return (
                                               <S.SeriesContainer
