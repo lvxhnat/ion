@@ -14,9 +14,11 @@ export const ENDPOINTS = {
 
         FRED_PARENT_NODES_ENDPOINT: 'government/fred/root',
         FRED_CHILD_NODES_ENDPOINT: 'government/fred/child',
+        FRED_SERIES_NODES_ENDPOINT: 'government/fred/series',
 
         QUERY_PORTFOLIO_ENDPOINT: 'database/postgres/query/portfolio',
         QUERY_TICKER_ENDPOINT: 'database/postgres/query/ticker',
+        QUERY_WATCHLIST_ENDPOINT: 'database/postgres/query/watchlist',
 
         SEARCH_FUNCTIONS: 'autocomplete/securityFunctions',
         ALL_FUNCTIONS: 'autocomplete/allFunctions',

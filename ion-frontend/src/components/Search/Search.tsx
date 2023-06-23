@@ -13,7 +13,8 @@ import { useThemeStore } from 'store/theme';
 import { ColorsEnum } from 'common/theme';
 import { getTickerSearchAutocomplete } from 'endpoints/clients/autocomplete';
 import { Typography } from '@mui/material';
-import { TickerMetadataDTO } from 'endpoints/clients/database/postgres/ticker';
+import { TickerMetadataDTO } from 'endpoints/clients/database/postgres/query';
+import { getUniqueTickerId } from 'common/constant/ids';
 
 interface SearchProps {
     placeholder?: string;
@@ -74,9 +75,10 @@ export function TickerSearch(props: {
                     }}
                     placeholder={
                         props.tickerMetadata
-                            ? `${props.tickerMetadata.symbol}:${props.tickerMetadata.source
-                                  .slice(0, 3)
-                                  .toUpperCase()}`
+                            ? getUniqueTickerId(
+                                  props.tickerMetadata.source,
+                                  props.tickerMetadata.symbol
+                              )
                             : 'Enter Symbol'
                     }
                 />

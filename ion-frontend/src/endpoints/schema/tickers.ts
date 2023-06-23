@@ -1,3 +1,5 @@
+import { SOURCE_TYPES } from 'common/constant';
+
 export interface OHLCHistoricalDTO {
     symbol: string;
     volume: number;
@@ -10,6 +12,6 @@ export interface OHLCHistoricalDTO {
 
 export interface EquityHistoricalDTO {
     data: OHLCHistoricalDTO[];
-    source: 'finnhub';
+    source: keyof typeof SOURCE_TYPES;
 }
 export interface ForexHistoricalDTO extends OHLCHistoricalDTO {}

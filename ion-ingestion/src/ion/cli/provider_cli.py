@@ -1,6 +1,7 @@
 import click
 import subprocess
 from pathlib import Path
+from typing import Optional
 
 
 @click.group()
@@ -22,7 +23,27 @@ def deploy():
     subprocess.run(["python", DEPLOYMENT_FILE_PATH])
 
 
-provider.add_command(deploy)
+@click.command("update-data")
+@click.option(
+    "--pipeline-name",
+    type=str,
+    is_flag=True,
+    required=False,
+    help="Either 'common', 'asset' or 'treasury'",
+)
+def update_data(pipeline_name: Optional[str]):
+    """Runs all the pipelines declared within prefect, unless otherwise specified"""
+    ROOT_RUN_FOLDER = Path(__file__).parents[2] / "ion_provider" / "flows"
+    if not pipeline_name:
+        subprocess.run(["python", ROOT_RUN_FOLDER / "flows.py"])
+    else:
+        run_files: dict = {
+            "common": "common/area_latlon.py",
+            "asset": "tickers/tickers.py",
+            "treasury": "treasury/usgov.py",
+        }
+        subprocess.run(["python", ROOT_RUN_FOLDER / run_files[pipeline_name]])
 
-if __name__ == "__main__":
-    deploy()
+
+provider.add_command(update_data)
+provider.add_command(deploy)

@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as S from './style';
 
 import Typography from '@mui/material/Typography';
+import AddIcon from '@mui/icons-material/Add';
+import DoneIcon from '@mui/icons-material/Done';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import {
@@ -11,9 +13,15 @@ import {
     getFredChildNodes,
     getFredParentNodes,
 } from 'endpoints/clients/fred';
+import { ColorsEnum } from 'common/theme';
 import { formatDate } from 'common/constant/dates';
 import HexLayer from 'components/Charting/HexLayer';
-import { ColorsEnum } from 'common/theme';
+import Chartview from 'components/Analysis/Chartview';
+import { ASSET_TYPES, SOURCE_TYPES } from 'common/constant';
+import { deleteTable, getTable, insertTable } from 'endpoints/clients/database/postgres/general';
+import { PostgresTablesEnum } from 'endpoints/schema/database/postgres/props';
+import { getWatchlistAssets } from 'endpoints/clients/database/postgres/query';
+import { getUniqueTickerId } from 'common/constant/ids';
 
 class NodeValue {
     type: 'series' | 'category'; // Whether this current node is a series or category
@@ -38,8 +46,49 @@ class DoublyLinkedListNode {
     }
 }
 
+const AddToWatchlistButton = (props: { symbol: string }) => {
+    const [watchlistAdded, setWatchlistAdded] = React.useState<boolean>(false);
+
+    React.useEffect(() => {
+        getWatchlistAssets({ symbol: props.symbol }).then(res => {
+            setWatchlistAdded(!!res.data);
+        });
+    }, [props.symbol]);
+
+    const handleWatchlist = () => {
+        setWatchlistAdded(!watchlistAdded);
+        getWatchlistAssets({ symbol: props.symbol }).then(res => {
+            if (!res.data) {
+                insertTable({
+                    tableName: PostgresTablesEnum.WATCHLIST,
+                    entry: {
+                        symbol: props.symbol,
+                        date_added: new Date(),
+                        source: SOURCE_TYPES.FRED as keyof typeof SOURCE_TYPES,
+                    },
+                });
+            } else {
+                deleteTable({
+                    tableName: PostgresTablesEnum.WATCHLIST,
+                    id: props.symbol,
+                });
+            }
+        });
+    };
+
+    return (
+        <S.ButtonWrapper selected={watchlistAdded} onClick={handleWatchlist}>
+            {watchlistAdded ? <DoneIcon fontSize="inherit" /> : <AddIcon fontSize="inherit" />}
+            <Typography variant="subtitle2">
+                {watchlistAdded ? 'Added to Watchlist' : 'Add to Watchlist'}
+            </Typography>
+        </S.ButtonWrapper>
+    );
+};
+
 export default function Economic() {
     const [titles, setTitles] = React.useState<FredParentNodeDTO>([]);
+    const [seriesSelected, setSeriesSelected] = React.useState<FredSeriesEntry>();
 
     const [categoryLoading, setCategoryLoading] = React.useState<boolean>(false);
 
@@ -63,6 +112,7 @@ export default function Economic() {
         if (newNodes && newNodes.prev) {
             setNodes(DoublyLinkedListNode.fromNode(newNodes.prev));
         }
+        setSeriesSelected(undefined);
     };
 
     const handleClick = (entry: FredCategoryEntry) => {
@@ -75,7 +125,6 @@ export default function Economic() {
             setNodes(newNodes);
         } else {
             getFredChildNodes(entry.id).then(res => {
-                console.log(res.data);
                 newNodes.next = new DoublyLinkedListNode({
                     type: res.data.type,
                     selection: entry,
@@ -92,62 +141,60 @@ export default function Economic() {
     };
 
     return (
-        <div style={{ width: '100%', height: '90vh' }}>
-            <HexLayer baseId={'economicSearch'} />
-            <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
-                {categoryLoading
-                    ? 'Loading'
-                    : nodes && nodes.value.selection.id === 0
-                    ? Array(titles.length / 2)
-                          .fill(0)
-                          .map((_, index) => {
-                              const entry = titles[index * 2];
-                              const nextEntry = titles[index * 2 + 1];
-                              return (
-                                  <div
-                                      key={`${entry.parent_node.id}_FredChildDiv`}
-                                      style={{ width: '25%' }}
-                                  >
-                                      <div style={{ paddingBottom: 25, paddingTop: 10 }}>
-                                          <S.FredRow
-                                              isTitle
-                                              key={`${entry.parent_node.id}_FredParentRow`}
-                                          >
-                                              {entry.parent_node.name}
-                                          </S.FredRow>
-                                          {entry.child_node.map(
-                                              (child_entry: FredCategoryEntry) => (
-                                                  <S.FredRow
-                                                      key={`${child_entry.id}_FredChildRow`}
-                                                      onClick={() => handleClick(child_entry)}
-                                                  >
-                                                      {child_entry.name}
-                                                  </S.FredRow>
-                                              )
-                                          )}
-                                      </div>
-                                      <S.FredRow
-                                          isTitle
-                                          key={`${nextEntry.parent_node.id}_FredParentRow`}
-                                      >
-                                          {nextEntry.parent_node.name}
-                                      </S.FredRow>
-                                      {nextEntry.child_node.map(child_entry => (
-                                          <S.FredRow key={`${child_entry.id}_FredChildRow`}>
-                                              {child_entry.name}
-                                          </S.FredRow>
-                                      ))}
-                                  </div>
-                              );
-                          })
-                    : null}
-            </div>
+        <div style={{ width: '100%', height: '92vh' }}>
+            {categoryLoading ? (
+                'Loading'
+            ) : nodes && nodes.value.selection.id === 0 ? (
+                <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
+                    <HexLayer baseId={'economicSearch'} />
+                    {Array(titles.length / 2)
+                        .fill(0)
+                        .map((_, index) => {
+                            const entry = titles[index * 2];
+                            const nextEntry = titles[index * 2 + 1];
+                            return (
+                                <div
+                                    key={`${entry.parent_node.id}_FredChildDiv`}
+                                    style={{ width: '25%' }}
+                                >
+                                    <div style={{ paddingBottom: 25, paddingTop: 10 }}>
+                                        <S.FredRow
+                                            isTitle
+                                            key={`${entry.parent_node.id}_FredParentRow`}
+                                        >
+                                            {entry.parent_node.name}
+                                        </S.FredRow>
+                                        {entry.child_node.map((child_entry: FredCategoryEntry) => (
+                                            <S.FredRow
+                                                key={`${child_entry.id}_FredChildRow`}
+                                                onClick={() => handleClick(child_entry)}
+                                            >
+                                                {child_entry.name}
+                                            </S.FredRow>
+                                        ))}
+                                    </div>
+                                    <S.FredRow
+                                        isTitle
+                                        key={`${nextEntry.parent_node.id}_FredParentRow`}
+                                    >
+                                        {nextEntry.parent_node.name}
+                                    </S.FredRow>
+                                    {nextEntry.child_node.map(child_entry => (
+                                        <S.FredRow key={`${child_entry.id}_FredChildRow`}>
+                                            {child_entry.name}
+                                        </S.FredRow>
+                                    ))}
+                                </div>
+                            );
+                        })}
+                </div>
+            ) : null}
             {nodes && nodes.value.selection.id !== 0 ? (
-            <S.PanelOpener>
+                <S.PanelOpener>
                     <>
                         <S.SidePanelOpener>
                             <S.ChildNodesPanel>
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <S.BaseDivClass>
                                     <S.IconButtonWrapper onClick={handleBack}>
                                         <ArrowBackIosIcon fontSize="inherit" />
                                     </S.IconButtonWrapper>
@@ -157,7 +204,7 @@ export default function Economic() {
                                     >
                                         {nodes.value.selection.name}
                                     </S.FredRow>
-                                </div>
+                                </S.BaseDivClass>
                                 {nodes.value.type === 'series'
                                     ? null
                                     : nodes.value.entries.map(entry => {
@@ -172,61 +219,192 @@ export default function Economic() {
                                               </S.FredRow>
                                           );
                                       })}
+                                {/* Generate side panel texts to describe series when series are selected */}
+                                {seriesSelected ? (
+                                    <div style={{ padding: 10 }}>
+                                        <Typography
+                                            variant="body1"
+                                            style={{ color: ColorsEnum.beer }}
+                                        >
+                                            {getUniqueTickerId(
+                                                SOURCE_TYPES.FRED as keyof typeof SOURCE_TYPES,
+                                                seriesSelected.id
+                                            )}
+                                        </Typography>
+                                        <Typography
+                                            variant="subtitle1"
+                                            style={{ color: ColorsEnum.beer10, paddingBottom: 15 }}
+                                        >
+                                            {' '}
+                                            {seriesSelected.title} ({seriesSelected.units_short}){' '}
+                                        </Typography>
+                                        <Typography
+                                            variant="subtitle2"
+                                            style={{
+                                                color: ColorsEnum.warmgray2,
+                                                paddingBottom: 10,
+                                            }}
+                                        >
+                                            {seriesSelected.notes}
+                                        </Typography>
+                                        <Typography
+                                            variant="subtitle2"
+                                            variantMapping={{
+                                                subtitle2: 'span', // or any other variant you want to use
+                                            }}
+                                        >
+                                            <span style={{ fontWeight: 'bold' }}> Units: </span>
+                                            {seriesSelected.units} ({seriesSelected.units_short})
+                                        </Typography>
+                                        <Typography
+                                            component="div"
+                                            variant="subtitle2"
+                                            variantMapping={{
+                                                subtitle2: 'span', // or any other variant you want to use
+                                            }}
+                                        >
+                                            <span style={{ fontWeight: 'bold' }}>
+                                                {' '}
+                                                Seasonal Adjustment:{' '}
+                                            </span>
+                                            {seriesSelected.seasonal_adjustment} (
+                                            {seriesSelected.seasonal_adjustment_short})
+                                        </Typography>
+                                        <Typography variant="subtitle2">
+                                            <span style={{ fontWeight: 'bold' }}>
+                                                {' '}
+                                                Series Search Popularity:{' '}
+                                            </span>
+                                            {seriesSelected.popularity}
+                                        </Typography>
+
+                                        <Typography variant="subtitle2" style={{ paddingTop: 10 }}>
+                                            <span style={{ fontWeight: 'bold' }}>
+                                                {' '}
+                                                Observation Period:{' '}
+                                            </span>
+                                            {seriesSelected.observation_start} to{' '}
+                                            {seriesSelected.observation_end}
+                                        </Typography>
+                                        <Typography variant="subtitle2">
+                                            <span style={{ fontWeight: 'bold' }}>
+                                                {' '}
+                                                Observation Frequency:{' '}
+                                            </span>
+                                            {seriesSelected.frequency} (
+                                            {seriesSelected.frequency_short})
+                                        </Typography>
+                                        <Typography
+                                            variant="subtitle2"
+                                            style={{ color: ColorsEnum.warmgray5, paddingTop: 10 }}
+                                        >
+                                            <span style={{ fontWeight: 'bold' }}>
+                                                {' '}
+                                                Observation Frequency:{' '}
+                                            </span>
+
+                                            {formatDate(seriesSelected.last_updated)}
+                                        </Typography>
+                                        <div style={{ paddingTop: 10 }}>
+                                            <AddToWatchlistButton symbol={seriesSelected.id} />
+                                        </div>
+                                    </div>
+                                ) : null}
                             </S.ChildNodesPanel>
-                            <S.UpdateBar variant="subtitle2" align="right">
-                                <div style={{ width: '100%' }}>
+                            <S.UpdateBar>
+                                <Typography variant="subtitle2" align="right" component="div">
                                     <strong>Last Updated:</strong>{' '}
                                     {titles.length !== 0
                                         ? formatDate(titles[0].parent_node.last_updated)
                                         : null}{' '}
-                                </div>
+                                </Typography>
                             </S.UpdateBar>
                         </S.SidePanelOpener>
                         <S.MainPanelOpener>
-                            {nodes && nodes.value.type === 'series'
-                                ? nodes.value.entries.map(seriesEntry => {
-                                      const series = seriesEntry as FredSeriesEntry;
-                                      return (
-                                          <div
-                                              key={`${nodes.value.selection.id}_${series.id}`}
-                                              style={{ padding: 10 }}
-                                          >
-                                              <div style={{ display: 'flex' }}>
-                                                  <div style={{ display: 'flex', width: '70%', gap: 10 }}>
-                                                    <Typography
-                                                        variant="subtitle2"
-                                                          style={{ color: ColorsEnum.coolgray1 }}
-                                                    >{`${series.id}:FRED`}</Typography>
-                                                    <Typography variant="subtitle2">{`${series.title}`}</Typography>
-                                                  </div>
-                                                  <div style={{ display: 'flex', width: '30%' }}>
-                                                    <Typography variant="subtitle2" align="right" style={{ width: '100%'}}>
-                                                        {formatDate(series.last_updated)}
-                                                    </Typography>
-                                                  </div>
-                                              </div>
-                                              <Typography
-                                                  variant="subtitle2"
-                                                  noWrap
-                                                  style={{
-                                                      width: '100%',
-                                                      color: ColorsEnum.coolgray5,
-                                                  }}
+                            {seriesSelected ? (
+                                <div style={{ padding: 10 }}>
+                                    <Chartview
+                                        ticker={seriesSelected.id}
+                                        assetType={ASSET_TYPES.FRED as keyof typeof ASSET_TYPES}
+                                    />
+                                </div>
+                            ) : (
+                                <></>
+                            )}
+                            <S.SeriesPanel>
+                                {nodes && nodes.value.type === 'series'
+                                    ? nodes.value.entries.map(seriesEntry => {
+                                          const series = seriesEntry as FredSeriesEntry;
+                                          return (
+                                              <S.SeriesContainer
+                                                  onClick={() => setSeriesSelected(series)}
+                                                  key={`${nodes.value.selection.id}_${series.id}`}
                                               >
-                                                  {series.notes}
-                                              </Typography>
-                                              <div>
-                                                    <Typography variant="subtitle2" style={{ color: ColorsEnum.warmgray3 }}>
-                                                        Observation Frequency: {series.frequency}  
-                                                    </Typography>
+                                                  <S.BaseDivClass>
+                                                      <S.BaseDivClass
+                                                          style={{
+                                                              width: '75%',
+                                                              gap: 10,
+                                                          }}
+                                                      >
+                                                          <Typography
+                                                              variant="subtitle2"
+                                                              style={{
+                                                                  color: ColorsEnum.coolgray1,
+                                                              }}
+                                                          >{`${series.id}:FRED`}</Typography>
+                                                          <Typography variant="subtitle2">{`${series.title} (${series.units_short})`}</Typography>
+                                                      </S.BaseDivClass>
+                                                      <S.BaseDivClass style={{ width: '25%' }}>
+                                                          <Typography
+                                                              variant="subtitle2"
+                                                              align="right"
+                                                              style={{ width: '100%' }}
+                                                          >
+                                                              Last Updated:{' '}
+                                                              {formatDate(series.last_updated)}
+                                                          </Typography>
+                                                      </S.BaseDivClass>
+                                                  </S.BaseDivClass>
+                                                  <Typography
+                                                      variant="subtitle2"
+                                                      noWrap
+                                                      style={{
+                                                          width: '100%',
+                                                          color: ColorsEnum.coolgray5,
+                                                      }}
+                                                  >
+                                                      {series.notes}
+                                                  </Typography>
+                                                  <div
+                                                      style={{
+                                                          display: 'flex',
+                                                          width: '100%',
+                                                          color: ColorsEnum.warmgray3,
+                                                      }}
+                                                  >
+                                                      <Typography
+                                                          variant="subtitle2"
+                                                          style={{ width: '50%' }}
+                                                      >
+                                                          Observation Frequency: {series.frequency}
+                                                      </Typography>
+                                                      <Typography
+                                                          variant="subtitle2"
+                                                          align="right"
+                                                          style={{ width: '50%' }}
+                                                      >
+                                                          {`Period: ${series.realtime_start} to ${series.realtime_end}`}
+                                                      </Typography>
                                                   </div>
-                                          </div>
-                                      );
-                                  })
-                                : null}
+                                              </S.SeriesContainer>
+                                          );
+                                      })
+                                    : null}
+                            </S.SeriesPanel>
                         </S.MainPanelOpener>
                     </>
-            </S.PanelOpener>
+                </S.PanelOpener>
             ) : null}
         </div>
     );

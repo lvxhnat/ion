@@ -1,4 +1,4 @@
-import { PortfolioTableEntry } from 'endpoints/schema/database/postgres/portfolio/props';
+import { PortfolioTableEntry } from 'endpoints/schema/database/postgres/portfolio';
 import { create } from 'zustand';
 
 interface PortfolioProps extends PortfolioTableEntry {}

@@ -11,7 +11,7 @@ import { usePortfolioStore } from 'store/portfolio/portfolio';
 import { StyledTableCell } from 'components/Tables/BaseTable/StyledTableCell';
 import { StyledTableRow } from 'components/Tables/BaseTable/StyledTableRow';
 import { CurrencyToCountry } from 'common/constant/countries';
-import { PortfolioTableEntry } from 'endpoints/schema/database/postgres/portfolio/props';
+import { PortfolioTableEntry } from 'endpoints/schema/database/postgres/portfolio';
 import { formatDate } from 'common/constant/dates';
 import { ColorsEnum } from 'common/theme';
 

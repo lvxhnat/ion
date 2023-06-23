@@ -1,9 +1,9 @@
-import * as React from 'react';
 import * as d3 from 'd3';
+import * as S from './style';
+import * as React from 'react';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
@@ -131,7 +131,7 @@ export default function ForexTable(props: { height?: string }) {
     ];
 
     return (
-        <TableContainer style={{ width: '100%', height: props.height ?? 'auto' }}>
+        <S.StyledTableContainer style={{ width: '100%', height: props.height ?? 'auto' }}>
             <Table style={{ minWidth: 150 }} aria-label="a dense table">
                 <TableHead>
                     <TableRow
@@ -182,6 +182,6 @@ export default function ForexTable(props: { height?: string }) {
                     ))}
                 </TableBody>
             </Table>
-        </TableContainer>
+        </S.StyledTableContainer>
     );
 }

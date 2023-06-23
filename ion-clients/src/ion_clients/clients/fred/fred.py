@@ -1,10 +1,29 @@
-from typing import List
 import requests
+from typing import List
+from datetime import datetime 
 
 CATEGORY_ROOT_PATH: str = (
     lambda request_type: f"https://api.stlouisfed.org/fred/category/{request_type}?api_key=7f15d978f632266b54771a56c043086f&file_type=json"
 )
+SERIES_ROOT_PATH: str = (
+    lambda series_id: f"https://api.stlouisfed.org/fred/series/observations?series_id={series_id}&api_key=7f15d978f632266b54771a56c043086f&file_type=json"
+)
 
+def get_series_data(series_id: str):
+    
+    json_data = requests.get(SERIES_ROOT_PATH(series_id)).json()["observations"]
+
+    return [
+        *map(
+            lambda x: { 
+                "realtime_start": datetime.strptime(x["realtime_start"], "%Y-%m-%d"),
+                "realtime_end": datetime.strptime(x["realtime_end"], "%Y-%m-%d"),
+                "date": datetime.strptime(x["date"], "%Y-%m-%d"),
+                "value": float(x["value"]),
+            }, 
+            json_data
+        )
+    ]
 
 def get_children_category_ids(category_id: str) -> List[dict]:
     """Get the child category ids. If returns empty list, then it is the last children in the tree."""

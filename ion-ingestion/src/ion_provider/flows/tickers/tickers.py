@@ -3,7 +3,7 @@ from datetime import datetime
 from prefect import task, flow
 from prefect.task_runners import ConcurrentTaskRunner
 
-from ion_provider.flows.shared import refresh_table
+from ion_provider.flows.shared import sql_update_table
 from ion_clients.clients.alphavantage.alphavantage import (
     get_alphavantage_ticker_listings,
 )
@@ -17,7 +17,6 @@ def ingest_asset_metadata():
         get_alphavantage_ticker_listings()
         .assign(last_updated=datetime.today())
         .assign(source="alphavantage")
-        .to_dict("records")
     )
 
 
@@ -27,8 +26,8 @@ def ingest_asset_metadata():
     description="Scheduled prefect pipeline for extracting all asset information.",
 )
 def asset_ingestion_flow():
-    refresh_table.submit(
-        AssetMetaData, ingest_asset_metadata.submit().result(), True
+    sql_update_table.submit(
+        ingest_asset_metadata.submit().result(), "symbol", AssetMetaData
     ).result()
 
 

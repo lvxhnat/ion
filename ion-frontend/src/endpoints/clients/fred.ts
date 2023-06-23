@@ -27,6 +27,13 @@ export interface FredSeriesEntry {
     notes: string;
 }
 
+export interface FredSeriesDataEntry {
+    realtime_start: string;
+    realtime_end: string;
+    date: string;
+    value: number;
+}
+
 export type FredParentNodeDTO = {
     parent_node: FredCategoryEntry;
     child_node: FredCategoryEntry[];
@@ -48,6 +55,15 @@ export const getFredChildNodes = (category_id: number) => {
         ENDPOINTS.PRIVATE.FRED_CHILD_NODES_ENDPOINT,
         {
             category_id: category_id,
+        }
+    );
+};
+
+export const getFredSeries = (series_id: string) => {
+    return dataIngestionRequest.post<FredSeriesDataEntry[]>(
+        ENDPOINTS.PRIVATE.FRED_SERIES_NODES_ENDPOINT,
+        {
+            series_id: series_id,
         }
     );
 };
