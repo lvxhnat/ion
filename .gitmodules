@@ -1,0 +1,3 @@
+[submodule "ion-frontend"]
+    path = ./ion-frontend
+    url = https://github.com/lvxhnat/ion-frontend
