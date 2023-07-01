@@ -7,22 +7,25 @@ from ion_clients.clients.oanda.types.candles import (
     OandaReqGranularities,
 )
 
+
 class ETFInfoParams(BaseModel):
     ticker: str
+
 
 class ETFInfosParams(BaseModel):
     pass
 
+
 class HistoricalEquityParams(BaseModel):
 
-    ticker: str
+    symbol: str
     from_date: Optional[str]
     to_date: Optional[str]
 
     class Config:
         schema_extra = {
             "example": {
-                "tickers": "AAPL",
+                "symbol": "AAPL",
                 "from_date": "2023-01-01",
             }
         }

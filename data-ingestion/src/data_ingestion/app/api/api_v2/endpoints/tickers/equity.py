@@ -55,10 +55,9 @@ def get_historical_equity_data(
         )
     else:
         from_date = params.from_date
-
     return {
         "data": get_finnhub_historical_data(
-            ticker=params.ticker, from_date=from_date
+            ticker=params.symbol, from_date=from_date
         ),
         "source": "Finnhub",
     }
