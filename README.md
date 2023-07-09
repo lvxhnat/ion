@@ -16,9 +16,9 @@ Ion is a web application designed to leverage OSINT and APIs to create a central
 | :------------------------------: | :------------------------------------: |
 | ![](./assets/pages/etf-list.png) | ![](./assets/pages/chart-explorer.png) |
 
-|             Grid Explorer             |             More Coming..             |
-| :-----------------------------------: | :-----------------------------------: |
-| ![](./assets/pages/grid-explorer.png) | ![](./assets/pages/grid-explorer.png) |
+|             FRED Economics            | 
+| :-----------------------------------: | 
+| ![](./assets/pages/economic-data.png) |
 
 ## Documentation
 
