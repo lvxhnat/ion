@@ -3,6 +3,7 @@ from datetime import datetime
 
 
 class WatchlistParams(BaseModel):
+    uuid: str
     symbol: str
     date_added: datetime
     asset_type: str
@@ -17,6 +18,7 @@ class WatchlistParams(BaseModel):
         self,
     ):
         return {
+            "uuid": self.uuid,
             "symbol": self.symbol,
             "date_added": self.date_added,
             "asset_type": self.asset_type,

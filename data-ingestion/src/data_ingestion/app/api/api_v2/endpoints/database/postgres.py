@@ -94,6 +94,7 @@ def delete_postgres_table_entry(
     id: str,
     session: Session = Depends(get_session),
 ):
+    print(id, session.query(base_configs.POSTGRES_TABLES[table_name]).get(id))
     entry = session.query(base_configs.POSTGRES_TABLES[table_name]).get(id)
     session.delete(entry)
     return

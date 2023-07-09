@@ -1,3 +1,0 @@
-confluent-kafka==1.9.2
-ion==0.0.1
-pylint==2.15.4
