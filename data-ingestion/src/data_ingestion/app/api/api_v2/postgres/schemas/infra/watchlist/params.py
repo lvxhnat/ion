@@ -5,6 +5,7 @@ from datetime import datetime
 class WatchlistParams(BaseModel):
     symbol: str
     date_added: datetime
+    asset_type: str
     source: str
 
     class Config:
@@ -18,5 +19,6 @@ class WatchlistParams(BaseModel):
         return {
             "symbol": self.symbol,
             "date_added": self.date_added,
+            "asset_type": self.asset_type,
             "source": self.source,
         }
