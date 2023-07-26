@@ -6,7 +6,7 @@ from ion_clients.services.postgres.actions import order_query
 from ion_clients.services.postgres.postgres_service import get_session
 
 from ion_clients.services.postgres.models.infra import (
-    PortfolioAssets,
+    PortfolioTransactions,
     Watchlist,
 )
 from ion_clients.services.postgres.models.data.trading.tickers import (
@@ -51,8 +51,8 @@ def query_portfolio_table(
     params: PortfolioSearchParams, session: Session = Depends(get_session)
 ):
     return (
-        session.query(PortfolioAssets)
-        .filter(PortfolioAssets.portfolio_id == params.id)
+        session.query(PortfolioTransactions)
+        .filter(PortfolioTransactions.portfolio_id == params.id)
         .all()
     )
 
@@ -94,7 +94,6 @@ def delete_postgres_table_entry(
     id: str,
     session: Session = Depends(get_session),
 ):
-    print(id, session.query(base_configs.POSTGRES_TABLES[table_name]).get(id))
     entry = session.query(base_configs.POSTGRES_TABLES[table_name]).get(id)
     session.delete(entry)
     return

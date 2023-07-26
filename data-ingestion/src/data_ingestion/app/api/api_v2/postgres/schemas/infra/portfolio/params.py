@@ -29,22 +29,18 @@ class PortfolioParams(BaseModel):
         }
 
 
-class PortfolioAssetParams(BaseModel):
-    uuid: str
-    portfolio_id: str
+class PortfolioTransactionParams(BaseModel):
     asset_id: str
-    asset_type: Literal["stock", "forex", "etf"]
-
-    # For portfolio optimisation
-    quantity: Optional[int]
-    position: Optional[str]
-
-    # For portfolio historical analysis
-    currency: Optional[str]  # Can be automatically detected from asset_type
-    account: Optional[str]
+    asset_type: str
+    broker: Optional[str]
+    comission: Optional[float]
+    currency: Optional[str]
+    exchange: Optional[str]
+    portfolio_id: str
     price_purchased: Optional[float]
-    fx_rate: Optional[float]
+    quantity: Optional[int]
     transaction_date: Optional[datetime]
+    uuid: str
 
     class Config:
         ## https://docs.pydantic.dev/usage/models/#orm-mode-aka-arbitrary-class-instances
@@ -55,15 +51,15 @@ class PortfolioAssetParams(BaseModel):
         self,
     ):
         return {
-            "uuid": self.uuid,
-            "portfolio_id": self.portfolio_id,
             "asset_id": self.asset_id,
             "asset_type": self.asset_type,
-            "quantity": self.quantity,
-            "position": self.position,
-            "price_purchased": self.price_purchased,
+            "broker": self.broker,
+            "comission": self.comission,
             "currency": self.currency,
-            "account": self.account,
-            "fx_rate": self.fx_rate,
+            "exchange": self.exchange,
+            "portfolio_id": self.portfolio_id,
+            "price_purchased": self.price_purchased,
+            "quantity": self.quantity,
             "transaction_date": self.transaction_date,
+            "uuid": self.uuid,
         }

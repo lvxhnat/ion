@@ -19,10 +19,11 @@ class BaseAPIConfigs(BaseSettings):
         treasury.USRealYieldCurve.__tablename__: treasury.USRealYieldCurve,
         treasury.USTreasuryYield.__tablename__: treasury.USTreasuryYield,
         area_latlon.AreaLatLon.__tablename__: area_latlon.AreaLatLon,
-        portfolio.Portfolio.__tablename__: portfolio.Portfolio,
-        portfolio.PortfolioAssets.__tablename__: portfolio.PortfolioAssets,
         tickers.AssetMetaData.__tablename__: tickers.AssetMetaData,
         watchlist.Watchlist.__tablename__: watchlist.Watchlist,
+        portfolio.Portfolio.__tablename__: portfolio.Portfolio,
+        portfolio.PortfolioTransactions.__tablename__: portfolio.PortfolioTransactions,
+        portfolio.PortfolioCashflow.__tablename__: portfolio.PortfolioCashflow,
     }
 
 

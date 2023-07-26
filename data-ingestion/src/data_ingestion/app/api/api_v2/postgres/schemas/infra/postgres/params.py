@@ -6,7 +6,7 @@ from ion_clients.services.postgres.models.data.common import (
     area_latlon,
 )
 from data_ingestion.app.api.api_v2.postgres.schemas.infra.portfolio.params import (
-    PortfolioAssetParams,
+    PortfolioTransactionParams,
     PortfolioParams,
 )
 from data_ingestion.app.api.api_v2.postgres.schemas.infra.watchlist.params import (
@@ -22,7 +22,7 @@ tables = {
     area_latlon.AreaLatLon.__tablename__: area_latlon.AreaLatLon,
 }
 
-PostgresTable = Union[PortfolioParams, PortfolioAssetParams, WatchlistParams]
+PostgresTable = Union[PortfolioParams, PortfolioTransactionParams, WatchlistParams]
 
 
 class TableQueryParams(BaseModel):
