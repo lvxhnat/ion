@@ -83,7 +83,6 @@ def get_historical_forex_data(
                 detail=f"Unknown exception occured. Response code returned is 200 but raised error code: {data['error_message']}",
             )
         forex_data: List[FormattedOandaCandles] = data["data"]
-
         return [
             *map(
                 lambda forex_entry: {
