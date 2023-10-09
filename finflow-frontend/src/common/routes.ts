@@ -1,1 +1,4 @@
-export const ROUTES = {}
+export const ROUTES = {
+  OVERVIEW: "/",
+  KEYS: "/keys",
+};

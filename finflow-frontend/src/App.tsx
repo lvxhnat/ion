@@ -1,22 +1,18 @@
-import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+import { ROUTES } from "./common/routes";
+
+import Overview from "./pages/Overview";
+import APIKeyRequest from "./pages/KeyRequestForm";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path={ROUTES.OVERVIEW} element={<Overview />} />
+        <Route path={ROUTES.KEYS} element={<APIKeyRequest />} />
+      </Routes>
+    </Router>
   );
 }
 
