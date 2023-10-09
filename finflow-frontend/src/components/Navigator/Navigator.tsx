@@ -10,7 +10,12 @@ export default function Navigator() {
         <Grid container style={{ padding: 10 }}>
           <Grid item xs={6}></Grid>
           <Grid item xs={6}>
-            <Box display="flex" justifyContent="flex-end" alignItems="center" gap={3}>
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              alignItems="center"
+              gap={3}
+            >
               <SignIn />
               <ToggleThemeMode />
             </Box>

@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export default function SignInForm() {
-  return (
-    <div>SignInForm</div>
-  )
+  return <div>SignInForm</div>;
 }
