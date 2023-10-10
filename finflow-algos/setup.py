@@ -64,9 +64,7 @@ setup(
     packages=find_packages("src", exclude=["*tests"]),
     install_requires=list(base_requirements | framework_common),
     entry_points={
-        "console_scripts": [
-            f"{package_name} = {package_name}.launchers.cli:cli"
-        ],
+        "console_scripts": [f"{package_name} = {package_name}.entrypoints:main"],
     },
     python_requires=">=3.9",
 )

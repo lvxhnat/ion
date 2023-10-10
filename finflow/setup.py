@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 here = pathlib.Path.absolute(pathlib.Path(__file__).resolve().parent)
 
 # get package version
-with open(pathlib.Path(here, f"src/__init__.py"), encoding="utf-8") as f:
+with open(pathlib.Path(here, f"src/finflow/__init__.py"), encoding="utf-8") as f:
 
     package_name = re.search(
         r"__package_name__\s*=\s*['\"]([^'\"]+)['\"]", f.read()
@@ -63,10 +63,8 @@ setup(
     package_dir={"": "src"},
     packages=find_packages("src", exclude=["*tests"]),
     install_requires=list(base_requirements | framework_common),
-    entry_points={
-        "console_scripts": [
-            f"{package_name} = {package_name}.launchers.cli:cli"
-        ],
+    entry_points = {
+        "console_scripts": [f"{package_name} = {package_name}.entrypoints:main"],
     },
     python_requires=">=3.9",
 )
