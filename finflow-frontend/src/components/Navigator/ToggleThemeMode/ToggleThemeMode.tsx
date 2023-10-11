@@ -18,7 +18,7 @@ function ToggleThemeMode() {
       onClick={handleClick}
       disableRipple
       color="inherit"
-      style={{ border: "1px solid white", width: 35, height: 35 }}
+      style={{ border: "1px solid white", width: 30, height: 30 }}
     >
       {mode === "dark" ? (
         <Brightness7Icon fontSize="small" data-testid="theme-mode-light-id" />
