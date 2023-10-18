@@ -1,11 +1,11 @@
 import * as React from "react";
 
 import { Alert, CssBaseline, Grid, Snackbar } from "@mui/material";
-import Navigator from "./Navigator";
-import { NavigatorWrapperProps } from "./type";
-import { ALERTS } from "../../common/literals";
+import Navigator from "../../Navigator/Navigator";
+import { ContainerWrapperProps } from "../../Navigator/type";
+import { ALERTS } from "../../../common/literals";
 
-export default function NavigatorWrapper(props: NavigatorWrapperProps) {
+export default function ContainerWrapper(props: ContainerWrapperProps) {
   const [online, setOnline] = React.useState<boolean>(navigator.onLine);
 
   React.useEffect(() => {

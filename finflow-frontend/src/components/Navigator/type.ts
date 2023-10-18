@@ -1,5 +1,5 @@
 import * as React from "react";
 
-export interface NavigatorWrapperProps {
+export interface ContainerWrapperProps {
   children: React.ReactNode;
 }

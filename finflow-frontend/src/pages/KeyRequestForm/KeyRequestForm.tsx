@@ -1,11 +1,11 @@
 import * as React from "react";
 import { apiKeyFields } from "./fields";
-import { NavigatorWrapper } from "../../components/Navigator";
 import KeyRequestField from "./KeyRequestField";
+import { ContainerWrapper } from "../../components/Wrappers/ContainerWrapper";
 
 export default function KeyRequestForm() {
   return (
-    <NavigatorWrapper>
+    <ContainerWrapper>
       {Object.keys(apiKeyFields).map((categoryName: string) => {
         return (
           <KeyRequestField
@@ -15,6 +15,6 @@ export default function KeyRequestForm() {
           />
         );
       })}
-    </NavigatorWrapper>
+    </ContainerWrapper>
   );
 }

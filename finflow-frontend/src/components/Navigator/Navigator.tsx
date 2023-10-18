@@ -1,7 +1,6 @@
 import * as React from "react";
 import { AppBar, Box, Grid, Toolbar } from "@mui/material";
 import ToggleThemeMode from "./ToggleThemeMode";
-import SignIn from "./SignIn";
 
 export default function Navigator() {
   return (
@@ -16,7 +15,6 @@ export default function Navigator() {
               alignItems="center"
               gap={3}
             >
-              <SignIn />
               <ToggleThemeMode />
             </Box>
           </Grid>
