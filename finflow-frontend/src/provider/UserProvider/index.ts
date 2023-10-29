@@ -1,6 +1,3 @@
 import UserProvider, { UserContext } from "./UserProvider";
 
-export {
-    UserProvider,
-    UserContext
-}
+export { UserProvider, UserContext };

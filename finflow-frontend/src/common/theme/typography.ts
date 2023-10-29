@@ -7,7 +7,7 @@ export const typographyTheme = {
     fontWeight: 300,
   },
   h2: {
-    fontSize: `calc(0.6rem + 0.5vw)`,
+    fontSize: `calc(1rem + 0.5vw)`,
     fontWeight: 500,
   },
   h3: {

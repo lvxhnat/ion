@@ -3,4 +3,5 @@ export const ROUTES = {
   KEYS: "/keys",
   LOGIN: "/login",
   FORGOT_PASSWORD: "/forgot-password",
+  PORTFOLIO: "/portfolio",
 };

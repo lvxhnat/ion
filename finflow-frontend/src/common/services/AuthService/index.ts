@@ -1,3 +1,3 @@
 import AuthServiceInstance from "./AuthService";
 
-export default AuthServiceInstance 
+export default AuthServiceInstance;

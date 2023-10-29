@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 def create_app() -> FastAPI:
 
     app: FastAPI = FastAPI(
-        title="finflow_ingestion",
+        title="finflow-db",
         description="",
         version="1.0.0.",
         root_path="/",
@@ -42,4 +42,4 @@ async def intialise_database_infra():
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=1236, reload=True)
+    uvicorn.run(app, host="0.0.0.0", port=1237, reload=True)

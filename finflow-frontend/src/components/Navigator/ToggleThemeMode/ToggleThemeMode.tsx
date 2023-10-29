@@ -1,8 +1,8 @@
 import * as React from "react";
-import IconButton from "@mui/material/IconButton";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { useThemeStore } from "../../../store/theme";
+import StyledIconButton from "../../Button/StyledIconButton";
 
 function ToggleThemeMode() {
   const { mode, setMode } = useThemeStore();
@@ -14,18 +14,13 @@ function ToggleThemeMode() {
   if (!mode) return null;
 
   return (
-    <IconButton
-      onClick={handleClick}
-      disableRipple
-      color="inherit"
-      style={{ border: "1px solid white", width: 30, height: 30 }}
-    >
+    <StyledIconButton onClick={handleClick}>
       {mode === "dark" ? (
         <Brightness7Icon fontSize="small" data-testid="theme-mode-light-id" />
       ) : (
         <Brightness4Icon fontSize="small" data-testid="theme-mode-dark-id" />
       )}
-    </IconButton>
+    </StyledIconButton>
   );
 }
 
