@@ -3,6 +3,7 @@ import * as React from 'react';
 
 interface StyledIconButtonProps {
     children: React.ReactNode;
+    outline?: boolean;
     [others: string]: any;
 }
 
@@ -11,7 +12,7 @@ export default function StyledIconButton(props: StyledIconButtonProps) {
         <IconButton
             disableRipple
             color="inherit"
-            style={{ border: '1px solid white', width: 30, height: 30 }}
+            style={{ border: props.outline ? '1px solid white' : 'none', width: 30, height: 30 }}
             {...props}
         >
             {props.children}

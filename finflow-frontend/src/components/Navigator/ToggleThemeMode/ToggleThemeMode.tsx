@@ -14,7 +14,7 @@ function ToggleThemeMode() {
     if (!mode) return null;
 
     return (
-        <StyledIconButton onClick={handleClick}>
+        <StyledIconButton outline onClick={handleClick}>
             {mode === 'dark' ? (
                 <Brightness7Icon fontSize="small" data-testid="theme-mode-light-id" />
             ) : (
