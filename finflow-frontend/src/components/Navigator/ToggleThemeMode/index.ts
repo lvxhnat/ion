@@ -1,1 +1,1 @@
-export { default } from "./ToggleThemeMode";
+export { default } from './ToggleThemeMode';

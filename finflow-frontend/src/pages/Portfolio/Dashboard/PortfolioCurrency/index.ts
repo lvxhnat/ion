@@ -1,3 +1,3 @@
-import PortfolioCurrency from "./PortfolioCurrency";
+import PortfolioCurrency from './PortfolioCurrency';
 
 export default PortfolioCurrency;

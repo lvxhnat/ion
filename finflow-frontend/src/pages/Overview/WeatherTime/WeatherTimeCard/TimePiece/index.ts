@@ -1,3 +1,3 @@
-import TimePiece from "./TimePiece";
+import TimePiece from './TimePiece';
 
 export default TimePiece;

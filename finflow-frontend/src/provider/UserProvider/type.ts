@@ -1,6 +1,6 @@
 export interface User {
-  token?: {
-    access: any;
-    refresh: any;
-  };
+    token?: {
+        access: any;
+        refresh: any;
+    };
 }

@@ -1,35 +1,35 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Alert, CssBaseline, Grid, Snackbar } from "@mui/material";
-import Navigator from "../../Navigator/Navigator";
-import { ContainerWrapperProps } from "../../Navigator/type";
-import { ALERTS } from "../../../common/literals";
+import { Alert, CssBaseline, Grid, Snackbar } from '@mui/material';
+import Navigator from '../../Navigator/Navigator';
+import { ContainerWrapperProps } from '../../Navigator/type';
+import { ALERTS } from '../../../common/literals';
 
 export default function ContainerWrapper(props: ContainerWrapperProps) {
-  const [online, setOnline] = React.useState<boolean>(navigator.onLine);
+    const [online, setOnline] = React.useState<boolean>(navigator.onLine);
 
-  React.useEffect(() => {
-    const handleStatusChange = () => setOnline(navigator.onLine);
-    window.addEventListener("online", handleStatusChange);
-    window.addEventListener("offline", handleStatusChange);
-    return () => {
-      window.removeEventListener("online", handleStatusChange);
-      window.removeEventListener("offline", handleStatusChange);
-    };
-  }, [online]);
+    React.useEffect(() => {
+        const handleStatusChange = () => setOnline(navigator.onLine);
+        window.addEventListener('online', handleStatusChange);
+        window.addEventListener('offline', handleStatusChange);
+        return () => {
+            window.removeEventListener('online', handleStatusChange);
+            window.removeEventListener('offline', handleStatusChange);
+        };
+    }, [online]);
 
-  return (
-    <Grid container style={{ height: "100vh" }} flexDirection="column">
-      <Navigator />
-      <Grid container style={{ flexGrow: 1 }}>
-        <CssBaseline />
-        {props.children}
-      </Grid>
-      {!online ? (
-        <Snackbar open={true}>
-          <Alert severity="error"> {ALERTS.OFFLINE} </Alert>
-        </Snackbar>
-      ) : null}
-    </Grid>
-  );
+    return (
+        <Grid container style={{ height: '100vh' }} flexDirection="column">
+            <Navigator />
+            <Grid container style={{ flexGrow: 1 }}>
+                <CssBaseline />
+                {props.children}
+            </Grid>
+            {!online ? (
+                <Snackbar open={true}>
+                    <Alert severity="error"> {ALERTS.OFFLINE} </Alert>
+                </Snackbar>
+            ) : null}
+        </Grid>
+    );
 }

@@ -1,3 +1,3 @@
-import { TimePieceProps } from "./TimePiece/type";
+import { TimePieceProps } from './TimePiece/type';
 
 export interface WeatherTimeCardProps extends TimePieceProps {}

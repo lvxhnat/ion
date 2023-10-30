@@ -1,6 +1,6 @@
-import React from "react";
-import WeatherTimeCard from "./WeatherTimeCard";
+import React from 'react';
+import WeatherTimeCard from './WeatherTimeCard';
 
 export default function WeatherTime() {
-  return <div></div>;
+    return <div></div>;
 }

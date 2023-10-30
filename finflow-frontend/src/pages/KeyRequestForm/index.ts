@@ -1,3 +1,3 @@
-import KeyRequestForm from "./KeyRequestForm";
+import KeyRequestForm from './KeyRequestForm';
 
 export default KeyRequestForm;

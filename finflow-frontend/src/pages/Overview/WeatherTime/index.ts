@@ -1,3 +1,3 @@
-import WeatherTime from "./WeatherTime";
+import WeatherTime from './WeatherTime';
 
 export default WeatherTime;

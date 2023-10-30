@@ -1,3 +1,3 @@
-import KeyRequestField from "./KeyRequestField";
+import KeyRequestField from './KeyRequestField';
 
 export default KeyRequestField;

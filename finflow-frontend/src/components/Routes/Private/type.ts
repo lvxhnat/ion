@@ -1,4 +1,4 @@
 export interface PrivateRouteProps {
-  path: string;
-  element: React.ReactNode;
+    path: string;
+    element: React.ReactNode;
 }

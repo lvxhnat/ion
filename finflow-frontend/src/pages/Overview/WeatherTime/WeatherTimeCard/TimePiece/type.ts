@@ -1,4 +1,4 @@
 export interface TimePieceProps {
-  timeZoneName: string;
-  timeZone: string;
+    timeZoneName: string;
+    timeZone: string;
 }

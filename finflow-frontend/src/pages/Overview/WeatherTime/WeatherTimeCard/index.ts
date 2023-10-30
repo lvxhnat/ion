@@ -1,3 +1,3 @@
-import WeatherTimeCard from "./WeatherTimeCard";
+import WeatherTimeCard from './WeatherTimeCard';
 
 export default WeatherTimeCard;

@@ -1,3 +1,3 @@
-import StyledIconButton from "./StyledIconButton";
+import StyledIconButton from './StyledIconButton';
 
 export default StyledIconButton;

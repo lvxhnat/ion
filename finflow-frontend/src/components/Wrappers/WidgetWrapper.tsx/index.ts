@@ -1,3 +1,3 @@
-import WidgetWrapper from "./WidgetWrapper";
+import WidgetWrapper from './WidgetWrapper';
 
 export default WidgetWrapper;
