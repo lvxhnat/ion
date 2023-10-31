@@ -6,10 +6,12 @@ import { ContainerWrapper } from '../../components/Wrappers/ContainerWrapper';
 export default function Overview() {
     return (
         <ContainerWrapper>
-            <Grid item xs={3}></Grid>
-            <Grid item xs={6}></Grid>
-            <Grid item xs={3}>
-                <LivePlayerWidget />
+            <Grid container>
+                <Grid item xs={3}></Grid>
+                <Grid item xs={6}></Grid>
+                <Grid item xs={3}>
+                    <LivePlayerWidget />
+                </Grid>
             </Grid>
         </ContainerWrapper>
     );

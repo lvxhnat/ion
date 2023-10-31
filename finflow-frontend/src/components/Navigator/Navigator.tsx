@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { AppBar, Box, Grid, Toolbar } from '@mui/material';
 import ToggleThemeMode from './ToggleThemeMode';
-import HomeIcon from '@mui/icons-material/Home';
-import StyledIconButton from '../Button/StyledIconButton';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../common/routes';
 
 export default function Navigator() {
+    const navigate = useNavigate();
+    const location = useLocation();
     return (
         <Toolbar>
             <AppBar>
                 <Grid container padding={1}>
-                    <Grid item xs={6}>
-                        <StyledIconButton onClick={() => console.log("")}> <HomeIcon /> </StyledIconButton>
-                    </Grid>
+                    <Grid item xs={6}></Grid>
                     <Grid item xs={6}>
                         <Box
                             display="flex"

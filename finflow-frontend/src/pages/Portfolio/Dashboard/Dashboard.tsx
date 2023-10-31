@@ -35,13 +35,6 @@ function CustomTabPanel(props: TabPanelProps) {
     );
 }
 
-function a11yProps(index: number) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
-
 export default function Dashboard() {
     const [value, setValue] = React.useState(0);
 
@@ -66,24 +59,20 @@ export default function Dashboard() {
             </Grid>
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                        <Tab label="Overview" {...a11yProps(0)} />
-                        <Tab label="Performance" {...a11yProps(1)} />
-                        <Tab label="Risk" {...a11yProps(2)} />
-                        <Tab label="Composition" {...a11yProps(3)} />
+                    <Tabs value={value} onChange={handleChange}>
+                        <Tab label="Overview"/>
+                        <Tab label="Performance" />
+                        <Tab label="Risk" />
+                        <Tab label="Composition" />
                     </Tabs>
                 </Box>
                 <CustomTabPanel value={value} index={0}>
-                    Overview
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={1}>
-                    Performance
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={2}>
-                    Risk
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={3}>
-                    Composition
                 </CustomTabPanel>
             </Box>
         </div>
