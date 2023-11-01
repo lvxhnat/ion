@@ -15,10 +15,11 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import DonutSmallIcon from '@mui/icons-material/DonutSmall';
-import { Typography } from '@mui/material';
+import { ListSubheader, Typography } from '@mui/material';
 import { ROUTES } from '../../common/routes';
 import { useLocation, useNavigate } from 'react-router-dom';
 import StyledIconButton from '../Button/StyledIconButton';
+import { ColorsEnum } from '../../common/theme';
 
 interface SideDrawerProps {
     drawerWidth: number;
@@ -83,16 +84,43 @@ export default function SideDrawer(props: SideDrawerProps) {
             </List>
             <Divider variant="middle" />
             <List>
+            <ListSubheader   component="div">
+                        <ListItemText
+                            primary={
+                                <Typography
+                                    variant="subtitle1"
+                                    component="div"
+                                    sx={{
+                                        color: ColorsEnum.warmgray2,
+                                        fontWeight: 500,
+                                        gap: 1,
+                                        display: 'flex', 
+                                        alignItems: 'center'
+                                    }}
+                                >
+                                    <DonutSmallIcon fontSize="small" />
+                                    PORTFOLIOS
+                                </Typography>
+                            }
+                            sx={{ opacity: props.open ? 1 : 0 }}
+                        />{' '}
+                    </ListSubheader>
                 {['Portfolio 1', 'Portfolio 2', 'Portfolio 3'].map((text, index) => (
-                    <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                    <ListItem key={text} disablePadding>
                         <ListItemButton
+                            disableRipple
                             sx={{
-                                minHeight: 48,
                                 justifyContent: props.open ? 'initial' : 'center',
                                 px: 2.5,
+                                paddingTop: 0.5,
+                                paddingBottom: 0.5,
                             }}
                         >
-                            <ListItemText primary={text} sx={{ opacity: props.open ? 1 : 0 }} />
+                            <ListItemText
+                                disableTypography
+                                primary={<Typography variant="body2">{text}</Typography>}
+                                sx={{ opacity: props.open ? 1 : 0 }}
+                            />
                         </ListItemButton>
                     </ListItem>
                 ))}

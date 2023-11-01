@@ -9,7 +9,10 @@ import { useDrawerStore } from '../../../store/ui';
 
 export default function ContainerWrapper(props: ContainerWrapperProps) {
     const [online, setOnline] = React.useState<boolean>(navigator.onLine);
-    const [drawerOpen, setDrawerOpen] = useDrawerStore(state => [state.drawerOpen, state.setDrawerOpen]);
+    const [drawerOpen, setDrawerOpen] = useDrawerStore(state => [
+        state.drawerOpen,
+        state.setDrawerOpen,
+    ]);
 
     React.useEffect(() => {
         const handleStatusChange = () => setOnline(navigator.onLine);
@@ -23,9 +26,9 @@ export default function ContainerWrapper(props: ContainerWrapperProps) {
 
     return (
         <Grid container style={{ height: '100vh' }} flexDirection="column">
-            <CssBaseline /> 
+            <CssBaseline />
             <Navigator />
-            <Grid container flexDirection="row" >
+            <Grid container flexDirection="row">
                 <SideDrawer
                     drawerWidth={240}
                     open={drawerOpen}

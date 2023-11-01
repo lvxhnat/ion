@@ -52,7 +52,7 @@ export default function Dashboard() {
                 <Grid item xs={6}>
                     <Grid container direction="row" justifyContent="flex-end" alignItems="flex-end">
                         <Button component="label" variant="contained" startIcon={<AddIcon />}>
-                            Upload file
+                            Add Entry
                         </Button>
                     </Grid>
                 </Grid>
@@ -60,20 +60,16 @@ export default function Dashboard() {
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs value={value} onChange={handleChange}>
-                        <Tab label="Overview"/>
+                        <Tab label="Overview" />
                         <Tab label="Performance" />
                         <Tab label="Risk" />
                         <Tab label="Composition" />
                     </Tabs>
                 </Box>
-                <CustomTabPanel value={value} index={0}>
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={1}>
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={2}>
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={3}>
-                </CustomTabPanel>
+                <CustomTabPanel value={value} index={0}></CustomTabPanel>
+                <CustomTabPanel value={value} index={1}></CustomTabPanel>
+                <CustomTabPanel value={value} index={2}></CustomTabPanel>
+                <CustomTabPanel value={value} index={3}></CustomTabPanel>
             </Box>
         </div>
     );
