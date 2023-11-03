@@ -28,20 +28,34 @@ interface SideDrawerProps {
     handleDrawerOpen: () => void;
 }
 
+interface StyledListItemButtonProps {
+    selected?: boolean;
+    [others: string]: any;
+}
+
+const StyledListItemButton = (props: StyledListItemButtonProps) => {
+    return (
+        <ListItemButton
+            disableRipple
+            sx={{
+                justifyContent: props.open ? 'initial' : 'center',
+                px: 2.5,
+                paddingTop: 0.5,
+                paddingBottom: 0.5,
+            }}
+            {...props}
+        >
+            {props.children}
+        </ListItemButton>
+    )
+}
+
 export default function SideDrawer(props: SideDrawerProps) {
     const navigate = useNavigate();
     const location = useLocation();
     return (
         <S.Drawer variant="permanent" open={props.open}>
             <S.DrawerHeader open={props.open}>
-                <div style={{ width: '100%', display: props.open ? 'block' : 'none' }}>
-                    <StyledIconButton
-                        disabled={location.pathname === ROUTES.OVERVIEW}
-                        onClick={() => navigate(ROUTES.OVERVIEW)}
-                    >
-                        <HomeIcon fontSize="small" />
-                    </StyledIconButton>
-                </div>
                 <IconButton
                     onClick={() =>
                         props.open ? props.handleDrawerClose() : props.handleDrawerOpen()
@@ -56,49 +70,40 @@ export default function SideDrawer(props: SideDrawerProps) {
             </S.DrawerHeader>
             <Divider variant="middle" />
             <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-                        <ListItemButton
-                            sx={{
-                                justifyContent: props.open ? 'initial' : 'center',
-                                px: 2.5,
+            {/* <StyledListItemButton
+                        disabled={location.pathname === ROUTES.OVERVIEW}
+                        onClick={() => navigate(ROUTES.OVERVIEW)}
+                    >
+                        <HomeIcon fontSize="small" />
+                    </StyledListItemButton> */}
+            <ListItem disablePadding>
+                        <StyledListItemButton
+                            onClick={() => navigate(ROUTES.PORTFOLIO)}
+                            disableRipple
+                            style={{
+                                display: props.open ? 'none' : 'flex',
+                                borderLeft: location.pathname === ROUTES.PORTFOLIO ? `2px solid ${ColorsEnum.primary}` : 'none',
+                                color: location.pathname === ROUTES.PORTFOLIO ? ColorsEnum.primary : 'none'
                             }}
                         >
-                            <ListItemIcon
-                                sx={{
-                                    minWidth: 0,
-                                    mr: props.open ? 3 : 'auto',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                {index % 2 === 0 ? (
-                                    <InboxIcon fontSize="small" />
-                                ) : (
-                                    <MailIcon fontSize="small" />
-                                )}
-                            </ListItemIcon>
-                            <ListItemText primary={text} sx={{ opacity: props.open ? 1 : 0 }} />
-                        </ListItemButton>
+                            <DonutSmallIcon fontSize="small"/>
+                        </StyledListItemButton>
                     </ListItem>
-                ))}
-            </List>
-            <Divider variant="middle" />
-            <List>
-            <ListSubheader   component="div">
+                    <ListSubheader component="div" style={{borderLeft: location.pathname === ROUTES.PORTFOLIO && props.open ? `2px solid ${ColorsEnum.primary}` : 'none',}}>
                         <ListItemText
                             primary={
                                 <Typography
                                     variant="subtitle1"
                                     component="div"
                                     sx={{
-                                        color: ColorsEnum.warmgray2,
+                                        color: location.pathname === ROUTES.PORTFOLIO ? ColorsEnum.primary : ColorsEnum.warmgray2,
                                         fontWeight: 500,
                                         gap: 1,
                                         display: 'flex', 
                                         alignItems: 'center'
                                     }}
                                 >
-                                    <DonutSmallIcon fontSize="small" />
+                                    <DonutSmallIcon fontSize="small"/>
                                     PORTFOLIOS
                                 </Typography>
                             }
@@ -107,21 +112,13 @@ export default function SideDrawer(props: SideDrawerProps) {
                     </ListSubheader>
                 {['Portfolio 1', 'Portfolio 2', 'Portfolio 3'].map((text, index) => (
                     <ListItem key={text} disablePadding>
-                        <ListItemButton
-                            disableRipple
-                            sx={{
-                                justifyContent: props.open ? 'initial' : 'center',
-                                px: 2.5,
-                                paddingTop: 0.5,
-                                paddingBottom: 0.5,
-                            }}
-                        >
+                        <StyledListItemButton>
                             <ListItemText
                                 disableTypography
                                 primary={<Typography variant="body2">{text}</Typography>}
                                 sx={{ opacity: props.open ? 1 : 0 }}
                             />
-                        </ListItemButton>
+                        </StyledListItemButton>
                     </ListItem>
                 ))}
             </List>
