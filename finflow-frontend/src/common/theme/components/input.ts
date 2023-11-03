@@ -4,13 +4,6 @@ export const inputTheme = {
     MuiOutlinedInput: {
         styleOverrides: {
             root: ({ theme }: any) => ({
-                // transition: theme.transitions.create(['box-shadow']),
-                // '&.Mui-focused': {
-                //   boxShadow: `${ColorsEnum.tangerine5} 0 0 0 3px`,
-                //   '.MuiOutlinedInput-notchedOutline': {
-                //     borderWidth: '1px',
-                //   },
-                // },
                 '&:hover .MuiOutlinedInput-notchedOutline': {
                     borderColor: theme.palette.primary.main,
                 },

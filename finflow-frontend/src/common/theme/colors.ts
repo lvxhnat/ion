@@ -3,7 +3,7 @@
 export enum ColorsEnum {
     upHint = '#009C00',
     downHint = '#EF2B00',
-    primary = '#fc9b15',
+    primary = '#ff9b00',
     secondary = '#FFBAAB',
     success = '#85B899',
     beer = '#FF9B00',

@@ -1,7 +1,6 @@
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 
 import MuiDrawer from '@mui/material/Drawer';
-import { ListItemButton } from '@mui/material';
 
 const drawerWidth = 240;
 

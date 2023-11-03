@@ -5,6 +5,7 @@ import { cssBaselineTheme } from './cssBaseline';
 import { formHelperTextTheme } from './formHelperText';
 import { inputTheme } from './input';
 import { linkTheme } from './link';
+import { drawerTheme } from './drawer';
 
 export const componentsTheme = {
     ...appBarTheme,
@@ -14,4 +15,5 @@ export const componentsTheme = {
     ...formHelperTextTheme,
     ...inputTheme,
     ...linkTheme,
+    ...drawerTheme,
 };
