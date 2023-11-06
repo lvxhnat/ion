@@ -1,13 +1,13 @@
 import * as React from 'react';
 import PortfolioCurrency from './PortfolioCurrency';
 
-import AddIcon from '@mui/icons-material/Add';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
 import Button from '@mui/material/Button';
+import Popup from '../Popup';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -51,9 +51,7 @@ export default function Dashboard() {
                 </Grid>
                 <Grid item xs={6}>
                     <Grid container direction="row" justifyContent="flex-end" alignItems="flex-end">
-                        <Button component="label" variant="contained" startIcon={<AddIcon />}>
-                            Add Entry
-                        </Button>
+                        <Popup />
                     </Grid>
                 </Grid>
             </Grid>

@@ -33,6 +33,7 @@ interface StyledListItemButtonProps {
 }
 
 const StyledListItemButton = (props: StyledListItemButtonProps) => {
+    const { selected, ...others } = props
     return (
         <ListItemButton
             disableRipple
@@ -42,10 +43,10 @@ const StyledListItemButton = (props: StyledListItemButtonProps) => {
                 px: 2.5,
                 paddingTop: props.padding ? (props.padding === 'tight' ? 0.5 : 0) : 1,
                 paddingBottom: props.padding ? (props.padding === 'tight' ? 0.5 : 0) : 1,
-                borderLeft: props.selected ? `3px solid ${ColorsEnum.primary}` : 'none',
-                color: props.selected ? ColorsEnum.primary : ColorsEnum.white,
+                borderLeft: selected ? `3px solid ${ColorsEnum.primary}` : 'none',
+                color: selected ? ColorsEnum.primary : ColorsEnum.white,
             }}
-            {...props}
+            {...others}
         >
             {props.children}
         </ListItemButton>
@@ -61,7 +62,7 @@ interface StyledListItemTIButtonProps extends StyledListItemButtonProps {
 const StyledListItemTIButton = (props: StyledListItemTIButtonProps) => {
     const navigate = useNavigate();
     const location = useLocation();
-    const color = location.pathname === props.route ? ColorsEnum.primary : 'default';
+    const color = location.pathname === props.route ? ColorsEnum.primary : ColorsEnum.white;
     return (
         <ListItemButton
             sx={{
@@ -74,7 +75,6 @@ const StyledListItemTIButton = (props: StyledListItemTIButtonProps) => {
             }}
             onClick={() => navigate(props.route)}
             disableRipple
-            selected={props.selected}
         >
             <ListItemIcon
                 sx={{
@@ -110,7 +110,7 @@ const StyledListItemTIButton = (props: StyledListItemTIButtonProps) => {
 const PaddedDivider = () => {
     return (
         <Box style={{ paddingTop: 10, paddingBottom: 10 }}>
-            <Divider variant="middle" />
+            <Divider variant="middle" sx={{ borderBottomWidth: 1, backgroundColor: ColorsEnum.warmgray1 }} />
         </Box>
     );
 };
@@ -125,6 +125,7 @@ export default function SideDrawer(props: SideDrawerProps) {
                     onClick={() =>
                         props.open ? props.handleDrawerClose() : props.handleDrawerOpen()
                     }
+                    style={{ color: ColorsEnum.white }}
                 >
                     {!props.open ? (
                         <ChevronRightIcon fontSize="small" />
@@ -172,16 +173,17 @@ export default function SideDrawer(props: SideDrawerProps) {
                                     gap: 1,
                                     display: 'flex',
                                     alignItems: 'center',
+                                    color: ColorsEnum.coolgray3
                                 }}
                             >
+                                <div style={{ color: location.pathname === ROUTES.PORTFOLIO
+                                            ? ColorsEnum.primary
+                                            : ColorsEnum.white, display: 'flex'}}>
                                 <MultilineChartIcon
                                     fontSize="small"
-                                    color={
-                                        location.pathname === ROUTES.PORTFOLIO
-                                            ? 'primary'
-                                            : 'inherit'
-                                    }
+                                    color="inherit"
                                 />
+                                </div>
                                 PORTFOLIOS
                             </Typography>
                         }

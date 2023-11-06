@@ -13,7 +13,7 @@ def _get_modules(prefix: str) -> list[ModuleType]:
 
 
 def get_routers() -> APIRouter:
-    root = "finflow_ingestion.app.api.endpoints"
+    root = "finflow_database.app.api.endpoints"
     router = APIRouter()
     for m in _get_modules(root):
         file_name = m.__name__.split(f"{root}.", 1)[1]

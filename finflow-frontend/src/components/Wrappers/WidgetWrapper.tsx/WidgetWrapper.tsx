@@ -12,7 +12,7 @@ export default function WidgetWrapper(props: WidgetWrapperProps) {
     const navigate = useNavigate();
 
     return (
-        <Box style={{ width: '100%', paddingLeft: 5, paddingRight: 5 }}>
+        <Box style={{ width: '100%' }}>
             <Grid
                 container
                 alignItems="flex-start"

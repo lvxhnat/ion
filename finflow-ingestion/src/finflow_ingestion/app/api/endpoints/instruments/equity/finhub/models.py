@@ -1,11 +1,4 @@
-from pydantic import BaseModel
+from finflow_ingestion.app.api.endpoints.instruments.equity.models import EquityHistoricalModel
 
-class AssetHistoricalData(BaseModel):
-    # Data Returned directly from the scrapers
-    close: float
-    high: float
-    open: float
-    low: float
-    date: int
-    volume: int
-    symbol: str
+class AssetHistoricalData(EquityHistoricalModel):
+    pass

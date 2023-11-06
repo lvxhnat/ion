@@ -1,19 +1,19 @@
 import time
 import requests
 import pandas as pd
-from typing import Union, List
+from typing import List
 from datetime import datetime, timedelta
 
-from .models import AssetHistoricalData
 from finflow_algos.utils.date import date_to_unixtime
+from finflow_ingestion.app.api.endpoints.instruments.equity.finhub.models import AssetHistoricalData
 
 def get_finnhub_historical_data(
     ticker: str,
     api_key: str,
     from_date: str = "2022-02-20",
-    resolution: int = "D",
+    resolution: int = "D",                              
     _retries: int = 0,
-) -> Union[pd.DataFrame, List[AssetHistoricalData]]:
+) -> List[AssetHistoricalData]:
     """
     Parameters
     =============
@@ -90,3 +90,18 @@ def get_finnhub_historical_data(
         raise ValueError(
             f"Unknown status code response of {response.status_code}. Returned error states: {response.text}"
         )
+        
+        
+if __name__ == '__main__':
+    
+    import os
+    from dotenv import load_dotenv, find_dotenv
+    
+    load_dotenv(find_dotenv())
+    
+    api_key = os.environ.get("FINNHUB_API_KEY")
+    
+    if api_key:
+        print(get_finnhub_historical_data("SPY", os.environ["FINNHUB_API_KEY"]))
+    else:
+        raise ValueError("API Key not found")

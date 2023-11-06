@@ -1,7 +1,8 @@
 from fastapi import APIRouter
-from params import HistoricalEquityParams
+from datetime import datetime, timedelta
 
-import finflow_algos.utils 
+from finflow_ingestion.app.api.endpoints.instruments.equity.params import HistoricalEquityParams
+from finflow_ingestion.app.api.endpoints.instruments.equity.finhub.instruments import get_finnhub_historical_data
 
 router = APIRouter()
 
@@ -9,4 +10,9 @@ router = APIRouter()
 def get_historical(
     params: HistoricalEquityParams,
 ):
-    pass
+    if not params.from_date:
+        from_date = (datetime.today() - timedelta(days=365))
+        from_date = from_date.strftime("%Y-%m-%d")
+    else:
+        from_date = params.from_date
+    return get_finnhub_historical_data(ticker=params.symbol, from_date=from_date)
