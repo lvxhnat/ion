@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends
 from finflow_ingestion.app.api.endpoints.weather.open_weather.models import OpenWeatherDTO
 from finflow_ingestion.app.api.endpoints.weather.params import CurrentWeatherParams
 from finflow_ingestion.app.common.tables import POSTGRES_TABLES
-from finflow_ingestion.app.services.postgres import get_session
+from finflow_algos.services.postgres.base import get_session
 
 from finflow_algos.utils.database.base import order_search
 

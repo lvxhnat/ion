@@ -1,5 +1,4 @@
 import logging
-from typing import Literal
 
 logger_mapping = {
     "CRITICAL": logging.CRITICAL,

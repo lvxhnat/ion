@@ -2,7 +2,7 @@ import uvicorn
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from finflow_algos.services.postgres.initialise import initialise_raw_tables
 
 def create_app() -> FastAPI:
 
@@ -39,6 +39,7 @@ app: FastAPI = create_app()
 @app.on_event("startup")
 async def intialise_database_infra():
     """Initialise tables in Postgres if does not exist already"""
+    initialise_raw_tables()
 
 
 if __name__ == "__main__":
