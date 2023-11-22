@@ -1,3 +1,7 @@
+""" 
+Equity Routers has since been deprecated. Do not support paid sources of data.
+"""
+
 from fastapi import APIRouter
 from datetime import datetime, timedelta
 

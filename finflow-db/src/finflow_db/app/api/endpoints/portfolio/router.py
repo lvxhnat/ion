@@ -19,7 +19,10 @@ def health_check():
 
 # # Create a new item
 @router.post("/portfolio")
-def insert_portfolio(params: CreatePortfolioParams, session: Session = Depends(get_session)):
+def insert_portfolio(
+    params: CreatePortfolioParams, 
+    session: Session = Depends(get_session)
+):
     portfolio = Portfolio(
         uuid=params.portfolio_id,  # Replace with your desired UUID
         name=params.name,
