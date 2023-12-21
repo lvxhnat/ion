@@ -1,8 +1,0 @@
-services:
-  database:
-    image: postgres:latest
-    container_name: database
-    environment:
-      - POSTGRES_DB=finflow_db
-      - POSTGRES_USER=finflow_user
-      - POSTGRES_PASSWORD=finflow1234

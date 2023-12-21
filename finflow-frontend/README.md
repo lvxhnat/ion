@@ -1,3 +1,0 @@
-# Finflow Frontend
-
-## Quick Start 🚀
