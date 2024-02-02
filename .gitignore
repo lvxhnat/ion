@@ -1,5 +1,7 @@
-.env
+.env*
 .env.local
+_research/alphavantage/
+_research/pyetfdb-scraper/
 
 *.log
 *.DS_Store
