@@ -17,16 +17,16 @@ function App() {
         <Router>
             <Routes>
                 <Route
-                    path={`${ROUTES.PUBLIC.SECURITIES}/:assetType/:symbolId`}
+                    path={`${ROUTES.SECURITIES}/:assetType/:symbolId`}
                     element={<Ticker />}
                 />
-                <Route path={ROUTES.PUBLIC.LANDING} element={<Landing />} />
-                <Route path={ROUTES.PUBLIC.FUNCTION} element={<Function />} />
-                <Route path={ROUTES.PUBLIC.PORTFOLIO} element={<Portfolio />} />
-                <Route path={ROUTES.PUBLIC.GEOPOLITICS} element={<Geopolitics />} />
-                <Route path={ROUTES.PUBLIC.EXPLORER} element={<Explorer />} />
-                <Route path={ROUTES.PUBLIC.WATCHLIST} element={<WatchlistPage />} />
-                <Route path={ROUTES.PUBLIC.CHARTDASHBOARD} element={<ChartDashboard />} />
+                <Route path={ROUTES.LANDING} element={<Landing />} />
+                <Route path={ROUTES.FUNCTION} element={<Function />} />
+                <Route path={ROUTES.PORTFOLIO} element={<Portfolio />} />
+                <Route path={ROUTES.GEOPOLITICS} element={<Geopolitics />} />
+                <Route path={ROUTES.EXPLORER} element={<Explorer />} />
+                <Route path={ROUTES.WATCHLIST} element={<WatchlistPage />} />
+                <Route path={ROUTES.CHARTDASHBOARD} element={<ChartDashboard />} />
             </Routes>
         </Router>
     );

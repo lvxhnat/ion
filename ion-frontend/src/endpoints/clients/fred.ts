@@ -1,5 +1,5 @@
 import { ENDPOINTS } from 'endpoints/endpoints';
-import { dataIngestionRequest } from 'services/request';
+import { request } from 'services/request';
 
 export interface FredCategoryEntry {
     id: number;
@@ -40,7 +40,7 @@ export type FredParentNodeDTO = {
 }[];
 
 export const getFredParentNodes = () => {
-    return dataIngestionRequest.get<FredParentNodeDTO>(
+    return request("data-ingestion").get<FredParentNodeDTO>(
         ENDPOINTS.PRIVATE.FRED_PARENT_NODES_ENDPOINT
     );
 };
@@ -51,7 +51,7 @@ export interface FredChildNodeDTO {
 }
 
 export const getFredChildNodes = (category_id: number) => {
-    return dataIngestionRequest.post<FredChildNodeDTO>(
+    return request("data-ingestion").post<FredChildNodeDTO>(
         ENDPOINTS.PRIVATE.FRED_CHILD_NODES_ENDPOINT,
         {
             category_id: category_id,
@@ -60,7 +60,7 @@ export const getFredChildNodes = (category_id: number) => {
 };
 
 export const getFredSeries = (series_id: string) => {
-    return dataIngestionRequest.post<FredSeriesDataEntry[]>(
+    return request("data-ingestion").post<FredSeriesDataEntry[]>(
         ENDPOINTS.PRIVATE.FRED_SERIES_NODES_ENDPOINT,
         {
             series_id: series_id,

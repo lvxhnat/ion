@@ -52,10 +52,10 @@ export default function Navigation() {
                 <S.IconButtonWrapper disableRipple disabled>
                     <ChevronRightIcon fontSize="small" />
                 </S.IconButtonWrapper>
-                <S.IconButtonWrapper disableRipple onClick={() => navigate(ROUTES.PUBLIC.LANDING)}>
+                <S.IconButtonWrapper disableRipple onClick={() => navigate(ROUTES.LANDING)}>
                     <HomeIcon fontSize="small" />
                 </S.IconButtonWrapper>
-                <S.IconButtonWrapper disableRipple onClick={() => navigate(ROUTES.PUBLIC.FUNCTION)}>
+                <S.IconButtonWrapper disableRipple onClick={() => navigate(ROUTES.FUNCTION)}>
                     <ListAltIcon fontSize="small" />
                 </S.IconButtonWrapper>
                 <CheckOnlineStatus />

@@ -16,7 +16,6 @@ import NoDataSkeleton from 'components/Skeletons/NoDataSkeleton';
 import ChartviewPriceShower from './ChartviewPriceShower';
 import ChartviewToolbar from './ChartviewToolbar';
 
-import LoadingGif from 'static/loading.gif';
 import { fetchData, fetchMetadata } from '../general/endpoints';
 import { ChartviewProps } from '../type';
 
@@ -93,7 +92,6 @@ export default function Chartview(props: ChartviewProps) {
                                     height: '100%',
                                 }}
                             >
-                                <img style={{ width: '50px' }} src={LoadingGif} />
                                 <Typography variant="subtitle2">Loading Data</Typography>
                             </div>
                         ) : (

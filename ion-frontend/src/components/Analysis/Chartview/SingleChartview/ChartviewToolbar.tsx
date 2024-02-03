@@ -279,7 +279,7 @@ export default function ChartviewToolbar(props: {
                     tickerMetadata={props.tickerMetadata}
                     setSelectedOption={(ticker: string, asset_type: string) =>
                         navigate(
-                            `${ROUTES.PUBLIC.SECURITIES}/${asset_type.toLowerCase()}/${ticker}`
+                            `${ROUTES.SECURITIES}/${asset_type.toLowerCase()}/${ticker}`
                         )
                     }
                 />
@@ -369,7 +369,7 @@ export default function ChartviewToolbar(props: {
                                         : ColorsEnum.warmgray2,
                                 }}
                                 onClick={() =>
-                                    navigate(ROUTES.PUBLIC.CHARTDASHBOARD, {
+                                    navigate(ROUTES.CHARTDASHBOARD, {
                                         state: { ticker: ticker, assetType: assetType },
                                     })
                                 }

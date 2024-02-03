@@ -1,6 +1,10 @@
 export const ENDPOINTS = {
+    AUTH: {
+        TOKEN_CHECKER: '/auth',
+    },
     BASEURLS: {
         DATA_INGESTION: process.env.REACT_APP_DATA_INGESTION_BASE_URL,
+        ION_BACKEND: process.env.REACT_APP_ION_BACKEND_BASE_URL,
     },
     PRIVATE: {
         ETF_INFO: 'tickers/etf/info',

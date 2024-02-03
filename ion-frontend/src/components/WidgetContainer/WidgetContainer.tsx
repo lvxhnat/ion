@@ -42,7 +42,7 @@ export default function WidgetContainer(props: {
                     <IconButton
                         disableRipple
                         style={{ paddingRight: 0 }}
-                        onClick={() => navigate(props.fullScreenRedirect ?? ROUTES.PUBLIC.LANDING)}
+                        onClick={() => navigate(props.fullScreenRedirect ?? ROUTES.LANDING)}
                     >
                         <FullscreenIcon />
                     </IconButton>

@@ -1,0 +1,1 @@
+from ion_backend.app.api.endpoints.auth.firebase import router as firebase_router

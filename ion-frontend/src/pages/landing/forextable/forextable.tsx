@@ -116,7 +116,7 @@ export default function ForexTable(props: { height?: string }) {
                             key={`${forexPair}_row`}
                             onClick={() =>
                                 navigate(
-                                    `${ROUTES.PUBLIC.SECURITIES}/${ASSET_TYPES.FOREX}/${forexPair}`
+                                    `${ROUTES.SECURITIES}/${ASSET_TYPES.FOREX}/${forexPair}`
                                 )
                             }
                         >

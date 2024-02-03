@@ -38,7 +38,7 @@ export default function Function() {
                                     key={`fragment_${ROUTE_KEY}`}
                                     onClick={() =>
                                         navigate(
-                                            ROUTES.PUBLIC[ROUTE_KEY as keyof typeof ROUTES.PUBLIC]
+                                            ROUTES[ROUTE_KEY as keyof typeof ROUTES]
                                         )
                                     }
                                 >
