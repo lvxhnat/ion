@@ -2,9 +2,9 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import { Navigate } from 'react-router-dom';
-import { ROUTES } from '../../../common/routes';
-import { ENDPOINTS } from '../../../common/endpoints';
-import request from '../../../common/services/Request';
+import { ENDPOINTS } from 'endpoints/endpoints';
+import { ROUTES } from 'common/constant';
+import request from 'services';
 
 export default function Private({ FC }: any) {
     const [cookies, , removeCookies] = useCookies(['access_token', 'refresh_token']);
@@ -18,7 +18,7 @@ export default function Private({ FC }: any) {
             removeCookies('refresh_token');
             return
         } else {
-        request.post(ENDPOINTS.AUTH, {}, {
+        request("ion-backend").post(ENDPOINTS.AUTH.TOKEN_CHECKER, {}, {
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${access_token}`,

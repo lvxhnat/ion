@@ -1,3 +1,3 @@
-import { LivePlayerWidget } from './widget';
+import LivePlayer from "./liveplayer";
 
-export { LivePlayerWidget };
+export default LivePlayer

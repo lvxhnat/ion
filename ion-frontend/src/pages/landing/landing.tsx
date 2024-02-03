@@ -9,7 +9,7 @@ import { TreasuryTableWidget } from './treasurytable';
 import { ForexTableWidget } from './forextable';
 import { InternationalClockWidget } from './internationalclock';
 import { WatchlistWidget } from './watchlist';
-import { LivePlayerWidget } from './liveplayer';
+import LivePlayer from './liveplayer';
 import HealthChecks from './healthchecks';
 
 export default function Landing() {
@@ -29,7 +29,7 @@ export default function Landing() {
                     <InternationalClockWidget />
                 </Grid>
                 <Grid item xs={6}>
-                    <LivePlayerWidget />
+                    <LivePlayer />
                     <ForexTableWidget />
                     <TreasuryTableWidget />
                 </Grid>

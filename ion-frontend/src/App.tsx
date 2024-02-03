@@ -11,16 +11,20 @@ import Explorer from 'pages/explorer';
 
 import { WatchlistPage } from 'pages/landing/watchlist';
 import ChartDashboard from 'pages/chartdashboard';
+import Private from 'components/Routes/Private';
+import { SignIn } from 'pages/Authentication';
 
 function App() {
     return (
         <Router>
             <Routes>
+                <Route path={ROUTES.LANDING} element={<Private FC={Landing} />} />
+                <Route path={ROUTES.SIGNIN} element = {<SignIn />} />
+
                 <Route
                     path={`${ROUTES.SECURITIES}/:assetType/:symbolId`}
                     element={<Ticker />}
                 />
-                <Route path={ROUTES.LANDING} element={<Landing />} />
                 <Route path={ROUTES.FUNCTION} element={<Function />} />
                 <Route path={ROUTES.PORTFOLIO} element={<Portfolio />} />
                 <Route path={ROUTES.GEOPOLITICS} element={<Geopolitics />} />
