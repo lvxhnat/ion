@@ -1,5 +1,5 @@
 import BaseSocket from 'common/sockets/BaseSocket';
-import { ForexStreamType } from 'pages/landing/forextable/type';
+import { ForexStreamType } from 'pages/Landing/forextable/type';
 
 function unpackOandaFXStream(oandaStreamObject: string): ForexStreamType | null {
     const priceStream: any = JSON.parse(oandaStreamObject);

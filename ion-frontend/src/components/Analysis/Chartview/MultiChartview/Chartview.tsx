@@ -15,7 +15,9 @@ export default function Chartview(props: ChartviewProps) {
 
     React.useEffect(() => {
         if (props.assetType && props.ticker && !data[props.ticker]) {
-            fetchData(props.assetType, props.ticker.toUpperCase(), new Date('2022-01-01')).then((res: any) => setData(res.data));
+            fetchData(props.assetType, props.ticker.toUpperCase(), new Date('2022-01-01')).then(
+                (res: any) => setData(res.data)
+            );
         }
     }, []);
 

@@ -2,6 +2,12 @@ import { Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import { ColorsEnum } from 'common/theme';
 
+const displayFlexCenter = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+};
+
 interface FredRowProps {
     isTitle?: boolean;
     children?: any;
@@ -10,13 +16,11 @@ interface FredRowProps {
 
 export const ButtonWrapper = styled('div')<{ disabled?: boolean; selected?: boolean }>(
     ({ theme, disabled = false, selected = false }) => ({
+        ...displayFlexCenter,
         gap: 3,
         width: 130,
         height: 25,
         borderRadius: 5,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         fontColor: ColorsEnum.white,
         backgroundColor: selected ? ColorsEnum.warmgray1 : 'transparent',
         border: selected ? 'none' : `1px solid ${ColorsEnum.warmgray2}`,
@@ -32,8 +36,8 @@ export const ButtonWrapper = styled('div')<{ disabled?: boolean; selected?: bool
 );
 
 export const BaseDivClass = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
+    ...displayFlexCenter,
+    justifyContent: 'flex-start',
 }));
 
 export const FredRow = (props: FredRowProps) => {
@@ -45,6 +49,14 @@ export const FredRow = (props: FredRowProps) => {
         </BaseFredRow>
     );
 };
+
+const BaseFredRow = styled('div')<FredRowProps>(({ theme, title }) => ({
+    padding: `${theme.spacing(0.8)} ${theme.spacing(2)}`,
+    '&:hover': {
+        color: ColorsEnum.beer,
+        cursor: 'pointer',
+    },
+}));
 
 export const PanelOpener = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -63,7 +75,7 @@ export const SidePanelOpener = styled('div')(({ theme }) => ({
     width: '25%',
     height: '100%',
     overflowY: 'auto',
-    backgroundColor: ColorsEnum.darkerGrey,
+    backgroundColor: theme.palette.mode === 'dark' ? ColorsEnum.darkerGrey : 'default',
     '&::-webkit-scrollbar': { display: 'none' },
     display: 'flex',
     flexDirection: 'column',
@@ -83,7 +95,6 @@ export const UpdateBar = styled('div')(({ theme }) => ({
     width: '100%',
     padding: 5,
     gap: 10,
-    backgroundColor: ColorsEnum.warmgray6,
     justifyContent: 'flex-end',
 }));
 
@@ -98,23 +109,14 @@ export const SeriesContainer = styled('div')(({ theme }) => ({
     padding: `${theme.spacing(1)} ${theme.spacing(1)}`,
     '&:hover': {
         cursor: 'pointer',
-        backgroundColor: ColorsEnum.warmgray6,
+        backgroundColor: theme.palette.mode == 'dark' ? ColorsEnum.warmgray6 : ColorsEnum.coolgray7,
     },
 }));
 
 export const IconButtonWrapper = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    ...displayFlexCenter,
     paddingLeft: 15,
     '&:hover': {
-        cursor: 'pointer',
-    },
-}));
-const BaseFredRow = styled('div')<FredRowProps>(({ theme, title }) => ({
-    padding: `${theme.spacing(0.8)} ${theme.spacing(2)}`,
-    '&:hover': {
-        color: ColorsEnum.beer,
         cursor: 'pointer',
     },
 }));

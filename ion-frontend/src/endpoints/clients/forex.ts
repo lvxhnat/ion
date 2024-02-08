@@ -11,7 +11,7 @@ export const getHistoricalForex = (props: {
     fromDate?: Date;
 }) => {
     const dI: any = {};
-    return request("data-ingestion").post<ForexHistoricalDTO[]>(
+    return request('data-ingestion').post<ForexHistoricalDTO[]>(
         ENDPOINTS.PRIVATE.FOREX_HISTORICAL_ENDPOINT,
         {
             symbol: props.symbol,

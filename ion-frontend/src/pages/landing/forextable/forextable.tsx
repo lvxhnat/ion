@@ -115,9 +115,7 @@ export default function ForexTable(props: { height?: string }) {
                         <StyledTableRow
                             key={`${forexPair}_row`}
                             onClick={() =>
-                                navigate(
-                                    `${ROUTES.SECURITIES}/${ASSET_TYPES.FOREX}/${forexPair}`
-                                )
+                                navigate(`${ROUTES.SECURITIES}/${ASSET_TYPES.FOREX}/${forexPair}`)
                             }
                         >
                             <StyledTableCell key={`${forexPair}_label_${index}`}>

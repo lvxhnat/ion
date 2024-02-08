@@ -22,15 +22,21 @@ export const IconButtonWrapper = styled(IconButton)(({ theme }) => ({
 }));
 
 export const RightPanel = styled('div')(({ theme }) => ({
-    width: '50%',
+    width: '25%',
     display: 'flex',
-    flexDirection: 'row-reverse',
     justifyContent: 'flex-end',
-    alignItems: 'middle',
+    alignItems: 'center',
+    gap: 10,
+    paddingRight: 10,
 }));
 
 export const LeftPanel = styled('div')(({ theme }) => ({
     display: 'flex',
     width: '50%',
     gap: 5,
+}));
+
+export const CentrePanel = styled('div')(({ theme }) => ({
+    display: 'flex',
+    width: '25%',
 }));

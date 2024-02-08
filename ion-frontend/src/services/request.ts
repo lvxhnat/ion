@@ -1,9 +1,12 @@
 import axios from 'axios';
 import { ENDPOINTS } from 'endpoints/endpoints';
 
-const request = (type: "ion-backend" | "data-ingestion") => {
+const request = (type: 'ion-backend' | 'data-ingestion') => {
     const axiosInstance = axios.create({
-        baseURL: type === "data-ingestion" ? ENDPOINTS.BASEURLS.DATA_INGESTION : ENDPOINTS.BASEURLS.ION_BACKEND,
+        baseURL:
+            type === 'data-ingestion'
+                ? ENDPOINTS.BASEURLS.DATA_INGESTION
+                : ENDPOINTS.BASEURLS.ION_BACKEND,
         timeout: 60000,
         headers: {
             Authorization: 'null',
@@ -15,8 +18,8 @@ const request = (type: "ion-backend" | "data-ingestion") => {
         return response;
     }, error);
 
-    return axiosInstance
-}
+    return axiosInstance;
+};
 
 async function error(error: any) {
     const originalRequest = error.config;

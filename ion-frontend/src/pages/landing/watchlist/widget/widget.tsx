@@ -55,9 +55,7 @@ function WidgetTickerRow(props: { ticker: string }) {
     return data ? (
         <StyledTableRow
             key={`tickerTableBody_${data.ticker}`}
-            onClick={() =>
-                navigate(`${ROUTES.SECURITIES}/${ASSET_TYPES.EQUITY}/${data.ticker}`)
-            }
+            onClick={() => navigate(`${ROUTES.SECURITIES}/${ASSET_TYPES.EQUITY}/${data.ticker}`)}
         >
             <StyledTableCell>{data.ticker}</StyledTableCell>
             <StyledTableCell color={data.pct_change > 0 ? ColorsEnum.upHint : ColorsEnum.downHint}>

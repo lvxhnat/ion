@@ -21,17 +21,10 @@ export default function Landing() {
             <CssBaseline />
             <Navigation />
             <Grid container columns={25} spacing={1}>
-                <Grid item xs={5}>
-                    <HealthChecks />
-                    <WatchlistWidget />
-                </Grid>
-                <Grid item xs={14}>
-                    <InternationalClockWidget />
-                </Grid>
+                <Grid item xs={5}></Grid>
+                <Grid item xs={14}></Grid>
                 <Grid item xs={6}>
                     <LivePlayer />
-                    <ForexTableWidget />
-                    <TreasuryTableWidget />
                 </Grid>
             </Grid>
         </>

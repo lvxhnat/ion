@@ -21,11 +21,7 @@ export default function Function() {
         <>
             <CssBaseline />
             <Navigation />
-            <HexLayer
-                baseId="functionExplorerHex"
-                title="Functions"
-                searchComponent={<div />}
-            />
+            <HexLayer baseId="functionExplorerHex" title="Functions" searchComponent={<div />} />
             <Grid container sx={{ padding: 2 }}>
                 <Grid item xs={6}>
                     <Typography variant="subtitle1" style={{ color: ColorsEnum.beer }}>
@@ -37,9 +33,7 @@ export default function Function() {
                                 <S.HoveredLink
                                     key={`fragment_${ROUTE_KEY}`}
                                     onClick={() =>
-                                        navigate(
-                                            ROUTES[ROUTE_KEY as keyof typeof ROUTES]
-                                        )
+                                        navigate(ROUTES[ROUTE_KEY as keyof typeof ROUTES])
                                     }
                                 >
                                     <div style={{ display: 'flex', gap: 10 }}>

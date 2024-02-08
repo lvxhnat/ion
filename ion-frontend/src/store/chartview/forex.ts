@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ForexStreamType, FormattedForexStreamType } from 'pages/landing/forextable/type';
+import { ForexStreamType, FormattedForexStreamType } from 'pages/Landing/forextable/type';
 
 interface ForexStreamStoreTypes {
     forexStream: { [ticker: string]: FormattedForexStreamType };

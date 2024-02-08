@@ -11,19 +11,26 @@ export default function Private({ FC }: any) {
     const [isValid, setIsValid] = React.useState<boolean>(!!cookies.access_token);
 
     useEffect(() => {
-        const access_token = cookies.access_token
+        const access_token = cookies.access_token;
         if (!access_token) {
             localStorage.removeItem('user');
             removeCookies('access_token');
             removeCookies('refresh_token');
-            return
+            return;
         } else {
-        request("ion-backend").post(ENDPOINTS.AUTH.TOKEN_CHECKER, {}, {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${access_token}`,
-            }
-        }).then((res) => setIsValid(true)).catch((err) => setIsValid(false))
+            request('ion-backend')
+                .post(
+                    ENDPOINTS.AUTH.TOKEN_CHECKER,
+                    {},
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${access_token}`,
+                        },
+                    }
+                )
+                .then(res => setIsValid(true))
+                .catch(err => setIsValid(false));
         }
     });
 

@@ -2,6 +2,7 @@ export const ROUTES = {
     LANDING: '/',
     SIGNIN: '/signin',
     SIGNUP: '/signup',
+    ECONOMIC_DATA: '/economic',
     FORGOT_PASSWORD: '/forgot-password',
     CHARTDASHBOARD: '/chartdashboard',
     GEOPOLITICS: '/geopolitics',

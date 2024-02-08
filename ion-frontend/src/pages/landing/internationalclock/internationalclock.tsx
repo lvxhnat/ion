@@ -25,7 +25,7 @@ function TimePiece(props: { timeZoneName: string; timeZone: string }) {
 
     React.useEffect(() => {
         const interval = setInterval(() => {
-            moment.tz.setDefault(props.timeZone);
+            // moment.tz.setDefault(props.timeZone);
             const timeZone = moment();
             setDate(timeZone.format('ddd DD/MM \\G\\M\\T \xa0 Z'));
             setTime(timeZone.format('HH:mm:ss'));

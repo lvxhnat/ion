@@ -1,3 +1,3 @@
-import LivePlayer from "./liveplayer";
+import LivePlayer from './liveplayer';
 
-export default LivePlayer
+export default LivePlayer;

@@ -164,36 +164,43 @@ const ModifiedStudiesButton = (props: { [others: string]: any }) => {
     );
 };
 
-const ChartTypeButton = (props: { baseId: string; ticker: string, assetType: keyof typeof ASSET_TYPES }) => {
-
+const ChartTypeButton = (props: {
+    baseId: string;
+    ticker: string;
+    assetType: keyof typeof ASSET_TYPES;
+}) => {
     const [OHLCAvail, setOHLCAvail] = React.useState<boolean>(false);
-    const [OHLCData, setOHLCData] = React.useState<{open: number, high: number, low: number, close: number}[]>([]);
+    const [OHLCData, setOHLCData] = React.useState<
+        { open: number; high: number; low: number; close: number }[]
+    >([]);
     const [OHLCSelect, setOHLCSelect] = React.useState<boolean>(false);
     const [chart, setChart] = useBaseChartStore(state => [state.charts, state.setChartConfigs]);
 
     const data = useTickerDataStore(state => state.data)[props.ticker];
 
     React.useEffect(() => {
-        fetchRawData(props.assetType, props.ticker, new Date("2022-01-01"))?.then((res: any) => {
-            if ("open" in res.data[0]) {
+        fetchRawData(props.assetType, props.ticker, new Date('2022-01-01'))?.then((res: any) => {
+            if ('open' in res.data[0]) {
                 setOHLCAvail(true);
-                setOHLCData(res.data.map((entry: any) => {
-                    return {
-                        open: entry.open,
-                        high: entry.high,
-                        low: entry.low,
-                        close: entry.close,
-                    }
-                }))
+                setOHLCData(
+                    res.data.map((entry: any) => {
+                        return {
+                            open: entry.open,
+                            high: entry.high,
+                            low: entry.low,
+                            close: entry.close,
+                        };
+                    })
+                );
             }
         });
-    }, [])
+    }, []);
 
     const handleClick = () => {
         const chartConfigs = chart[props.ticker];
         if (chartConfigs) {
             setOHLCSelect(!OHLCSelect);
-            const chartType = !OHLCSelect ? 'ohlc' : 'line'
+            const chartType = !OHLCSelect ? 'ohlc' : 'line';
             chartConfigs.type = chartType;
 
             setChart({
@@ -201,7 +208,7 @@ const ChartTypeButton = (props: { baseId: string; ticker: string, assetType: key
                 configs: chartConfigs,
             });
             const baseId = getChartviewBaseChartId(props.ticker);
-            removeChart({ baseId: baseId, selectAll: true, id:  chartType});
+            removeChart({ baseId: baseId, selectAll: true, id: chartType });
             addChart({
                 x: chartConfigs.x,
                 y: chartConfigs.y,
@@ -215,26 +222,21 @@ const ChartTypeButton = (props: { baseId: string; ticker: string, assetType: key
         }
     };
 
-    return (
-            OHLCAvail ? (
-                <S.ButtonWrapper onClick={handleClick} {...props}>
-                    {
-                        OHLCSelect ?
-                        <>
-                            <FaChartLine />
-                            <Typography variant="subtitle2"> OHLC 
-                            </Typography>
-                        </>
-                        : 
-                        <>
-                            <FaChartLine />
-                            <Typography variant="subtitle2"> Line 
-                            </Typography>
-                        </>
-                    }
-                </S.ButtonWrapper>
-            ) : null
-    );
+    return OHLCAvail ? (
+        <S.ButtonWrapper onClick={handleClick} {...props}>
+            {OHLCSelect ? (
+                <>
+                    <FaChartLine />
+                    <Typography variant="subtitle2"> OHLC</Typography>
+                </>
+            ) : (
+                <>
+                    <FaChartLine />
+                    <Typography variant="subtitle2"> Line</Typography>
+                </>
+            )}
+        </S.ButtonWrapper>
+    ) : null;
 };
 
 export default function ChartviewToolbar(props: {
@@ -278,9 +280,7 @@ export default function ChartviewToolbar(props: {
                 <TickerSearch
                     tickerMetadata={props.tickerMetadata}
                     setSelectedOption={(ticker: string, asset_type: string) =>
-                        navigate(
-                            `${ROUTES.SECURITIES}/${asset_type.toLowerCase()}/${ticker}`
-                        )
+                        navigate(`${ROUTES.SECURITIES}/${asset_type.toLowerCase()}/${ticker}`)
                     }
                 />
             ) : null}
@@ -378,7 +378,11 @@ export default function ChartviewToolbar(props: {
                                 <Typography variant="subtitle2"> Layer </Typography>
                             </S.ButtonWrapper>
                         </Tooltip>
-                        <ChartTypeButton ticker={ticker} baseId={props.baseId} assetType={assetType} />
+                        <ChartTypeButton
+                            ticker={ticker}
+                            baseId={props.baseId}
+                            assetType={assetType}
+                        />
                         <DrawLinesButton ticker={ticker} baseId={props.baseId} />
                         <ModifiedStudiesButton onClick={() => setShowLab(true)} />
                         <AddToWatchlist ticker={ticker} assetType={assetType} />

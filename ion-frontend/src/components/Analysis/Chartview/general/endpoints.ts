@@ -31,9 +31,8 @@ export function fetchMetadata(ticker: string, assetType: keyof typeof ASSET_TYPE
 export function fetchRawData(
     assetType: keyof typeof ASSET_TYPES,
     ticker: string,
-    dateSelected: Date,
+    dateSelected: Date
 ) {
-
     if (assetType === ASSET_TYPES.FOREX) {
         return getHistoricalForex({
             symbol: ticker,
@@ -44,44 +43,40 @@ export function fetchRawData(
         return getCandles({
             symbol: ticker,
             fromDate: dateSelected,
-        })
+        });
     } else {
-        return getFredSeries(ticker)
+        return getFredSeries(ticker);
     }
 }
 
-export function fetchData(
-    assetType: keyof typeof ASSET_TYPES,
-    ticker: string,
-    dateSelected: Date,
-) {
+export function fetchData(assetType: keyof typeof ASSET_TYPES, ticker: string, dateSelected: Date) {
     const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
     const dataPropParams = {
         ticker: ticker,
         data: emptyDefaultDataProps(),
     };
 
-    let processData = (res: any) => { }
+    let processData = (res: any) => {};
 
     if (assetType === ASSET_TYPES.FOREX) {
-        processData = (res) => {
+        processData = res => {
             dataPropParams.data.dataX = res.data.map((d: any) => parseTime(d.date)!);
             dataPropParams.data.dataY = res.data.map((d: any) => d.close);
             return { rawData: res.data, data: dataPropParams };
         };
     } else if (assetType === ASSET_TYPES.EQUITY || assetType === ASSET_TYPES.ETF) {
-        processData = (res) => {
+        processData = res => {
             dataPropParams.data.dataX = res.data.data.map((d: any) => parseTime(d.date)!);
             dataPropParams.data.dataY = res.data.data.map((d: any) => d.close);
             return { rawData: res.data.data, data: dataPropParams };
         };
     } else {
-        processData = (res) => {
+        processData = res => {
             dataPropParams.data.dataX = res.data.map((d: any) => parseTime(d.date)!);
             dataPropParams.data.dataY = res.data.map((d: any) => d.value);
             return { rawData: res.data, data: dataPropParams };
         };
     }
 
-    return fetchRawData(assetType, ticker, dateSelected).then((res) => processData(res));
+    return fetchRawData(assetType, ticker, dateSelected).then(res => processData(res));
 }

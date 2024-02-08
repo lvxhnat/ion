@@ -3,17 +3,16 @@ import * as React from 'react';
 
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListAltIcon from '@mui/icons-material/ListAlt';
 import HomeIcon from '@mui/icons-material/Home';
 import WifiOffIcon from '@mui/icons-material/WifiOff';
 import WifiIcon from '@mui/icons-material/Wifi';
-import Typography from '@mui/material/Typography';
 
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from 'common/constant';
 import ToggleThemeMode from './ToggleThemeMode';
-import Clock from './Clock';
 import { ColorsEnum } from 'common/theme';
+import AlternativeDataButton from './AlternativeDataButton';
+import ProfileButton from './ProfileButton';
 
 const CheckOnlineStatus = () => {
     const [connStatus, setConnStatus] = React.useState<boolean>(false);
@@ -55,14 +54,14 @@ export default function Navigation() {
                 <S.IconButtonWrapper disableRipple onClick={() => navigate(ROUTES.LANDING)}>
                     <HomeIcon fontSize="small" />
                 </S.IconButtonWrapper>
-                <S.IconButtonWrapper disableRipple onClick={() => navigate(ROUTES.FUNCTION)}>
-                    <ListAltIcon fontSize="small" />
-                </S.IconButtonWrapper>
                 <CheckOnlineStatus />
             </S.LeftPanel>
+            <S.CentrePanel>
+                <AlternativeDataButton />
+            </S.CentrePanel>
             <S.RightPanel>
                 <ToggleThemeMode />
-                <Clock />
+                <ProfileButton />
             </S.RightPanel>
         </S.NavigationPanel>
     );

@@ -28,8 +28,7 @@ export default function PortfolioDesc(props: {}) {
                             height: '40%',
                         }}
                     >
-                        <div>
-                        </div>
+                        <div></div>
                         <div>
                             <Typography variant="subtitle2" style={{ minHeight: 50 }}>
                                 {selectedPortfolio.description}

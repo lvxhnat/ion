@@ -1,3 +1,3 @@
-import CustomAlert from "./CustomAlert";
+import CustomAlert from './CustomAlert';
 
-export default CustomAlert
+export default CustomAlert;
