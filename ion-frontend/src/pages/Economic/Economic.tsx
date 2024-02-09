@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as S from './style';
 
 import Typography from '@mui/material/Typography';
-import { CircularProgress, CssBaseline, Stack } from '@mui/material';
+import { CircularProgress, Stack } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import {
@@ -14,14 +14,11 @@ import {
 } from 'endpoints/clients/fred';
 
 import { formatDate } from 'common/constant/dates';
-import { ASSET_TYPES } from 'common/constant';
-
-import { SingleChartview } from 'components/Analysis/Chartview';
-import DateRangeSelector from 'components/Select/DateRangeSelector/DateRangeSelector';
-import Navigation from 'components/Navigation';
 import { DoublyLinkedListNode } from './DoublyLinkedListNode';
 import SeriesSelection from './SeriesSelection';
 import SelectedSeriesSidebar from './SelectedSeriesSidebar';
+import SelectedSeriesMainview from './SelectedSeriesMainview';
+import { ContainerWrapper } from 'components/Wrappers/ContainerWrapper';
 
 export default function Economic() {
     const [titles, setTitles] = React.useState<FredParentNodeDTO>([]);
@@ -81,9 +78,7 @@ export default function Economic() {
     };
 
     return (
-        <>
-            <CssBaseline />
-            <Navigation />
+        <ContainerWrapper>
             <div style={{ width: '100%', height: '92vh' }}>
                 {categoryLoading || rootLoading ? (
                     <Stack
@@ -149,71 +144,56 @@ export default function Economic() {
                 ) : null}
                 {nodes && nodes.value.selection.id !== 0 ? (
                     <S.PanelOpener>
-                        <>
-                            <S.SidePanelOpener>
-                                <S.ChildNodesPanel>
-                                    <S.BaseDivClass>
-                                        <S.IconButtonWrapper onClick={handleBack}>
-                                            <ArrowBackIosIcon fontSize="inherit" />
-                                        </S.IconButtonWrapper>
-                                        <S.FredRow
-                                            isTitle
-                                            key={`${nodes.value.selection.id}_FredParentRow`}
-                                        >
-                                            {nodes.value.selection.name}
-                                        </S.FredRow>
-                                    </S.BaseDivClass>
-                                    {nodes.value.type === 'series'
-                                        ? null
-                                        : nodes.value.entries.map(entry => {
-                                              return (
-                                                  <S.FredRow
-                                                      key={`${entry.id}_FredSubChildRow`}
-                                                      onClick={() =>
-                                                          handleClick(entry as FredCategoryEntry)
-                                                      }
-                                                  >
-                                                      {(entry as FredCategoryEntry).name}
-                                                  </S.FredRow>
-                                              );
-                                          })}
-                                    {/* Generate side panel texts to describe series when series are selected */}
-                                    {seriesSelected ? (
-                                        <SelectedSeriesSidebar seriesSelected={seriesSelected} />
-                                    ) : (
-                                        <></>
-                                    )}
-                                </S.ChildNodesPanel>
-                                <S.UpdateBar>
-                                    <Typography variant="subtitle2" align="right" component="div">
-                                        <strong>Last Updated:</strong>{' '}
-                                        {titles.length !== 0
-                                            ? formatDate(titles[0].parent_node.last_updated)
-                                            : null}{' '}
-                                    </Typography>
-                                </S.UpdateBar>
-                            </S.SidePanelOpener>
-                            <S.MainPanelOpener>
+                        <S.SidePanelOpener>
+                            <S.ChildNodesPanel>
+                                <S.BaseDivClass>
+                                    <S.IconButtonWrapper onClick={handleBack}>
+                                        <ArrowBackIosIcon fontSize="inherit" />
+                                    </S.IconButtonWrapper>
+                                    <S.FredRow
+                                        isTitle
+                                        key={`${nodes.value.selection.id}_FredParentRow`}
+                                    >
+                                        {nodes.value.selection.name}
+                                    </S.FredRow>
+                                </S.BaseDivClass>
+                                {nodes.value.type === 'series'
+                                    ? null
+                                    : nodes.value.entries.map(entry => {
+                                          return (
+                                              <S.FredRow
+                                                  key={`${entry.id}_FredSubChildRow`}
+                                                  onClick={() =>
+                                                      handleClick(entry as FredCategoryEntry)
+                                                  }
+                                              >
+                                                  {(entry as FredCategoryEntry).name}
+                                              </S.FredRow>
+                                          );
+                                      })}
+                                {/* Generate side panel texts to describe series when series are selected */}
                                 {seriesSelected ? (
-                                    <div style={{ padding: 10, paddingTop: 0, paddingBottom: 25 }}>
-                                        <DateRangeSelector />
-                                        <SingleChartview
-                                            ticker={seriesSelected.id}
-                                            assetType={ASSET_TYPES.FRED as keyof typeof ASSET_TYPES}
-                                        />
-                                    </div>
+                                    <SelectedSeriesSidebar seriesSelected={seriesSelected} />
                                 ) : (
                                     <></>
                                 )}
-                                <SeriesSelection
-                                    nodes={nodes}
-                                    setSeriesSelected={setSeriesSelected}
-                                />
-                            </S.MainPanelOpener>
-                        </>
+                            </S.ChildNodesPanel>
+                            <S.UpdateBar>
+                                <Typography variant="subtitle2" align="right" component="div">
+                                    <strong>Last Updated:</strong>{' '}
+                                    {titles.length !== 0
+                                        ? formatDate(titles[0].parent_node.last_updated)
+                                        : null}{' '}
+                                </Typography>
+                            </S.UpdateBar>
+                        </S.SidePanelOpener>
+                        <S.MainPanelOpener>
+                            <SelectedSeriesMainview nodes={nodes} seriesSelected={seriesSelected} />
+                            <SeriesSelection nodes={nodes} setSeriesSelected={setSeriesSelected} />
+                        </S.MainPanelOpener>
                     </S.PanelOpener>
                 ) : null}
             </div>
-        </>
+        </ContainerWrapper>
     );
 }

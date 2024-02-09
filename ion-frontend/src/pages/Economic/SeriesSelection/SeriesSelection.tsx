@@ -43,7 +43,7 @@ export default function SeriesSelection(props: SeriesSelectionProps) {
                                   <S.BaseDivClass
                                       style={{
                                           width: '75%',
-                                          gap: 10,
+                                          gap: 20,
                                       }}
                                   >
                                       <Typography
@@ -54,7 +54,11 @@ export default function SeriesSelection(props: SeriesSelectionProps) {
                                       >
                                           {`${series.id}:FRED`}
                                       </Typography>
-                                      <Typography variant="subtitle2">{`${series.title} (${series.units_short})`}</Typography>
+                                      <Typography
+                                          variant="subtitle2"
+                                          noWrap
+                                          fontWeight="bold"
+                                      >{`${series.title} (${series.units_short})`}</Typography>
                                   </S.BaseDivClass>
                                   <S.BaseDivClass style={{ width: '25%' }}>
                                       <Typography

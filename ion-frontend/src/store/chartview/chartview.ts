@@ -1,6 +1,5 @@
 import { getChartviewBaseChartId } from 'common/constant/ids';
-import { technicalIndicators } from 'components/Analysis/Chartview/calculations/metrics';
-import { MovingAverageProps } from 'components/Analysis/Chartview/calculations/schemas/props/schema';
+import { MovingAverageProps } from 'common/calculations/props/schema';
 import { DefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
 import { ChartTypes } from 'components/Charting/BaseChart/type';
 import { create } from 'zustand';
@@ -122,7 +121,7 @@ const initiateMetric = (props: { ticker: string; newEntry: any; newMetrics: any 
     });
 };
 export type MetricCalculableFields = 'price' | 'lower' | 'volume';
-export type TechnicalIndicatorsKeys = Extract<keyof typeof technicalIndicators, string>;
+export type TechnicalIndicatorsKeys = Extract<any, string>;
 
 export interface TickerMetricStoreFormat {
     metric: TechnicalIndicatorsKeys;

@@ -1,6 +1,11 @@
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import { ColorsEnum } from 'common/theme';
+
+export const Item = styled(Box)(({ theme }) => ({
+    height: '100%',
+    color: theme.palette.text.secondary,
+}));
 
 const displayFlexCenter = {
     display: 'flex',
@@ -65,8 +70,6 @@ export const PanelOpener = styled('div')(({ theme }) => ({
 }));
 
 export const SeriesPanel = styled('div')(({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
     overflowY: 'scroll',
     '&::-webkit-scrollbar': { display: 'none' },
 }));
@@ -106,7 +109,7 @@ export const ChildNodesPanel = styled('div')(({ theme }) => ({
 
 export const SeriesContainer = styled('div')(({ theme }) => ({
     width: '100%',
-    padding: `${theme.spacing(1)} ${theme.spacing(1)}`,
+    padding: `${theme.spacing(2)} ${theme.spacing(2)}`,
     '&:hover': {
         cursor: 'pointer',
         backgroundColor: theme.palette.mode == 'dark' ? ColorsEnum.warmgray6 : ColorsEnum.coolgray7,
@@ -119,4 +122,18 @@ export const IconButtonWrapper = styled('div')(({ theme }) => ({
     '&:hover': {
         cursor: 'pointer',
     },
+}));
+
+export const SelectedSeriesMainviewContainer = styled('div')(({ theme }) => ({
+    height: '100%w',
+    minHeight: '300px',
+    maxHeight: '300px',
+}));
+
+export const NoDataAvailableContainer = styled('div')(({ theme }) => ({
+    ...displayFlexCenter,
+    gap: 5,
+    flexDirection: 'column',
+    width: '100%',
+    height: '100%',
 }));

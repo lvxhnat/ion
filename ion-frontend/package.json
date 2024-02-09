@@ -24,6 +24,8 @@
         "d3-hexbin": "^0.2.2",
         "firebase": "^10.8.0",
         "firebase-admin": "^12.0.0",
+        "highcharts": "^11.3.0",
+        "highcharts-react-official": "^3.2.1",
         "hls.js-esm": "^0.0.2",
         "moment": "^2.29.4",
         "moment-timezone": "^0.5.38",

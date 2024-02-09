@@ -25,7 +25,7 @@ export default function AlternativeDataButton() {
                     setAnchorEl(event.currentTarget)
                 }
             >
-                Alternative Data
+                <Typography variant="h4">Alternative Data</Typography>
             </S.StyledMenuButton>
             <S.StyledMenu
                 id="customized-menu"
@@ -38,7 +38,7 @@ export default function AlternativeDataButton() {
                     <div style={{ display: 'flex', gap: 5, width: '100%' }}>
                         <RiBankFill style={{ fontSize: 20 }} />
                         <Stack style={{ gap: 5, width: '80%' }}>
-                            <Typography variant="inherit"> US Economic Data </Typography>
+                            <Typography variant="h4"> US Economic Data </Typography>
                             <S.ButtonSubtitles variant="subtitle2">
                                 Access the FRED Database, track 823,000 US and international time
                                 series from 114 sources.{' '}
@@ -48,7 +48,7 @@ export default function AlternativeDataButton() {
                 </S.StyledMenuItem>
                 <S.StyledMenuItem onClick={() => handleClose('etf')} style={{ gap: 5 }}>
                     <GiAbstract106 />
-                    <Typography variant="inherit"> ETF </Typography>
+                    <Typography variant="h4"> ETF </Typography>
                 </S.StyledMenuItem>
             </S.StyledMenu>
         </div>
