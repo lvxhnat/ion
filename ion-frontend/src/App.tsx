@@ -2,8 +2,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { ROUTES } from './common/constant/routes';
 
-import Private from 'components/Routes/Private';
-
 import { SignIn } from 'pages/Authentication';
 import Landing from 'pages/Landing';
 

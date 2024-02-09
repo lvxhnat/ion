@@ -43,11 +43,17 @@ function Chart(props: ChartProps) {
         },
         xAxis: {
             type: 'datetime',
+            labels: {
+                style: { fontSize: '10px' },
+            }
         },
         yAxis: {
             title: {
                 text: props.seriesSelected?.units,
             },
+            labels: {
+                style: { fontSize: '10px' },
+            }
         },
         legend: {
             enabled: false, // Disable the legend
