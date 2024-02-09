@@ -1,9 +1,8 @@
 import BaseSocket from 'common/sockets/BaseSocket';
-import { OandaPriceStreamObjectTypes } from 'common/types/clients/oanda';
-import { ForexStreamType } from 'pages/landing/forextable/type';
+import { ForexStreamType } from 'pages/Landing/forextable/type';
 
 function unpackOandaFXStream(oandaStreamObject: string): ForexStreamType | null {
-    const priceStream: OandaPriceStreamObjectTypes = JSON.parse(oandaStreamObject);
+    const priceStream: any = JSON.parse(oandaStreamObject);
     if (priceStream.type === 'HEARTBEAT') return null;
     else {
         const closeoutBid: number = parseFloat(priceStream.closeoutBid);

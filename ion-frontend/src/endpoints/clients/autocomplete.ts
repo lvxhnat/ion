@@ -1,4 +1,4 @@
-import { dataIngestionRequest } from 'services/request';
+import { request } from 'services/request';
 import { ENDPOINTS } from 'endpoints/endpoints';
 import { ETFInfoDTO, ETFInfoRequestProps } from 'endpoints/schema/autocomplete';
 
@@ -11,7 +11,7 @@ export interface TickerSearchDTO {
 }
 
 export const getTickerSearchAutocomplete = (query: string) => {
-    return dataIngestionRequest.post<TickerSearchDTO[]>(
+    return request('data-ingestion').post<TickerSearchDTO[]>(
         ENDPOINTS.PRIVATE.AUTOCOMPLETE_TICKERS_ENDPOINT,
         {
             table: 'asset_metadata',
@@ -21,11 +21,11 @@ export const getTickerSearchAutocomplete = (query: string) => {
 };
 
 export const getETFAssetTypes = () => {
-    return dataIngestionRequest.get<string[]>(ENDPOINTS.PRIVATE.ETFS_CATEGORIES);
+    return request('data-ingestion').get<string[]>(ENDPOINTS.PRIVATE.ETFS_CATEGORIES);
 };
 
 export const getETFInfos = (actions: ETFInfoRequestProps) => {
-    return dataIngestionRequest.post<ETFInfoDTO[]>(ENDPOINTS.PRIVATE.ETFS_INFOS, {
+    return request('data-ingestion').post<ETFInfoDTO[]>(ENDPOINTS.PRIVATE.ETFS_INFOS, {
         request: actions,
     });
 };

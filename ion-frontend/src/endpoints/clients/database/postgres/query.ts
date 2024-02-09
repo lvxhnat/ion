@@ -1,9 +1,9 @@
 import { ENDPOINTS } from 'endpoints/endpoints';
-import { dataIngestionRequest } from 'services/request';
+import { request } from 'services/request';
 import { SOURCE_TYPES, ASSET_TYPES } from 'common/constant';
 
 export const getPortfolioTransactions = (props: { id: string }) => {
-    return dataIngestionRequest.post(ENDPOINTS.PRIVATE.QUERY_PORTFOLIO_ENDPOINT, {
+    return request('data-ingestion').post(ENDPOINTS.PRIVATE.QUERY_PORTFOLIO_ENDPOINT, {
         id: props.id,
     });
 };
@@ -20,14 +20,17 @@ export const getTickerMetadata = (props: {
     symbol: string;
     asset_class: keyof typeof ASSET_TYPES;
 }) => {
-    return dataIngestionRequest.post<TickerMetadataDTO>(ENDPOINTS.PRIVATE.QUERY_TICKER_ENDPOINT, {
-        symbol: props.symbol,
-        asset_class: props.asset_class,
-    });
+    return request('data-ingestion').post<TickerMetadataDTO>(
+        ENDPOINTS.PRIVATE.QUERY_TICKER_ENDPOINT,
+        {
+            symbol: props.symbol,
+            asset_class: props.asset_class,
+        }
+    );
 };
 
 export const getWatchlistAssets = (props: { symbol: string }) => {
-    return dataIngestionRequest.post(ENDPOINTS.PRIVATE.QUERY_WATCHLIST_ENDPOINT, {
+    return request('data-ingestion').post(ENDPOINTS.PRIVATE.QUERY_WATCHLIST_ENDPOINT, {
         symbol: props.symbol,
     });
 };

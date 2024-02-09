@@ -1,4 +1,4 @@
-import { dataIngestionRequest } from 'services/request';
+import { request } from 'services/request';
 import { ENDPOINTS } from 'endpoints/endpoints';
 import { OandaFXSocketConnection } from 'endpoints/clients/oanda';
 import { ForexHistoricalDTO } from 'endpoints/schema/tickers';
@@ -11,7 +11,7 @@ export const getHistoricalForex = (props: {
     fromDate?: Date;
 }) => {
     const dI: any = {};
-    return dataIngestionRequest.post<ForexHistoricalDTO[]>(
+    return request('data-ingestion').post<ForexHistoricalDTO[]>(
         ENDPOINTS.PRIVATE.FOREX_HISTORICAL_ENDPOINT,
         {
             symbol: props.symbol,

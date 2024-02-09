@@ -2,31 +2,20 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { ROUTES } from './common/constant/routes';
 
-import Ticker from 'pages/[ticker]';
-import Portfolio from 'pages/portfolio';
-import Landing from 'pages/landing';
-import Function from 'pages/functions/function';
-import Geopolitics from 'pages/geopolitics';
-import Explorer from 'pages/explorer';
+import Private from 'components/Routes/Private';
 
-import { WatchlistPage } from 'pages/landing/watchlist';
-import ChartDashboard from 'pages/chartdashboard';
+import { SignIn } from 'pages/Authentication';
+import Landing from 'pages/Landing';
+
+import Economic from 'pages/Economic';
 
 function App() {
     return (
         <Router>
             <Routes>
-                <Route
-                    path={`${ROUTES.PUBLIC.SECURITIES}/:assetType/:symbolId`}
-                    element={<Ticker />}
-                />
-                <Route path={ROUTES.PUBLIC.LANDING} element={<Landing />} />
-                <Route path={ROUTES.PUBLIC.FUNCTION} element={<Function />} />
-                <Route path={ROUTES.PUBLIC.PORTFOLIO} element={<Portfolio />} />
-                <Route path={ROUTES.PUBLIC.GEOPOLITICS} element={<Geopolitics />} />
-                <Route path={ROUTES.PUBLIC.EXPLORER} element={<Explorer />} />
-                <Route path={ROUTES.PUBLIC.WATCHLIST} element={<WatchlistPage />} />
-                <Route path={ROUTES.PUBLIC.CHARTDASHBOARD} element={<ChartDashboard />} />
+                <Route path={ROUTES.LANDING} element={<Landing />} />
+                <Route path={ROUTES.SIGNIN} element={<SignIn />} />
+                <Route path={ROUTES.ECONOMIC_DATA} element={<Economic />} />
             </Routes>
         </Router>
     );
