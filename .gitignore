@@ -2,6 +2,7 @@
 .env.local
 _research/alphavantage/
 _research/pyetfdb-scraper/
+docker.env
 
 *.log
 *.DS_Store

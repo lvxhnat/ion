@@ -1,4 +1,4 @@
-import { deleteCookie, getCookie, setCookie } from './';
+import { deleteCookie, getCookie, setCookie } from '.';
 
 const cookieMock = {
     tokenName: 'token',
