@@ -28,6 +28,7 @@ import { useCookies } from 'react-cookie';
 import { Divider, FormControl, IconButton, InputAdornment, OutlinedInput } from '@mui/material';
 import GoogleButton from './GoogleButton';
 import Copyright from 'components/Skeletons/Copyright';
+import { ColorsEnum } from 'common/theme';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -112,30 +113,39 @@ export default function SignIn() {
                             autoFocus
                         />
                         <FormControl fullWidth variant="standard">
-                        <InputLabel htmlFor="outlined-adornment-password" variant="outlined">Password</InputLabel>
-                        <OutlinedInput
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type={showPassword ? 'text' : 'password'}
-                            id="password"
-                            autoComplete="current-password"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                  <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={() => setShowPassword((show) => !show)}
-                                    onMouseDown={(event: React.MouseEvent<HTMLButtonElement>) => event.preventDefault()}
-                                    edge="end"
-                                  >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                  </IconButton>
-                                </InputAdornment>
-                              }
-                        />
+                            <InputLabel htmlFor="outlined-adornment-password" variant="outlined">
+                                Password
+                            </InputLabel>
+                            <OutlinedInput
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type={showPassword ? 'text' : 'password'}
+                                id="password"
+                                autoComplete="current-password"
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={() => setShowPassword(show => !show)}
+                                            onMouseDown={(
+                                                event: React.MouseEvent<HTMLButtonElement>
+                                            ) => event.preventDefault()}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                            />
                         </FormControl>
-                        <S.StyledButton type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                        <S.StyledButton
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
                             Sign In
                         </S.StyledButton>
                         <Grid container>
@@ -150,12 +160,18 @@ export default function SignIn() {
                                 </Link>
                             </Grid>
                         </Grid>
-                        <Divider style={{ paddingTop: 20, paddingBottom: 20 }}>
-                        <Typography variant="subtitle2"> or </Typography>
-                    </Divider>
+                        <Divider
+                            style={{ paddingTop: 20, paddingBottom: 20 }}
+                            sx={{ bgColor: ColorsEnum.warmgray2 }}
+                        >
+                            <Typography variant="subtitle2" color={ColorsEnum.warmgray2}>
+                                {' '}
+                                or{' '}
+                            </Typography>
+                        </Divider>
 
-                    <GoogleButton signIn handleLogin={handleGoogleSubmit} />
-                        </Box>
+                        <GoogleButton signIn handleLogin={handleGoogleSubmit} />
+                    </Box>
                 </Box>
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>

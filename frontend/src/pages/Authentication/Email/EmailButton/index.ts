@@ -1,3 +1,3 @@
-import EmailButton from "./EmailButton";
+import EmailButton from './EmailButton';
 
-export default EmailButton
+export default EmailButton;

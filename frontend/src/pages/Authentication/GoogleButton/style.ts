@@ -10,4 +10,3 @@ export const GoogleButtonIcon = styled('div')({
     backgroundSize: 'cover',
     display: 'block',
 });
-

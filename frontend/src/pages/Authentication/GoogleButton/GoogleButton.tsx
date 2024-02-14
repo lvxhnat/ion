@@ -36,7 +36,9 @@ export default function GoogleButton(props: GoogleButtonProps) {
                         <path fill="none" d="M0 0h48v48H0z"></path>
                     </svg>
                 </S.GoogleButtonIcon>
-                <RS.ButtonContents>{ `Sign ${props.signIn ? 'in' : 'up'} with Google`}  </RS.ButtonContents>
+                <RS.ButtonContents>
+                    {`Sign ${props.signIn ? 'in' : 'up'} with Google`}{' '}
+                </RS.ButtonContents>
             </RS.ButtonContentWrapper>
         </RS.ButtonStyled>
     );

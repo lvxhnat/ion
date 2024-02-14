@@ -29,14 +29,13 @@ import { Divider, FormControl, IconButton, InputAdornment, OutlinedInput } from 
 import GoogleButton from './GoogleButton';
 import Copyright from 'components/Skeletons/Copyright';
 import EmailButton from './Email/EmailButton/EmailButton';
+import { ColorsEnum } from 'common/theme';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-
-    const handleGoogleSubmit = async () => {
-    };
+    const handleGoogleSubmit = async () => {};
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -55,21 +54,24 @@ export default function SignUp() {
                             Sign Up
                         </Typography>
                         <Typography variant="body2">
-                          Already have an account? <Link href={ROUTES.SIGNIN} variant="body2">
-                                    {"Sign In"}
-                                </Link>
+                            Already have an account?{' '}
+                            <Link href={ROUTES.SIGNIN} variant="body2">
+                                {'Sign In'}
+                            </Link>
                         </Typography>
                     </S.SignInHeaders>
                     <GoogleButton handleLogin={handleGoogleSubmit} />
-                    <Divider style={{ paddingTop: 20, paddingBottom: 20 }}>
-                    <Typography variant="subtitle2"> or </Typography>
-                </Divider>
-                
-                <EmailButton handleSubmit={() => null} />
-
                 </Box>
 
-                
+                <Divider style={{ paddingTop: 20, paddingBottom: 20 }}>
+                    <Typography variant="subtitle2" color={ColorsEnum.warmgray2}>
+                        {' '}
+                        or{' '}
+                    </Typography>
+                </Divider>
+
+                <EmailButton handleSubmit={() => null} />
+
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
         </ThemeProvider>

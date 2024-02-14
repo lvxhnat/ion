@@ -1,22 +1,21 @@
 import { Button } from '@mui/material';
 import { styled } from '@mui/system';
 
-export const buttonBorderRadius = "50px"
+export const buttonBorderRadius = '50px';
 
 export const SignInHeaders = styled('div')({
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     gap: 10,
     paddingBottom: 20,
 });
 
 export const StyledButton = styled(Button)({
-    borderRadius: buttonBorderRadius
+    borderRadius: buttonBorderRadius,
 });
-
 
 export const ButtonContentWrapper = styled('div')({
     WebkitAlignItems: 'center',
@@ -92,10 +91,10 @@ export const ButtonStyled = styled('button')({
         },
     },
     '&:not(:disabled):active .gsi-material-button-state, &:not(:disabled):focus .gsi-material-button-state':
-    {
-        backgroundColor: '#303030',
-        opacity: '12%',
-    },
+        {
+            backgroundColor: '#303030',
+            opacity: '12%',
+        },
     '&:not(:disabled):hover': {
         WebkitBoxShadow: '0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15)',
         boxShadow: '0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15)',
