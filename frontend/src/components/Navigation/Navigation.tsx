@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from 'common/constant';
 import AlternativeDataButton from './AlternativeDataButton';
 import ProfileButton from './ProfileButton';
+import AnalyticsButton from './AnalyticsButton';
 
 export default function Navigation() {
     const navigate = useNavigate();
@@ -19,6 +20,7 @@ export default function Navigation() {
                 </S.IconButtonWrapper>
             </S.LeftPanel>
             <S.CentrePanel>
+                <AnalyticsButton />
                 <AlternativeDataButton />
             </S.CentrePanel>
             <S.RightPanel>

@@ -1,13 +1,11 @@
 import React from 'react';
 import * as S from '../style';
-import { Menu, MenuItem, Stack, Typography } from '@mui/material';
-import { RiBankFill } from 'react-icons/ri';
-import { ColorsEnum } from 'common/theme';
-import { GiAbstract106 } from 'react-icons/gi';
+import { Stack, Typography } from '@mui/material';
+import { FaChartPie } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from 'common/constant';
 
-export default function AlternativeDataButton() {
+export default function AnalyticsButton() {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -25,7 +23,7 @@ export default function AlternativeDataButton() {
                     setAnchorEl(event.currentTarget)
                 }
             >
-                <Typography variant="h4">Alternative Data</Typography>
+                <Typography variant="h4">Analytics</Typography>
             </S.StyledMenuButton>
             <S.StyledMenu
                 id="customized-menu"
@@ -36,19 +34,14 @@ export default function AlternativeDataButton() {
             >
                 <S.StyledMenuItem onClick={() => handleClose(ROUTES.ECONOMIC_DATA)}>
                     <div style={{ display: 'flex', gap: 5, width: '100%' }}>
-                        <RiBankFill style={{ fontSize: 20 }} />
+                        <FaChartPie style={{ fontSize: 20 }} />
                         <Stack style={{ gap: 5, width: '80%' }}>
-                            <Typography variant="h4"> US Economic Data </Typography>
+                            <Typography variant="h4"> Portfolio Distrbution </Typography>
                             <S.ButtonSubtitles variant="subtitle2">
-                                Access the FRED Database, track 823,000 US and international time
-                                series from 114 sources.{' '}
+                                Observe net holdings of ETF industries, aggregated from 2100 ETFs.
                             </S.ButtonSubtitles>
                         </Stack>
                     </div>
-                </S.StyledMenuItem>
-                <S.StyledMenuItem onClick={() => handleClose('etf')} style={{ gap: 5 }}>
-                    <GiAbstract106 />
-                    <Typography variant="h4"> ETF </Typography>
                 </S.StyledMenuItem>
             </S.StyledMenu>
         </div>

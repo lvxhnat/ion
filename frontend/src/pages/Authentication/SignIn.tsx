@@ -1,7 +1,10 @@
 import * as React from 'react';
+import * as S from './style';
 
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
+import InputLabel from '@mui/material/InputLabel';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -9,20 +12,21 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import request from 'services';
 import { ROUTES } from 'common/constant';
-import { app } from 'common/firebase/firebase';
+import { app, signInWithGooglePopup } from 'common/firebase/firebase';
 import { ENDPOINTS } from 'endpoints/endpoints';
 import { setCookie } from '../../common/helper/cookies';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import GoogleLoginButton from './GoogleLoginButton';
+import { Divider, FormControl, IconButton, InputAdornment, OutlinedInput } from '@mui/material';
 
 function Copyright(props: any) {
     return (
@@ -41,6 +45,7 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
+    const [showPassword, setShowPassword] = React.useState<boolean>(false);
     const [isError, setIsError] = React.useState<boolean>(false);
     const [cookies] = useCookies(['access_token', 'refresh_token']);
     const navigate = useNavigate();
@@ -84,6 +89,11 @@ export default function SignIn() {
             });
     };
 
+    const handleGoogleSubmit = async () => {
+        const response = await signInWithGooglePopup();
+        console.log(response);
+    };
+
     return (
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
@@ -96,12 +106,12 @@ export default function SignIn() {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
+                    <S.SignInHeaders id="sign-in-headers">
+                        <Typography component="h1" variant="h5">
+                            Sign in
+                        </Typography>
+                    </S.SignInHeaders>
+
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
@@ -113,23 +123,37 @@ export default function SignIn() {
                             autoComplete="email"
                             autoFocus
                         />
-                        <TextField
-                            margin="normal"
+                        <FormControl fullWidth variant="standard">
+                        <InputLabel htmlFor="outlined-adornment-password" variant="outlined">Password</InputLabel>
+                        <OutlinedInput
                             required
                             fullWidth
                             name="password"
                             label="Password"
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             id="password"
                             autoComplete="current-password"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={() => setShowPassword((show) => !show)}
+                                    onMouseDown={(event: React.MouseEvent<HTMLButtonElement>) => event.preventDefault()}
+                                    edge="end"
+                                  >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                  </IconButton>
+                                </InputAdornment>
+                              }
                         />
+                        </FormControl>
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"
                         />
-                        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                        <S.StyledButton type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                             Sign In
-                        </Button>
+                        </S.StyledButton>
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">
@@ -144,6 +168,13 @@ export default function SignIn() {
                         </Grid>
                     </Box>
                 </Box>
+
+                <Divider style={{ paddingTop: 20, paddingBottom: 20 }}>
+                    <Typography variant="subtitle2"> or </Typography>
+                </Divider>
+
+                <GoogleLoginButton handleLogin={handleGoogleSubmit} />
+
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
         </ThemeProvider>

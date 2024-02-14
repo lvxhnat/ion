@@ -45,7 +45,7 @@ function Chart(props: ChartProps) {
             type: 'datetime',
             labels: {
                 style: { fontSize: '10px' },
-            }
+            },
         },
         yAxis: {
             title: {
@@ -53,7 +53,7 @@ function Chart(props: ChartProps) {
             },
             labels: {
                 style: { fontSize: '10px' },
-            }
+            },
         },
         legend: {
             enabled: false, // Disable the legend
