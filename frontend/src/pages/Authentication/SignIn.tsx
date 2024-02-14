@@ -7,8 +7,6 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputLabel from '@mui/material/InputLabel';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -26,7 +24,7 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { Divider, FormControl, IconButton, InputAdornment, OutlinedInput } from '@mui/material';
-import GoogleButton from './GoogleButton';
+import GoogleButton from './Others';
 import Copyright from 'components/Skeletons/Copyright';
 import { ColorsEnum } from 'common/theme';
 

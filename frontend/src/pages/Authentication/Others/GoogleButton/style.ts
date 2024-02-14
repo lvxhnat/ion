@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/system';
-import { buttonBorderRadius } from '../style';
+import { buttonBorderRadius } from '../../style';
 
 export const GoogleButtonIcon = styled('div')({
     height: '20px',

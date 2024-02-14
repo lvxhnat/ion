@@ -1,5 +1,5 @@
 import * as S from './style';
-import * as RS from '../style';
+import * as RS from '../../style';
 
 interface GoogleButtonProps {
     signIn?: boolean;

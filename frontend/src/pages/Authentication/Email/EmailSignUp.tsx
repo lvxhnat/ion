@@ -1,30 +1,20 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
+
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-
-function Copyright(props: any) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 
 export default function EmailSignUp() {
+    const [showPassword, setShowPassword] = React.useState<boolean>(false);
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -80,15 +70,34 @@ export default function EmailSignUp() {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <TextField
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="new-password"
-                    />
+                    <FormControl fullWidth variant="standard">
+                        <InputLabel htmlFor="outlined-adornment-password" variant="outlined">
+                            Password
+                        </InputLabel>
+                        <OutlinedInput
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type={showPassword ? 'text' : 'password'}
+                            id="password"
+                            autoComplete="current-password"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() => setShowPassword(show => !show)}
+                                        onMouseDown={(event: React.MouseEvent<HTMLButtonElement>) =>
+                                            event.preventDefault()
+                                        }
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
                 </Grid>
             </Grid>
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>

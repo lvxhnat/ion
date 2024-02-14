@@ -1,32 +1,15 @@
 import * as React from 'react';
 import * as S from './style';
 
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
-import InputLabel from '@mui/material/InputLabel';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import request from 'services';
 import { ROUTES } from 'common/constant';
-import { app, signInWithGooglePopup } from 'common/firebase/firebase';
-import { ENDPOINTS } from 'endpoints/endpoints';
-import { setCookie } from '../../common/helper/cookies';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
-import { useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
-import { Divider, FormControl, IconButton, InputAdornment, OutlinedInput } from '@mui/material';
-import GoogleButton from './GoogleButton';
+import { Box, Divider, Link } from '@mui/material';
+import GoogleButton from './Others';
 import Copyright from 'components/Skeletons/Copyright';
 import EmailButton from './Email/EmailButton/EmailButton';
 import { ColorsEnum } from 'common/theme';
@@ -65,8 +48,7 @@ export default function SignUp() {
 
                 <Divider style={{ paddingTop: 20, paddingBottom: 20 }}>
                     <Typography variant="subtitle2" color={ColorsEnum.warmgray2}>
-                        {' '}
-                        or{' '}
+                        or
                     </Typography>
                 </Divider>
 
