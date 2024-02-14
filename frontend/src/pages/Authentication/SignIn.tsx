@@ -25,21 +25,9 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import GoogleLoginButton from './GoogleLoginButton';
 import { Divider, FormControl, IconButton, InputAdornment, OutlinedInput } from '@mui/material';
-
-function Copyright(props: any) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import GoogleButton from './GoogleButton';
+import Copyright from 'components/Skeletons/Copyright';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -96,7 +84,7 @@ export default function SignIn() {
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="sm">
                 <CssBaseline />
                 <Box
                     sx={{
@@ -147,10 +135,6 @@ export default function SignIn() {
                               }
                         />
                         </FormControl>
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
                         <S.StyledButton type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                             Sign In
                         </S.StyledButton>
@@ -166,15 +150,13 @@ export default function SignIn() {
                                 </Link>
                             </Grid>
                         </Grid>
-                    </Box>
+                        <Divider style={{ paddingTop: 20, paddingBottom: 20 }}>
+                        <Typography variant="subtitle2"> or </Typography>
+                    </Divider>
+
+                    <GoogleButton signIn handleLogin={handleGoogleSubmit} />
+                        </Box>
                 </Box>
-
-                <Divider style={{ paddingTop: 20, paddingBottom: 20 }}>
-                    <Typography variant="subtitle2"> or </Typography>
-                </Divider>
-
-                <GoogleLoginButton handleLogin={handleGoogleSubmit} />
-
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
         </ThemeProvider>

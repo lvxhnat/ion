@@ -1,13 +1,15 @@
 import * as S from './style';
+import * as RS from '../style';
 
-interface GoogleLoginButtonProps {
+interface GoogleButtonProps {
+    signIn?: boolean;
     handleLogin: () => void;
 }
-export default function GoogleLoginButton(props: GoogleLoginButtonProps) {
+export default function GoogleButton(props: GoogleButtonProps) {
     return (
-        <S.GoogleLoginButtonStyled onClick={props.handleLogin}>
-            <S.GoogleButtonState />
-            <S.GoogleButtonContentWrapper>
+        <RS.ButtonStyled onClick={props.handleLogin}>
+            <RS.ButtonState />
+            <RS.ButtonContentWrapper>
                 <S.GoogleButtonIcon>
                     <svg
                         version="1.1"
@@ -34,8 +36,8 @@ export default function GoogleLoginButton(props: GoogleLoginButtonProps) {
                         <path fill="none" d="M0 0h48v48H0z"></path>
                     </svg>
                 </S.GoogleButtonIcon>
-                <S.GoogleButtonContents>Sign in with Google </S.GoogleButtonContents>
-            </S.GoogleButtonContentWrapper>
-        </S.GoogleLoginButtonStyled>
+                <RS.ButtonContents>{ `Sign ${props.signIn ? 'in' : 'up'} with Google`}  </RS.ButtonContents>
+            </RS.ButtonContentWrapper>
+        </RS.ButtonStyled>
     );
 }
