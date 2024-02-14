@@ -1,5 +1,4 @@
 import React from 'react';
-import * as S from '../style';
 import { Avatar, Divider, Menu, MenuItem, Typography } from '@mui/material';
 import { getAuth } from 'firebase/auth';
 import { app } from '../../../common/firebase/firebase';

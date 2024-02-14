@@ -78,7 +78,12 @@ export default function SignIn() {
 
     const handleGoogleSubmit = async () => {
         const response = await signInWithGooglePopup();
-        console.log(response);
+        response.user.getIdToken().then((s: any) => {
+            setCookie('access_token', s);
+            setCookie('refresh_token', response.user.refreshToken);
+            setIsError(false);
+            navigate(ROUTES.LANDING);
+        });
     };
 
     return (

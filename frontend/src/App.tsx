@@ -15,7 +15,7 @@ function App() {
                 <Route path={ROUTES.LANDING} element={<Landing />} />
                 <Route path={ROUTES.SIGNIN} element={<SignIn />} />
                 <Route path={ROUTES.SIGNUP} element={<SignUp />} />
-                <Route path={ROUTES.ECONOMIC_DATA} element={<Private components={Economic} />} />
+                <Route path={ROUTES.ECONOMIC_DATA} element={<Economic />} />
             </Routes>
         </Router>
     );

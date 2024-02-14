@@ -9,7 +9,6 @@ import request from 'services';
 export default function Private({ FC }: any) {
     const [cookies, , removeCookies] = useCookies(['access_token', 'refresh_token']);
     const [isValid, setIsValid] = React.useState<boolean>(!!cookies.access_token);
-
     useEffect(() => {
         const access_token = cookies.access_token;
         if (!access_token) {
@@ -29,8 +28,12 @@ export default function Private({ FC }: any) {
                         },
                     }
                 )
-                .then(res => setIsValid(true))
-                .catch(err => setIsValid(false));
+                .then(res => {
+                    setIsValid(true)
+                })
+                .catch(err => {
+                    setIsValid(false)
+                });
         }
     });
 
