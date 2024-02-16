@@ -5,3 +5,7 @@ class FredChildParams(BaseModel):
     
 class FredSeriesParams(BaseModel):
     series_id: str
+    
+class FredSearchParams(BaseModel):
+    search_term: str
+    limit: int 

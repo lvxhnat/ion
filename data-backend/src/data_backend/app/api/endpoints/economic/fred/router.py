@@ -2,7 +2,7 @@ import pandas as pd
 from fastapi import APIRouter
 from datetime import datetime
 
-from data_backend.app.api.endpoints.economic.fred.client import get_children_category_ids, get_series_data
+from data_backend.app.api.endpoints.economic.fred.clients.series import get_children_category_ids, get_series_data
 from data_backend.app.api.endpoints.economic.fred.models import FredMetaData
 from data_backend.app.api.endpoints.economic.fred.params import (
     FredChildParams,

@@ -180,14 +180,6 @@ export default function Economic() {
                                 <></>
                             )}
                         </S.ChildNodesPanel>
-                        <S.UpdateBar>
-                            <Typography variant="subtitle2" align="right" component="div">
-                                <strong>Last Updated:</strong>{' '}
-                                {titles.length !== 0
-                                    ? formatDate(titles[0].parent_node.last_updated)
-                                    : null}{' '}
-                            </Typography>
-                        </S.UpdateBar>
                     </S.SidePanelOpener>
                     <S.MainPanelOpener>
                         <SelectedSeriesMainview nodes={nodes} seriesSelected={seriesSelected} />
