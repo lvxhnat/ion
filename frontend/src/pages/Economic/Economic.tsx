@@ -79,57 +79,40 @@ export default function Economic() {
 
     return (
         <ContainerWrapper>
-            <div style={{ width: '100%', height: '92vh' }}>
-                {categoryLoading || rootLoading ? (
-                    <Stack
-                        style={{
-                            height: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: 15,
-                        }}
-                    >
-                        <CircularProgress color="secondary" />
-                        <Typography variant="h3"> Loading Data ... </Typography>
-                    </Stack>
-                ) : nodes && nodes.value.selection.id === 0 ? (
-                    <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
-                        {Array(titles.length / 2)
-                            .fill(0)
-                            .map((_, index) => {
-                                const entry = titles[index * 2];
-                                const nextEntry = titles[index * 2 + 1];
-                                return (
-                                    <div
-                                        key={`${entry.parent_node.id}_FredChildDiv`}
-                                        style={{ width: '25%' }}
-                                    >
-                                        <div style={{ paddingBottom: 25, paddingTop: 10 }}>
-                                            <S.FredRow
-                                                isTitle
-                                                key={`${entry.parent_node.id}_FredParentRow`}
-                                            >
-                                                {entry.parent_node.name}
-                                            </S.FredRow>
-                                            {entry.child_node.map(
-                                                (child_entry: FredCategoryEntry) => (
-                                                    <S.FredRow
-                                                        key={`${child_entry.id}_FredChildRow`}
-                                                        onClick={() => handleClick(child_entry)}
-                                                    >
-                                                        {child_entry.name}
-                                                    </S.FredRow>
-                                                )
-                                            )}
-                                        </div>
+            {categoryLoading || rootLoading ? (
+                <div 
+                style={{
+                    gap: 15,
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                    <CircularProgress color="secondary" />
+                    <Typography variant="h3"> Loading Data ... </Typography>
+                </div>
+            ) : nodes && nodes.value.selection.id === 0 ? (
+                <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
+                    {Array(titles.length / 2)
+                        .fill(0)
+                        .map((_, index) => {
+                            const entry = titles[index * 2];
+                            const nextEntry = titles[index * 2 + 1];
+                            return (
+                                <div
+                                    key={`${entry.parent_node.id}_FredChildDiv`}
+                                    style={{ width: '25%' }}
+                                >
+                                    <div style={{ paddingBottom: 25, paddingTop: 10 }}>
                                         <S.FredRow
                                             isTitle
-                                            key={`${nextEntry.parent_node.id}_FredParentRow`}
+                                            key={`${entry.parent_node.id}_FredParentRow`}
                                         >
-                                            {nextEntry.parent_node.name}
+                                            {entry.parent_node.name}
                                         </S.FredRow>
-                                        {nextEntry.child_node.map(child_entry => (
+                                        {entry.child_node.map((child_entry: FredCategoryEntry) => (
                                             <S.FredRow
                                                 key={`${child_entry.id}_FredChildRow`}
                                                 onClick={() => handleClick(child_entry)}
@@ -138,62 +121,76 @@ export default function Economic() {
                                             </S.FredRow>
                                         ))}
                                     </div>
-                                );
-                            })}
-                    </div>
-                ) : null}
-                {nodes && nodes.value.selection.id !== 0 ? (
-                    <S.PanelOpener>
-                        <S.SidePanelOpener>
-                            <S.ChildNodesPanel>
-                                <S.BaseDivClass>
-                                    <S.IconButtonWrapper onClick={handleBack}>
-                                        <ArrowBackIosIcon fontSize="inherit" />
-                                    </S.IconButtonWrapper>
                                     <S.FredRow
                                         isTitle
-                                        key={`${nodes.value.selection.id}_FredParentRow`}
+                                        key={`${nextEntry.parent_node.id}_FredParentRow`}
                                     >
-                                        {nodes.value.selection.name}
+                                        {nextEntry.parent_node.name}
                                     </S.FredRow>
-                                </S.BaseDivClass>
-                                {nodes.value.type === 'series'
-                                    ? null
-                                    : nodes.value.entries.map(entry => {
-                                          return (
-                                              <S.FredRow
-                                                  key={`${entry.id}_FredSubChildRow`}
-                                                  onClick={() =>
-                                                      handleClick(entry as FredCategoryEntry)
-                                                  }
-                                              >
-                                                  {(entry as FredCategoryEntry).name}
-                                              </S.FredRow>
-                                          );
-                                      })}
-                                {/* Generate side panel texts to describe series when series are selected */}
-                                {seriesSelected ? (
-                                    <SelectedSeriesSidebar seriesSelected={seriesSelected} />
-                                ) : (
-                                    <></>
-                                )}
-                            </S.ChildNodesPanel>
-                            <S.UpdateBar>
-                                <Typography variant="subtitle2" align="right" component="div">
-                                    <strong>Last Updated:</strong>{' '}
-                                    {titles.length !== 0
-                                        ? formatDate(titles[0].parent_node.last_updated)
-                                        : null}{' '}
-                                </Typography>
-                            </S.UpdateBar>
-                        </S.SidePanelOpener>
-                        <S.MainPanelOpener>
-                            <SelectedSeriesMainview nodes={nodes} seriesSelected={seriesSelected} />
-                            <SeriesSelection nodes={nodes} setSeriesSelected={setSeriesSelected} />
-                        </S.MainPanelOpener>
-                    </S.PanelOpener>
-                ) : null}
-            </div>
+                                    {nextEntry.child_node.map(child_entry => (
+                                        <S.FredRow
+                                            key={`${child_entry.id}_FredChildRow`}
+                                            onClick={() => handleClick(child_entry)}
+                                        >
+                                            {child_entry.name}
+                                        </S.FredRow>
+                                    ))}
+                                </div>
+                            );
+                        })}
+                </div>
+            ) : null}
+            {nodes && nodes.value.selection.id !== 0 ? (
+                <S.PanelOpener>
+                    <S.SidePanelOpener>
+                        <S.ChildNodesPanel>
+                            <S.BaseDivClass>
+                                <S.IconButtonWrapper onClick={handleBack}>
+                                    <ArrowBackIosIcon fontSize="inherit" />
+                                </S.IconButtonWrapper>
+                                <S.FredRow
+                                    isTitle
+                                    key={`${nodes.value.selection.id}_FredParentRow`}
+                                >
+                                    {nodes.value.selection.name}
+                                </S.FredRow>
+                            </S.BaseDivClass>
+                            {nodes.value.type === 'series'
+                                ? null
+                                : nodes.value.entries.map(entry => {
+                                      return (
+                                          <S.FredRow
+                                              key={`${entry.id}_FredSubChildRow`}
+                                              onClick={() =>
+                                                  handleClick(entry as FredCategoryEntry)
+                                              }
+                                          >
+                                              {(entry as FredCategoryEntry).name}
+                                          </S.FredRow>
+                                      );
+                                  })}
+                            {/* Generate side panel texts to describe series when series are selected */}
+                            {seriesSelected ? (
+                                <SelectedSeriesSidebar seriesSelected={seriesSelected} />
+                            ) : (
+                                <></>
+                            )}
+                        </S.ChildNodesPanel>
+                        <S.UpdateBar>
+                            <Typography variant="subtitle2" align="right" component="div">
+                                <strong>Last Updated:</strong>{' '}
+                                {titles.length !== 0
+                                    ? formatDate(titles[0].parent_node.last_updated)
+                                    : null}{' '}
+                            </Typography>
+                        </S.UpdateBar>
+                    </S.SidePanelOpener>
+                    <S.MainPanelOpener>
+                        <SelectedSeriesMainview nodes={nodes} seriesSelected={seriesSelected} />
+                        <SeriesSelection nodes={nodes} setSeriesSelected={setSeriesSelected} />
+                    </S.MainPanelOpener>
+                </S.PanelOpener>
+            ) : null}
         </ContainerWrapper>
     );
 }

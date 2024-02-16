@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  postgres-database:
+    container_name: postgres-database
+    image: postgres:12.3
+    hostname: postgres
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - 5432:5432

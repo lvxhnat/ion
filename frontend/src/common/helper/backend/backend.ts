@@ -2,12 +2,11 @@ import * as d3 from 'd3';
 
 import { ASSET_TYPES } from 'common/constant';
 
-import { emptyDefaultDataProps } from 'components/Charting/BaseChart/schema/schema';
-
 import { getCandles } from 'endpoints/clients/candles';
 import { getHistoricalForex } from 'endpoints/clients/forex';
 import { getFredSeries } from 'endpoints/clients/fred';
 import { TickerMetadataDTO, getTickerMetadata } from 'endpoints/clients/database/postgres/query';
+import { emptyDefaultDataProps } from 'store/chart/chart';
 
 export function fetchMetadata(ticker: string, assetType: keyof typeof ASSET_TYPES) {
     return getTickerMetadata({

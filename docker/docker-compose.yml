@@ -8,7 +8,7 @@ services:
       dockerfile: docker/frontend/Dockerfile 
       args:
         - REACT_APP_DATA_INGESTION_BASE_URL=https://api.ykanalytics.com/api # Point to the backend
-    env_file: docker/frontend/docker.env
+    env_file: frontend/docker.env
     depends_on:
       - data-ingestion
     ports:
@@ -18,8 +18,6 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
     stdin_open: true
     tty: true
-    networks:
-      - djangonetwork
 
   data-ingestion:
     build: 
@@ -33,13 +31,11 @@ services:
       - database:database
     stdin_open: true
     tty: true
-    networks:
-      - djangonetwork
 
-  postgres-database:
+  database:
     container_name: postgres-database
     image: postgres:12.3
-    env_file: ../postgres/docker.env
+    env_file: postgres/docker.env
     hostname: postgres
     ports:
       - 5432:5432

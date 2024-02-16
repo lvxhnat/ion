@@ -3,7 +3,7 @@ import * as S from '../../style';
 
 import { Skeleton, Typography } from '@mui/material';
 
-import { useTickerDataStore } from 'store/chartview/chartview';
+import { useTickerDataStore } from 'store/chart/chart';
 
 import { FredSeriesEntry } from 'endpoints/clients/fred';
 import { TickerMetadataDTO } from 'endpoints/clients/database/postgres/query';

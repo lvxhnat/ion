@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import Grid from '@mui/material/Grid';
-import LivePlayer from './liveplayer';
+import LivePlayer from './LivePlayer';
 import { ContainerWrapper } from 'components/Wrappers/ContainerWrapper';
 
 export default function Landing() {

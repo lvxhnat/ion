@@ -51,16 +51,8 @@ const OnOffSwitch = styled((props: SwitchProps) => (
     },
 }));
 
-function ToggleThemeMode() {
+export default function ToggleThemeMode() {
     const { mode, setMode } = useThemeStore();
-
-    const handleClick = () => {
-        setMode();
-    };
-
     if (!mode) return null;
-
-    return <OnOffSwitch onClick={handleClick} />;
+    return <OnOffSwitch defaultChecked={mode === 'light'} onClick={() => setMode()} />;
 }
-
-export default ToggleThemeMode;

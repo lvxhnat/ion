@@ -29,10 +29,10 @@ export default function Private({ FC }: any) {
                     }
                 )
                 .then(res => {
-                    setIsValid(true)
+                    setIsValid(true);
                 })
                 .catch(err => {
-                    setIsValid(false)
+                    setIsValid(false);
                 });
         }
     });

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Alert, Box, CssBaseline, Grid, Snackbar } from '@mui/material';
+import { Alert, CssBaseline, Divider, Snackbar, Stack } from '@mui/material';
 import Navigation from 'components/Navigation';
 import { ALERTS } from 'common/constant/literals';
 
@@ -27,15 +27,21 @@ export default function ContainerWrapper(props: ContainerWrapperProps) {
     }, [online]);
 
     return (
-        <Grid container style={{ height: '100vh' }} flexDirection="column">
+        <Stack
+            style={{ height: '100vh', paddingLeft: 20, paddingRight: 20 }}
+            alignItems="center"
+        >
             <CssBaseline />
             <Navigation />
+            <Divider style={{width:'100%'}} />
+            <div style={{ paddingTop: 20, height: '100%' }}>
             {props.children}
+            </div>
             {!online ? (
                 <Snackbar open={true}>
                     <Alert severity="error"> {ALERTS.OFFLINE} </Alert>
                 </Snackbar>
             ) : null}
-        </Grid>
+        </Stack>
     );
 }
