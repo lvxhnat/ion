@@ -5,11 +5,9 @@ import { Skeleton, Typography } from '@mui/material';
 
 import { useTickerDataStore } from 'store/chart/chart';
 
-import { FredSeriesEntry } from 'endpoints/clients/fred';
-import { TickerMetadataDTO } from 'endpoints/clients/database/postgres/query';
+import { FredSeriesEntry, getFredSeries } from 'endpoints/clients/fred';
 
 import { ASSET_TYPES } from 'common/constant';
-import { fetchData, fetchMetadata } from 'common/helper/backend/backend';
 import { ChartviewProps } from './type';
 
 import Highcharts, { PointOptionsObject } from 'highcharts';
@@ -94,15 +92,13 @@ export default function Chartview(props: ChartviewProps) {
     const [data, setData] = useTickerDataStore(state => [state.data, state.setData]);
     const [loading, setLoading] = React.useState<boolean>(true);
     const [rawData, setRawData] = React.useState<{ [col: string]: any }[]>([]);
-    const [tickerMetadata, setTickerMetadata] = React.useState<TickerMetadataDTO>();
 
     const ticker = props.ticker;
     const assetType: keyof typeof ASSET_TYPES = 'FRED';
 
     React.useEffect(() => {
         setLoading(true);
-        fetchMetadata(ticker, assetType).then(res => setTickerMetadata(res.data));
-        fetchData(assetType, ticker, new Date('2022-01-01'))?.then((res: any) => {
+        getFredSeries(ticker).then((res: any) => {
             setData(res.data);
             setRawData(res.rawData);
             setLoading(false);

@@ -1,66 +1,16 @@
 import * as React from 'react';
 import * as S from '../style';
-import { v4 as uuidv4 } from 'uuid';
-
 import Typography from '@mui/material/Typography';
-import AddIcon from '@mui/icons-material/Add';
-import DoneIcon from '@mui/icons-material/Done';
 
 import { FredSeriesEntry } from 'endpoints/clients/fred';
-import { PostgresTablesEnum } from 'endpoints/schema/database/postgres/props';
-import { getWatchlistAssets } from 'endpoints/clients/database/postgres/query';
-import { deleteTable, insertTable } from 'endpoints/clients/database/postgres/general';
-
 import { ColorsEnum } from 'common/theme';
 import { formatDate } from 'common/constant/dates';
 import { getUniqueTickerId } from 'common/constant/ids';
-import { ASSET_TYPES, SOURCE_TYPES } from 'common/constant';
+import { SOURCE_TYPES } from 'common/constant';
 
 interface SelectedSeriesSidebarProps {
     seriesSelected: FredSeriesEntry;
 }
-
-const AddToWatchlistButton = (props: { symbol: string }) => {
-    const [watchlistAdded, setWatchlistAdded] = React.useState<boolean>(false);
-
-    React.useEffect(() => {
-        getWatchlistAssets({ symbol: props.symbol }).then(res => {
-            setWatchlistAdded(!!res.data);
-        });
-    }, [props.symbol]);
-
-    const handleWatchlist = () => {
-        setWatchlistAdded(!watchlistAdded);
-        getWatchlistAssets({ symbol: props.symbol }).then(res => {
-            if (!res.data) {
-                insertTable({
-                    tableName: PostgresTablesEnum.WATCHLIST,
-                    entry: {
-                        uuid: uuidv4(),
-                        symbol: props.symbol,
-                        date_added: new Date(),
-                        asset_type: ASSET_TYPES.FRED as keyof typeof ASSET_TYPES,
-                        source: SOURCE_TYPES.FRED as keyof typeof SOURCE_TYPES,
-                    },
-                });
-            } else {
-                deleteTable({
-                    tableName: PostgresTablesEnum.WATCHLIST,
-                    id: props.symbol,
-                });
-            }
-        });
-    };
-
-    return (
-        <S.ButtonWrapper selected={watchlistAdded} onClick={handleWatchlist}>
-            {watchlistAdded ? <DoneIcon fontSize="inherit" /> : <AddIcon fontSize="inherit" />}
-            <Typography variant="subtitle2">
-                {watchlistAdded ? 'Added to Watchlist' : 'Add to Watchlist'}
-            </Typography>
-        </S.ButtonWrapper>
-    );
-};
 
 export default function SelectedSeriesSidebar(props: SelectedSeriesSidebarProps) {
     return (
@@ -133,9 +83,6 @@ export default function SelectedSeriesSidebar(props: SelectedSeriesSidebarProps)
                 <span style={{ fontWeight: 'bold' }}> Dataset Last Updated: </span>
                 {formatDate(props.seriesSelected.last_updated)}
             </Typography>
-            <div style={{ paddingTop: 10 }}>
-                <AddToWatchlistButton symbol={props.seriesSelected.id} />
-            </div>
         </div>
     );
 }

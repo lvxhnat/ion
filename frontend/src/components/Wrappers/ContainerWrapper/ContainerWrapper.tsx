@@ -34,7 +34,7 @@ export default function ContainerWrapper(props: ContainerWrapperProps) {
             <CssBaseline />
             <Navigation />
             <Divider style={{width:'100%'}} />
-            <div style={{ paddingTop: 20, height: '100%' }}>
+            <div style={{ paddingTop: 20, height: '100%', width: '100%' }}>
             {props.children}
             </div>
             {!online ? (

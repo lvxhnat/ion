@@ -94,7 +94,7 @@ export default function Economic() {
                     <Typography variant="h3"> Loading Data ... </Typography>
                 </div>
             ) : nodes && nodes.value.selection.id === 0 ? (
-                <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
+                <div id="series-container" style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
                     {Array(titles.length / 2)
                         .fill(0)
                         .map((_, index) => {

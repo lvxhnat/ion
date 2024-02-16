@@ -1,12 +1,13 @@
 import requests
 from typing import List
 from datetime import datetime
+from data_backend.app.configs.secrets import config as secret_config
 
 CATEGORY_ROOT_PATH: str = (
-    lambda request_type: f"https://api.stlouisfed.org/fred/category/{request_type}?api_key=7f15d978f632266b54771a56c043086f&file_type=json"
+    lambda request_type: f"https://api.stlouisfed.org/fred/category/{request_type}?api_key={secret_config.FRED_API_KEY}&file_type=json"
 )
 SERIES_ROOT_PATH: str = (
-    lambda series_id: f"https://api.stlouisfed.org/fred/series/observations?series_id={series_id}&api_key=7f15d978f632266b54771a56c043086f&file_type=json"
+    lambda series_id: f"https://api.stlouisfed.org/fred/series/observations?series_id={series_id}&api_key={secret_config.FRED_API_KEY}&file_type=json"
 )
 
 def cast_to_float(value):
