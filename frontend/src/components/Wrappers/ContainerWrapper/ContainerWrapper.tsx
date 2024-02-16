@@ -27,16 +27,11 @@ export default function ContainerWrapper(props: ContainerWrapperProps) {
     }, [online]);
 
     return (
-        <Stack
-            style={{ height: '100vh', paddingLeft: 20, paddingRight: 20 }}
-            alignItems="center"
-        >
+        <Stack style={{ height: '100vh', paddingLeft: 20, paddingRight: 20 }} alignItems="center">
             <CssBaseline />
             <Navigation />
-            <Divider style={{width:'100%'}} />
-            <div style={{ paddingTop: 20, height: '100%', width: '100%' }}>
-            {props.children}
-            </div>
+            <Divider style={{ width: '100%' }} />
+            <div style={{ paddingTop: 10, height: '100%', width: '100%' }}>{props.children}</div>
             {!online ? (
                 <Snackbar open={true}>
                     <Alert severity="error"> {ALERTS.OFFLINE} </Alert>

@@ -80,21 +80,25 @@ export default function Economic() {
     return (
         <ContainerWrapper>
             {categoryLoading || rootLoading ? (
-                <div 
-                style={{
-                    gap: 15,
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
+                <div
+                    style={{
+                        gap: 15,
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
                     <CircularProgress color="secondary" />
                     <Typography variant="h3"> Loading Data ... </Typography>
                 </div>
             ) : nodes && nodes.value.selection.id === 0 ? (
-                <div id="series-container" style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
+                <div
+                    id="series-container"
+                    style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}
+                >
                     {Array(titles.length / 2)
                         .fill(0)
                         .map((_, index) => {

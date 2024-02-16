@@ -32,13 +32,15 @@ export interface TickerDataStoreTypes {
 
 export const useTickerDataStore = create<TickerDataStoreTypes>(set => ({
     data: {},
-    setData: (props: { ticker: string; data: DefaultDataProps }) =>
-        set((state: TickerDataStoreTypes) => {
+    setData: (props: { ticker: string; data: DefaultDataProps }) => {
+        console.log(props, 'S');
+        return set((state: TickerDataStoreTypes) => {
             return {
                 data: {
                     ...state.data,
                     [props.ticker]: props.data,
                 },
             };
-        }),
+        });
+    },
 }));

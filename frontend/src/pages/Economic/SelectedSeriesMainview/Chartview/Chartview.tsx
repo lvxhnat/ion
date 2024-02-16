@@ -5,9 +5,8 @@ import { Skeleton, Typography } from '@mui/material';
 
 import { useTickerDataStore } from 'store/chart/chart';
 
-import { FredSeriesEntry, getFredSeries } from 'endpoints/clients/fred';
+import { FredSeriesDataEntry, FredSeriesEntry, getFredSeries } from 'endpoints/clients/fred';
 
-import { ASSET_TYPES } from 'common/constant';
 import { ChartviewProps } from './type';
 
 import Highcharts, { PointOptionsObject } from 'highcharts';
@@ -61,6 +60,7 @@ function Chart(props: ChartProps) {
                 name: props.seriesSelected?.id,
                 data: props.data,
                 type: 'line',
+                connectNulls: true,
                 color: themeMode.mode === 'dark' ? ColorsEnum.white : ColorsEnum.black,
                 animation: {
                     duration: 2000, // Customize duration of the entrance animation (in milliseconds)
@@ -89,18 +89,15 @@ function Chart(props: ChartProps) {
  * @returns
  */
 export default function Chartview(props: ChartviewProps) {
-    const [data, setData] = useTickerDataStore(state => [state.data, state.setData]);
+    const [data, setData] = React.useState<FredSeriesDataEntry[]>([]);
     const [loading, setLoading] = React.useState<boolean>(true);
-    const [rawData, setRawData] = React.useState<{ [col: string]: any }[]>([]);
 
     const ticker = props.ticker;
-    const assetType: keyof typeof ASSET_TYPES = 'FRED';
 
     React.useEffect(() => {
         setLoading(true);
         getFredSeries(ticker).then((res: any) => {
             setData(res.data);
-            setRawData(res.rawData);
             setLoading(false);
         });
     }, [props.ticker]);
@@ -109,15 +106,12 @@ export default function Chartview(props: ChartviewProps) {
         <S.Item>
             {props.ticker !== '' ? (
                 <div style={{ width: '100%', height: '100%' }}>
-                    {loading || !data[props.ticker] ? (
+                    {loading ? (
                         <Skeleton animation="wave" height="100%" />
-                    ) : (
+                    ) : !data ? <></> : (
                         <Chart
                             seriesSelected={props.seriesSelected}
-                            data={data[props.ticker].dataY.map((val, index) => [
-                                data[props.ticker].dataX[index].getTime(),
-                                val,
-                            ])}
+                            data={data.map(val => [new Date(val.date).getTime(), val.value])}
                         />
                     )}
                 </div>
