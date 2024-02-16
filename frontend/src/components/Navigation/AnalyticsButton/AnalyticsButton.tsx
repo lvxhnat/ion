@@ -17,6 +17,7 @@ export default function AnalyticsButton() {
     return (
         <div>
             <S.StyledMenuButton
+                disabled
                 disableRipple
                 disableFocusRipple
                 onClick={(event: React.MouseEvent<HTMLButtonElement>) =>

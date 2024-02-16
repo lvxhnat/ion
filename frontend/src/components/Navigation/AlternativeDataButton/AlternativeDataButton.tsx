@@ -46,10 +46,6 @@ export default function AlternativeDataButton() {
                         </Stack>
                     </div>
                 </S.StyledMenuItem>
-                <S.StyledMenuItem onClick={() => handleClose('etf')} style={{ gap: 5 }}>
-                    <GiAbstract106 />
-                    <Typography variant="h4"> ETF </Typography>
-                </S.StyledMenuItem>
             </S.StyledMenu>
         </div>
     );

@@ -22,7 +22,9 @@ interface ChartProps {
 
 function Chart(props: ChartProps) {
     const themeMode = useThemeStore();
-    console.log(props.data);
+    const defaultColorScheme = themeMode.mode === 'dark' ? ColorsEnum.white : ColorsEnum.black
+    const axisColorScheme = themeMode.mode === 'dark' ? ColorsEnum.coolgray7 : ColorsEnum.darkGrey
+
     const options: Highcharts.Options = {
         chart: {
             type: 'line',
@@ -36,12 +38,13 @@ function Chart(props: ChartProps) {
             text: props.seriesSelected?.title,
             style: {
                 fontSize: '14px',
+                color: defaultColorScheme
             },
         },
         xAxis: {
             type: 'datetime',
             labels: {
-                style: { fontSize: '10px' },
+                style: { fontSize: '10px', color: axisColorScheme },
             },
         },
         yAxis: {
@@ -49,7 +52,7 @@ function Chart(props: ChartProps) {
                 text: props.seriesSelected?.units,
             },
             labels: {
-                style: { fontSize: '10px' },
+                style: { fontSize: '10px', color: axisColorScheme },
             },
         },
         legend: {
@@ -61,7 +64,7 @@ function Chart(props: ChartProps) {
                 data: props.data,
                 type: 'line',
                 connectNulls: true,
-                color: themeMode.mode === 'dark' ? ColorsEnum.white : ColorsEnum.black,
+                color: defaultColorScheme,
                 animation: {
                     duration: 2000, // Customize duration of the entrance animation (in milliseconds)
                     easing: 'easeOutBounce', // Customize the easing function
