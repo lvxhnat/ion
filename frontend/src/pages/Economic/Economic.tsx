@@ -79,20 +79,10 @@ export default function Economic() {
     return (
         <ContainerWrapper>
             {categoryLoading || rootLoading ? (
-                <div
-                    style={{
-                        gap: 15,
-                        width: '100%',
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
+                <S.LoadingWrapper>
                     <CircularProgress color="secondary" />
                     <Typography variant="h3"> Loading Data ... </Typography>
-                </div>
+                </S.LoadingWrapper>
             ) : nodes && nodes.value.selection.id === 0 ? (
                 <div
                     id="series-container"
@@ -174,7 +164,10 @@ export default function Economic() {
                                   })}
                             {/* Generate side panel texts to describe series when series are selected */}
                             {seriesSelected ? (
-                                <SelectedSeriesSidebar nodes={nodes} seriesSelected={seriesSelected} />
+                                <SelectedSeriesSidebar
+                                    nodes={nodes}
+                                    seriesSelected={seriesSelected}
+                                />
                             ) : (
                                 <></>
                             )}

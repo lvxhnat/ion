@@ -14,6 +14,14 @@ interface FredRowProps {
     [x: string]: any;
 }
 
+export const LoadingWrapper = styled('div')(({ theme }) => ({
+    gap: 15,
+    width: '100%',
+    height: '100%',
+    flexDirection: 'column',
+    ...displayFlexCenter,
+}));
+
 export const ButtonWrapper = styled('div')<{ disabled?: boolean; selected?: boolean }>(
     ({ theme, disabled = false, selected = false }) => ({
         ...displayFlexCenter,
@@ -37,7 +45,6 @@ export const ButtonWrapper = styled('div')<{ disabled?: boolean; selected?: bool
 
 export const BaseDivClass = styled('div')(({ theme }) => ({
     ...displayFlexCenter,
-    justifyContent: 'flex-start',
 }));
 
 export const FredRow = (props: FredRowProps) => {

@@ -27,8 +27,14 @@ export default function SelectedSeriesSidebar(props: SelectedSeriesSidebarProps)
                     <TableViewIcon fontSize="small" />
                 </Tab>
             </TabList>
-            <TabPanel> <Metadata seriesSelected={props.seriesSelected} /> </TabPanel>
-            <TabPanel> <TableView /> </TabPanel>
+            <TabPanel>
+                {' '}
+                <Metadata seriesSelected={props.seriesSelected} />{' '}
+            </TabPanel>
+            <TabPanel>
+                {' '}
+                <TableView />{' '}
+            </TabPanel>
         </Tabs>
     );
 }

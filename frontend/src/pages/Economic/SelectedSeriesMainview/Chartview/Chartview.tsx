@@ -91,7 +91,11 @@ function Chart(props: ChartProps) {
  * @returns
  */
 export default function Chartview(props: ChartviewProps) {
-    const [setChartData, loading, setLoading] = useChartDataStore(state => [state.setChartData, state.loading, state.setLoading])
+    const [setChartData, loading, setLoading] = useChartDataStore(state => [
+        state.setChartData,
+        state.loading,
+        state.setLoading,
+    ]);
     const [data, setData] = React.useState<[number, number][]>([]);
 
     const ticker = props.ticker;
@@ -100,9 +104,12 @@ export default function Chartview(props: ChartviewProps) {
         setLoading(true);
         if (ticker !== '')
             getFredSeries(ticker).then((res: any) => {
-                const tickerData = res.data.map((val: any) => [new Date(val.date).getTime(), val.value])
+                const tickerData = res.data.map((val: any) => [
+                    new Date(val.date).getTime(),
+                    val.value,
+                ]);
                 setData(tickerData);
-                setChartData(tickerData)
+                setChartData(tickerData);
                 setLoading(false);
             });
     }, [props.ticker]);
@@ -113,10 +120,7 @@ export default function Chartview(props: ChartviewProps) {
         ) : !data ? (
             <></>
         ) : (
-            <Chart
-                seriesSelected={props.seriesSelected}
-                data={data}
-            />
+            <Chart seriesSelected={props.seriesSelected} data={data} />
         )
     ) : (
         <S.NoDataAvailableContainer>
