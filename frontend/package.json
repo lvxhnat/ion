@@ -37,6 +37,7 @@
         "react-icons": "^4.7.1",
         "react-router-dom": "^6.4.2",
         "react-scripts": "5.0.1",
+        "react-tabs": "^6.0.2",
         "reactflow": "^11.4.0",
         "ts-prune": "^0.10.3",
         "universal-cookie": "^4.0.4",

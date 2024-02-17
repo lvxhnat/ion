@@ -27,7 +27,10 @@ export default function ContainerWrapper(props: ContainerWrapperProps) {
     }, [online]);
 
     return (
-        <Stack style={{ height: '100vh', paddingLeft: 20, paddingRight: 20 }} alignItems="center">
+        <Stack
+            style={{ height: '100vh', paddingLeft: 20, paddingRight: 20, overflowY: 'hidden' }}
+            alignItems="center"
+        >
             <CssBaseline />
             <Navigation />
             <Divider style={{ width: '100%' }} />

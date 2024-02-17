@@ -1,11 +1,8 @@
 import * as React from 'react';
 import * as S from '../../style';
 
-import { Skeleton, Typography } from '@mui/material';
-
-import { useTickerDataStore } from 'store/chart/chart';
-
-import { FredSeriesDataEntry, FredSeriesEntry, getFredSeries } from 'endpoints/clients/fred';
+import { Typography } from '@mui/material';
+import { FredSeriesEntry, getFredSeries } from 'endpoints/clients/fred';
 
 import { ChartviewProps } from './type';
 
@@ -13,6 +10,7 @@ import Highcharts, { PointOptionsObject } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useThemeStore } from 'store/theme';
 import { ColorsEnum } from 'common/theme';
+import { useChartDataStore } from 'pages/Economic/store';
 
 // TypeScript interface for props
 interface ChartProps {
@@ -22,8 +20,8 @@ interface ChartProps {
 
 function Chart(props: ChartProps) {
     const themeMode = useThemeStore();
-    const defaultColorScheme = themeMode.mode === 'dark' ? ColorsEnum.white : ColorsEnum.black
-    const axisColorScheme = themeMode.mode === 'dark' ? ColorsEnum.coolgray7 : ColorsEnum.darkGrey
+    const defaultColorScheme = themeMode.mode === 'dark' ? ColorsEnum.white : ColorsEnum.black;
+    const axisColorScheme = themeMode.mode === 'dark' ? ColorsEnum.coolgray7 : ColorsEnum.darkGrey;
 
     const options: Highcharts.Options = {
         chart: {
@@ -38,7 +36,7 @@ function Chart(props: ChartProps) {
             text: props.seriesSelected?.title,
             style: {
                 fontSize: '14px',
-                color: defaultColorScheme
+                color: defaultColorScheme,
             },
         },
         xAxis: {
@@ -54,6 +52,7 @@ function Chart(props: ChartProps) {
             labels: {
                 style: { fontSize: '10px', color: axisColorScheme },
             },
+            gridLineColor: themeMode.mode === 'dark' ? ColorsEnum.darkGrey : ColorsEnum.coolgray5,
         },
         legend: {
             enabled: false, // Disable the legend
@@ -92,38 +91,37 @@ function Chart(props: ChartProps) {
  * @returns
  */
 export default function Chartview(props: ChartviewProps) {
-    const [data, setData] = React.useState<FredSeriesDataEntry[]>([]);
-    const [loading, setLoading] = React.useState<boolean>(true);
+    const [setChartData, loading, setLoading] = useChartDataStore(state => [state.setChartData, state.loading, state.setLoading])
+    const [data, setData] = React.useState<[number, number][]>([]);
 
     const ticker = props.ticker;
 
     React.useEffect(() => {
         setLoading(true);
-        getFredSeries(ticker).then((res: any) => {
-            setData(res.data);
-            setLoading(false);
-        });
+        if (ticker !== '')
+            getFredSeries(ticker).then((res: any) => {
+                const tickerData = res.data.map((val: any) => [new Date(val.date).getTime(), val.value])
+                setData(tickerData);
+                setChartData(tickerData)
+                setLoading(false);
+            });
     }, [props.ticker]);
 
-    return (
-        <S.Item>
-            {props.ticker !== '' ? (
-                <div style={{ width: '100%', height: '100%' }}>
-                    {loading ? (
-                        <Skeleton animation="wave" height="100%" />
-                    ) : !data ? <></> : (
-                        <Chart
-                            seriesSelected={props.seriesSelected}
-                            data={data.map(val => [new Date(val.date).getTime(), val.value])}
-                        />
-                    )}
-                </div>
-            ) : (
-                <S.NoDataAvailableContainer>
-                    <Typography variant="h3"> No Data Available </Typography>
-                    <Typography variant="subtitle1"> Select Series </Typography>
-                </S.NoDataAvailableContainer>
-            )}
-        </S.Item>
+    return props.ticker !== '' ? (
+        loading ? (
+            <></>
+        ) : !data ? (
+            <></>
+        ) : (
+            <Chart
+                seriesSelected={props.seriesSelected}
+                data={data}
+            />
+        )
+    ) : (
+        <S.NoDataAvailableContainer>
+            <Typography variant="h3"> No Data Available </Typography>
+            <Typography variant="subtitle1"> Select Series </Typography>
+        </S.NoDataAvailableContainer>
     );
 }

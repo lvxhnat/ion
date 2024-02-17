@@ -1,11 +1,6 @@
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import { ColorsEnum } from 'common/theme';
-
-export const Item = styled(Box)(({ theme }) => ({
-    height: '100%',
-    color: theme.palette.text.secondary,
-}));
 
 const displayFlexCenter = {
     display: 'flex',
@@ -125,9 +120,8 @@ export const IconButtonWrapper = styled('div')(({ theme }) => ({
 }));
 
 export const SelectedSeriesMainviewContainer = styled('div')(({ theme }) => ({
-    height: '100%w',
+    height: '100%',
     minHeight: '300px',
-    maxHeight: '300px',
 }));
 
 export const NoDataAvailableContainer = styled('div')(({ theme }) => ({

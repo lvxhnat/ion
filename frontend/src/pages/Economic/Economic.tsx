@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as S from './style';
 
 import Typography from '@mui/material/Typography';
-import { CircularProgress, Stack } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import {
@@ -13,7 +13,6 @@ import {
     getFredParentNodes,
 } from 'endpoints/clients/fred';
 
-import { formatDate } from 'common/constant/dates';
 import { DoublyLinkedListNode } from './DoublyLinkedListNode';
 import SeriesSelection from './SeriesSelection';
 import SelectedSeriesSidebar from './SelectedSeriesSidebar';
@@ -175,7 +174,7 @@ export default function Economic() {
                                   })}
                             {/* Generate side panel texts to describe series when series are selected */}
                             {seriesSelected ? (
-                                <SelectedSeriesSidebar seriesSelected={seriesSelected} />
+                                <SelectedSeriesSidebar nodes={nodes} seriesSelected={seriesSelected} />
                             ) : (
                                 <></>
                             )}
