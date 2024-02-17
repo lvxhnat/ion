@@ -1,9 +1,11 @@
-version: "3.8"
+version: "3"
+
 services:
-  postgres:
-    container_name: postgres
-    hostname: postgres
+  postgres-database:
+    container_name: postgres-database
     image: postgres:12.3
-    env_file: env/docker.env
+    hostname: postgres
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
     ports:
-      - "5432:5432"
+      - 5432:5432

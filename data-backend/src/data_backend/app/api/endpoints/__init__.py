@@ -1,0 +1,1 @@
+from data_backend.app.api.endpoints.economic.fred.router import router as fred_router

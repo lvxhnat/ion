@@ -1,92 +1,41 @@
 version: "3"
 
 services:
+
   frontend:
-    container_name: frontend
-    build:
+    build: 
       context: ../
-      dockerfile: docker/main-services/frontend/Dockerfile
-    ports:
-      - 3000:3000
-    environment:
-      NODE_ENV: development
-      REACT_APP_DATA_INGESTION_BASE_URL: http://backend:1236/v2/
-      REACT_APP_WEBSOCKET_URL: ws://backend:1236/
+      dockerfile: docker/frontend/Dockerfile 
+      args:
+        - REACT_APP_DATA_INGESTION_BASE_URL=https://api.ykanalytics.com/api # Point to the backend
+    env_file: frontend/docker.env
     depends_on:
-      backend:
-        condition: service_started
+      - data-ingestion
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes: 
+      - /etc/letsencrypt:/etc/letsencrypt
+    stdin_open: true
+    tty: true
 
-  backend:
-    container_name: backend
-    build:
+  data-ingestion:
+    build: 
       context: ../
-      dockerfile: docker/main-services/backend/Dockerfile
+      dockerfile: docker/data-ingestion/Dockerfile 
     ports:
-      - 1236:1236
-    environment:
-      POSTGRES_URI: postgresql://guest:guest@postgres-database:5432/postgres
+      - "1236:1236"
     depends_on:
-      postgres-database:
-        condition: service_started
+      - database
+    links:
+      - database:database
+    stdin_open: true
+    tty: true
 
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.0.1
-    env_file: ./zookeeper/env/docker.env
-    hostname: zookeeper
-    container_name: zookeeper
-    ports:
-      - ${ION_MAPPED_ZK_PORT:-2181}:2181
-
-  broker:
-    image: confluentinc/cp-kafka:5.4.0
-    env_file: ./broker/env/docker.env
-    hostname: broker
-    container_name: broker
-    depends_on:
-      - zookeeper
-    ports:
-      - ${ION_MAPPED_KAFKA_BROKER_PORT:-9092}:9092
-
-  postgres-database:
+  database:
     container_name: postgres-database
     image: postgres:12.3
-    env_file: ./postgres/env/docker.env
+    env_file: postgres/docker.env
     hostname: postgres
     ports:
-      - "5432:5432"
-
-  prefect-server:
-    container_name: prefect-server
-    build:
-      context: ../
-      dockerfile: docker/prefect/Dockerfile
-    command:
-      - prefect
-      - orion
-      - start
-    ports:
-      - 4200:4200
-    environment:
-      PREFECT_ORION_ANALYTICS_ENABLED: "false"
-      PREFECT_LOGGING_SERVER_LEVEL: WARNING
-    depends_on:
-      postgres-database:
-        condition: service_started
-
-  prefect-agent:
-    container_name: prefect-agent
-    image: prefecthq/prefect:2.7-python3.9
-    command:
-      - prefect
-      - agent
-      - start
-      - -q
-      - treasury
-      - common
-    environment:
-      PREFECT_LOGGING_LEVEL: DEBUG
-      DOCKER_HOST: unix://var/run/docker.sock
-      PREFECT_API_URL: http://prefect-server:4200/api
-    depends_on:
-      prefect-server:
-        condition: service_started
+      - 5432:5432
