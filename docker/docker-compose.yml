@@ -6,11 +6,9 @@ services:
     build: 
       context: ../
       dockerfile: docker/frontend/Dockerfile 
-      args:
-        - REACT_APP_DATA_INGESTION_BASE_URL=https://api.ykanalytics.com/api # Point to the backend
     env_file: frontend/docker.env
     depends_on:
-      - data-ingestion
+      - data-backend
     ports:
       - "80:80"
       - "443:443"
@@ -19,10 +17,11 @@ services:
     stdin_open: true
     tty: true
 
-  data-ingestion:
+  data-backend:
     build: 
       context: ../
-      dockerfile: docker/data-ingestion/Dockerfile 
+      dockerfile: docker/data-backend/Dockerfile 
+    env_file: data-backend/docker.env
     ports:
       - "1236:1236"
     depends_on:

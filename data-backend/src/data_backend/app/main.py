@@ -10,9 +10,9 @@ def create_app() -> FastAPI:
         title="data-backend",
         description="",
         version="1.0.0.",
-        root_path="/",
         contact={"name": "Yi Kuang", "email": "yikuang5@gmail.com"},
     )
+    
     app.include_router(api_router)
 
     origins = [
@@ -34,6 +34,10 @@ def create_app() -> FastAPI:
     return app
 
 app: FastAPI = create_app()
+
+@app.get("/")
+async def root(): 
+    return {"message": "server running."}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=1236, reload=True)

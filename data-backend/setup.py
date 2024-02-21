@@ -31,12 +31,7 @@ base_requirements = {
     "python-dotenv==1.0.0",
 }
 
-framework_common = {
-    "aiohttp==3.8.4",
-    "uvicorn==0.19.0",
-    "pandas",
-    "fastapi==0.85.1",
-}
+framework_common = { "fastapi", "sqlalchemy", "requests", "pandas", "uvicorn", "pydantic-settings" }
 
 setup(
     name=name,

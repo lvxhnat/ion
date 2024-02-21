@@ -9,6 +9,7 @@ export const StyledMenu = styled(Menu)(({ theme }) => ({
 
 export const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
     gap: 5,
+    fontWeight: 'bold',
     width: `calc(350px + 2vw)`,
     whiteSpace: 'unset',
     wordBreak: 'break-all',

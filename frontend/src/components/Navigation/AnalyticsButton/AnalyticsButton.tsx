@@ -24,7 +24,7 @@ export default function AnalyticsButton() {
                     setAnchorEl(event.currentTarget)
                 }
             >
-                <Typography variant="h4">Analytics</Typography>
+                <Typography variant="h3">Analytics</Typography>
             </S.StyledMenuButton>
             <S.StyledMenu
                 id="customized-menu"
@@ -37,7 +37,7 @@ export default function AnalyticsButton() {
                     <div style={{ display: 'flex', gap: 5, width: '100%' }}>
                         <FaChartPie style={{ fontSize: 20 }} />
                         <Stack style={{ gap: 5, width: '80%' }}>
-                            <Typography variant="h4"> Portfolio Distrbution </Typography>
+                            <Typography variant="h3"> Portfolio Distrbution </Typography>
                             <S.ButtonSubtitles variant="subtitle2">
                                 Observe net holdings of ETF industries, aggregated from 2100 ETFs.
                             </S.ButtonSubtitles>

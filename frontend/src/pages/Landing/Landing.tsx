@@ -7,10 +7,9 @@ import { ContainerWrapper } from 'components/Wrappers/ContainerWrapper';
 export default function Landing() {
     return (
         <ContainerWrapper>
-            <Grid container columns={25} spacing={1}>
-                <Grid item xs={5}></Grid>
-                <Grid item xs={14}></Grid>
-                <Grid item xs={6}>
+            <Grid container spacing={1}>
+                <Grid item xs={7}></Grid>
+                <Grid item xs={5}>
                     <LivePlayer />
                 </Grid>
             </Grid>

@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import { ColorsEnum } from 'common/theme';
 
@@ -13,6 +13,12 @@ interface FredRowProps {
     children?: any;
     [x: string]: any;
 }
+
+export const GridWrapper = styled(Grid)(({ theme }) => ({
+    overflowY: 'auto',
+    '&::-webkit-scrollbar': { display: 'none' },
+    height: '100%',
+}));
 
 export const LoadingWrapper = styled('div')(({ theme }) => ({
     gap: 15,
@@ -45,12 +51,13 @@ export const ButtonWrapper = styled('div')<{ disabled?: boolean; selected?: bool
 
 export const BaseDivClass = styled('div')(({ theme }) => ({
     ...displayFlexCenter,
+    justifyContent: 'flex-start',
 }));
 
 export const FredRow = (props: FredRowProps) => {
     return (
         <BaseFredRow {...props}>
-            <Typography variant={props.isTitle ? 'body1' : 'subtitle2'}>
+            <Typography variant={props.isTitle ? 'body1' : 'subtitle1'}>
                 {props.isTitle ? <strong> {props.children} </strong> : props.children}
             </Typography>
         </BaseFredRow>

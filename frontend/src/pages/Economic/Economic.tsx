@@ -1,8 +1,12 @@
 import * as React from 'react';
 import * as S from './style';
 
+import Accordion from '@mui/material/Accordion';
+import { CircularProgress, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { CircularProgress } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import {
@@ -18,6 +22,7 @@ import SeriesSelection from './SeriesSelection';
 import SelectedSeriesSidebar from './SelectedSeriesSidebar';
 import SelectedSeriesMainview from './SelectedSeriesMainview';
 import { ContainerWrapper } from 'components/Wrappers/ContainerWrapper';
+
 
 export default function Economic() {
     const [titles, setTitles] = React.useState<FredParentNodeDTO>([]);
@@ -78,33 +83,28 @@ export default function Economic() {
 
     return (
         <ContainerWrapper>
+            <S.GridWrapper container>
+                <Grid item xs={6}></Grid>
+                <Grid item xs={6}>
             {categoryLoading || rootLoading ? (
                 <S.LoadingWrapper>
                     <CircularProgress color="secondary" />
                     <Typography variant="h3"> Loading Data ... </Typography>
                 </S.LoadingWrapper>
             ) : nodes && nodes.value.selection.id === 0 ? (
-                <div
-                    id="series-container"
-                    style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}
-                >
-                    {Array(titles.length / 2)
+                <div>
+                    {Array(titles.length)
                         .fill(0)
                         .map((_, index) => {
-                            const entry = titles[index * 2];
-                            const nextEntry = titles[index * 2 + 1];
+                            const entry = titles[index];
                             return (
-                                <div
-                                    key={`${entry.parent_node.id}_FredChildDiv`}
-                                    style={{ width: '25%' }}
-                                >
-                                    <div style={{ paddingBottom: 25, paddingTop: 10 }}>
-                                        <S.FredRow
-                                            isTitle
-                                            key={`${entry.parent_node.id}_FredParentRow`}
-                                        >
+                                <Accordion key={`accordion_${index}`}>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                        <Typography variant="body1">
                                             {entry.parent_node.name}
-                                        </S.FredRow>
+                                        </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
                                         {entry.child_node.map((child_entry: FredCategoryEntry) => (
                                             <S.FredRow
                                                 key={`${child_entry.id}_FredChildRow`}
@@ -113,26 +113,13 @@ export default function Economic() {
                                                 {child_entry.name}
                                             </S.FredRow>
                                         ))}
-                                    </div>
-                                    <S.FredRow
-                                        isTitle
-                                        key={`${nextEntry.parent_node.id}_FredParentRow`}
-                                    >
-                                        {nextEntry.parent_node.name}
-                                    </S.FredRow>
-                                    {nextEntry.child_node.map(child_entry => (
-                                        <S.FredRow
-                                            key={`${child_entry.id}_FredChildRow`}
-                                            onClick={() => handleClick(child_entry)}
-                                        >
-                                            {child_entry.name}
-                                        </S.FredRow>
-                                    ))}
-                                </div>
+                                    </AccordionDetails>
+                                </Accordion>
                             );
                         })}
                 </div>
             ) : null}
+            </Grid>
             {nodes && nodes.value.selection.id !== 0 ? (
                 <S.PanelOpener>
                     <S.SidePanelOpener>
@@ -179,6 +166,7 @@ export default function Economic() {
                     </S.MainPanelOpener>
                 </S.PanelOpener>
             ) : null}
+            </S.GridWrapper>
         </ContainerWrapper>
     );
 }

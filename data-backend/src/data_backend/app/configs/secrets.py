@@ -1,5 +1,6 @@
 from pathlib import Path
-from pydantic import BaseSettings, Field
+from pydantic import Field
+from pydantic_settings import BaseSettings
 
 class SecretsConfig(BaseSettings):
     FRED_API_KEY: str = Field(..., env='FRED_API_KEY') # This attribute will be filled with the value of the API_KEY environment variable

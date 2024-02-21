@@ -3,7 +3,6 @@ from fastapi import APIRouter
 from datetime import datetime
 
 from data_backend.app.api.endpoints.economic.fred.clients.series import get_children_category_ids, get_series_data
-from data_backend.app.api.endpoints.economic.fred.models import FredMetaData
 from data_backend.app.api.endpoints.economic.fred.params import (
     FredChildParams,
     FredSeriesParams,
@@ -59,6 +58,4 @@ def get_fred_parent_nodes():
         data.append(entry["parent_node"])
         data += entry["child_node"]
     
-    print(data)
-
     return l1_child_nodes

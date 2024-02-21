@@ -10,4 +10,4 @@ def search_series(
     search_term = "+".join(search_term.split(" "))
     url = f"{BASE_API_PATH}/series/search?search_text={search_term}&api_key={secret_config.FRED_API_KEY}&limit={limit}&file_type=json"
     json_data = requests.get(url).json()
-    return json_data
+    return 

@@ -25,7 +25,7 @@ export default function AlternativeDataButton() {
                     setAnchorEl(event.currentTarget)
                 }
             >
-                <Typography variant="h4">Alternative Data</Typography>
+                <Typography variant="h3">Alternative Data</Typography>
             </S.StyledMenuButton>
             <S.StyledMenu
                 id="customized-menu"
@@ -38,7 +38,7 @@ export default function AlternativeDataButton() {
                     <div style={{ display: 'flex', gap: 5, width: '100%' }}>
                         <RiBankFill style={{ fontSize: 20 }} />
                         <Stack style={{ gap: 5, width: '80%' }}>
-                            <Typography variant="h4"> US Economic Data </Typography>
+                            <Typography variant="h3"> US Economic Data </Typography>
                             <S.ButtonSubtitles variant="subtitle2">
                                 Access the FRED Database, track 823,000 US and international time
                                 series from 114 sources.{' '}

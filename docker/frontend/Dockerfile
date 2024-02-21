@@ -18,9 +18,6 @@ RUN npm install --silent
 
 COPY frontend .
 
-ARG REACT_APP_SERVER
-ENV REACT_APP_SERVER=$REACT_APP_SERVER
-
 RUN npm run build
 
 EXPOSE 3000
