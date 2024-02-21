@@ -1,9 +1,7 @@
 import React from 'react';
 import * as S from '../style';
-import { Menu, MenuItem, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { RiBankFill } from 'react-icons/ri';
-import { ColorsEnum } from 'common/theme';
-import { GiAbstract106 } from 'react-icons/gi';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from 'common/constant';
 

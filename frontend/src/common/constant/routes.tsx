@@ -2,13 +2,9 @@ export const ROUTES = {
     LANDING: '/',
     SIGNIN: '/signin',
     SIGNUP: '/signup',
-    ECONOMIC_DATA: '/economic',
     FORGOT_PASSWORD: '/forgot-password',
-    CHARTDASHBOARD: '/chartdashboard',
-    SECURITIES: '/securities',
-    PORTFOLIO: '/portfolio-administration',
-    EXPLORER: '/explorer',
-    HEALTHCHECK: '/health',
+    ECONOMIC_DATA: '/economic',
+    ABOUT: '/',
 };
 
 export const ASSET_TYPES = {

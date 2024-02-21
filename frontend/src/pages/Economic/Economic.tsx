@@ -23,7 +23,6 @@ import SelectedSeriesSidebar from './SelectedSeriesSidebar';
 import SelectedSeriesMainview from './SelectedSeriesMainview';
 import { ContainerWrapper } from 'components/Wrappers/ContainerWrapper';
 
-
 export default function Economic() {
     const [titles, setTitles] = React.useState<FredParentNodeDTO>([]);
     const [seriesSelected, setSeriesSelected] = React.useState<FredSeriesEntry>();
@@ -86,86 +85,88 @@ export default function Economic() {
             <S.GridWrapper container>
                 <Grid item xs={6}></Grid>
                 <Grid item xs={6}>
-            {categoryLoading || rootLoading ? (
-                <S.LoadingWrapper>
-                    <CircularProgress color="secondary" />
-                    <Typography variant="h3"> Loading Data ... </Typography>
-                </S.LoadingWrapper>
-            ) : nodes && nodes.value.selection.id === 0 ? (
-                <div>
-                    {Array(titles.length)
-                        .fill(0)
-                        .map((_, index) => {
-                            const entry = titles[index];
-                            return (
-                                <Accordion key={`accordion_${index}`}>
-                                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                        <Typography variant="body1">
-                                            {entry.parent_node.name}
-                                        </Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        {entry.child_node.map((child_entry: FredCategoryEntry) => (
-                                            <S.FredRow
-                                                key={`${child_entry.id}_FredChildRow`}
-                                                onClick={() => handleClick(child_entry)}
-                                            >
-                                                {child_entry.name}
-                                            </S.FredRow>
-                                        ))}
-                                    </AccordionDetails>
-                                </Accordion>
-                            );
-                        })}
-                </div>
-            ) : null}
-            </Grid>
-            {nodes && nodes.value.selection.id !== 0 ? (
-                <S.PanelOpener>
-                    <S.SidePanelOpener>
-                        <S.ChildNodesPanel>
-                            <S.BaseDivClass>
-                                <S.IconButtonWrapper onClick={handleBack}>
-                                    <ArrowBackIosIcon fontSize="inherit" />
-                                </S.IconButtonWrapper>
-                                <S.FredRow
-                                    isTitle
-                                    key={`${nodes.value.selection.id}_FredParentRow`}
-                                >
-                                    {nodes.value.selection.name}
-                                </S.FredRow>
-                            </S.BaseDivClass>
-                            {nodes.value.type === 'series'
-                                ? null
-                                : nodes.value.entries.map(entry => {
-                                      return (
-                                          <S.FredRow
-                                              key={`${entry.id}_FredSubChildRow`}
-                                              onClick={() =>
-                                                  handleClick(entry as FredCategoryEntry)
-                                              }
-                                          >
-                                              {(entry as FredCategoryEntry).name}
-                                          </S.FredRow>
-                                      );
-                                  })}
-                            {/* Generate side panel texts to describe series when series are selected */}
-                            {seriesSelected ? (
-                                <SelectedSeriesSidebar
-                                    nodes={nodes}
-                                    seriesSelected={seriesSelected}
-                                />
-                            ) : (
-                                <></>
-                            )}
-                        </S.ChildNodesPanel>
-                    </S.SidePanelOpener>
-                    <S.MainPanelOpener>
-                        <SelectedSeriesMainview nodes={nodes} seriesSelected={seriesSelected} />
-                        <SeriesSelection nodes={nodes} setSeriesSelected={setSeriesSelected} />
-                    </S.MainPanelOpener>
-                </S.PanelOpener>
-            ) : null}
+                    {categoryLoading || rootLoading ? (
+                        <S.LoadingWrapper>
+                            <CircularProgress color="secondary" />
+                            <Typography variant="h3"> Loading Data ... </Typography>
+                        </S.LoadingWrapper>
+                    ) : nodes && nodes.value.selection.id === 0 ? (
+                        <div>
+                            {Array(titles.length)
+                                .fill(0)
+                                .map((_, index) => {
+                                    const entry = titles[index];
+                                    return (
+                                        <Accordion key={`accordion_${index}`}>
+                                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                                <Typography variant="body1">
+                                                    {entry.parent_node.name}
+                                                </Typography>
+                                            </AccordionSummary>
+                                            <AccordionDetails>
+                                                {entry.child_node.map(
+                                                    (child_entry: FredCategoryEntry) => (
+                                                        <S.FredRow
+                                                            key={`${child_entry.id}_FredChildRow`}
+                                                            onClick={() => handleClick(child_entry)}
+                                                        >
+                                                            {child_entry.name}
+                                                        </S.FredRow>
+                                                    )
+                                                )}
+                                            </AccordionDetails>
+                                        </Accordion>
+                                    );
+                                })}
+                        </div>
+                    ) : null}
+                </Grid>
+                {nodes && nodes.value.selection.id !== 0 ? (
+                    <S.PanelOpener>
+                        <S.SidePanelOpener>
+                            <S.ChildNodesPanel>
+                                <S.BaseDivClass>
+                                    <S.IconButtonWrapper onClick={handleBack}>
+                                        <ArrowBackIosIcon fontSize="inherit" />
+                                    </S.IconButtonWrapper>
+                                    <S.FredRow
+                                        isTitle
+                                        key={`${nodes.value.selection.id}_FredParentRow`}
+                                    >
+                                        {nodes.value.selection.name}
+                                    </S.FredRow>
+                                </S.BaseDivClass>
+                                {nodes.value.type === 'series'
+                                    ? null
+                                    : nodes.value.entries.map(entry => {
+                                          return (
+                                              <S.FredRow
+                                                  key={`${entry.id}_FredSubChildRow`}
+                                                  onClick={() =>
+                                                      handleClick(entry as FredCategoryEntry)
+                                                  }
+                                              >
+                                                  {(entry as FredCategoryEntry).name}
+                                              </S.FredRow>
+                                          );
+                                      })}
+                                {/* Generate side panel texts to describe series when series are selected */}
+                                {seriesSelected ? (
+                                    <SelectedSeriesSidebar
+                                        nodes={nodes}
+                                        seriesSelected={seriesSelected}
+                                    />
+                                ) : (
+                                    <></>
+                                )}
+                            </S.ChildNodesPanel>
+                        </S.SidePanelOpener>
+                        <S.MainPanelOpener>
+                            <SelectedSeriesMainview nodes={nodes} seriesSelected={seriesSelected} />
+                            <SeriesSelection nodes={nodes} setSeriesSelected={setSeriesSelected} />
+                        </S.MainPanelOpener>
+                    </S.PanelOpener>
+                ) : null}
             </S.GridWrapper>
         </ContainerWrapper>
     );
