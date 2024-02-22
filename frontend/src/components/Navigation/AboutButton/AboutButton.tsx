@@ -1,7 +1,6 @@
 import React from 'react';
 import * as S from '../style';
-import { Stack, Typography } from '@mui/material';
-import { RiBankFill } from 'react-icons/ri';
+import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from 'common/constant';
 
@@ -14,11 +13,11 @@ export default function AboutButton() {
             disableRipple
             disableFocusRipple
             onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                setAnchorEl(event.currentTarget);
                 navigate(ROUTES.ABOUT);
+                setAnchorEl(event.currentTarget);
             }}
         >
-            <Typography variant="h3">Alternative Data</Typography>
+            <Typography variant="h3">About</Typography>
         </S.StyledMenuButton>
     );
 }

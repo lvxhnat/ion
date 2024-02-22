@@ -27,6 +27,7 @@ import { Divider, FormControl, IconButton, InputAdornment, OutlinedInput } from 
 import GoogleButton from './Others';
 import Copyright from 'components/Skeletons/Copyright';
 import { ColorsEnum } from 'common/theme';
+import { ContainerWrapper } from 'components/Wrappers/ContainerWrapper';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -87,97 +88,94 @@ export default function SignIn() {
     };
 
     return (
-        <ThemeProvider theme={defaultTheme}>
-            <Container component="main" maxWidth="sm">
-                <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    <S.SignInHeaders id="sign-in-headers">
-                        <Typography component="h1" variant="h5">
-                            Sign in
-                        </Typography>
-                    </S.SignInHeaders>
+        <ContainerWrapper hideNavigate>
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}
+            >
+                <S.SignInHeaders id="sign-in-headers">
+                    <Typography component="h1" variant="h5">
+                        Sign in
+                    </Typography>
+                </S.SignInHeaders>
 
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                        <TextField
-                            margin="normal"
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                    />
+                    <FormControl fullWidth variant="standard">
+                        <InputLabel htmlFor="outlined-adornment-password" variant="outlined">
+                            Password
+                        </InputLabel>
+                        <OutlinedInput
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
+                            name="password"
+                            label="Password"
+                            type={showPassword ? 'text' : 'password'}
+                            id="password"
+                            autoComplete="current-password"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() => setShowPassword(show => !show)}
+                                        onMouseDown={(event: React.MouseEvent<HTMLButtonElement>) =>
+                                            event.preventDefault()
+                                        }
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
                         />
-                        <FormControl fullWidth variant="standard">
-                            <InputLabel htmlFor="outlined-adornment-password" variant="outlined">
-                                Password
-                            </InputLabel>
-                            <OutlinedInput
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type={showPassword ? 'text' : 'password'}
-                                id="password"
-                                autoComplete="current-password"
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={() => setShowPassword(show => !show)}
-                                            onMouseDown={(
-                                                event: React.MouseEvent<HTMLButtonElement>
-                                            ) => event.preventDefault()}
-                                            edge="end"
-                                        >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                            />
-                        </FormControl>
-                        <S.StyledButton
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Sign In
-                        </S.StyledButton>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link href={ROUTES.SIGNUP} variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
+                    </FormControl>
+                    <S.StyledButton
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                    >
+                        Sign In
+                    </S.StyledButton>
+                    <Grid container>
+                        <Grid item xs>
+                            <Link href="#" variant="body2">
+                                Forgot password?
+                            </Link>
                         </Grid>
-                        <Divider
-                            style={{ paddingTop: 20, paddingBottom: 20 }}
-                            sx={{ bgColor: ColorsEnum.warmgray2 }}
-                        >
-                            <Typography variant="subtitle2" color={ColorsEnum.warmgray2}>
-                                {' '}
-                                or{' '}
-                            </Typography>
-                        </Divider>
+                        <Grid item>
+                            <Link href={ROUTES.SIGNUP} variant="body2">
+                                {"Don't have an account? Sign Up"}
+                            </Link>
+                        </Grid>
+                    </Grid>
+                    <Divider
+                        style={{ paddingTop: 20, paddingBottom: 20 }}
+                        sx={{ bgColor: ColorsEnum.warmgray2 }}
+                    >
+                        <Typography variant="subtitle2" color={ColorsEnum.warmgray2}>
+                            {' '}
+                            or{' '}
+                        </Typography>
+                    </Divider>
 
-                        <GoogleButton signIn handleLogin={handleGoogleSubmit} />
-                    </Box>
+                    <GoogleButton signIn handleLogin={handleGoogleSubmit} />
                 </Box>
-                <Copyright sx={{ mt: 8, mb: 4 }} />
-            </Container>
-        </ThemeProvider>
+            </Box>
+            <Copyright sx={{ mt: 8, mb: 4 }} />
+        </ContainerWrapper>
     );
 }
