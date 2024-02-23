@@ -4,7 +4,7 @@ export const ROUTES = {
     SIGNUP: '/signup',
     FORGOT_PASSWORD: '/forgot-password',
     ECONOMIC_DATA: '/economic',
-    ABOUT: '/',
+    ABOUT: '/about',
 };
 
 export const ASSET_TYPES = {
