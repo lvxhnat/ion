@@ -1,5 +1,6 @@
-import React from 'react';
+import * as React from 'react';
+import { ContainerWrapper } from 'components/Wrappers/ContainerWrapper';
 
 export default function ForgotPassword() {
-    return <div>ForgotPassword</div>;
+    return <ContainerWrapper>Forgot</ContainerWrapper>;
 }

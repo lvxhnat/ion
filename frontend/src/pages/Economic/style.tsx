@@ -15,7 +15,7 @@ interface FredRowProps {
 }
 
 export const GridWrapper = styled(Grid)(({ theme }) => ({
-    overflowY: 'auto',
+    overflowY: 'hidden',
     '&::-webkit-scrollbar': { display: 'none' },
     height: '100%',
 }));
@@ -51,6 +51,7 @@ export const ButtonWrapper = styled('div')<{ disabled?: boolean; selected?: bool
 
 export const BaseDivClass = styled('div')(({ theme }) => ({
     ...displayFlexCenter,
+    overflow: 'hidden',
     justifyContent: 'flex-start',
 }));
 
@@ -84,9 +85,9 @@ export const SeriesPanel = styled('div')(({ theme }) => ({
 }));
 
 export const SidePanelOpener = styled('div')(({ theme }) => ({
-    width: '25%',
+    width: '100%',
     height: '100%',
-    overflowY: 'auto',
+    overflowY: 'hidden',
     backgroundColor: theme.palette.mode === 'dark' ? ColorsEnum.darkerGrey : 'default',
     '&::-webkit-scrollbar': { display: 'none' },
     display: 'flex',
@@ -94,11 +95,16 @@ export const SidePanelOpener = styled('div')(({ theme }) => ({
 }));
 
 export const MainPanelOpener = styled('div')(({ theme }) => ({
-    width: '75%',
+    width: '100%%',
     height: '100%',
-    overflowY: 'hidden',
+    overflowY: 'scroll',
     display: 'flex',
     flexDirection: 'column',
+}));
+
+export const SeriesSelectorWrapper = styled('div')(({ theme }) => ({
+    overflowY: 'scroll',
+    height: '100%',
     '&::-webkit-scrollbar': { display: 'none' },
 }));
 
@@ -134,7 +140,7 @@ export const IconButtonWrapper = styled('div')(({ theme }) => ({
 }));
 
 export const SelectedSeriesMainviewContainer = styled('div')(({ theme }) => ({
-    height: '100%',
+    height: '400px',
     minHeight: '300px',
 }));
 

@@ -6,6 +6,7 @@ import { ALERTS } from 'common/constant/literals';
 
 export interface ContainerWrapperProps {
     children: React.ReactNode;
+    hideNavigate?: boolean;
 }
 
 export default function ContainerWrapper(props: ContainerWrapperProps) {
@@ -32,7 +33,7 @@ export default function ContainerWrapper(props: ContainerWrapperProps) {
             alignItems="center"
         >
             <CssBaseline />
-            <Navigation />
+            {props.hideNavigate ? null : <Navigation />}
             <Divider style={{ width: '100%' }} />
             <div style={{ paddingTop: 10, height: '100%', width: '100%' }}>{props.children}</div>
             {!online ? (

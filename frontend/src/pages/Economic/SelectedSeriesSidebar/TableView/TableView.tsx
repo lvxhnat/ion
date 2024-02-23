@@ -62,7 +62,7 @@ export default function TableView() {
                                 </StyledTableCell>
                                 <StyledTableCell component="th" scope="row">
                                     <Typography variant="subtitle2" align="center">
-                                        {row[1]}
+                                        {row[1] ? row[1].toFixed(5) : row[1]}
                                     </Typography>
                                 </StyledTableCell>
                             </StyledTableRow>
