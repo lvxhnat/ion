@@ -19,6 +19,8 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
     stdin_open: true
     tty: true
+    networks:
+      - ion-network
 
   data-backend:
     build: 
@@ -33,6 +35,8 @@ services:
       - database:database
     stdin_open: true
     tty: true
+    networks:
+      - ion-network
 
   database:
     container_name: postgres-database
@@ -41,3 +45,9 @@ services:
     hostname: postgres
     ports:
       - 5432:5432
+    networks:
+      - ion-network
+
+networks:
+  ion-network:
+    driver: bridge
