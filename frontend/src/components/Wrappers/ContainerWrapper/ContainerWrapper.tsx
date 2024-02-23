@@ -33,8 +33,8 @@ export default function ContainerWrapper(props: ContainerWrapperProps) {
             alignItems="center"
         >
             <CssBaseline />
-            {props.hideNavigate ? null : <Navigation />}
-            <Divider style={{ width: '100%' }} />
+            <Navigation hideNavigate={props.hideNavigate} />
+            {props.hideNavigate ? <></> : <Divider style={{ width: '100%' }} />}
             <div style={{ paddingTop: 10, height: '100%', width: '100%' }}>{props.children}</div>
             {!online ? (
                 <Snackbar open={true}>
