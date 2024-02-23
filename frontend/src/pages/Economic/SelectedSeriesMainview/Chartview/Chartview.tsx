@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as S from '../../style';
 
-import { Typography } from '@mui/material';
+import { Skeleton, Typography } from '@mui/material';
 import { FredSeriesEntry, getFredSeries } from 'endpoints/clients/fred';
 
 import { ChartviewProps } from './type';
@@ -123,9 +123,6 @@ export default function Chartview(props: ChartviewProps) {
             <Chart seriesSelected={props.seriesSelected} data={data} />
         )
     ) : (
-        <S.NoDataAvailableContainer>
-            <Typography variant="h3"> No Data Available </Typography>
-            <Typography variant="subtitle1"> Select Series </Typography>
-        </S.NoDataAvailableContainer>
+        <S.NoDataAvailableContainer></S.NoDataAvailableContainer>
     );
 }

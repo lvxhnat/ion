@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as S from './style';
 
 import Accordion from '@mui/material/Accordion';
-import { CircularProgress, Grid, Skeleton, Stack } from '@mui/material';
+import { Grid, Skeleton, Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -83,46 +83,8 @@ export default function Economic() {
     return (
         <ContainerWrapper>
             <S.GridWrapper container>
-                <Grid item xs={6}></Grid>
-                <Grid item xs={6} sx={{ paddingBottom: 10 }}>
-                    {categoryLoading || rootLoading ? (
-                        <Stack style={{ gap: 10 }}>
-                            <Skeleton variant="rectangular" width="100%" height={250} />
-                            {Array(5).fill(0).map(() => <Skeleton variant="rectangular" width="100%" height={60} />)}
-                        </Stack>
-                    ) : nodes && nodes.value.selection.id === 0 ? (
-                        <div>
-                            {Array(titles.length)
-                                .fill(0)
-                                .map((_, index) => {
-                                    const entry = titles[index];
-                                    return (
-                                        <Accordion key={`accordion_${index}`} defaultExpanded={ index === 0 }>
-                                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                                <Typography variant="body1">
-                                                    {entry.parent_node.name}
-                                                </Typography>
-                                            </AccordionSummary>
-                                            <AccordionDetails>
-                                                {entry.child_node.map(
-                                                    (child_entry: FredCategoryEntry) => (
-                                                        <S.FredRow
-                                                            key={`${child_entry.id}_FredChildRow`}
-                                                            onClick={() => handleClick(child_entry)}
-                                                        >
-                                                            {child_entry.name}
-                                                        </S.FredRow>
-                                                    )
-                                                )}
-                                            </AccordionDetails>
-                                        </Accordion>
-                                    );
-                                })}
-                        </div>
-                    ) : null}
-                </Grid>
-                {nodes && nodes.value.selection.id !== 0 ? (
-                    <S.PanelOpener>
+                <Grid item xs={4} style={{ overflowY: 'scroll', height: '100%' }}>
+                    {nodes && nodes.value.selection.id !== 0 ? (
                         <S.SidePanelOpener>
                             <S.ChildNodesPanel>
                                 <S.BaseDivClass>
@@ -161,12 +123,71 @@ export default function Economic() {
                                 )}
                             </S.ChildNodesPanel>
                         </S.SidePanelOpener>
+                    ) : null}
+                </Grid>
+                <Grid item xs={8} style={{ overflowY: 'scroll', height: '100%' }}>
+                    {categoryLoading || rootLoading ? (
+                        <Stack style={{ gap: 10 }}>
+                            <Skeleton variant="rectangular" width="100%" height={250} />
+                            {Array(5)
+                                .fill(0)
+                                .map((_, i) => (
+                                    <Skeleton
+                                        key={`${i}_skeleton`}
+                                        variant="rectangular"
+                                        width="100%"
+                                        height={60}
+                                    />
+                                ))}
+                        </Stack>
+                    ) : nodes && nodes.value.selection.id === 0 ? (
+                        <div style={{ paddingBottom: 10 }}>
+                            {Array(titles.length)
+                                .fill(0)
+                                .map((_, index) => {
+                                    const entry = titles[index];
+                                    return (
+                                        <Accordion
+                                            key={`accordion_${index}`}
+                                            defaultExpanded={index === 0}
+                                        >
+                                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                                <Typography variant="body1">
+                                                    {entry.parent_node.name}
+                                                </Typography>
+                                            </AccordionSummary>
+                                            <AccordionDetails>
+                                                {entry.child_node.map(
+                                                    (
+                                                        child_entry: FredCategoryEntry,
+                                                        index: number
+                                                    ) => (
+                                                        <S.FredRow
+                                                            key={`${child_entry.id}_FredChildRow_${index}`}
+                                                            onClick={() => handleClick(child_entry)}
+                                                        >
+                                                            {child_entry.name}
+                                                        </S.FredRow>
+                                                    )
+                                                )}
+                                            </AccordionDetails>
+                                        </Accordion>
+                                    );
+                                })}
+                        </div>
+                    ) : null}
+                    {nodes && nodes.value.selection.id !== 0 ? (
                         <S.MainPanelOpener>
                             <SelectedSeriesMainview nodes={nodes} seriesSelected={seriesSelected} />
-                            <SeriesSelection nodes={nodes} setSeriesSelected={setSeriesSelected} />
+                            <S.SeriesSelectorWrapper>
+                                <SeriesSelection
+                                    nodes={nodes}
+                                    setSeriesSelected={setSeriesSelected}
+                                />
+                            </S.SeriesSelectorWrapper>
                         </S.MainPanelOpener>
-                    </S.PanelOpener>
-                ) : null}
+                    ) : null}
+                </Grid>
             </S.GridWrapper>
         </ContainerWrapper>
     );

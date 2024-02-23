@@ -1,8 +1,10 @@
-import pandas as pd
 from fastapi import APIRouter
 from datetime import datetime
 
-from data_backend.app.api.endpoints.economic.fred.clients.series import get_children_category_ids, get_series_data
+from data_backend.app.api.endpoints.economic.fred.clients.series import (
+    get_children_category_ids,
+    get_series_data,
+)
 from data_backend.app.api.endpoints.economic.fred.params import (
     FredChildParams,
     FredSeriesParams,
@@ -11,6 +13,7 @@ from data_backend.app.api.endpoints.economic.fred.params import (
 router = APIRouter(
     tags=["government"],
 )
+
 
 @router.get("/health")
 def health_check():
@@ -45,9 +48,7 @@ def get_fred_parent_nodes():
                 "child_node": [
                     *map(
                         lambda s: {**s, "last_updated": time_now},
-                        get_children_category_ids(parent_node["id"])[
-                            "data"
-                        ],
+                        get_children_category_ids(parent_node["id"])["data"],
                     )
                 ],
             }
@@ -57,5 +58,5 @@ def get_fred_parent_nodes():
     for entry in l1_child_nodes:
         data.append(entry["parent_node"])
         data += entry["child_node"]
-    
+
     return l1_child_nodes
