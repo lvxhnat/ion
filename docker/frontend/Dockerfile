@@ -9,9 +9,10 @@ RUN sed -i 's/stretch/buster/' /etc/apt/sources.list
 
 # Install Certbot and cron, execute the script
 RUN apt-get update && apt-get install -y certbot cron
-COPY docker/frontend/docker-entrypoint.sh .
-RUN chmod +x /app/frontend/docker-entrypoint.sh
-RUN echo "0 23 * * * root /app/frontend/docker-entrypoint.sh" > /etc/cron.d/certificate_renewal
+
+# COPY docker/frontend/docker-entrypoint.sh .
+# RUN chmod +x /app/frontend/docker-entrypoint.sh
+# RUN echo "0 23 * * * root /app/frontend/docker-entrypoint.sh" > /etc/cron.d/certificate_renewal
 
 COPY frontend/package.json .
 RUN npm install --silent
