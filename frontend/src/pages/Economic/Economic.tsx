@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as S from './style';
 
 import Accordion from '@mui/material/Accordion';
-import { CircularProgress, Grid } from '@mui/material';
+import { CircularProgress, Grid, Skeleton, Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -84,12 +84,12 @@ export default function Economic() {
         <ContainerWrapper>
             <S.GridWrapper container>
                 <Grid item xs={6}></Grid>
-                <Grid item xs={6}>
+                <Grid item xs={6} sx={{ paddingBottom: 10 }}>
                     {categoryLoading || rootLoading ? (
-                        <S.LoadingWrapper>
-                            <CircularProgress color="secondary" />
-                            <Typography variant="h3"> Loading Data ... </Typography>
-                        </S.LoadingWrapper>
+                        <Stack style={{ gap: 10 }}>
+                            <Skeleton variant="rectangular" width="100%" height={250} />
+                            {Array(5).fill(0).map(() => <Skeleton variant="rectangular" width="100%" height={60} />)}
+                        </Stack>
                     ) : nodes && nodes.value.selection.id === 0 ? (
                         <div>
                             {Array(titles.length)
@@ -97,7 +97,7 @@ export default function Economic() {
                                 .map((_, index) => {
                                     const entry = titles[index];
                                     return (
-                                        <Accordion key={`accordion_${index}`}>
+                                        <Accordion key={`accordion_${index}`} defaultExpanded={ index === 0 }>
                                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                                 <Typography variant="body1">
                                                     {entry.parent_node.name}

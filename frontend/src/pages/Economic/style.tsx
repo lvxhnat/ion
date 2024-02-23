@@ -134,7 +134,7 @@ export const IconButtonWrapper = styled('div')(({ theme }) => ({
 }));
 
 export const SelectedSeriesMainviewContainer = styled('div')(({ theme }) => ({
-    height: '100%',
+    height: '400px',
     minHeight: '300px',
 }));
 
