@@ -14,10 +14,10 @@ RUN apt-get update && apt-get install -y certbot cron
 # RUN chmod +x /app/frontend/docker-entrypoint.sh
 # RUN echo "0 23 * * * root /app/frontend/docker-entrypoint.sh" > /etc/cron.d/certificate_renewal
 
-COPY frontend/package.json .
+COPY ../../frontend/package.json .
 RUN npm install --silent
 
-COPY frontend .
+COPY ../../frontend .
 
 RUN npm run build
 
