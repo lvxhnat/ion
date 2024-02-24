@@ -16,6 +16,7 @@ services:
       - "80:80"
       - "443:443"
     volumes: 
+      - ../frontend:/app/frontend
       - /etc/letsencrypt:/etc/letsencrypt
     stdin_open: true
     tty: true
