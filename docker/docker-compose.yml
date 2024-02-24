@@ -7,15 +7,21 @@ services:
       context: ../
       dockerfile: docker/frontend/Dockerfile 
     env_file: frontend/docker.env
+    environment: 
+      - REACT_APP_DATA_INGESTION_BASE_URL="http://api.finflow.cloud/"
+      - REACT_APP_ION_BACKEND_BASE_URL="http://api.finflow.cloud/"
     depends_on:
       - data-backend
     ports:
       - "80:80"
       - "443:443"
     volumes: 
+      - ../frontend:/app/frontend
       - /etc/letsencrypt:/etc/letsencrypt
     stdin_open: true
     tty: true
+    networks:
+      - ion-network
 
   data-backend:
     build: 
@@ -30,11 +36,21 @@ services:
       - database:database
     stdin_open: true
     tty: true
+    networks:
+      - ion-network
 
   database:
     container_name: postgres-database
     image: postgres:12.3
-    env_file: postgres/docker.env
+    environment: 
+      - POSTGRES_USER=guest
+      - POSTGRES_PASSWORD=guest
     hostname: postgres
     ports:
       - 5432:5432
+    networks:
+      - ion-network
+
+networks:
+  ion-network:
+    driver: bridge

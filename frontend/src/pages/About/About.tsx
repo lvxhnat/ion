@@ -1,7 +1,9 @@
 import * as React from 'react';
+import * as S from './style';
 import { Grid, Typography } from '@mui/material';
 import { ContainerWrapper } from 'components/Wrappers/ContainerWrapper';
 import Typewriter from 'typewriter-effect';
+import Author from '../../assets/people/author.jpeg'
 
 const TEXT = {
     SLOGAN: 'Streamlining Insights, Powering Decisions',
@@ -15,23 +17,33 @@ const TEXT = {
 export default function About() {
     return (
         <ContainerWrapper>
-            <Grid container justifyContent="center" style={{ paddingTop: 50 }}>
-                <Typography variant="h1">
-                    <Typewriter
-                        options={{
-                            strings: [TEXT.SLOGAN],
-                            autoStart: true,
-                            loop: true,
-                            deleteSpeed: 10,
-                        }}
-                    />
-                </Typography>
-            </Grid>
-            <Grid container style={{ padding: 100 }}>
-                <Typography variant="subtitle1" align="center">
-                    {TEXT.ABOUT}
-                </Typography>
-            </Grid>
+            <S.AboutWrapper>
+                <Grid container justifyContent="center" style={{ paddingTop: 50 }}>
+                    <Typography variant="h1">
+                        <Typewriter
+                            options={{
+                                strings: [TEXT.SLOGAN],
+                                autoStart: true,
+                                loop: true,
+                                deleteSpeed: 10,
+                            }}
+                        />
+                    </Typography>
+                </Grid>
+                <Grid container style={{ padding: 100 }}>
+                    <Typography variant="body2" align="center">
+                        {TEXT.ABOUT}
+                    </Typography>
+                </Grid>
+                <Grid container style={{ padding: 100, paddingTop: 0 }}>
+                    <Grid item xs={6} display="flex" justifyContent={"center"}>
+                    <img src={Author} width={400} height={400} style={{ borderRadius: 500 }} />
+                    </Grid>
+                    <Grid item xs={6}> 
+                        <Typography> Passion </Typography>
+                    </Grid>
+                </Grid>
+            </S.AboutWrapper>
         </ContainerWrapper>
     );
 }
