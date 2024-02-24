@@ -6,7 +6,7 @@ services:
     build: 
       context: ../
       dockerfile: docker/frontend/Dockerfile 
-    env_file: frontend/docker.env
+    env_file: docker/frontend/docker.env
     environment: 
       - REACT_APP_DATA_INGESTION_BASE_URL="http://api.finflow.cloud/"
       - REACT_APP_ION_BACKEND_BASE_URL="http://api.finflow.cloud/"
@@ -26,7 +26,7 @@ services:
     build: 
       context: ../
       dockerfile: docker/data-backend/Dockerfile 
-    env_file: data-backend/docker.env
+    env_file: docker/data-backend/docker.env
     ports:
       - "1236:1236"
     depends_on:
@@ -41,7 +41,9 @@ services:
   database:
     container_name: postgres-database
     image: postgres:12.3
-    env_file: postgres/docker.env
+    environment: 
+      - POSTGRES_USER=guest
+      - POSTGRES_PASSWORD=guest
     hostname: postgres
     ports:
       - 5432:5432
