@@ -4,16 +4,15 @@ import { getFirestore } from '@firebase/firestore';
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: process.env.REACT_APP_API_KEY,
-    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-    projectId: process.env.REACT_APP_PROJECT_ID,
-    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-    appId: process.env.REACT_APP_APP_ID,
-    measurementId: process.env.REACT_APP_MEASUREMENT_ID,
+    apiKey: "AIzaSyDBzVjVqiMNlaw-LmGBtWAkXzx1xWvXipo",
+    authDomain: "finflow-7e642.firebaseapp.com",
+    projectId: "finflow-7e642",
+    storageBucket: "finflow-7e642.appspot.com",
+    messagingSenderId: "186707564387",
+    appId: "1:186707564387:web:80f82931c1022158f32556",
+    measurementId: "G-XJ4VEZS369"
 };
 
 const provider = new GoogleAuthProvider();
