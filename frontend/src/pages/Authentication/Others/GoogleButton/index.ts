@@ -1,3 +1,3 @@
-import GoogleButton from './GoogleButton';
+import GoogleButton from "./GoogleButton";
 
 export default GoogleButton;

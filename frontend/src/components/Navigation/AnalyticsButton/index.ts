@@ -1,3 +1,3 @@
-import AnalyticsButton from './AnalyticsButton';
+import AnalyticsButton from "./AnalyticsButton";
 
 export default AnalyticsButton;

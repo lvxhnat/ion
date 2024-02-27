@@ -1,3 +1,3 @@
-import SeriesSelection from './SeriesSelection';
+import SeriesSelection from "./SeriesSelection";
 
 export default SeriesSelection;

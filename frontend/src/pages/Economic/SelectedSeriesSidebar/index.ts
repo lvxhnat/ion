@@ -1,3 +1,3 @@
-import SelectedSeriesSidebar from './SelectedSeriesSidebar';
+import SelectedSeriesSidebar from "./SelectedSeriesSidebar";
 
 export default SelectedSeriesSidebar;

@@ -1,3 +1,3 @@
-import AboutButton from './AboutButton';
+import AboutButton from "./AboutButton";
 
 export default AboutButton;

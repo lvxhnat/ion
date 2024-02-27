@@ -1,3 +1,3 @@
-import Economic from './Economic';
+import Economic from "./Economic";
 
 export default Economic;

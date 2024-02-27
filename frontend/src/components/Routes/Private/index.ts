@@ -1,3 +1,3 @@
-import Private from './Private';
+import Private from "./Private";
 
 export default Private;

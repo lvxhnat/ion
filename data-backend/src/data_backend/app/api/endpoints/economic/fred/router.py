@@ -1,6 +1,9 @@
 from fastapi import APIRouter
 from datetime import datetime
 
+from data_backend.app.api.endpoints.economic.fred.clients.search import (
+    get_search_results,
+)
 from data_backend.app.api.endpoints.economic.fred.clients.series import (
     get_children_category_ids,
     get_series_data,
@@ -8,6 +11,7 @@ from data_backend.app.api.endpoints.economic.fred.clients.series import (
 from data_backend.app.api.endpoints.economic.fred.params import (
     FredChildParams,
     FredSeriesParams,
+    FredSearchParams,
 )
 
 router = APIRouter(
@@ -23,6 +27,11 @@ def health_check():
 @router.post("/series")
 def get_series(params: FredSeriesParams):
     return get_series_data(params.series_id)
+
+
+@router.post("/search")
+def get_search(params: FredSearchParams):
+    return get_search_results(params.query, params.limit)
 
 
 @router.post("/child")

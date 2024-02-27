@@ -1,3 +1,3 @@
-import RootSelection from './RootSelection';
+import RootSelection from "./RootSelection";
 
 export default RootSelection;

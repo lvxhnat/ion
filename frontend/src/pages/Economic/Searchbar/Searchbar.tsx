@@ -1,33 +1,83 @@
 import * as React from 'react';
-import Paper from '@mui/material/Paper';
+import * as S from './style';
 import InputBase from '@mui/material/InputBase';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import DirectionsIcon from '@mui/icons-material/Directions';
+import { useDebounce } from 'common/hooks/useDebounce';
+import { getSearchResults } from './requests';
+import MenuItem from '@mui/material/MenuItem'; // For individual search results
+import ClickAwayListener from '@mui/material/ClickAwayListener'; // To close dropdown when clicking away
+import { Grid } from '@mui/material';
+import GridTypography from 'components/Wrappers/GridTypography/GridTypography';
 
 export default function SearchBar() {
+    const [value, setValue] = React.useState<string>('');
+    const [results, setResults] = React.useState<any[]>([]); // Assuming results are an array
+    const [open, setOpen] = React.useState<boolean>(false); // To control the dropdown visibility
+
+    const debounceSearchQuery = useDebounce(value, 500);
+    React.useEffect(() => {
+        if (debounceSearchQuery) {
+            const searchProps = {
+                query: value, 
+                limit: 100,
+            }
+            getSearchResults(searchProps).then((res: any) => {
+                setResults(res.data.seriess); // Assuming res.data is an array
+                setOpen(true); // Show dropdown with results
+                console.log(res.data);
+            });
+        } else {
+            setOpen(false); // Hide dropdown if query is empty
+        }
+    }, [debounceSearchQuery]);
+
+    const handleClickAway = () => {
+        setOpen(false); // Hide dropdown when clicking away
+    };
+
     return (
-        <Paper
-            component="form"
-            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
-        >
-            <IconButton sx={{ p: '10px' }} aria-label="menu">
-                <MenuIcon />
-            </IconButton>
-            <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                placeholder="Search Google Maps"
-                inputProps={{ 'aria-label': 'search google maps' }}
-            />
-            <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-                <SearchIcon />
-            </IconButton>
-            <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-            <IconButton color="primary" sx={{ p: '10px' }} aria-label="directions">
-                <DirectionsIcon />
-            </IconButton>
-        </Paper>
+        <ClickAwayListener onClickAway={handleClickAway}>
+            <div style={{ paddingBottom: 10 }}>
+                <S.SearchWrapper>
+                    <IconButton sx={{ p: '10px' }} aria-label="menu">
+                        <MenuIcon />
+                    </IconButton>
+                    <InputBase
+                        sx={{ ml: 1, flex: 1 }}
+                        placeholder="Search FRED Database"
+                        inputProps={{ 'aria-label': 'search database' }}
+                        value={value}
+                        onChange={(event) => {
+                            setValue(event.target.value)
+                        }}
+                    />
+                    <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                        <SearchIcon />
+                    </IconButton>
+                </S.SearchWrapper>
+                {open && (
+                        <S.ResultsWrapper>
+                            {results.map((result, index) => (
+                                <MenuItem key={index} onClick={() => setValue(result)}>
+                                    <Grid container columns={13} columnGap={2}>
+                                    <GridTypography xs={10} variant="subtitle1" noWrap>
+                                        {result.title}
+                                    </GridTypography>
+                                    <GridTypography xs={1} variant="subtitle1">
+                                        {result.frequency}
+                                    </GridTypography>
+                                    <GridTypography xs={1} variant="subtitle1">
+                                        {result.observation_start.slice(0,4)} - {result.observation_end.slice(0,4)}
+                                    </GridTypography>
+                                    </Grid>
+                                </MenuItem>
+                            ))}
+                            </S.ResultsWrapper>
+                    )}
+            </div>
+            
+        </ClickAwayListener>
     );
 }

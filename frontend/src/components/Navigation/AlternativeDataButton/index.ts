@@ -1,3 +1,3 @@
-import AlternativeDataButton from './AlternativeDataButton';
+import AlternativeDataButton from "./AlternativeDataButton";
 
 export default AlternativeDataButton;

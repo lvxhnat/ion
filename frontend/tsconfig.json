@@ -1,23 +1,23 @@
 {
-    "compilerOptions": {
-        "target": "es6",
-        "lib": ["dom", "dom.iterable"],
-        "allowJs": true,
-        "skipLibCheck": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "noEmit": true,
-        "esModuleInterop": true,
-        "module": "esnext",
-        "moduleResolution": "node",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "jsx": "preserve",
-        "jsxImportSource": "@emotion/react",
-        "incremental": true,
-        "baseUrl": "./src",
-        "strictPropertyInitialization": false
-    },
-    "include": ["**/*.ts", "**/*.tsx", "src/static/", "jest.config.js"],
-    "exclude": ["node_modules"]
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["dom", "dom.iterable"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "jsxImportSource": "@emotion/react",
+    "incremental": true,
+    "baseUrl": "./src",
+    "strictPropertyInitialization": false
+  },
+  "include": ["**/*.ts", "**/*.tsx", "src/static/", "jest.config.js"],
+  "exclude": ["node_modules"]
 }
