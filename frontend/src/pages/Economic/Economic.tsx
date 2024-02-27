@@ -128,7 +128,7 @@ export default function Economic() {
           ) : null}
         </Grid>
         <Grid item xs={8} sx={{ overflowY: "scroll", height: "100%", "&::-webkit-scrollbar": { display: "none" }, }}>
-          <SearchBar />
+          
           {categoryLoading || rootLoading ? (
             <Stack style={{ gap: 10 }}>
               <Skeleton variant="rectangular" width="100%" height={250} />
@@ -144,7 +144,8 @@ export default function Economic() {
                 ))}
             </Stack>
           ) : nodes && nodes.value.selection.id === 0 ? (
-            <div style={{ paddingBottom: 10 }}>
+            <React.Fragment>
+            <SearchBar />
               {Array(titles.length)
                 .fill(0)
                 .map((_, index) => {
@@ -174,7 +175,7 @@ export default function Economic() {
                     </Accordion>
                   );
                 })}
-            </div>
+            </React.Fragment>
           ) : null}
           {nodes && nodes.value.selection.id !== 0 ? (
             <S.MainPanelOpener>

@@ -8,8 +8,9 @@ import { useDebounce } from 'common/hooks/useDebounce';
 import { getSearchResults } from './requests';
 import MenuItem from '@mui/material/MenuItem'; // For individual search results
 import ClickAwayListener from '@mui/material/ClickAwayListener'; // To close dropdown when clicking away
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import GridTypography from 'components/Wrappers/GridTypography/GridTypography';
+import { ColorsEnum } from 'common/theme';
 
 export default function SearchBar() {
     const [value, setValue] = React.useState<string>('');
@@ -39,7 +40,7 @@ export default function SearchBar() {
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
-            <div style={{ paddingBottom: 10 }}>
+            <div style={{ paddingBottom: 10, position: 'relative' }}>
                 <S.SearchWrapper>
                     <IconButton sx={{ p: '10px' }} aria-label="menu">
                         <MenuIcon />
@@ -59,7 +60,7 @@ export default function SearchBar() {
                 </S.SearchWrapper>
                 {open && (
                         <S.ResultsWrapper>
-                            {results.map((result, index) => (
+                            {(results.length !== 0) ? results.map((result, index) => (
                                 <MenuItem key={index} onClick={() => setValue(result)}>
                                     <Grid container columns={13} columnGap={2}>
                                     <GridTypography xs={10} variant="subtitle1" noWrap>
@@ -73,7 +74,9 @@ export default function SearchBar() {
                                     </GridTypography>
                                     </Grid>
                                 </MenuItem>
-                            ))}
+                            )) : <MenuItem disabled> 
+                                <Typography variant="subtitle1" align="center" padding={1}>No Results Found for Query. </Typography>
+                             </MenuItem>}
                             </S.ResultsWrapper>
                     )}
             </div>
