@@ -5,6 +5,7 @@ export const ROUTES = {
   FORGOT_PASSWORD: "/forgot-password",
   ECONOMIC_DATA: "/economic",
   ABOUT: "/about",
+  PORTFOLIO: "/portfolio"
 };
 
 export const ASSET_TYPES = {

@@ -8,6 +8,7 @@ import { SignIn, SignUp } from "pages/Authentication";
 import Landing from "pages/Landing";
 import Economic from "pages/Economic";
 import About from "pages/About";
+import Portfolio from "pages/Portfolio";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path={ROUTES.SIGNUP} element={<SignUp />} />
         <Route path={ROUTES.ABOUT} element={<About />} />
         <Route path={ROUTES.LANDING} element={<Private FC={Landing} />} />
+        <Route path={ROUTES.PORTFOLIO} element={<Private FC={Portfolio} />} />
         <Route
           path={ROUTES.ECONOMIC_DATA}
           element={<Private FC={Economic} />}

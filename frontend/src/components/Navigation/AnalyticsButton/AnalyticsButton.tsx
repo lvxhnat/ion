@@ -17,7 +17,6 @@ export default function AnalyticsButton() {
   return (
     <div>
       <S.StyledMenuButton
-        disabled
         disableRipple
         disableFocusRipple
         onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
@@ -33,14 +32,13 @@ export default function AnalyticsButton() {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        <S.StyledMenuItem onClick={() => handleClose(ROUTES.ECONOMIC_DATA)}>
+        <S.StyledMenuItem onClick={() => handleClose(ROUTES.PORTFOLIO)}>
           <div style={{ display: "flex", gap: 5, width: "100%" }}>
             <FaChartPie style={{ fontSize: 20 }} />
             <Stack style={{ gap: 5, width: "80%" }}>
-              <Typography variant="h3"> Portfolio Distrbution </Typography>
+              <Typography variant="h3"> Portfolio Analytics </Typography>
               <S.ButtonSubtitles variant="subtitle2">
-                Observe net holdings of ETF industries, aggregated from 2100
-                ETFs.
+                Analyse ETF Positions
               </S.ButtonSubtitles>
             </Stack>
           </div>
