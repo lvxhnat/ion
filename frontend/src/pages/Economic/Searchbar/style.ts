@@ -16,6 +16,6 @@ export const ResultsWrapper = styled(Paper)(({ theme }) => ({
   ...widthSettings,
   zIndex: 10,
   maxHeight: 300,
-  overflowY: 'scroll',
+  overflowY: "scroll",
   position: "absolute",
 }));

@@ -9,6 +9,7 @@ import Landing from "pages/Landing";
 import Economic from "pages/Economic";
 import About from "pages/About";
 import Portfolio from "pages/Portfolio";
+import PortfolioView from "pages/[PortfolioView]";
 
 function App() {
   return (
@@ -19,6 +20,10 @@ function App() {
         <Route path={ROUTES.ABOUT} element={<About />} />
         <Route path={ROUTES.LANDING} element={<Private FC={Landing} />} />
         <Route path={ROUTES.PORTFOLIO} element={<Private FC={Portfolio} />} />
+        <Route
+          path={`${ROUTES.PORTFOLIO}/:portfolioName`}
+          element={<Private FC={PortfolioView} />}
+        />
         <Route
           path={ROUTES.ECONOMIC_DATA}
           element={<Private FC={Economic} />}
