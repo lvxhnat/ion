@@ -1,10 +1,10 @@
 import axios from "axios";
 import { ENDPOINTS } from "endpoints/endpoints";
 
-const request = (type: "ion-backend" | "data-ingestion") => {
+const request = (type: "ion-backend" | "data-backend") => {
   const axiosInstance = axios.create({
     baseURL:
-      type === "data-ingestion"
+      type === "data-backend"
         ? ENDPOINTS.BASEURLS.DATA_INGESTION
         : ENDPOINTS.BASEURLS.ION_BACKEND,
     timeout: 60000,

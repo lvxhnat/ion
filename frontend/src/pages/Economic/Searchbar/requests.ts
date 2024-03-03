@@ -7,7 +7,7 @@ interface SearchResultsProps {
 }
 
 export const getSearchResults = (props: SearchResultsProps) => {
-  return request("data-ingestion").post(
+  return request("data-backend").post(
     ENDPOINTS.PRIVATE.FRED_SEARCH_ENDPOINT,
     { query: props.query, limit: props.limit }
   );

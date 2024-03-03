@@ -112,7 +112,9 @@ const TransactionsTable: React.FC = () => {
         style={{ marginBottom: "20px" }}
         disabled={hasUnconfirmedTransaction}
       >
-        Add Transaction
+        <Typography variant="subtitle1">
+          Add Transaction
+        </Typography>
       </Button>
 
       <Table size="small" sx={{ tableLayout: "fixed", width: "100%" }}>
@@ -188,28 +190,28 @@ const TransactionsTable: React.FC = () => {
                 </TableCell>
               ))}
               <TableCell sx={{ py: 0.5 }}>
-                {editId === transaction.id ? (
+                {/* Always show the delete button */}
+                <IconButton
+                  color="secondary"
+                  onClick={() => handleDelete(transaction.id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+                {editId === transaction.id && (
                   <IconButton
                     color="primary"
                     onClick={() => handleSave(transaction)}
                   >
                     <CheckIcon />
                   </IconButton>
-                ) : (
-                  <>
-                    <IconButton
-                      color="default"
-                      onClick={() => handleEdit(transaction.id)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      color="secondary"
-                      onClick={() => handleDelete(transaction.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </>
+                )}
+                {editId !== transaction.id && (
+                  <IconButton
+                    color="default"
+                    onClick={() => handleEdit(transaction.id)}
+                  >
+                    <EditIcon />
+                  </IconButton>
                 )}
               </TableCell>
             </TableRow>

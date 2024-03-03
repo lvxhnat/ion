@@ -7,7 +7,13 @@ export default function LivePlayer() {
   React.useEffect(() => {
     playerRef.current.muted = true;
     playerRef.current.autoPlay = true;
-    playerRef.current.play();
+    return () => {
+      if (playerRef.current) {
+        playerRef.current.pause(); // Pause the video
+        playerRef.current.src = ""; // Reset the source to stop downloading the video
+        // Optionally, set playerRef.current.load() if you want to completely reset the video state
+      }
+    };
   }, [playerRef.current]);
 
   return (
