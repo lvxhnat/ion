@@ -10,7 +10,7 @@ with open(pathlib.Path(here, f"src/__init__.py"), encoding="utf-8") as f:
     package_name = re.search(
         r"__package_name__\s*=\s*['\"]([^'\"]+)['\"]", f.read()
     ).group(1)
-    
+
     if not package_name:
         raise ValueError(
             f"Can't find __package_name__ in {package_name}/__init__.py"
@@ -19,25 +19,19 @@ with open(pathlib.Path(here, f"src/__init__.py"), encoding="utf-8") as f:
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-base_requirements = {
-    "typing_extensions>=3.7.4.3 ;  python_version < '3.8'",
-    "typing_extensions>=3.10.0.2 ;  python_version >= '3.8'",
-    "mypy_extensions>=0.4.3",
-    "typing-inspect",
-    "pydantic>=1.5.1",
-    "mixpanel>=4.9.0",
-    "python-dotenv==1.0.0",
-}
 
-framework_common = {
-    "aiohttp==3.8.4",
-    "fastapi==0.85.1",
-    "uvicorn==0.19.0",
-    "websockets==10.4",
-    "kombu==5.2.4",
-    "celery==5.2.7",
-    "psycopg2-binary",
+base_requirements = {
+    "aiohttp",
+    "celery",
+    "fastapi",
     "firebase-admin",
+    "psycopg2-binary",
+    "pydantic-settings",
+    "python-dotenv",
+    "SQLAlchemy",
+    "uvicorn",
+    "websockets",
+    "kombu",
 }
 
 dev_requirements = {
@@ -64,7 +58,7 @@ setup(
     long_description_content_type="text/markdown",
     package_dir={"": "src"},
     packages=find_packages("src", exclude=["*tests"]),
-    install_requires=list(base_requirements | framework_common),
+    install_requires=list(base_requirements),
     entry_points={
         "console_scripts": [
             f"{package_name} = {package_name}.launchers.cli:cli"
