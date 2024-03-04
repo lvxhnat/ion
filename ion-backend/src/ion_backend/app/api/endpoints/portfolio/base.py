@@ -5,6 +5,9 @@ from fastapi import APIRouter, Depends, Query
 
 from ion_backend.app.services.postgres.base import get_session
 from ion_backend.app.services.postgres.tables import UserPortfolios
+from ion_backend.app.api.endpoints.portfolio.params import (
+    CreateUserPortfolioParams,
+)
 
 router = APIRouter(tags=["portfolio"], prefix="/portfolio")
 
@@ -23,10 +26,10 @@ def get_user_portfolios(
 
 @router.post("/user-portfolios")
 def create_user_portfolio(
-    user_id: str = Query(None),
-    portfolio_name: str = Query(None),
+    params: CreateUserPortfolioParams,
     session: Session = Depends(get_session),
 ):
+    user_id, portfolio_name = params.user_id, params.portfolio_name
     if user_id is None:
         raise ValueError("User ID cannot be null")
     portfolio_id: str = str(uuid.uuid4())

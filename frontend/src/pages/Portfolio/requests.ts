@@ -11,6 +11,6 @@ export const getUserPortfolios = (userId: string) => {
 export const createUserPortfolio = (userId: string, portfolioName: string) => {
     return request("ion-backend").post(
         ENDPOINTS.PRIVATE.USER_PORTFOLIOS_ENDPOINT,
-        { params: { user_id: userId, portfolio_name: portfolioName } }
+        { user_id: userId, portfolio_name: portfolioName }
     );
 };
