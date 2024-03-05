@@ -15,7 +15,7 @@ export default function AnalyticsButton() {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <S.StyledMenuButton
         disableRipple
         disableFocusRipple
@@ -44,6 +44,6 @@ export default function AnalyticsButton() {
           </S.IconStackWrapper>
         </S.StyledMenuItem>
       </S.StyledMenu>
-    </div>
+    </React.Fragment>
   );
 }

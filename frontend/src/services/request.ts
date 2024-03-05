@@ -22,9 +22,6 @@ const request = (type: "ion-backend" | "data-backend") => {
 };
 
 async function error(error: any) {
-  const originalRequest = error.config;
-
-  console.error(error);
 
   if (typeof error.response === "undefined") {
     // window.location.href = '/error404/';
@@ -37,7 +34,7 @@ async function error(error: any) {
     error.response.statusText === "Unauthorized"
   ) {
   }
-  console.error(error.response);
+
   // specific error handling done elsewhere
   return await Promise.reject(error);
 }

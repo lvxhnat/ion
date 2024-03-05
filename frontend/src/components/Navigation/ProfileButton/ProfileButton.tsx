@@ -10,10 +10,7 @@ import ToggleThemeMode from "./ToggleThemeMode";
 const ProfileButton: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
-  const [cookies, , removeCookies] = useCookies([
-    "access_token",
-    "refresh_token",
-  ]);
+  const [, , removeCookies] = useCookies();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -27,8 +24,7 @@ const ProfileButton: React.FC = () => {
     const auth = getAuth(app);
     auth.signOut().then(() => {
       navigate(ROUTES.SIGNIN);
-      removeCookies("access_token");
-      removeCookies("refresh_token");
+      removeCookies("user");
     });
     handleMenuClose();
   };

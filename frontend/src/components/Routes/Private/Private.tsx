@@ -1,6 +1,7 @@
 import * as React from "react";
 import request from "services";
 
+import { getAuth } from "firebase/auth";
 import { useCookies } from "react-cookie";
 import { Navigate } from "react-router-dom";
 import { ENDPOINTS } from "endpoints/endpoints";
@@ -14,6 +15,7 @@ export default function Private({ FC }: any) {
   const [isValid, setIsValid] = React.useState<boolean>(!!cookies.access_token);
   React.useEffect(() => {
     const access_token = cookies.access_token;
+    const auth = getAuth();
     if (!access_token) {
       localStorage.removeItem("user");
       removeCookies("access_token");

@@ -15,8 +15,9 @@ export default function AlternativeDataButton() {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <S.StyledMenuButton
+        disabled
         disableRipple
         disableFocusRipple
         onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
@@ -45,6 +46,6 @@ export default function AlternativeDataButton() {
           </S.IconStackWrapper>
         </S.StyledMenuItem>
       </S.StyledMenu>
-    </div>
+    </React.Fragment>
   );
 }
