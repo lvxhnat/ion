@@ -5,7 +5,8 @@ import Typography from "@mui/material/Typography";
 import { ColorsEnum } from "common/theme";
 import { useThemeStore } from "store/theme";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Grid, IconButton } from "@mui/material";
+import { Grid, IconButton, Link } from "@mui/material";
+import { ROUTES } from "common/constant";
 
 interface ExistingPortfoliosProps {
   portfolios: GetUserPortfolios[];
@@ -49,7 +50,9 @@ export default function ExistingPortfolios(props: ExistingPortfoliosProps) {
                           : ColorsEnum.black,
                     }}
                   >
-                    {entry.name}
+                    <Link href={`${ROUTES.PORTFOLIO}/${entry.portfolio_id}`}>
+                      {entry.name}
+                    </Link>
                   </Typography>
                 </Grid>
                 <Grid item xs={6} display="flex" justifyContent="flex-end">

@@ -81,7 +81,7 @@ export default function PortfolioPopup(props: PortfolioPopupProps) {
         variant={theme.mode === "dark" ? "outlined" : "contained"}
         onClick={handleOpen}
       >
-        <Typography variant="h3">Create Portfolio</Typography>
+        <Typography variant="h3" fontWeight="bold">Create Portfolio</Typography>
       </Button>
       <PortfolioDialog
         open={open}
