@@ -21,18 +21,19 @@ import { TransactionEntry } from "./type"; // Ensure this import matches your ty
 interface Field {
   id: string;
   label: string;
-  type: "text" | "float" | "integer" | "select";
+  type: "text" | "number" | "select" | "date";
   options?: string[];
 }
 
 const fields: Field[] = [
+  { id: "transactionDate", label: "Date", type: "date" },
   { id: "ticker", label: "Ticker", type: "text" },
-  { id: "fee", label: "Fee", type: "float" },
-  { id: "broker", label: "Broker", type: "text" },
-  { id: "assetType", label: "Asset Type", type: "text" },
-  { id: "executionPrice", label: "Exec Price", type: "float" },
   { id: "type", label: "Type", type: "select", options: ["long", "short"] },
-  { id: "units", label: "Units", type: "integer" },
+  { id: "executionPrice", label: "Exec Price", type: "number" },
+  { id: "units", label: "Units", type: "number" },
+  { id: "fee", label: "Fee", type: "number" },
+  { id: "assetType", label: "Asset Type", type: "text" },
+  { id: "broker", label: "Broker", type: "text" },
   { id: "remarks", label: "Remarks", type: "text" },
 ];
 
@@ -123,7 +124,7 @@ const TransactionsTable: React.FC = () => {
                 key={field.id}
                 sx={{
                   py: 0.5,
-                  width: field.id === "remarks" ? "20%" : "10%",
+                  width: field.id === "remarks" || field.id === "transactionDate" ? "15%" : "10%",
                   whiteSpace: "normal",
                   wordWrap: "break-word",
                 }}
@@ -160,9 +161,7 @@ const TransactionsTable: React.FC = () => {
                     ) : (
                       <TextField
                         type={
-                          field.type === "integer" || field.type === "float"
-                            ? "number"
-                            : "text"
+                          field.type
                         }
                         value={transaction[field.id as keyof TransactionEntry]}
                         onChange={(e) =>

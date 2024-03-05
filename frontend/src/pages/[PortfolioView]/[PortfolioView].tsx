@@ -22,10 +22,7 @@ export default function PortfolioView() {
           {portfolio?.name}
         </Typography>
         <Grid container>
-          <Grid item xs={9}>
             <TransactionsTable />
-          </Grid>
-          <Grid item xs={3}></Grid>
         </Grid>
       </Grid>
     </ContainerWrapper>
