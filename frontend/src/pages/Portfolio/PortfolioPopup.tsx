@@ -1,7 +1,16 @@
-import React, { useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
-import { createUserPortfolio } from './requests';
-import { useFirebaseUserStore } from 'store/user/user';
+import React, { useState } from "react";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { GetUserPortfolios, createUserPortfolio } from "./requests";
+import { useFirebaseUserStore } from "store/user/user";
+import { useThemeStore } from "store/theme";
 
 interface PortfolioDialogProps {
   open: boolean;
@@ -9,8 +18,12 @@ interface PortfolioDialogProps {
   onSubmit: (name: string) => void;
 }
 
-const PortfolioDialog: React.FC<PortfolioDialogProps> = ({ open, onClose, onSubmit }) => {
-  const [name, setName] = useState('');
+const PortfolioDialog: React.FC<PortfolioDialogProps> = ({
+  open,
+  onClose,
+  onSubmit,
+}) => {
+  const [name, setName] = useState("");
 
   const handleSubmit = () => {
     onSubmit(name);
@@ -18,10 +31,7 @@ const PortfolioDialog: React.FC<PortfolioDialogProps> = ({ open, onClose, onSubm
   };
 
   return (
-    <Dialog 
-        fullWidth
-        maxWidth="sm" 
-        open={open} onClose={onClose}>
+    <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose}>
       <DialogTitle>Create a Portfolio</DialogTitle>
       <DialogContent>
         <TextField
@@ -44,26 +54,37 @@ const PortfolioDialog: React.FC<PortfolioDialogProps> = ({ open, onClose, onSubm
   );
 };
 
-export default function PortfolioPopup() {
-  const [open, setOpen] = useState(false);
-  const user = useFirebaseUserStore(state => state.user)
+interface PortfolioPopupProps {
+  portfolios: GetUserPortfolios[], 
+  setPortfolios: (value: GetUserPortfolios[]) => void
+}
 
-  React.useEffect(() => {
-  }, [user])
+export default function PortfolioPopup(props: PortfolioPopupProps) {
+  const [open, setOpen] = useState(false);
+  const theme = useThemeStore();
+  const user = useFirebaseUserStore((state) => state.user);
+
+  React.useEffect(() => {}, [user]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleSubmit = (name: string) => {
-    if (user) 
-      createUserPortfolio(user.user_id, name).then((res) => console.log(res.data))
+    if (user)
+      createUserPortfolio(user.user_id, name).then((res) =>
+        props.setPortfolios([...props.portfolios, res.data])
+      );
   };
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleOpen}>
-        <Typography variant="subtitle1">Create Portfolio</Typography>
+      <Button variant={theme.mode === 'dark' ? "outlined" : "contained"} onClick={handleOpen}>
+        <Typography variant="h3">Create Portfolio</Typography>
       </Button>
-      <PortfolioDialog open={open} onClose={handleClose} onSubmit={handleSubmit} />
+      <PortfolioDialog
+        open={open}
+        onClose={handleClose}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
-};
+}

@@ -27,7 +27,6 @@ export default function SearchBar() {
       getSearchResults(searchProps).then((res: any) => {
         setResults(res.data.seriess); // Assuming res.data is an array
         setOpen(true); // Show dropdown with results
-        console.log(res.data);
       });
     } else {
       setOpen(false); // Hide dropdown if query is empty

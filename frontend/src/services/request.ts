@@ -22,7 +22,6 @@ const request = (type: "ion-backend" | "data-backend") => {
 };
 
 async function error(error: any) {
-
   if (typeof error.response === "undefined") {
     // window.location.href = '/error404/';
     return await Promise.reject(error);

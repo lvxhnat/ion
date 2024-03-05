@@ -9,8 +9,11 @@ import { ROUTES } from "common/constant";
 import { useFirebaseUserStore } from "store/user/user";
 
 export default function Private({ FC }: any) {
-  const [cookies, , removeCookies] = useCookies(["access_token","refresh_token"]);
-  const setUser = useFirebaseUserStore(state => state.setUser)
+  const [cookies, , removeCookies] = useCookies([
+    "access_token",
+    "refresh_token",
+  ]);
+  const setUser = useFirebaseUserStore((state) => state.setUser);
 
   const [isValid, setIsValid] = React.useState<boolean>(!!cookies.access_token);
   React.useEffect(() => {
@@ -34,7 +37,7 @@ export default function Private({ FC }: any) {
           }
         )
         .then((res) => {
-          setUser(res.data)
+          setUser(res.data);
           setIsValid(true);
         })
         .catch((err) => {

@@ -112,9 +112,7 @@ const TransactionsTable: React.FC = () => {
         style={{ marginBottom: "20px" }}
         disabled={hasUnconfirmedTransaction}
       >
-        <Typography variant="subtitle1">
-          Add Transaction
-        </Typography>
+        <Typography variant="subtitle1">Add Transaction</Typography>
       </Button>
 
       <Table size="small" sx={{ tableLayout: "fixed", width: "100%" }}>
