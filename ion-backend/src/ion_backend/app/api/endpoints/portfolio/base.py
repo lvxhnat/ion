@@ -1,12 +1,14 @@
 import uuid
 from typing import List
 from datetime import datetime
-from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, Query, Request
 
 from ion_backend.app.services.postgres.base import get_session
-from ion_backend.app.services.postgres.tables import UserPortfolios
+from ion_backend.app.services.postgres.tables import (
+    UserPortfolios,
+    PortfolioTransactions,
+)
 from ion_backend.app.api.endpoints.portfolio.params import (
     CreateUserPortfolioParams,
 )
@@ -69,21 +71,31 @@ async def delete_user_portfolio(
     session.delete(session.query(UserPortfolios).get(portfolio_id))
 
 
-# @router.post("/{table_name}")
-# def insert_table_entry(
-#     table_name: str,
-#     entry,
-#     session: Session = Depends(get_session),
-# ):
-#     session.add(PostgresTables[table_name](**entry.dict()))
-#     return
+@router.post("/{portfolioId}")
+def insert_transaction_entry(
+    entry,
+    session: Session = Depends(get_session),
+):
+    return session.add(PortfolioTransactions(**entry.dict()))
 
 
-# @router.put("/{table_name}")
-# def update_table_entry(
-#     table_name: str,
-#     id: str,
-#     entry,
-#     session: Session = Depends(get_session),
-# ):
-#     session.query(PostgresTables[table_name]).get(id).update(entry)
+@router.put("/{portfolioId}")
+def edit_transaction_entry(
+    entry,
+    session: Session = Depends(get_session),
+):
+    return (
+        session.query(PortfolioTransactions)
+        .filter(PortfolioTransactions.transaction_id == entry.transaction_id)
+        .update(entry)
+    )
+
+
+@router.delete("/{portfolioId}")
+async def delete_user_portfolio(
+    request: Request,
+    session: Session = Depends(get_session),
+):
+    res: str = await request.json()
+    transaction_id = res["transaction_id"]
+    session.delete(session.query(PortfolioTransactions).get(transaction_id))

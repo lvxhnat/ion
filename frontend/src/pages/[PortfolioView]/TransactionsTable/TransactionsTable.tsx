@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import * as React from "react";
+import { v4 as uuid } from "uuid";
 import {
   Button,
   IconButton,
@@ -37,12 +38,16 @@ const fields: Field[] = [
   { id: "remarks", label: "Remarks", type: "text" },
 ];
 
-const TransactionsTable: React.FC = () => {
-  const [transactions, setTransactions] = useState<TransactionEntry[]>([]);
-  const [editId, setEditId] = useState<string | null>(null);
+interface TransactionsTableProps {
+  portfolioId: string
+}
+
+export default function TransactionsTable(props: TransactionsTableProps) {
+  const [transactions, setTransactions] = React.useState<TransactionEntry[]>([]);
+  const [editId, setEditId] = React.useState<string | null>(null);
 
   const hasUnconfirmedTransaction = transactions.some((transaction) =>
-    transaction.id?.startsWith("temp-")
+    transaction.transaction_id?.startsWith("temp-")
   );
 
   const handleAdd = () => {
@@ -50,37 +55,37 @@ const TransactionsTable: React.FC = () => {
       alert("Please confirm the current transaction before adding a new one.");
       return;
     }
-
     const newTransaction: TransactionEntry = {
-      id: `temp-${new Date().getTime()}`,
+      transaction_id: uuid(),
+      portfolio_id: props.portfolioId,
+      transaction_date: new Date(),
       ticker: "",
-      fee: 0,
+      fees: 0,
       broker: "",
-      assetType: "",
-      executionPrice: 0,
-      type: "long",
+      execution_price: 0,
+      type: "Buy",
       units: 0,
       remarks: "",
     };
     setTransactions([newTransaction, ...transactions]);
-    setEditId(newTransaction.id);
+    setEditId(newTransaction.transaction_id);
   };
 
   const handleChange = (id: string, field: string, value: any) => {
     setTransactions(
-      transactions.map((t) => (t.id === id ? { ...t, [field]: value } : t))
+      transactions.map((t) => (t.transaction_id === id ? { ...t, [field]: value } : t))
     );
   };
 
   const handleDelete = (id: string) => {
-    setTransactions(transactions.filter((t) => t.id !== id));
+    setTransactions(transactions.filter((t) => t.transaction_id !== id));
     if (editId === id) setEditId(null);
   };
 
   const handleSave = (transaction: TransactionEntry) => {
     if (
       transaction.units === 0 ||
-      transaction.executionPrice === 0 ||
+      transaction.execution_price === 0 ||
       transaction.ticker === ""
     ) {
       alert(
@@ -90,7 +95,7 @@ const TransactionsTable: React.FC = () => {
     }
 
     const updatedTransactions = transactions.map((t) => {
-      if (t.id === transaction.id) {
+      if (t.transaction_id === transaction.transaction_id) {
         return { ...t, id: `confirmed-${new Date().getTime()}` };
       }
       return t;
@@ -137,15 +142,15 @@ const TransactionsTable: React.FC = () => {
         </TableHead>
         <TableBody>
           {transactions.map((transaction) => (
-            <TableRow key={transaction.id}>
+            <TableRow key={transaction.transaction_id}>
               {fields.map((field) => (
                 <TableCell key={field.id} sx={{ py: 0.5 }}>
-                  {editId === transaction.id ? (
+                  {editId === transaction.transaction_id ? (
                     field.type === "select" ? (
                       <Select
                         value={transaction[field.id as keyof TransactionEntry]}
                         onChange={(e) =>
-                          handleChange(transaction.id, field.id, e.target.value)
+                          handleChange(transaction.transaction_id, field.id, e.target.value)
                         }
                         fullWidth
                         size="small"
@@ -165,7 +170,7 @@ const TransactionsTable: React.FC = () => {
                         }
                         value={transaction[field.id as keyof TransactionEntry]}
                         onChange={(e) =>
-                          handleChange(transaction.id, field.id, e.target.value)
+                          handleChange(transaction.transaction_id, field.id, e.target.value)
                         }
                         variant="outlined"
                         size="small"
@@ -190,11 +195,11 @@ const TransactionsTable: React.FC = () => {
                 {/* Always show the delete button */}
                 <IconButton
                   color="secondary"
-                  onClick={() => handleDelete(transaction.id)}
+                  onClick={() => handleDelete(transaction.transaction_id)}
                 >
                   <DeleteIcon />
                 </IconButton>
-                {editId === transaction.id && (
+                {editId === transaction.transaction_id && (
                   <IconButton
                     color="primary"
                     onClick={() => handleSave(transaction)}
@@ -202,10 +207,10 @@ const TransactionsTable: React.FC = () => {
                     <CheckIcon />
                   </IconButton>
                 )}
-                {editId !== transaction.id && (
+                {editId !== transaction.transaction_id && (
                   <IconButton
                     color="default"
-                    onClick={() => handleEdit(transaction.id)}
+                    onClick={() => handleEdit(transaction.transaction_id)}
                   >
                     <EditIcon />
                   </IconButton>
@@ -217,6 +222,4 @@ const TransactionsTable: React.FC = () => {
       </Table>
     </div>
   );
-};
-
-export default TransactionsTable;
+}

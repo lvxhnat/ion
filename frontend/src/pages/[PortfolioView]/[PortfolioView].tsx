@@ -22,7 +22,7 @@ export default function PortfolioView() {
           {portfolio?.name}
         </Typography>
         <Grid container>
-            <TransactionsTable />
+            <TransactionsTable portfolioId={params.portfolioName!} />
         </Grid>
       </Grid>
     </ContainerWrapper>
