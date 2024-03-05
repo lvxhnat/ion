@@ -13,6 +13,7 @@ export const ENDPOINTS = {
     FRED_SEARCH_ENDPOINT: "economic/fred/search",
 
     USER_PORTFOLIOS_ENDPOINT: "portfolio/user-portfolios",
+    PORTFOLIO_ENDPOINT: "portfolio/portfolio",
   },
   PUBLIC: {
     BASE: "/",

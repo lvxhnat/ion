@@ -31,6 +31,12 @@ export default function ExistingPortfolios(props: ExistingPortfoliosProps) {
 
   return (
     <div style={{ height: "100%" }}>
+      {props.portfolios.length === 0 ? (
+        <Typography align="center">
+          {" "}
+          You have no existing Portfolios.{" "}
+        </Typography>
+      ) : null}
       {props.portfolios.map((entry) => {
         return (
           <S.Accordion
