@@ -1,6 +1,7 @@
 import uuid
 from typing import List
 from datetime import datetime
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, Query, Request
 
@@ -12,6 +13,18 @@ from ion_backend.app.api.endpoints.portfolio.params import (
 from ion_backend.app.api.endpoints.portfolio.models import UserPortfolio
 
 router = APIRouter(tags=["portfolio"], prefix="/portfolio")
+
+
+@router.get("/portfolio")
+def get_portfolio(
+    portfolio_id: str = Query(None),
+    session: Session = Depends(get_session),
+) -> UserPortfolio:
+    return (
+        session.query(UserPortfolios)
+        .filter(UserPortfolios.portfolio_id == portfolio_id)
+        .first()
+    )
 
 
 @router.get("/user-portfolios")
