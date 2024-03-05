@@ -1,3 +1,3 @@
 import ExistingPortfolios from "./ExistingPortfolios";
 
-export default ExistingPortfolios
+export default ExistingPortfolios;

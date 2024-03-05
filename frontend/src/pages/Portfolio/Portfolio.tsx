@@ -15,12 +15,13 @@ export default function Portfolio() {
   const user = useFirebaseUserStore((state) => state.user);
 
   React.useEffect(() => {
-    if (user) getUserPortfolios(user.user_id).then((res) => setPortfolios(res.data));
+    if (user)
+      getUserPortfolios(user.user_id).then((res) => setPortfolios(res.data));
   }, [user]);
 
   return (
     <ContainerWrapper>
-      <Grid container style={{ padding: 25, gap: 25, overflowY: 'hidden' }}>
+      <Grid container style={{ padding: 25, gap: 25, overflowY: "hidden" }}>
         <Grid container>
           <Grid item xs={6}>
             <Typography variant="h1"> All Portfolios </Typography>
@@ -32,7 +33,10 @@ export default function Portfolio() {
             justifyContent="flex-end"
             alignItems="flex-end"
           >
-            <PortfolioPopup portfolios={portfolios} setPortfolios={setPortfolios} />
+            <PortfolioPopup
+              portfolios={portfolios}
+              setPortfolios={setPortfolios}
+            />
           </Grid>
         </Grid>
         <Grid
@@ -43,13 +47,16 @@ export default function Portfolio() {
                 ? ColorsEnum.darkerGrey
                 : ColorsEnum.offWhite,
             padding: 25,
-            height: '100%',
-            overflowY: 'auto'
+            height: "100%",
+            overflowY: "auto",
           }}
         >
-          <ExistingPortfolios portfolios={portfolios} setPortfolios={setPortfolios} />
+          <ExistingPortfolios
+            portfolios={portfolios}
+            setPortfolios={setPortfolios}
+          />
         </Grid>
-        <PortfolioAlert/>
+        <PortfolioAlert />
       </Grid>
     </ContainerWrapper>
   );

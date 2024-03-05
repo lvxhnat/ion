@@ -9,12 +9,12 @@ export const getUserPortfolios = (userId: string) => {
 };
 
 export interface GetUserPortfolios {
-  created_at: string
-  description: string | null
-  last_modified: string
-  name: string
-  portfolio_id: string
-  user_id: string
+  created_at: string;
+  description: string | null;
+  last_modified: string;
+  name: string;
+  portfolio_id: string;
+  user_id: string;
 }
 
 export const createUserPortfolio = (userId: string, portfolioName: string) => {

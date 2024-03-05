@@ -6,11 +6,10 @@ export const typographyTheme = {
   },
   h2: {
     fontSize: `calc(0.8rem + 0.4vw)`,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   h3: {
     fontSize: `calc(0.5rem + 0.4vw)`,
-
   },
   h4: {
     fontSize: `calc(0.4rem + 0.4vw)`,

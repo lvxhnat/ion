@@ -55,8 +55,8 @@ const PortfolioDialog: React.FC<PortfolioDialogProps> = ({
 };
 
 interface PortfolioPopupProps {
-  portfolios: GetUserPortfolios[], 
-  setPortfolios: (value: GetUserPortfolios[]) => void
+  portfolios: GetUserPortfolios[];
+  setPortfolios: (value: GetUserPortfolios[]) => void;
 }
 
 export default function PortfolioPopup(props: PortfolioPopupProps) {
@@ -77,7 +77,10 @@ export default function PortfolioPopup(props: PortfolioPopupProps) {
 
   return (
     <div>
-      <Button variant={theme.mode === 'dark' ? "outlined" : "contained"} onClick={handleOpen}>
+      <Button
+        variant={theme.mode === "dark" ? "outlined" : "contained"}
+        onClick={handleOpen}
+      >
         <Typography variant="h3">Create Portfolio</Typography>
       </Button>
       <PortfolioDialog
