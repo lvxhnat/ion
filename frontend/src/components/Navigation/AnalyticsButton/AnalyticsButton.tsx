@@ -15,7 +15,7 @@ export default function AnalyticsButton() {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <S.StyledMenuButton
         disableRipple
         disableFocusRipple
@@ -33,7 +33,7 @@ export default function AnalyticsButton() {
         onClose={() => setAnchorEl(null)}
       >
         <S.StyledMenuItem onClick={() => handleClose(ROUTES.PORTFOLIO)}>
-          <div style={{ display: "flex", gap: 5, width: "100%" }}>
+          <S.IconStackWrapper>
             <FaChartPie style={{ fontSize: 20 }} />
             <Stack style={{ gap: 5, width: "80%" }}>
               <Typography variant="h3"> Portfolio Analytics </Typography>
@@ -41,9 +41,9 @@ export default function AnalyticsButton() {
                 Analyse ETF Positions
               </S.ButtonSubtitles>
             </Stack>
-          </div>
+          </S.IconStackWrapper>
         </S.StyledMenuItem>
       </S.StyledMenu>
-    </div>
+    </React.Fragment>
   );
 }

@@ -1,10 +1,10 @@
 import axios from "axios";
 import { ENDPOINTS } from "endpoints/endpoints";
 
-const request = (type: "ion-backend" | "data-ingestion") => {
+const request = (type: "ion-backend" | "data-backend") => {
   const axiosInstance = axios.create({
     baseURL:
-      type === "data-ingestion"
+      type === "data-backend"
         ? ENDPOINTS.BASEURLS.DATA_INGESTION
         : ENDPOINTS.BASEURLS.ION_BACKEND,
     timeout: 60000,
@@ -22,10 +22,6 @@ const request = (type: "ion-backend" | "data-ingestion") => {
 };
 
 async function error(error: any) {
-  const originalRequest = error.config;
-
-  console.error(error);
-
   if (typeof error.response === "undefined") {
     // window.location.href = '/error404/';
     return await Promise.reject(error);
@@ -37,7 +33,7 @@ async function error(error: any) {
     error.response.statusText === "Unauthorized"
   ) {
   }
-  console.error(error.response);
+
   // specific error handling done elsewhere
   return await Promise.reject(error);
 }

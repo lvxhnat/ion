@@ -1,19 +1,24 @@
 import * as React from "react";
-import { useEffect } from "react";
+import request from "services";
+
+import { getAuth } from "firebase/auth";
 import { useCookies } from "react-cookie";
 import { Navigate } from "react-router-dom";
 import { ENDPOINTS } from "endpoints/endpoints";
 import { ROUTES } from "common/constant";
-import request from "services";
+import { useFirebaseUserStore } from "store/user/user";
 
 export default function Private({ FC }: any) {
   const [cookies, , removeCookies] = useCookies([
     "access_token",
     "refresh_token",
   ]);
+  const setUser = useFirebaseUserStore((state) => state.setUser);
+
   const [isValid, setIsValid] = React.useState<boolean>(!!cookies.access_token);
-  useEffect(() => {
+  React.useEffect(() => {
     const access_token = cookies.access_token;
+    const auth = getAuth();
     if (!access_token) {
       localStorage.removeItem("user");
       removeCookies("access_token");
@@ -32,6 +37,7 @@ export default function Private({ FC }: any) {
           }
         )
         .then((res) => {
+          setUser(res.data);
           setIsValid(true);
         })
         .catch((err) => {

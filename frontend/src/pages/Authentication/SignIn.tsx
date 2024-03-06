@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as S from "./style";
 
-import Logo from "../../assets/logo.png";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
@@ -11,7 +10,6 @@ import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { createTheme } from "@mui/material/styles";
 
 import request from "services";
 import { ROUTES } from "common/constant";
@@ -33,9 +31,6 @@ import GoogleButton from "./Others";
 import Copyright from "components/Skeletons/Copyright";
 import { ColorsEnum } from "common/theme";
 import { ContainerWrapper } from "components/Wrappers/ContainerWrapper";
-
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = React.useState<boolean>(false);

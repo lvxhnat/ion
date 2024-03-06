@@ -35,6 +35,12 @@ export const NavigationPanel = styled("div")(({ theme }) => ({
   padding: `${theme.spacing(1)} 0`,
 }));
 
+export const IconStackWrapper = styled("div")(({ theme }) => ({
+  display: "flex",
+  gap: 10,
+  width: "100%",
+}));
+
 export const IconButtonWrapper = styled(IconButton)(({ theme }) => ({
   padding: 0,
   paddingLeft: 5,

@@ -38,6 +38,7 @@ export default function About() {
         <Grid container style={{ padding: 100, paddingTop: 0 }}>
           <Grid item xs={6} display="flex" justifyContent={"center"}>
             <img
+              alt="author"
               src={Author}
               width={400}
               height={400}

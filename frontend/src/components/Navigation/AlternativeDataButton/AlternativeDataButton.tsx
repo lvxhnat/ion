@@ -15,8 +15,9 @@ export default function AlternativeDataButton() {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <S.StyledMenuButton
+        disabled
         disableRipple
         disableFocusRipple
         onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
@@ -33,7 +34,7 @@ export default function AlternativeDataButton() {
         onClose={() => setAnchorEl(null)}
       >
         <S.StyledMenuItem onClick={() => handleClose(ROUTES.ECONOMIC_DATA)}>
-          <div style={{ display: "flex", gap: 5, width: "100%" }}>
+          <S.IconStackWrapper>
             <RiBankFill style={{ fontSize: 20 }} />
             <Stack style={{ gap: 5, width: "80%" }}>
               <Typography variant="h3"> US Economic Data </Typography>
@@ -42,9 +43,9 @@ export default function AlternativeDataButton() {
                 time series from 114 sources.{" "}
               </S.ButtonSubtitles>
             </Stack>
-          </div>
+          </S.IconStackWrapper>
         </S.StyledMenuItem>
       </S.StyledMenu>
-    </div>
+    </React.Fragment>
   );
 }

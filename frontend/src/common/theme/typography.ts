@@ -2,11 +2,11 @@ export const typographyTheme = {
   fontFamily: "Public Sans, sans-serif",
   h1: {
     fontSize: `calc(1.5rem + 1vw)`,
-    fontWeight: 300,
+    fontWeight: "bold",
   },
   h2: {
-    fontSize: `calc(0.8rem + 0.5vw)`,
-    fontWeight: 500,
+    fontSize: `calc(0.8rem + 0.4vw)`,
+    fontWeight: "bold",
   },
   h3: {
     fontSize: `calc(0.5rem + 0.4vw)`,

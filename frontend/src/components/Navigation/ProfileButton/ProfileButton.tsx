@@ -6,14 +6,13 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "common/constant";
 import { useCookies } from "react-cookie";
 import ToggleThemeMode from "./ToggleThemeMode";
+import { useFirebaseUserStore } from "store/user/user";
 
 const ProfileButton: React.FC = () => {
+  const user = useFirebaseUserStore((state) => state.user);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
-  const [cookies, , removeCookies] = useCookies([
-    "access_token",
-    "refresh_token",
-  ]);
+  const [, , removeCookies] = useCookies();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -27,8 +26,7 @@ const ProfileButton: React.FC = () => {
     const auth = getAuth(app);
     auth.signOut().then(() => {
       navigate(ROUTES.SIGNIN);
-      removeCookies("access_token");
-      removeCookies("refresh_token");
+      removeCookies("user");
     });
     handleMenuClose();
   };
@@ -39,6 +37,7 @@ const ProfileButton: React.FC = () => {
         onClick={handleMenuOpen}
         style={{ cursor: "pointer" }}
         sx={{ width: 30, height: 30 }}
+        src={user?.picture}
       />
 
       <Menu

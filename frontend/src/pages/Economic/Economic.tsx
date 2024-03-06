@@ -127,8 +127,15 @@ export default function Economic() {
             </S.SidePanelOpener>
           ) : null}
         </Grid>
-        <Grid item xs={8} sx={{ overflowY: "scroll", height: "100%", "&::-webkit-scrollbar": { display: "none" }, }}>
-          
+        <Grid
+          item
+          xs={8}
+          sx={{
+            overflowY: "scroll",
+            height: "100%",
+            "&::-webkit-scrollbar": { display: "none" },
+          }}
+        >
           {categoryLoading || rootLoading ? (
             <Stack style={{ gap: 10 }}>
               <Skeleton variant="rectangular" width="100%" height={250} />
@@ -145,7 +152,7 @@ export default function Economic() {
             </Stack>
           ) : nodes && nodes.value.selection.id === 0 ? (
             <React.Fragment>
-            <SearchBar />
+              <SearchBar />
               {Array(titles.length)
                 .fill(0)
                 .map((_, index) => {

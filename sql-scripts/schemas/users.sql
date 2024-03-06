@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS "users" (
+	"user_id" CHAR(36) PRIMARY KEY,
+    "email" VARCHAR(100) NULL,
+	"last_modified" TIMESTAMPTZ NULL DEFAULT (NOW() AT TIME ZONE 'utc'),
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc')
+);

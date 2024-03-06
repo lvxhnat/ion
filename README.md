@@ -42,7 +42,7 @@ prefect agent start -q "common" "treasury"
 python -m deployment
 ```
 
-#### Start backend. In `ion/data-ingestion`
+#### Start backend. In `ion/data-backend`
 
 ```
 brew services start rabbitmq
@@ -63,11 +63,11 @@ yarn start
 
 - `ion-frontend` handles the UI/UX of Ion, including the dashboard and the features seen below.
 
-- `data-ingestion` handles the extraction of data from the database that `data-engine` writes to.
+- `data-backend` handles the extraction of data from the database that `data-engine` writes to.
 
 - `ion-ingestion` handles the scraping of data that otherwise takes a long time to extract. E.g. Treasury data. This service writes to both MongoDB and PostgresSQL databases.
 
-- `ion-clients` provides a unified package service that contains all of the code used by `data-ingestion` and `data-engine` services, including database schemas.
+- `ion-clients` provides a unified package service that contains all of the code used by `data-backend` and `data-engine` services, including database schemas.
 
 <br clear="left"/>
 
