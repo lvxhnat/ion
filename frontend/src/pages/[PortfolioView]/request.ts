@@ -33,6 +33,7 @@ export interface InsertPortfolioTransactionsParams {
   remarks: string
 }
 
-export interface InsertPortfolioTransaction {
-
-}
+export const deletePortfolioTransaction = (transactionId: string) => request("ion-backend").delete(
+  `${ENDPOINTS.PRIVATE.BASE_PORTFOLIO_ENDPOINT}/${transactionId}`,
+  { data: { transaction_id: transactionId } }
+)

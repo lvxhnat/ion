@@ -11,6 +11,7 @@ from ion_backend.app.services.postgres.tables import (
 )
 from ion_backend.app.api.endpoints.portfolio.params import (
     CreateUserPortfolioParams,
+    CreateTransactionParams,
 )
 from ion_backend.app.api.endpoints.portfolio.models import UserPortfolio
 
@@ -73,7 +74,7 @@ async def delete_user_portfolio(
 
 @router.post("/{portfolioId}")
 def insert_transaction_entry(
-    entry,
+    entry: CreateTransactionParams,
     session: Session = Depends(get_session),
 ):
     return session.add(PortfolioTransactions(**entry.dict()))
@@ -81,7 +82,7 @@ def insert_transaction_entry(
 
 @router.put("/{portfolioId}")
 def edit_transaction_entry(
-    entry,
+    entry: CreateTransactionParams,
     session: Session = Depends(get_session),
 ):
     return (

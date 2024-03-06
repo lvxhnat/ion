@@ -18,6 +18,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { TransactionEntry } from "./type"; // Ensure this import matches your type definition
+import { deletePortfolioTransaction, insertPortfolioTransaction } from "../request";
 
 interface Field {
   id: string;
@@ -27,10 +28,10 @@ interface Field {
 }
 
 const fields: Field[] = [
-  { id: "transactionDate", label: "Date", type: "date" },
+  { id: "transaction_date", label: "Date", type: "date" },
   { id: "ticker", label: "Ticker", type: "text" },
-  { id: "type", label: "Type", type: "select", options: ["long", "short"] },
-  { id: "executionPrice", label: "Exec Price", type: "number" },
+  { id: "type", label: "Type", type: "select", options: ["Buy", "Sell"] },
+  { id: "execution_price", label: "Exec Price", type: "number" },
   { id: "units", label: "Units", type: "number" },
   { id: "fee", label: "Fee", type: "number" },
   { id: "assetType", label: "Asset Type", type: "text" },
@@ -40,6 +41,10 @@ const fields: Field[] = [
 
 interface TransactionsTableProps {
   portfolioId: string
+}
+
+const formatString = (value: any, field: string) => {
+  return (field === 'transaction_date') ? value.toLocaleString() : value
 }
 
 export default function TransactionsTable(props: TransactionsTableProps) {
@@ -72,6 +77,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
   };
 
   const handleChange = (id: string, field: string, value: any) => {
+    console.log(id, field, value)
     setTransactions(
       transactions.map((t) => (t.transaction_id === id ? { ...t, [field]: value } : t))
     );
@@ -80,6 +86,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
   const handleDelete = (id: string) => {
     setTransactions(transactions.filter((t) => t.transaction_id !== id));
     if (editId === id) setEditId(null);
+    deletePortfolioTransaction(id)
   };
 
   const handleSave = (transaction: TransactionEntry) => {
@@ -102,6 +109,8 @@ export default function TransactionsTable(props: TransactionsTableProps) {
     });
     setTransactions(updatedTransactions);
     setEditId(null);
+    // Insert Transaction
+    insertPortfolioTransaction(props.portfolioId, transaction)
   };
 
   const handleEdit = (id: string) => {
@@ -148,7 +157,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                   {editId === transaction.transaction_id ? (
                     field.type === "select" ? (
                       <Select
-                        value={transaction[field.id as keyof TransactionEntry]}
+                        value = {formatString(transaction[field.id as keyof TransactionEntry], field.id)}
                         onChange={(e) =>
                           handleChange(transaction.transaction_id, field.id, e.target.value)
                         }
@@ -165,9 +174,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                       </Select>
                     ) : (
                       <TextField
-                        type={
-                          field.type
-                        }
+                        type={field.type}
                         value={transaction[field.id as keyof TransactionEntry]}
                         onChange={(e) =>
                           handleChange(transaction.transaction_id, field.id, e.target.value)
