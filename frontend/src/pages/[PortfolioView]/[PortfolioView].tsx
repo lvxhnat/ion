@@ -1,4 +1,5 @@
 import * as React from "react";
+import moment from "moment";
 import { useParams } from "react-router-dom";
 import { ContainerWrapper } from "components/Wrappers/ContainerWrapper";
 import TransactionsTable from "./TransactionsTable";
@@ -30,8 +31,36 @@ export default function PortfolioView() {
 
   return (
     <ContainerWrapper>
-      <Typography variant="h2" style={{ paddingTop: 10, paddingBottom: 20 }}>
-        {portfolio?.name}
+      <Grid container>
+        <Grid item xs={6}>
+          <Typography
+            variant="h2"
+            style={{ paddingTop: 10, paddingBottom: 20 }}
+          >
+            {portfolio?.name}
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          xs={6}
+          display="flex"
+          justifyContent="flex-end"
+          alignItems="flex-end"
+        >
+          <Typography
+            variant="subtitle2"
+            style={{ paddingTop: 10, paddingBottom: 20 }}
+          >
+            <b>Created at:</b>{" "}
+            {moment(new Date(portfolio?.created_at!)).format(
+              "DD MMM YYYY HH:MM"
+            )}
+          </Typography>
+        </Grid>
+      </Grid>
+
+      <Typography variant="subtitle2">
+        {portfolio?.description ?? null}
       </Typography>
       <Tabs>
         <TabList>

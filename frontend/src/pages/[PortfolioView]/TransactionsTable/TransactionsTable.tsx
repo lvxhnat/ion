@@ -3,6 +3,7 @@ import * as S from "./style";
 import { v4 as uuid } from "uuid";
 import {
   Button,
+  Grid,
   IconButton,
   MenuItem,
   Select,
@@ -88,7 +89,6 @@ export default function TransactionsTable(props: TransactionsTableProps) {
   };
 
   const handleChange = (id: string, field: string, value: any) => {
-    console.log(id, field, value, transactions);
     setTransactions(
       transactions.map((t) =>
         t.transaction_id === id ? { ...t, [field]: value } : t
@@ -100,6 +100,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
     setTransactions(transactions.filter((t) => t.transaction_id !== id));
     if (editId === id) setEditId(null);
     deletePortfolioTransaction(id);
+    setRowActive(false);
   };
 
   const handleSave = (transaction: TransactionEntry) => {
@@ -125,20 +126,23 @@ export default function TransactionsTable(props: TransactionsTableProps) {
 
   const handleEdit = (id: string) => {
     setEditId(id);
+    setRowActive(true);
   };
 
   return (
     <S.TransactionsWrapper>
-      <Button
-        startIcon={<AddBoxIcon />}
-        onClick={handleAdd}
-        variant="contained"
-        color="primary"
-        style={{ marginBottom: "20px" }}
-        disabled={rowActive}
-      >
-        <Typography variant="subtitle1">Add Transaction</Typography>
-      </Button>
+      <Grid container display="flex" justifyContent="flex-end">
+        <Button
+          startIcon={<AddBoxIcon />}
+          onClick={handleAdd}
+          variant="contained"
+          color="primary"
+          style={{ marginBottom: "20px" }}
+          disabled={rowActive}
+        >
+          <Typography variant="subtitle1">Add Transaction</Typography>
+        </Button>
+      </Grid>
       <S.TransactionTableWrapper>
         <Table
           stickyHeader

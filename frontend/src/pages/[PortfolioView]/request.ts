@@ -9,9 +9,9 @@ export const getUserPortfolio = (portfolioId: string) =>
 
 export interface GetUserPortfolios {
   created_at: string;
-  description: string | null;
   last_modified: string;
   name: string;
+  description: string | null;
   portfolio_id: string;
   user_id: string;
 }
