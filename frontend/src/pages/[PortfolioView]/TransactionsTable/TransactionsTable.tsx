@@ -18,7 +18,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { TransactionEntry } from "./type"; // Ensure this import matches your type definition
-import { deletePortfolioTransaction, insertPortfolioTransaction } from "../request";
+import { deletePortfolioTransaction, getPortfolioTransactions, insertPortfolioTransaction } from "../request";
 
 interface Field {
   id: string;
@@ -51,6 +51,12 @@ export default function TransactionsTable(props: TransactionsTableProps) {
   const [transactions, setTransactions] = React.useState<TransactionEntry[]>([]);
   const [editId, setEditId] = React.useState<string | null>(null);
 
+  React.useEffect(() => {
+    getPortfolioTransactions(props.portfolioId).then((res) => {
+      setTransactions(res.data)
+    })
+  }, [])
+
   const hasUnconfirmedTransaction = transactions.some((transaction) =>
     transaction.transaction_id?.startsWith("temp-")
   );
@@ -77,7 +83,6 @@ export default function TransactionsTable(props: TransactionsTableProps) {
   };
 
   const handleChange = (id: string, field: string, value: any) => {
-    console.log(id, field, value)
     setTransactions(
       transactions.map((t) => (t.transaction_id === id ? { ...t, [field]: value } : t))
     );

@@ -37,3 +37,7 @@ export const deletePortfolioTransaction = (transactionId: string) => request("io
   `${ENDPOINTS.PRIVATE.BASE_PORTFOLIO_ENDPOINT}/${transactionId}`,
   { data: { transaction_id: transactionId } }
 )
+
+export const getPortfolioTransactions = (portfolioId: string) => request("ion-backend").get(
+  `${ENDPOINTS.PRIVATE.BASE_PORTFOLIO_ENDPOINT}/${portfolioId}`
+)

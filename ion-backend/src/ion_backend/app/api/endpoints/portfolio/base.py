@@ -93,10 +93,22 @@ def edit_transaction_entry(
 
 
 @router.delete("/{portfolioId}")
-async def delete_user_portfolio(
+async def delete_user_transactions(
     request: Request,
     session: Session = Depends(get_session),
 ):
     res: str = await request.json()
     transaction_id = res["transaction_id"]
     session.delete(session.query(PortfolioTransactions).get(transaction_id))
+
+
+@router.get("/{portfolioId}")
+def get_user_transactions(
+    portfolioId: str,
+    session: Session = Depends(get_session),
+):
+    return (
+        session.query(PortfolioTransactions)
+        .filter(PortfolioTransactions.portfolio_id == portfolioId)
+        .all()
+    )

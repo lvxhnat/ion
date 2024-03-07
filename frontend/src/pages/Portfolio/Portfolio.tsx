@@ -55,7 +55,7 @@ export default function Portfolio() {
             portfolios={portfolios}
             setPortfolios={setPortfolios}
           />
-        </Grid>
+          </Grid>
         <PortfolioAlert />
       </Grid>
     </ContainerWrapper>

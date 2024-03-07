@@ -21,6 +21,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import {
+  Alert,
   Divider,
   FormControl,
   IconButton,
@@ -102,8 +103,8 @@ export default function SignIn() {
             Sign in
           </Typography>
         </S.SignInHeaders>
-
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        { isError ? <Alert severity="error" sx={{width: '100%'}}> Username or Password is incorrect. </Alert> : null }
           <TextField
             margin="normal"
             required
