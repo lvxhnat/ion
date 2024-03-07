@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS "portfolio_transactions" (
 	"transaction_id" CHAR(36) PRIMARY KEY,
 	"portfolio_id" CHAR(36) REFERENCES user_portfolios("portfolio_id") ON UPDATE CASCADE ON DELETE CASCADE,
-	"ticker" VARCHAR(10) NOT NULL,
+	"ticker" VARCHAR(25) NOT NULL,
     "transaction_date" TIMESTAMPTZ NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc'),
     "units" NUMERIC(10,2) NOT NULL, 
     "fees" NUMERIC(10, 5) NOT NULL,

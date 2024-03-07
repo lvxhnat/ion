@@ -79,14 +79,10 @@ def insert_transaction_entry(
     session: Session = Depends(get_session),
 ):
     entry_data = PortfolioTransactions(**entry.model_dump())
-    print(entry_data)
-
-    # Check if the entry already exists
+    transaction_id = entry_data.transaction_id
     entry_exists = (
         session.query(PortfolioTransactions)
-        .filter(
-            PortfolioTransactions.transaction_id == entry_data.transaction_id
-        )
+        .filter(PortfolioTransactions.transaction_id == transaction_id)
         .first()
     )
 
@@ -99,10 +95,7 @@ def insert_transaction_entry(
         # Assuming model_dump() returns a dictionary that can be unpacked into the update() method
         (
             session.query(PortfolioTransactions)
-            .filter(
-                PortfolioTransactions.transaction_id
-                == entry_data.transaction_id
-            )
+            .filter(PortfolioTransactions.transaction_id == transaction_id)
             .update(update_data)
         )
     session.commit()
@@ -116,7 +109,16 @@ async def delete_user_transactions(
 ):
     res: str = await request.json()
     transaction_id = res["transaction_id"]
-    session.delete(session.query(PortfolioTransactions).get(transaction_id))
+    entry_exists = (
+        session.query(PortfolioTransactions)
+        .filter(PortfolioTransactions.transaction_id == transaction_id)
+        .first()
+    )
+    if entry_exists:
+        # Insert new entry if it does not exist
+        session.delete(
+            session.query(PortfolioTransactions).get(transaction_id)
+        )
 
 
 @router.get("/{portfolioId}")
