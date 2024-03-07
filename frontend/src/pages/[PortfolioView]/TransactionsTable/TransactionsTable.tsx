@@ -26,6 +26,7 @@ import {
   getPortfolioTransactions,
   insertPortfolioTransaction,
 } from "../request";
+import moment from "moment";
 
 interface Field {
   id: string;
@@ -224,9 +225,11 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                       )
                     ) : (
                       <Typography variant="subtitle1">
-                        {transaction[
-                          field.id as keyof TransactionEntry
-                        ].toString()}
+                        {field.id === 'transaction_date' ? moment( transaction[
+                            field.id as keyof TransactionEntry
+                          ]).format("YYYY-MM-DD") : transaction[
+                            field.id as keyof TransactionEntry
+                          ].toString()}
                       </Typography>
                     )}
                   </TableCell>
