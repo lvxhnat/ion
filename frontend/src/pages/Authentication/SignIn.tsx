@@ -104,7 +104,12 @@ export default function SignIn() {
           </Typography>
         </S.SignInHeaders>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-        { isError ? <Alert severity="error" sx={{width: '100%'}}> Username or Password is incorrect. </Alert> : null }
+          {isError ? (
+            <Alert severity="error" sx={{ width: "100%" }}>
+              {" "}
+              Username or Password is incorrect.{" "}
+            </Alert>
+          ) : null}
           <TextField
             margin="normal"
             required

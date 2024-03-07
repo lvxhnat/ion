@@ -4,9 +4,9 @@ import { ContainerWrapper } from "components/Wrappers/ContainerWrapper";
 import TransactionsTable from "./TransactionsTable";
 import { Grid, Typography } from "@mui/material";
 import { GetUserPortfolios, getUserPortfolio } from "./request";
-import type { ReactTabsFunctionComponent, TabProps } from 'react-tabs';
+import type { ReactTabsFunctionComponent, TabProps } from "react-tabs";
 
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 const StyledTab: ReactTabsFunctionComponent<TabProps> = ({
   children,
@@ -16,7 +16,7 @@ const StyledTab: ReactTabsFunctionComponent<TabProps> = ({
     <Typography variant="subtitle1"> {children} </Typography>
   </Tab>
 );
-StyledTab.tabsRole = 'Tab'; // Required field to use your custom Tab
+StyledTab.tabsRole = "Tab"; // Required field to use your custom Tab
 
 export default function PortfolioView() {
   const params = useParams();
@@ -30,22 +30,25 @@ export default function PortfolioView() {
 
   return (
     <ContainerWrapper>
-        <Typography variant="h2" style={{ paddingTop: 10, paddingBottom: 20 }}>
-          {portfolio?.name}
-        </Typography>
+      <Typography variant="h2" style={{ paddingTop: 10, paddingBottom: 20 }}>
+        {portfolio?.name}
+      </Typography>
       <Tabs>
         <TabList>
           <StyledTab> Summary </StyledTab>
           <StyledTab> Transactions </StyledTab>
+          <StyledTab> Deposits / Withdrawals </StyledTab>
         </TabList>
         <TabPanel>
-          <Grid container style={{ paddingTop: 15 }}>
-          </Grid>
+          <Grid container style={{ paddingTop: 15 }}></Grid>
         </TabPanel>
         <TabPanel>
           <Grid container style={{ paddingTop: 15 }}>
             <TransactionsTable portfolioId={params.portfolioName!} />
           </Grid>
+        </TabPanel>
+        <TabPanel>
+          <Grid container style={{ paddingTop: 15 }}></Grid>
         </TabPanel>
       </Tabs>
     </ContainerWrapper>

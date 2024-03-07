@@ -1,3 +1,3 @@
 import { BaseTransactionParams } from "../request";
 
-export interface TransactionEntry extends BaseTransactionParams { }
+export interface TransactionEntry extends BaseTransactionParams {}

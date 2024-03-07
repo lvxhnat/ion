@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as S from './style';
+import * as S from "./style";
 import { v4 as uuid } from "uuid";
 import {
   Button,
@@ -20,7 +20,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 import { TransactionEntry } from "./type"; // Ensure this import matches your type definition
-import { deletePortfolioTransaction, getPortfolioTransactions, insertPortfolioTransaction } from "../request";
+import {
+  deletePortfolioTransaction,
+  getPortfolioTransactions,
+  insertPortfolioTransaction,
+} from "../request";
 
 interface Field {
   id: string;
@@ -41,24 +45,29 @@ const fields: Field[] = [
 ];
 
 interface TransactionsTableProps {
-  portfolioId: string
+  portfolioId: string;
 }
 
 export default function TransactionsTable(props: TransactionsTableProps) {
   const [rowActive, setRowActive] = React.useState<boolean>(false);
-  const [transactions, setTransactions] = React.useState<TransactionEntry[]>([]);
+  const [transactions, setTransactions] = React.useState<TransactionEntry[]>(
+    []
+  );
   const [editId, setEditId] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     // Get the transactions existing in the portfolio
     getPortfolioTransactions(props.portfolioId).then((res) => {
-      setTransactions(res.data.map((t) => {
-        return {
-          ...t,
-          transaction_date: new Date(t['transaction_date'])
-        }
-      }))})
-  }, [])
+      setTransactions(
+        res.data.map((t) => {
+          return {
+            ...t,
+            transaction_date: new Date(t["transaction_date"]),
+          };
+        })
+      );
+    });
+  }, []);
 
   const handleAdd = () => {
     const newTransaction: TransactionEntry = {
@@ -75,20 +84,22 @@ export default function TransactionsTable(props: TransactionsTableProps) {
     };
     setTransactions([newTransaction, ...transactions]);
     setEditId(newTransaction.transaction_id);
-    setRowActive(true)
+    setRowActive(true);
   };
 
   const handleChange = (id: string, field: string, value: any) => {
-    console.log(id, field, value, transactions)
+    console.log(id, field, value, transactions);
     setTransactions(
-      transactions.map((t) => (t.transaction_id === id ? { ...t, [field]: value } : t))
+      transactions.map((t) =>
+        t.transaction_id === id ? { ...t, [field]: value } : t
+      )
     );
   };
 
   const handleDelete = (id: string) => {
     setTransactions(transactions.filter((t) => t.transaction_id !== id));
     if (editId === id) setEditId(null);
-    deletePortfolioTransaction(id)
+    deletePortfolioTransaction(id);
   };
 
   const handleSave = (transaction: TransactionEntry) => {
@@ -104,10 +115,12 @@ export default function TransactionsTable(props: TransactionsTableProps) {
     }
 
     setEditId(null);
-    const newTransactions = transactions.map((t) => (t.transaction_id === transaction.transaction_id) ? transaction : t)
-    insertPortfolioTransaction(props.portfolioId, transaction)
-    setTransactions(newTransactions)
-    setRowActive(false)
+    const newTransactions = transactions.map((t) =>
+      t.transaction_id === transaction.transaction_id ? transaction : t
+    );
+    insertPortfolioTransaction(props.portfolioId, transaction);
+    setTransactions(newTransactions);
+    setRowActive(false);
   };
 
   const handleEdit = (id: string) => {
@@ -127,104 +140,123 @@ export default function TransactionsTable(props: TransactionsTableProps) {
         <Typography variant="subtitle1">Add Transaction</Typography>
       </Button>
       <S.TransactionTableWrapper>
-      <Table stickyHeader size="small" sx={{ tableLayout: "fixed", width: "100%", height: "100%" }}>
-        <TableHead>
-          <TableRow>
-            {fields.map((field) => (
-              <TableCell
-                key={field.id}
-                sx={{
-                  py: 0.5,
-                  width: field.id === "remarks" || field.id === "transaction_date" ? "15%" : "10%",
-                  whiteSpace: "normal",
-                  wordWrap: "break-word",
-                }}
-              >
-                <Typography variant="subtitle1">{field.label}</Typography>
-              </TableCell>
-            ))}
-            <TableCell sx={{ py: 0.5, width: "10%" }}></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {transactions.map((transaction) => (
-            <TableRow key={transaction.transaction_id}>
+        <Table
+          stickyHeader
+          size="small"
+          sx={{ tableLayout: "fixed", width: "100%", height: "100%" }}
+        >
+          <TableHead>
+            <TableRow>
               {fields.map((field) => (
-                <TableCell key={field.id} sx={{ py: 0.5 }}>
-                  {editId === transaction.transaction_id ? (
-                    field.type === "select" ? (
-                      <Select
-                        value = {transaction[field.id as keyof TransactionEntry]}
-                        onChange={(e) =>
-                          handleChange(transaction.transaction_id, field.id, e.target.value)
-                        }
-                        fullWidth
-                        size="small"
-                      >
-                        {field.options?.map((option) => (
-                          <MenuItem key={option} value={option}>
-                            <Typography variant="subtitle1">
-                              {option}
-                            </Typography>
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    ) : (
-                      <TextField
-                        type={field.type}
-                        value={transaction[field.id as keyof TransactionEntry].toString()}
-                        onChange={(e) =>
-                          handleChange(transaction.transaction_id, field.id, e.target.value)
-                        }
-                        variant="outlined"
-                        size="small"
-                        fullWidth
-                        inputProps={{
-                          style: {
-                            fontSize: "calc(0.5rem + 0.3vw)",
-                          },
-                        }}
-                      />
-                    )
-                  ) : (
-                    <Typography variant="subtitle1">
-                      {transaction[
-                        field.id as keyof TransactionEntry
-                      ].toString()}
-                    </Typography>
-                  )}
+                <TableCell
+                  key={field.id}
+                  sx={{
+                    py: 0.5,
+                    width:
+                      field.id === "remarks" || field.id === "transaction_date"
+                        ? "15%"
+                        : "10%",
+                    whiteSpace: "normal",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  <Typography variant="subtitle1">{field.label}</Typography>
                 </TableCell>
               ))}
-              <TableCell sx={{ py: 0.5 }}>
-                {/* Always show the delete button */}
-                <IconButton
-                  color="secondary"
-                  onClick={() => handleDelete(transaction.transaction_id)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-                {editId === transaction.transaction_id && (
-                  <IconButton
-                    color="primary"
-                    onClick={() => handleSave(transaction)}
-                  >
-                    <CheckIcon />
-                  </IconButton>
-                )}
-                {editId !== transaction.transaction_id && (
-                  <IconButton
-                    color="default"
-                    onClick={() => handleEdit(transaction.transaction_id)}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                )}
-              </TableCell>
+              <TableCell sx={{ py: 0.5, width: "10%" }}></TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {transactions.map((transaction) => (
+              <TableRow key={transaction.transaction_id}>
+                {fields.map((field) => (
+                  <TableCell key={field.id} sx={{ py: 0.5 }}>
+                    {editId === transaction.transaction_id ? (
+                      field.type === "select" ? (
+                        <Select
+                          value={
+                            transaction[field.id as keyof TransactionEntry]
+                          }
+                          onChange={(e) =>
+                            handleChange(
+                              transaction.transaction_id,
+                              field.id,
+                              e.target.value
+                            )
+                          }
+                          fullWidth
+                          size="small"
+                        >
+                          {field.options?.map((option) => (
+                            <MenuItem key={option} value={option}>
+                              <Typography variant="subtitle1">
+                                {option}
+                              </Typography>
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      ) : (
+                        <TextField
+                          type={field.type}
+                          value={transaction[
+                            field.id as keyof TransactionEntry
+                          ].toString()}
+                          onChange={(e) =>
+                            handleChange(
+                              transaction.transaction_id,
+                              field.id,
+                              e.target.value
+                            )
+                          }
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          inputProps={{
+                            style: {
+                              fontSize: "calc(0.5rem + 0.3vw)",
+                            },
+                          }}
+                        />
+                      )
+                    ) : (
+                      <Typography variant="subtitle1">
+                        {transaction[
+                          field.id as keyof TransactionEntry
+                        ].toString()}
+                      </Typography>
+                    )}
+                  </TableCell>
+                ))}
+                <TableCell sx={{ py: 0.5 }}>
+                  {/* Always show the delete button */}
+                  <IconButton
+                    color="secondary"
+                    onClick={() => handleDelete(transaction.transaction_id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                  {editId === transaction.transaction_id && (
+                    <IconButton
+                      color="primary"
+                      onClick={() => handleSave(transaction)}
+                    >
+                      <CheckIcon />
+                    </IconButton>
+                  )}
+                  {editId !== transaction.transaction_id && (
+                    <IconButton
+                      color="default"
+                      onClick={() => handleEdit(transaction.transaction_id)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </S.TransactionTableWrapper>
-      </S.TransactionsWrapper>
+    </S.TransactionsWrapper>
   );
 }

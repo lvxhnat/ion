@@ -40,7 +40,12 @@ export default function EmailSignUp() {
   };
 
   return (
-    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3, maxWidth: '700px' }}>
+    <Box
+      component="form"
+      noValidate
+      onSubmit={handleSubmit}
+      sx={{ mt: 3, maxWidth: "700px" }}
+    >
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <TextField

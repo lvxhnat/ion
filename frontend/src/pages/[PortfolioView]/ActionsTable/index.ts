@@ -1,3 +1,3 @@
 import ActionsTable from "./ActionsTable";
 
-export default ActionsTable
+export default ActionsTable;

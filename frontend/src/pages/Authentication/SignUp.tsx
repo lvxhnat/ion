@@ -38,13 +38,20 @@ export default function SignUp() {
           </Typography>
         </S.SignInHeaders>
         <GoogleButton handleLogin={handleGoogleSubmit} />
-        <Divider style={{ paddingTop: 20, paddingBottom: 20, width: '100%', maxWidth: '700px' }}>
+        <Divider
+          style={{
+            paddingTop: 20,
+            paddingBottom: 20,
+            width: "100%",
+            maxWidth: "700px",
+          }}
+        >
           <Typography variant="subtitle2" color={ColorsEnum.warmgray2}>
             or
           </Typography>
         </Divider>
-      <EmailButton handleSubmit={() => null} />
-      <Copyright sx={{ mt: 8, mb: 4 }} />
+        <EmailButton handleSubmit={() => null} />
+        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Box>
     </ContainerWrapper>
   );
