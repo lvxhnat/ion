@@ -20,6 +20,7 @@ const StyledTab: ReactTabsFunctionComponent<TabProps> = ({
 StyledTab.tabsRole = "Tab"; // Required field to use your custom Tab
 
 export default function PortfolioView() {
+  
   const params = useParams();
   const [portfolio, setPortfolio] = React.useState<GetUserPortfolios>();
 

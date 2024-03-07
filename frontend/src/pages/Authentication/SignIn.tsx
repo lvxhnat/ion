@@ -11,15 +11,10 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-import request from "services";
 import { ROUTES } from "common/constant";
-import { app, signInWithGooglePopup } from "common/firebase/firebase";
-import { ENDPOINTS } from "endpoints/endpoints";
-import { setCookie } from "../../common/helper/cookies";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { UserCredential } from "firebase/auth";
 
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import {
   Alert,
   Divider,
@@ -32,43 +27,25 @@ import GoogleButton from "./Others";
 import Copyright from "components/Skeletons/Copyright";
 import { ColorsEnum } from "common/theme";
 import { ContainerWrapper } from "components/Wrappers/ContainerWrapper";
+import { AuthContext } from "providers/AuthProvider/AuthProvider";
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
   const [isError, setIsError] = React.useState<boolean>(false);
-  const [cookies] = useCookies(["access_token", "refresh_token"]);
+  const { user, emailLogin, googleLogin } = React.useContext(AuthContext)!;
   const navigate = useNavigate();
-
-  React.useEffect(() => {
-    if (cookies.access_token)
-      request("ion-backend")
-        .post(
-          ENDPOINTS.AUTH.TOKEN_CHECKER,
-          {},
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${cookies.access_token}`,
-            },
-          }
-        )
-        .then((res) => navigate(ROUTES.LANDING))
-        .catch((err) => null);
-  });
+  if (user) navigate(ROUTES.LANDING)
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const auth = getAuth(app);
-    signInWithEmailAndPassword(
-      auth,
+
+    emailLogin(
       data.get("email") as string,
       data.get("password") as string
     )
       .then((userCredential) => {
-        userCredential.user.getIdToken().then((s) => {
-          setCookie("access_token", s);
-          setCookie("refresh_token", userCredential.user.refreshToken);
+        userCredential.user.getIdToken().then((s: any) => {
           setIsError(false);
           navigate(ROUTES.LANDING);
         });
@@ -79,10 +56,8 @@ export default function SignIn() {
   };
 
   const handleGoogleSubmit = async () => {
-    const response = await signInWithGooglePopup();
+    const response: UserCredential = await googleLogin()
     response.user.getIdToken().then((s: any) => {
-      setCookie("access_token", s);
-      setCookie("refresh_token", response.user.refreshToken);
       setIsError(false);
       navigate(ROUTES.LANDING);
     });
