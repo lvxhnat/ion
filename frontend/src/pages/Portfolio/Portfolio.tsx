@@ -7,16 +7,15 @@ import { useThemeStore } from "store/theme";
 import ExistingPortfolios from "./ExistingPortfolios/ExistingPortfolios";
 import PortfolioAlert from "./PortfolioAlert/PortfolioAlert";
 import { GetUserPortfolios, getUserPortfolios } from "./requests";
-import { useFirebaseUserStore } from "store/user/user";
+import { AuthContext } from "providers/AuthProvider/AuthProvider";
 
 export default function Portfolio() {
   const theme = useThemeStore();
   const [portfolios, setPortfolios] = React.useState<GetUserPortfolios[]>([]);
-  const user = useFirebaseUserStore((state) => state.user);
+  const { user } = React.useContext(AuthContext)!
 
   React.useEffect(() => {
-    if (user)
-      getUserPortfolios(user.user_id).then((res) => setPortfolios(res.data));
+    if (user) getUserPortfolios(user.uid).then((res) => setPortfolios(res.data));
   }, [user]);
 
   return (

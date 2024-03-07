@@ -33,7 +33,6 @@ export default function ContainerWrapper(props: ContainerWrapperProps) {
         height: "100vh",
         paddingLeft: 20,
         paddingRight: 20,
-        overflowY: "hidden",
       }}
       alignItems="center"
     >

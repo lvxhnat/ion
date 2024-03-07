@@ -1,18 +1,11 @@
 import React from "react";
 import { Avatar, Divider, Menu, MenuItem, Typography } from "@mui/material";
-import { getAuth } from "firebase/auth";
-import { app } from "../../../common/firebase/firebase";
-import { useNavigate } from "react-router-dom";
-import { ROUTES } from "common/constant";
-import { useCookies } from "react-cookie";
 import ToggleThemeMode from "./ToggleThemeMode";
-import { useFirebaseUserStore } from "store/user/user";
+import { AuthContext } from "providers/AuthProvider/AuthProvider";
 
 const ProfileButton: React.FC = () => {
-  const user = useFirebaseUserStore((state) => state.user);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const navigate = useNavigate();
-  const [, , removeCookies] = useCookies();
+  const { user, logout } = React.useContext(AuthContext)!
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -22,22 +15,13 @@ const ProfileButton: React.FC = () => {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
-    const auth = getAuth(app);
-    auth.signOut().then(() => {
-      navigate(ROUTES.SIGNIN);
-      removeCookies("user");
-    });
-    handleMenuClose();
-  };
-
   return (
     <div>
       <Avatar
         onClick={handleMenuOpen}
         style={{ cursor: "pointer" }}
         sx={{ width: 30, height: 30 }}
-        src={user?.picture}
+        src={user?.photoURL ?? ""}
       />
 
       <Menu
@@ -62,7 +46,7 @@ const ProfileButton: React.FC = () => {
           </div>
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleLogout}>
+        <MenuItem onClick={logout}>
           <Typography variant="h3"> Logout </Typography>
         </MenuItem>
       </Menu>

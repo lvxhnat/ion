@@ -9,8 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 import { GetUserPortfolios, createUserPortfolio } from "./requests";
-import { useFirebaseUserStore } from "store/user/user";
 import { useThemeStore } from "store/theme";
+import { AuthContext } from "providers/AuthProvider/AuthProvider";
 
 interface PortfolioDialogProps {
   open: boolean;
@@ -62,7 +62,7 @@ interface PortfolioPopupProps {
 export default function PortfolioPopup(props: PortfolioPopupProps) {
   const [open, setOpen] = useState(false);
   const theme = useThemeStore();
-  const user = useFirebaseUserStore((state) => state.user);
+  const {user} = React.useContext(AuthContext)!
 
   React.useEffect(() => {}, [user]);
 
@@ -70,7 +70,7 @@ export default function PortfolioPopup(props: PortfolioPopupProps) {
   const handleClose = () => setOpen(false);
   const handleSubmit = (name: string) => {
     if (user)
-      createUserPortfolio(user.user_id, name).then((res) =>
+      createUserPortfolio(user.uid, name).then((res) =>
         props.setPortfolios([...props.portfolios, res.data])
       );
   };
