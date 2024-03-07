@@ -12,6 +12,7 @@ from ion_backend.app.services.postgres.tables import (
 from ion_backend.app.api.endpoints.portfolio.params import (
     CreateUserPortfolioParams,
     CreateTransactionParams,
+    EditTransactionParams,
 )
 from ion_backend.app.api.endpoints.portfolio.models import UserPortfolio
 
@@ -77,19 +78,35 @@ def insert_transaction_entry(
     entry: CreateTransactionParams,
     session: Session = Depends(get_session),
 ):
-    return session.add(PortfolioTransactions(**entry.dict()))
+    entry_data = PortfolioTransactions(**entry.model_dump())
+    print(entry_data)
 
-
-@router.put("/{portfolioId}")
-def edit_transaction_entry(
-    entry: CreateTransactionParams,
-    session: Session = Depends(get_session),
-):
-    return (
+    # Check if the entry already exists
+    entry_exists = (
         session.query(PortfolioTransactions)
-        .filter(PortfolioTransactions.transaction_id == entry.transaction_id)
-        .update(entry)
+        .filter(
+            PortfolioTransactions.transaction_id == entry_data.transaction_id
+        )
+        .first()
     )
+
+    if entry_exists is None:
+        # Insert new entry if it does not exist
+        session.add(entry_data)
+    else:
+        # Update existing entry
+        update_data = entry.model_dump()
+        # Assuming model_dump() returns a dictionary that can be unpacked into the update() method
+        (
+            session.query(PortfolioTransactions)
+            .filter(
+                PortfolioTransactions.transaction_id
+                == entry_data.transaction_id
+            )
+            .update(update_data)
+        )
+    session.commit()
+    return
 
 
 @router.delete("/{portfolioId}")
@@ -110,5 +127,7 @@ def get_user_transactions(
     return (
         session.query(PortfolioTransactions)
         .filter(PortfolioTransactions.portfolio_id == portfolioId)
+        .order_by(PortfolioTransactions.transaction_date.desc())
+        .limit(20)
         .all()
     )

@@ -7,7 +7,7 @@ class CreateUserPortfolioParams(BaseModel):
     portfolio_name: str
 
 
-class CreateTransactionParams(BaseModel):
+class TransactionParams(BaseModel):
     transaction_id: str
     portfolio_id: str
     ticker: str
@@ -18,3 +18,11 @@ class CreateTransactionParams(BaseModel):
     type: str
     broker: str
     remarks: str
+
+
+class CreateTransactionParams(TransactionParams):
+    pass
+
+
+class EditTransactionParams(TransactionParams):
+    pass

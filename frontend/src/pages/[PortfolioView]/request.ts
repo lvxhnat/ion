@@ -20,7 +20,7 @@ export const insertPortfolioTransaction = (portfolioId: string, entry: InsertPor
   entry
 )
 
-export interface InsertPortfolioTransactionsParams {
+export interface BaseTransactionParams {
   transaction_id: string
   portfolio_id: string
   ticker: string
@@ -32,12 +32,13 @@ export interface InsertPortfolioTransactionsParams {
   broker: string
   remarks: string
 }
+export interface InsertPortfolioTransactionsParams extends BaseTransactionParams { }
 
 export const deletePortfolioTransaction = (transactionId: string) => request("ion-backend").delete(
   `${ENDPOINTS.PRIVATE.BASE_PORTFOLIO_ENDPOINT}/${transactionId}`,
   { data: { transaction_id: transactionId } }
 )
 
-export const getPortfolioTransactions = (portfolioId: string) => request("ion-backend").get(
+export const getPortfolioTransactions = (portfolioId: string) => request("ion-backend").get<BaseTransactionParams[]>(
   `${ENDPOINTS.PRIVATE.BASE_PORTFOLIO_ENDPOINT}/${portfolioId}`
 )

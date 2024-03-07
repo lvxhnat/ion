@@ -1,3 +1,3 @@
-import { InsertPortfolioTransactionsParams } from "../request";
+import { BaseTransactionParams } from "../request";
 
-export interface TransactionEntry extends InsertPortfolioTransactionsParams { }
+export interface TransactionEntry extends BaseTransactionParams { }

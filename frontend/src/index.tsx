@@ -1,7 +1,6 @@
 import { THEME_MODE_KEY } from "common/constant";
 import { getCookie } from "common/helper/cookies";
 import ThemeProvider from "providers/ThemeProvider";
-import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 

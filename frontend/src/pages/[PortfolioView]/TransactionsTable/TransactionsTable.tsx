@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as S from './style';
 import { v4 as uuid } from "uuid";
 import {
   Button,
@@ -17,6 +18,7 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+
 import { TransactionEntry } from "./type"; // Ensure this import matches your type definition
 import { deletePortfolioTransaction, getPortfolioTransactions, insertPortfolioTransaction } from "../request";
 
@@ -33,8 +35,7 @@ const fields: Field[] = [
   { id: "type", label: "Type", type: "select", options: ["Buy", "Sell"] },
   { id: "execution_price", label: "Exec Price", type: "number" },
   { id: "units", label: "Units", type: "number" },
-  { id: "fee", label: "Fee", type: "number" },
-  { id: "assetType", label: "Asset Type", type: "text" },
+  { id: "fees", label: "Fee", type: "number" },
   { id: "broker", label: "Broker", type: "text" },
   { id: "remarks", label: "Remarks", type: "text" },
 ];
@@ -43,29 +44,23 @@ interface TransactionsTableProps {
   portfolioId: string
 }
 
-const formatString = (value: any, field: string) => {
-  return (field === 'transaction_date') ? value.toLocaleString() : value
-}
-
 export default function TransactionsTable(props: TransactionsTableProps) {
+  const [rowActive, setRowActive] = React.useState<boolean>(false);
   const [transactions, setTransactions] = React.useState<TransactionEntry[]>([]);
   const [editId, setEditId] = React.useState<string | null>(null);
 
   React.useEffect(() => {
+    // Get the transactions existing in the portfolio
     getPortfolioTransactions(props.portfolioId).then((res) => {
-      setTransactions(res.data)
-    })
+      setTransactions(res.data.map((t) => {
+        return {
+          ...t,
+          transaction_date: new Date(t['transaction_date'])
+        }
+      }))})
   }, [])
 
-  const hasUnconfirmedTransaction = transactions.some((transaction) =>
-    transaction.transaction_id?.startsWith("temp-")
-  );
-
   const handleAdd = () => {
-    if (hasUnconfirmedTransaction) {
-      alert("Please confirm the current transaction before adding a new one.");
-      return;
-    }
     const newTransaction: TransactionEntry = {
       transaction_id: uuid(),
       portfolio_id: props.portfolioId,
@@ -80,9 +75,11 @@ export default function TransactionsTable(props: TransactionsTableProps) {
     };
     setTransactions([newTransaction, ...transactions]);
     setEditId(newTransaction.transaction_id);
+    setRowActive(true)
   };
 
   const handleChange = (id: string, field: string, value: any) => {
+    console.log(id, field, value, transactions)
     setTransactions(
       transactions.map((t) => (t.transaction_id === id ? { ...t, [field]: value } : t))
     );
@@ -106,16 +103,11 @@ export default function TransactionsTable(props: TransactionsTableProps) {
       return; // Stop the save operation if conditions are not met
     }
 
-    const updatedTransactions = transactions.map((t) => {
-      if (t.transaction_id === transaction.transaction_id) {
-        return { ...t, id: `confirmed-${new Date().getTime()}` };
-      }
-      return t;
-    });
-    setTransactions(updatedTransactions);
     setEditId(null);
-    // Insert Transaction
+    const newTransactions = transactions.map((t) => (t.transaction_id === transaction.transaction_id) ? transaction : t)
     insertPortfolioTransaction(props.portfolioId, transaction)
+    setTransactions(newTransactions)
+    setRowActive(false)
   };
 
   const handleEdit = (id: string) => {
@@ -123,19 +115,19 @@ export default function TransactionsTable(props: TransactionsTableProps) {
   };
 
   return (
-    <div>
+    <S.TransactionsWrapper>
       <Button
         startIcon={<AddBoxIcon />}
         onClick={handleAdd}
         variant="contained"
         color="primary"
         style={{ marginBottom: "20px" }}
-        disabled={hasUnconfirmedTransaction}
+        disabled={rowActive}
       >
         <Typography variant="subtitle1">Add Transaction</Typography>
       </Button>
-
-      <Table size="small" sx={{ tableLayout: "fixed", width: "100%" }}>
+      <S.TransactionTableWrapper>
+      <Table stickyHeader size="small" sx={{ tableLayout: "fixed", width: "100%", height: "100%" }}>
         <TableHead>
           <TableRow>
             {fields.map((field) => (
@@ -143,7 +135,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                 key={field.id}
                 sx={{
                   py: 0.5,
-                  width: field.id === "remarks" || field.id === "transactionDate" ? "15%" : "10%",
+                  width: field.id === "remarks" || field.id === "transaction_date" ? "15%" : "10%",
                   whiteSpace: "normal",
                   wordWrap: "break-word",
                 }}
@@ -151,7 +143,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                 <Typography variant="subtitle1">{field.label}</Typography>
               </TableCell>
             ))}
-            <TableCell sx={{ py: 0.5, width: "15%" }}></TableCell>
+            <TableCell sx={{ py: 0.5, width: "10%" }}></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -162,7 +154,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                   {editId === transaction.transaction_id ? (
                     field.type === "select" ? (
                       <Select
-                        value = {formatString(transaction[field.id as keyof TransactionEntry], field.id)}
+                        value = {transaction[field.id as keyof TransactionEntry]}
                         onChange={(e) =>
                           handleChange(transaction.transaction_id, field.id, e.target.value)
                         }
@@ -180,7 +172,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                     ) : (
                       <TextField
                         type={field.type}
-                        value={transaction[field.id as keyof TransactionEntry]}
+                        value={transaction[field.id as keyof TransactionEntry].toString()}
                         onChange={(e) =>
                           handleChange(transaction.transaction_id, field.id, e.target.value)
                         }
@@ -198,7 +190,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                     <Typography variant="subtitle1">
                       {transaction[
                         field.id as keyof TransactionEntry
-                      ]?.toString()}
+                      ].toString()}
                     </Typography>
                   )}
                 </TableCell>
@@ -232,6 +224,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
           ))}
         </TableBody>
       </Table>
-    </div>
+      </S.TransactionTableWrapper>
+      </S.TransactionsWrapper>
   );
 }
