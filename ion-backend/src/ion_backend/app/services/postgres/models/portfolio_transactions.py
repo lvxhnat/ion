@@ -19,7 +19,7 @@ class PortfolioTransactions(Base, TimeStamps):
         ),
         nullable=False,
     )
-    ticker = Column(String(10), nullable=False)
+    ticker = Column(String(25), nullable=False)
     transaction_date = Column(
         DateTime,
         default=datetime.utcnow,
@@ -29,6 +29,6 @@ class PortfolioTransactions(Base, TimeStamps):
     fees = Column(Numeric(10, 5), nullable=False)
     execution_price = Column(Numeric(15, 5), nullable=False)
     units = Column(Numeric(10, 2), nullable=False)
-    type = Column(String(4), nullable=False)
+    type = Column(String(8), nullable=False)
     broker = Column(String)
     remarks = Column(String)

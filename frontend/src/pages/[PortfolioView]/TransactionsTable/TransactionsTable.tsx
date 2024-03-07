@@ -37,7 +37,7 @@ interface Field {
 const fields: Field[] = [
   { id: "transaction_date", label: "Date", type: "date" },
   { id: "ticker", label: "Ticker", type: "text" },
-  { id: "type", label: "Type", type: "select", options: ["Buy", "Sell"] },
+  { id: "type", label: "Type", type: "select", options: ["Buy", "Sell", "Dividend"] },
   { id: "execution_price", label: "Exec Price", type: "number" },
   { id: "units", label: "Units", type: "number" },
   { id: "fees", label: "Fee", type: "number" },
