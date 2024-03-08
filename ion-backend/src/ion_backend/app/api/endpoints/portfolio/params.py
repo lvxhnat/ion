@@ -22,7 +22,3 @@ class TransactionParams(BaseModel):
 
 class CreateTransactionParams(TransactionParams):
     pass
-
-
-class EditTransactionParams(TransactionParams):
-    pass

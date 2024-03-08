@@ -2,8 +2,34 @@ import React from "react";
 import * as S from "../style";
 import { Stack, Typography } from "@mui/material";
 import { FaChartPie } from "react-icons/fa";
+import { GiLeafSwirl } from "react-icons/gi";
+
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "common/constant";
+
+interface MenuRowProps {
+  title: string
+  description: string 
+  icon: React.ReactNode
+  onClick: () => void
+  disabled?: boolean
+}
+
+function MenuRow(props: MenuRowProps) {
+  return (
+    <S.StyledMenuItem onClick={props.onClick} disabled={props.disabled}>
+        <S.IconStackWrapper>
+          { props.icon }
+          <Stack style={{ gap: 5, width: "80%" }}>
+            <Typography variant="h3"> {props.title} </Typography>
+            <S.ButtonSubtitles variant="subtitle2">
+              {props.description}
+            </S.ButtonSubtitles>
+          </Stack>
+        </S.IconStackWrapper>
+      </S.StyledMenuItem>
+  )
+}
 
 export default function AnalyticsButton() {
   const navigate = useNavigate();
@@ -32,17 +58,19 @@ export default function AnalyticsButton() {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        <S.StyledMenuItem onClick={() => handleClose(ROUTES.PORTFOLIO)}>
-          <S.IconStackWrapper>
-            <FaChartPie style={{ fontSize: 20 }} />
-            <Stack style={{ gap: 5, width: "80%" }}>
-              <Typography variant="h3"> Portfolio Analytics </Typography>
-              <S.ButtonSubtitles variant="subtitle2">
-                Analyse ETF Positions
-              </S.ButtonSubtitles>
-            </Stack>
-          </S.IconStackWrapper>
-        </S.StyledMenuItem>
+        <MenuRow 
+          icon = {<FaChartPie style={{ fontSize: 20 }} />}
+          title = "Portfolio Analytics"
+          description = "Analyse portfolio statistics with historical transactions."
+          onClick={() => handleClose(ROUTES.PORTFOLIO)}
+        />
+        <MenuRow 
+          disabled
+          icon = {<GiLeafSwirl style={{ fontSize: 20 }} />}
+          title = "Portfolio Optimisation"
+          description = ""
+          onClick={() => handleClose(ROUTES.PORTFOLIO)}
+        />
       </S.StyledMenu>
     </React.Fragment>
   );

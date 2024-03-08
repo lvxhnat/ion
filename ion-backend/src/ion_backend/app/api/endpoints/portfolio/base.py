@@ -12,7 +12,6 @@ from ion_backend.app.services.postgres.tables import (
 from ion_backend.app.api.endpoints.portfolio.params import (
     CreateUserPortfolioParams,
     CreateTransactionParams,
-    EditTransactionParams,
 )
 from ion_backend.app.api.endpoints.portfolio.models import UserPortfolio
 
