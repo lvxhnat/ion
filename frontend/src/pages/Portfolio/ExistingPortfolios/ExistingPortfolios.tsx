@@ -7,6 +7,7 @@ import { useThemeStore } from "store/theme";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Grid, IconButton, Link } from "@mui/material";
 import { ROUTES } from "common/constant";
+import AccordionPortfolio from "./AccordionPortfolio/AccordionPortfolio";
 
 interface ExistingPortfoliosProps {
   portfolios: GetUserPortfolios[];
@@ -73,13 +74,7 @@ export default function ExistingPortfolios(props: ExistingPortfoliosProps) {
             </Grid>
           </S.AccordionSummary>
           <S.AccordionDetails>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
-            </Typography>
+            <AccordionPortfolio portfolioId={entry.portfolio_id} />
           </S.AccordionDetails>
         </S.Accordion>
       ))}

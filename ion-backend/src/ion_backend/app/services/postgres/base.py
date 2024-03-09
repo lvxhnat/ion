@@ -26,6 +26,9 @@ class TimeStamps:
         nullable=False,
     )
 
+    def to_dict(self):
+        return {c.key: getattr(self, c.key) for c in self.__table__.columns}
+
 
 def get_session(postgres_uri: str = None):
     postgres: SQLDatabase = SQLDatabase(_get_postgres_session(postgres_uri))

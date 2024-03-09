@@ -1,8 +1,9 @@
 import * as React from "react";
-import * as S from "./style";
+import * as S from "../style";
 import { v4 as uuid } from "uuid";
 import {
   Button,
+  Chip,
   Grid,
   IconButton,
   MenuItem,
@@ -20,29 +21,30 @@ import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-import { TransactionEntry } from "./type"; // Ensure this import matches your type definition
+import { TickerEntry } from "./type"; // Ensure this import matches your type definition
 import {
   deletePortfolioTransaction,
-  getPortfolioTransactions,
+  getPortfolioTickers,
   insertPortfolioTransaction,
 } from "../request";
-import moment from "moment";
+import { ColorsEnum } from "common/theme";
 
 interface Field {
   id: string;
   label: string;
-  type: "text" | "number" | "select" | "date";
+  type: "text" | "number" | "select";
   options?: string[];
 }
 
 const fields: Field[] = [
-  { id: "transaction_date", label: "Date", type: "date" },
   { id: "ticker", label: "Ticker", type: "text" },
-  { id: "type", label: "Type", type: "select", options: ["Buy", "Sell", "Dividend"] },
-  { id: "execution_price", label: "Exec Price", type: "number" },
+  {
+    id: "type",
+    label: "Type",
+    type: "select",
+    options: ["Buy", "Sell", "Dividend"],
+  },
   { id: "units", label: "Units", type: "number" },
-  { id: "fees", label: "Fee", type: "number" },
-  { id: "broker", label: "Broker", type: "text" },
   { id: "remarks", label: "Remarks", type: "text" },
 ];
 
@@ -50,42 +52,49 @@ interface TransactionsTableProps {
   portfolioId: string;
 }
 
+type TypeCellProps = "Buy" | "Sell" | "Dividend";
+const TypeCell = (props: { type: TypeCellProps }) => {
+  const colors = {
+    Buy: ColorsEnum.green,
+    Sell: ColorsEnum.red,
+    Dividend: ColorsEnum.yellow,
+  };
+  return (
+    <Chip
+      size="small"
+      label={props.type}
+      style={{
+        backgroundColor: colors[props.type],
+        color: ColorsEnum.white,
+        fontSize: `calc(0.5rem + 0.3vw)`,
+      }}
+    />
+  );
+};
+
 export default function TransactionsTable(props: TransactionsTableProps) {
   const [rowActive, setRowActive] = React.useState<boolean>(false);
-  const [transactions, setTransactions] = React.useState<TransactionEntry[]>(
-    []
-  );
+  const [transactions, setTransactions] = React.useState<TickerEntry[]>([]);
   const [editId, setEditId] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     // Get the transactions existing in the portfolio
-    getPortfolioTransactions(props.portfolioId).then((res) => {
-      setTransactions(
-        res.data.map((t) => {
-          return {
-            ...t,
-            transaction_date: new Date(t["transaction_date"]),
-          };
-        })
-      );
+    getPortfolioTickers(props.portfolioId).then((res) => {
+      setTransactions(res.data);
     });
   }, []);
 
   const handleAdd = () => {
-    const newTransaction: TransactionEntry = {
+    const newTicker: TickerEntry = {
       transaction_id: uuid(),
       portfolio_id: props.portfolioId,
-      transaction_date: new Date(),
       ticker: "",
-      fees: 0,
-      broker: "",
-      execution_price: 0,
       type: "Buy",
       units: 0,
       remarks: "",
     };
-    setTransactions([newTransaction, ...transactions]);
-    setEditId(newTransaction.transaction_id);
+    setTransactions([newTicker, ...transactions]);
+    setEditId(newTicker.transaction_id);
     setRowActive(true);
   };
 
@@ -104,24 +113,18 @@ export default function TransactionsTable(props: TransactionsTableProps) {
     setRowActive(false);
   };
 
-  const handleSave = (transaction: TransactionEntry) => {
-    if (
-      transaction.units === 0 ||
-      transaction.execution_price === 0 ||
-      transaction.ticker === ""
-    ) {
-      alert(
-        "Please ensure units and execution price are not 0, and ticker is not empty."
-      );
+  const handleSave = (transaction: TickerEntry) => {
+    if (transaction.units === 0 || transaction.ticker === "") {
+      alert("Please ensure units are not 0, and ticker is not empty.");
       return; // Stop the save operation if conditions are not met
     }
 
     setEditId(null);
-    const newTransactions = transactions.map((t) =>
+    const newTickers = transactions.map((t) =>
       t.transaction_id === transaction.transaction_id ? transaction : t
     );
     insertPortfolioTransaction(props.portfolioId, transaction);
-    setTransactions(newTransactions);
+    setTransactions(newTickers);
     setRowActive(false);
   };
 
@@ -145,11 +148,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
         </Button>
       </Grid>
       <S.TransactionTableWrapper>
-        <Table
-          stickyHeader
-          size="small"
-          sx={{ tableLayout: "fixed", width: "100%", height: "100%" }}
-        >
+        <Table stickyHeader size="small" sx={{ width: "100%", height: "100%" }}>
           <TableHead>
             <TableRow>
               {fields.map((field) => (
@@ -157,10 +156,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                   key={field.id}
                   sx={{
                     py: 0.5,
-                    width:
-                      field.id === "remarks" || field.id === "transaction_date"
-                        ? "15%"
-                        : "10%",
+                    width: field.id === "remarks" ? "15%" : "10%",
                     whiteSpace: "normal",
                     wordWrap: "break-word",
                   }}
@@ -174,66 +170,65 @@ export default function TransactionsTable(props: TransactionsTableProps) {
           <TableBody>
             {transactions.map((transaction) => (
               <TableRow key={transaction.transaction_id}>
-                {fields.map((field) => (
-                  <TableCell key={field.id} sx={{ py: 0.5 }}>
-                    {editId === transaction.transaction_id ? (
-                      field.type === "select" ? (
-                        <Select
-                          value={
-                            transaction[field.id as keyof TransactionEntry]
-                          }
-                          onChange={(e) =>
-                            handleChange(
-                              transaction.transaction_id,
-                              field.id,
-                              e.target.value
-                            )
-                          }
-                          fullWidth
-                          size="small"
-                        >
-                          {field.options?.map((option) => (
-                            <MenuItem key={option} value={option}>
-                              <Typography variant="subtitle1">
-                                {option}
-                              </Typography>
-                            </MenuItem>
-                          ))}
-                        </Select>
+                {fields.map((field) => {
+                  const value = transaction[field.id as keyof TickerEntry];
+                  return (
+                    <TableCell key={field.id} sx={{ py: 0.5 }}>
+                      {editId === transaction.transaction_id ? (
+                        field.type === "select" ? (
+                          <Select
+                            value={value}
+                            onChange={(e) =>
+                              handleChange(
+                                transaction.transaction_id,
+                                field.id,
+                                e.target.value
+                              )
+                            }
+                            fullWidth
+                            size="small"
+                          >
+                            {field.options?.map((option) => (
+                              <MenuItem key={option} value={option}>
+                                <Typography variant="subtitle1">
+                                  {option}
+                                </Typography>
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        ) : (
+                          <TextField
+                            type={field.type}
+                            value={value.toString()}
+                            onChange={(e) =>
+                              handleChange(
+                                transaction.transaction_id,
+                                field.id,
+                                e.target.value
+                              )
+                            }
+                            variant="outlined"
+                            size="small"
+                            fullWidth
+                            inputProps={{
+                              style: {
+                                fontSize: "calc(0.5rem + 0.3vw)",
+                              },
+                            }}
+                          />
+                        )
                       ) : (
-                        <TextField
-                          type={field.type}
-                          value={transaction[
-                            field.id as keyof TransactionEntry
-                          ].toString()}
-                          onChange={(e) =>
-                            handleChange(
-                              transaction.transaction_id,
-                              field.id,
-                              e.target.value
-                            )
-                          }
-                          variant="outlined"
-                          size="small"
-                          fullWidth
-                          inputProps={{
-                            style: {
-                              fontSize: "calc(0.5rem + 0.3vw)",
-                            },
-                          }}
-                        />
-                      )
-                    ) : (
-                      <Typography variant="subtitle1">
-                        {field.id === 'transaction_date' ? moment( transaction[
-                            field.id as keyof TransactionEntry
-                          ]).format("YYYY-MM-DD") : transaction[
-                            field.id as keyof TransactionEntry
-                          ].toString()}
-                      </Typography>
-                    )}
-                  </TableCell>
-                ))}
+                        <Typography variant="subtitle1">
+                          {field.id === "type" ? (
+                            <TypeCell type={value as TypeCellProps} />
+                          ) : (
+                            value.toString()
+                          )}
+                        </Typography>
+                      )}
+                    </TableCell>
+                  );
+                })}
                 <TableCell sx={{ py: 0.5 }}>
                   {/* Always show the delete button */}
                   <IconButton

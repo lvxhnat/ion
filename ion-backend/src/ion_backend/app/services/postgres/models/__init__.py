@@ -1,5 +1,5 @@
 from ion_backend.app.services.postgres.models.portfolio_transactions import (
-    PortfolioTransactions,
+    PortfolioTickers,
 )
 from ion_backend.app.services.postgres.models.user_portfolios import (
     UserPortfolios,

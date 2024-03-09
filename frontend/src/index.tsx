@@ -14,9 +14,9 @@ function ThemedApp() {
 
   return (
     <AuthProvider>
-    <ThemeProvider modeTheme={modeTheme}>
-      <App /> 
-    </ThemeProvider>
+      <ThemeProvider modeTheme={modeTheme}>
+        <App />
+      </ThemeProvider>
     </AuthProvider>
   );
 }

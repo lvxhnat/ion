@@ -62,7 +62,7 @@ interface PortfolioPopupProps {
 export default function PortfolioPopup(props: PortfolioPopupProps) {
   const [open, setOpen] = useState(false);
   const theme = useThemeStore();
-  const {user} = React.useContext(AuthContext)!
+  const { user } = React.useContext(AuthContext)!;
 
   React.useEffect(() => {}, [user]);
 

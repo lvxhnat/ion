@@ -8,27 +8,27 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "common/constant";
 
 interface MenuRowProps {
-  title: string
-  description: string 
-  icon: React.ReactNode
-  onClick: () => void
-  disabled?: boolean
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  onClick: () => void;
+  disabled?: boolean;
 }
 
 function MenuRow(props: MenuRowProps) {
   return (
     <S.StyledMenuItem onClick={props.onClick} disabled={props.disabled}>
-        <S.IconStackWrapper>
-          { props.icon }
-          <Stack style={{ gap: 5, width: "80%" }}>
-            <Typography variant="h3"> {props.title} </Typography>
-            <S.ButtonSubtitles variant="subtitle2">
-              {props.description}
-            </S.ButtonSubtitles>
-          </Stack>
-        </S.IconStackWrapper>
-      </S.StyledMenuItem>
-  )
+      <S.IconStackWrapper>
+        {props.icon}
+        <Stack style={{ gap: 5, width: "80%" }}>
+          <Typography variant="h3"> {props.title} </Typography>
+          <S.ButtonSubtitles variant="subtitle2">
+            {props.description}
+          </S.ButtonSubtitles>
+        </Stack>
+      </S.IconStackWrapper>
+    </S.StyledMenuItem>
+  );
 }
 
 export default function AnalyticsButton() {
@@ -58,17 +58,10 @@ export default function AnalyticsButton() {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        <MenuRow 
-          icon = {<FaChartPie style={{ fontSize: 20 }} />}
-          title = "Portfolio Analytics"
-          description = "Analyse portfolio statistics with historical transactions."
-          onClick={() => handleClose(ROUTES.PORTFOLIO)}
-        />
-        <MenuRow 
-          disabled
-          icon = {<GiLeafSwirl style={{ fontSize: 20 }} />}
-          title = "Portfolio Optimisation"
-          description = ""
+        <MenuRow
+          icon={<GiLeafSwirl style={{ fontSize: 20 }} />}
+          title="Watchlist & Analytics"
+          description="Add stocks to watchlist and check for correlations"
           onClick={() => handleClose(ROUTES.PORTFOLIO)}
         />
       </S.StyledMenu>

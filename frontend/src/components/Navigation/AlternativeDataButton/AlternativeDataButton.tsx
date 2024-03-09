@@ -17,7 +17,6 @@ export default function AlternativeDataButton() {
   return (
     <React.Fragment>
       <S.StyledMenuButton
-        disabled
         disableRipple
         disableFocusRipple
         onClick={(event: React.MouseEvent<HTMLButtonElement>) =>

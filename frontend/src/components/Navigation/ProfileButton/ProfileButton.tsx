@@ -5,7 +5,7 @@ import { AuthContext } from "providers/AuthProvider/AuthProvider";
 
 const ProfileButton: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { user, logout } = React.useContext(AuthContext)!
+  const { user, logout } = React.useContext(AuthContext)!;
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
