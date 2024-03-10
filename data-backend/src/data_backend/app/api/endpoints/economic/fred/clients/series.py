@@ -60,13 +60,9 @@ def get_children_category_ids(category_id: str) -> List[dict]:
         )
     ]
     if len(processed_json_data) == 0:
-        request_path: str = (
-            f"{CATEGORY_ROOT_PATH('series')}&category_id={category_id}&limit=100"
-        )
-        json_data: List[dict] = requests.get(request_path).json()["seriess"]
         return {
             "type": "series",
-            "data": json_data,
+            "data": get_category_series(category_id),
         }
     else:
         # If the json data is not zero, that means that the category id exists. If it doesnt, we move on to get the series available.
@@ -78,8 +74,8 @@ def get_children_category_ids(category_id: str) -> List[dict]:
 
 def get_category_series(category_id: str) -> List[dict]:
     request_path: str = (
-        CATEGORY_ROOT_PATH("series")
-        + f"&category_id={category_id}&exclude_tag_names=discontinued&order_by=search_rank&sort_order=desc"
+        CATEGORY_ROOT_PATH("series") + f"&category_id={category_id}&limit=500"
     )
-    json_data: List[dict] = requests.get(request_path).json()["seriess"]
-    return json_data
+    response = requests.get(request_path).json()["seriess"]
+    response = [res for res in response if "DISCONTINUED" not in res["title"]]
+    return response

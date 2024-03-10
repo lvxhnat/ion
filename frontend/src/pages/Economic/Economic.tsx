@@ -86,7 +86,7 @@ export default function Economic() {
   return (
     <ContainerWrapper>
       <S.GridWrapper container>
-        <Grid item xs={4} style={{ overflowY: "scroll", height: "100%" }}>
+        <Grid item xs={4} style={{ overflowY: "hidden", height: "100%" }}>
           {nodes && nodes.value.selection.id !== 0 ? (
             <S.SidePanelOpener>
               <S.ChildNodesPanel>
@@ -126,11 +126,12 @@ export default function Economic() {
                 )}
               </S.ChildNodesPanel>
             </S.SidePanelOpener>
-          ) : <div> 
+          ) : <React.Fragment> 
             <Typography variant="h2">
               Economic Calendar
             </Typography>
-            <EconomicCalendar /></div>}
+            <EconomicCalendar />
+            </React.Fragment>}
         </Grid>
         <Grid
           item
@@ -191,10 +192,6 @@ export default function Economic() {
           ) : null}
           {nodes && nodes.value.selection.id !== 0 ? (
             <S.MainPanelOpener>
-              <SelectedSeriesMainview
-                nodes={nodes}
-                seriesSelected={seriesSelected}
-              />
               <S.SeriesSelectorWrapper>
                 <SeriesSelection
                   nodes={nodes}

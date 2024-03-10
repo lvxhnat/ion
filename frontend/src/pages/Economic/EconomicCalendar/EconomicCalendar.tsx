@@ -1,10 +1,10 @@
 import * as React from "react";
+import * as S from '../style';
 import {
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   Typography,
 } from "@mui/material";
@@ -13,8 +13,8 @@ import moment from "moment";
 
 const StyledTableCell = (props: { children?: React.ReactNode }) => {
   return (
-    <TableCell>
-      <Typography variant="subtitle2">{props.children}</Typography>
+    <TableCell style={{ paddingTop: 0.5, paddingBottom: 0.5 }}>
+      <Typography variant="subtitle2" noWrap>{props.children}</Typography>
     </TableCell>
   );
 };
@@ -27,33 +27,28 @@ export default function EconomicCalendar() {
 
 
   return (
-    <div style={{ height: "100%", overflowY: 'hidden'}}>
-    <TableContainer style={{height: "100%", overflowY: "auto"}}>
-      <Table
-        stickyHeader
-        size="small"
-        sx={{ width: "100%", height: "100%", tableLayout: "fixed" }}
-      >
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Ticker</StyledTableCell>
-            <StyledTableCell>Units</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {entries.map((entry) => (
-            <TableRow key={`${entry.entry_id}-outstandingPositions`}>
-              <StyledTableCell key={`${entry.entry_id}-cell2`}>
-                {entry.name}
-              </StyledTableCell>
-              <StyledTableCell key={`${entry.entry_id}-cell3`}>
-                {moment(new Date(entry.date)).format("YYYY-MM-DD")}
-              </StyledTableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      </TableContainer>
-      </div>
+    <S.GridWrapper>
+      <S.TableContainerWrapper>
+        <Table
+          stickyHeader
+          size="small"
+          sx={{ width: "100%", height: "100%", tableLayout: "fixed" }}
+        >
+          <TableBody>
+            {entries.map((entry) => (
+              <TableRow key={`${entry.entry_id}-outstandingPositions`}>
+                <TableCell width="5%" key={`${entry.entry_id}-cell1`}>🇺🇸</TableCell>
+                <StyledTableCell key={`${entry.entry_id}-cell2`}>
+                  {entry.name}
+                </StyledTableCell>
+                <StyledTableCell key={`${entry.entry_id}-cell3`}>
+                  {moment(new Date(entry.date)).format("YYYY-MM-DD")}
+                </StyledTableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        </S.TableContainerWrapper>
+      </S.GridWrapper>
   );
 }

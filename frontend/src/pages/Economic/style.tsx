@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, TableContainer, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import { ColorsEnum } from "common/theme";
 
@@ -13,6 +13,20 @@ interface FredRowProps {
   children?: any;
   [x: string]: any;
 }
+
+export const TableContainerWrapper = styled(TableContainer)(({ theme }) => ({
+  paddingTop: 10,
+  height: "100%",
+  width: "90%",
+  overflowY: "auto",
+  "&::-webkit-scrollbar": { display: "none" },
+}));
+
+export const SeriesPanel = styled("div")(({ theme }) => ({
+  height: "100%",
+  overflowY: "scroll",
+  "&::-webkit-scrollbar": { display: "none" },
+}));
 
 export const GridWrapper = styled(Grid)(({ theme }) => ({
   overflowY: "hidden",
@@ -80,12 +94,6 @@ export const PanelOpener = styled("div")(({ theme }) => ({
   height: "100%",
 }));
 
-export const SeriesPanel = styled("div")(({ theme }) => ({
-  height: "100%",
-  overflowY: "scroll",
-  "&::-webkit-scrollbar": { display: "none" },
-}));
-
 export const SidePanelOpener = styled("div")(({ theme }) => ({
   width: "100%",
   height: "100%",
@@ -109,7 +117,7 @@ export const SeriesSelectorWrapper = styled("div")(({ theme }) => ({
   overflowY: "scroll",
   height: "100%",
   "&::-webkit-scrollbar": { display: "none" },
-  paddingBottom: 50,
+  paddingBottom: 10,
 }));
 
 export const UpdateBar = styled("div")(({ theme }) => ({
