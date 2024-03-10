@@ -6,6 +6,7 @@ export const ROUTES = {
   ECONOMIC_DATA: "/economic",
   ABOUT: "/about",
   PORTFOLIO: "/portfolio",
+  USER_API_KEYS: "/user/apikeys",
 };
 
 export const ASSET_TYPES = {

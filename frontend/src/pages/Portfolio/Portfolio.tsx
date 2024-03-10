@@ -12,10 +12,11 @@ import { AuthContext } from "providers/AuthProvider/AuthProvider";
 export default function Portfolio() {
   const theme = useThemeStore();
   const [portfolios, setPortfolios] = React.useState<GetUserPortfolios[]>([]);
-  const { user } = React.useContext(AuthContext)!
+  const { user } = React.useContext(AuthContext)!;
 
   React.useEffect(() => {
-    if (user) getUserPortfolios(user.uid).then((res) => setPortfolios(res.data));
+    if (user)
+      getUserPortfolios(user.uid).then((res) => setPortfolios(res.data));
   }, [user]);
 
   return (

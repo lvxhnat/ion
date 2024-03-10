@@ -7,14 +7,18 @@ from fastapi import APIRouter, Depends, Query, Request
 from ion_backend.app.services.postgres.base import get_session
 from ion_backend.app.services.postgres.tables import (
     UserPortfolios,
-    PortfolioTransactions,
+    PortfolioTickers,
 )
 from ion_backend.app.api.endpoints.portfolio.params import (
     CreateUserPortfolioParams,
     CreateTransactionParams,
-    EditTransactionParams,
 )
 from ion_backend.app.api.endpoints.portfolio.models import UserPortfolio
+from ion_backend.app.api.endpoints.portfolio.statistics.functions import (
+    import_data,
+    calculate_position_pnls,
+)
+
 
 router = APIRouter(tags=["portfolio"], prefix="/portfolio")
 
@@ -55,7 +59,7 @@ def create_user_portfolio(
     data = {
         "portfolio_id": portfolio_id,  # Generate a new user_id
         "user_id": user_id,
-        "name": portfolio_name,
+        "name": portfolio_name.strip(),
         "created_at": datetime.now(),
         "last_modified": datetime.now(),
     }
@@ -78,13 +82,15 @@ def insert_transaction_entry(
     entry: CreateTransactionParams,
     session: Session = Depends(get_session),
 ):
-    entry_data = PortfolioTransactions(**entry.model_dump())
+    entry_data = PortfolioTickers(**entry.model_dump())
     transaction_id = entry_data.transaction_id
     entry_exists = (
-        session.query(PortfolioTransactions)
-        .filter(PortfolioTransactions.transaction_id == transaction_id)
+        session.query(PortfolioTickers)
+        .filter(PortfolioTickers.transaction_id == transaction_id)
         .first()
     )
+    # Process the entry to make sure it conforms
+    entry.ticker = entry.ticker.strip().upper()
 
     if entry_exists is None:
         # Insert new entry if it does not exist
@@ -94,8 +100,8 @@ def insert_transaction_entry(
         update_data = entry.model_dump()
         # Assuming model_dump() returns a dictionary that can be unpacked into the update() method
         (
-            session.query(PortfolioTransactions)
-            .filter(PortfolioTransactions.transaction_id == transaction_id)
+            session.query(PortfolioTickers)
+            .filter(PortfolioTickers.transaction_id == transaction_id)
             .update(update_data)
         )
     session.commit()
@@ -103,33 +109,38 @@ def insert_transaction_entry(
 
 
 @router.delete("/{portfolioId}")
-async def delete_user_transactions(
+async def delete_user_tickers(
     request: Request,
     session: Session = Depends(get_session),
 ):
     res: str = await request.json()
     transaction_id = res["transaction_id"]
     entry_exists = (
-        session.query(PortfolioTransactions)
-        .filter(PortfolioTransactions.transaction_id == transaction_id)
+        session.query(PortfolioTickers)
+        .filter(PortfolioTickers.transaction_id == transaction_id)
         .first()
     )
     if entry_exists:
         # Insert new entry if it does not exist
-        session.delete(
-            session.query(PortfolioTransactions).get(transaction_id)
-        )
+        session.delete(session.query(PortfolioTickers).get(transaction_id))
 
 
 @router.get("/{portfolioId}")
-def get_user_transactions(
+def get_user_tickers(
     portfolioId: str,
     session: Session = Depends(get_session),
 ):
     return (
-        session.query(PortfolioTransactions)
-        .filter(PortfolioTransactions.portfolio_id == portfolioId)
-        .order_by(PortfolioTransactions.transaction_date.desc())
+        session.query(PortfolioTickers)
+        .filter(PortfolioTickers.portfolio_id == portfolioId)
         .limit(20)
         .all()
     )
+
+
+@router.get("/{portfolioId}/statistics")
+def get_portfolio_statistics(
+    portfolioId: str,
+    session: Session = Depends(get_session),
+):
+    pass

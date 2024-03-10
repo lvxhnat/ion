@@ -39,7 +39,7 @@ export default function ContainerWrapper(props: ContainerWrapperProps) {
       <CssBaseline />
       <Navigation hideNavigate={props.hideNavigate} />
       {props.hideNavigate ? <></> : <Divider style={{ width: "100%" }} />}
-      <div style={{ paddingTop: 10, height: "100%", width: "100%" }}>
+      <div style={{ paddingTop: 10, height: "100%", width: "100%", overflowY: "hidden" }}>
         {props.children}
       </div>
       {!online ? (

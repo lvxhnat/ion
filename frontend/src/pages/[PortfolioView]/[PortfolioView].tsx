@@ -2,12 +2,13 @@ import * as React from "react";
 import moment from "moment";
 import { useParams } from "react-router-dom";
 import { ContainerWrapper } from "components/Wrappers/ContainerWrapper";
-import TransactionsTable from "./TransactionsTable";
 import { Grid, Typography } from "@mui/material";
 import { GetUserPortfolios, getUserPortfolio } from "./request";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import type { ReactTabsFunctionComponent, TabProps } from "react-tabs";
 
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import Summary from "./Summary";
+import TransactionsTable from "./TransactionsTable";
 
 const StyledTab: ReactTabsFunctionComponent<TabProps> = ({
   children,
@@ -20,7 +21,6 @@ const StyledTab: ReactTabsFunctionComponent<TabProps> = ({
 StyledTab.tabsRole = "Tab"; // Required field to use your custom Tab
 
 export default function PortfolioView() {
-  
   const params = useParams();
   const [portfolio, setPortfolio] = React.useState<GetUserPortfolios>();
 
@@ -66,19 +66,17 @@ export default function PortfolioView() {
       <Tabs>
         <TabList>
           <StyledTab> Summary </StyledTab>
-          <StyledTab> Transactions </StyledTab>
-          <StyledTab> Deposits / Withdrawals </StyledTab>
+          <StyledTab> Watchlists </StyledTab>
         </TabList>
         <TabPanel>
-          <Grid container style={{ paddingTop: 15 }}></Grid>
+          <Grid container style={{ paddingTop: 15 }}>
+            <Summary portfolioId={params.portfolioName!} />
+          </Grid>
         </TabPanel>
         <TabPanel>
           <Grid container style={{ paddingTop: 15 }}>
             <TransactionsTable portfolioId={params.portfolioName!} />
           </Grid>
-        </TabPanel>
-        <TabPanel>
-          <Grid container style={{ paddingTop: 15 }}></Grid>
         </TabPanel>
       </Tabs>
     </ContainerWrapper>

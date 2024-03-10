@@ -67,3 +67,18 @@ export const getFredSeries = (series_id: string) => {
     }
   );
 };
+
+export interface EconomicCalendarEntry {
+  created_at: string
+  date: string
+  entry_id: string
+  fred_release_id: string
+  last_modified: string
+  name: string
+}
+
+export const getEconomicCalendar = () => {
+  return request("ion-backend").get<EconomicCalendarEntry[]>(
+    ENDPOINTS.PRIVATE.ECONOMIC_CALENDAR_ENDPOINT,
+  );
+};

@@ -34,16 +34,13 @@ export default function SignIn() {
   const [isError, setIsError] = React.useState<boolean>(false);
   const { user, emailLogin, googleLogin } = React.useContext(AuthContext)!;
   const navigate = useNavigate();
-  if (user) navigate(ROUTES.LANDING)
+  if (user) navigate(ROUTES.LANDING);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    emailLogin(
-      data.get("email") as string,
-      data.get("password") as string
-    )
+    emailLogin(data.get("email") as string, data.get("password") as string)
       .then((userCredential) => {
         userCredential.user.getIdToken().then((s: any) => {
           setIsError(false);
@@ -56,7 +53,7 @@ export default function SignIn() {
   };
 
   const handleGoogleSubmit = async () => {
-    const response: UserCredential = await googleLogin()
+    const response: UserCredential = await googleLogin();
     response.user.getIdToken().then((s: any) => {
       setIsError(false);
       navigate(ROUTES.LANDING);

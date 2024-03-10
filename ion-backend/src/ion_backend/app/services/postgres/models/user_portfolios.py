@@ -18,5 +18,5 @@ class UserPortfolios(Base, TimeStamps):
     name = Column(String, nullable=False)
     description = Column(String)
     portfolio_transactions = relationship(
-        "PortfolioTransactions", backref="user_portfolios"
+        "PortfolioTickers", backref="user_portfolios"
     )

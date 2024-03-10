@@ -1,11 +1,15 @@
-import React from "react";
+import * as React from "react";
+import * as S from "./style";
 import { Avatar, Divider, Menu, MenuItem, Typography } from "@mui/material";
 import ToggleThemeMode from "./ToggleThemeMode";
 import { AuthContext } from "providers/AuthProvider/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "common/constant";
 
 const ProfileButton: React.FC = () => {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { user, logout } = React.useContext(AuthContext)!
+  const { user, logout } = React.useContext(AuthContext)!;
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -30,20 +34,17 @@ const ProfileButton: React.FC = () => {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
+        <MenuItem onClick={() => navigate(ROUTES.USER_API_KEYS)}>
+          <Typography variant="h3"> API Keys </Typography>
+        </MenuItem>
+        <Divider />
         <MenuItem>
-          <div
-            style={{
-              display: "flex",
-              width: "100%",
-              alignItems: "center",
-              gap: 50,
-            }}
-          >
+          <S.ToggleThemeWrapper>
             <Typography variant="h3"> Light Theme </Typography>
             <div style={{ justifyContent: "flex-end" }}>
               <ToggleThemeMode />
             </div>
-          </div>
+          </S.ToggleThemeWrapper>
         </MenuItem>
         <Divider />
         <MenuItem onClick={logout}>

@@ -1,7 +1,19 @@
 // src/AuthProvider.tsx
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { User, UserCredential, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { signInWithGooglePopup } from 'common/firebase/firebase';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
+import {
+  User,
+  UserCredential,
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { signInWithGooglePopup } from "common/firebase/firebase";
 
 const auth = getAuth();
 
@@ -13,12 +25,14 @@ interface AuthContextType {
   signup: (email: string, password: string) => Promise<UserCredential>;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
@@ -32,7 +46,7 @@ export default function AuthProvider(props: AuthProviderProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(currentUser => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
       setLoading(false);
     });
@@ -42,10 +56,12 @@ export default function AuthProvider(props: AuthProviderProps) {
 
   const value = {
     user,
-    emailLogin: (email: string, password: string) => signInWithEmailAndPassword(auth, email, password),
+    emailLogin: (email: string, password: string) =>
+      signInWithEmailAndPassword(auth, email, password),
     logout: () => auth.signOut(),
-    signup: (email: string, password: string) => createUserWithEmailAndPassword(auth, email, password),
-    googleLogin: () => signInWithGooglePopup()
+    signup: (email: string, password: string) =>
+      createUserWithEmailAndPassword(auth, email, password),
+    googleLogin: () => signInWithGooglePopup(),
   };
 
   return (
@@ -53,4 +69,4 @@ export default function AuthProvider(props: AuthProviderProps) {
       {!loading && props.children}
     </AuthContext.Provider>
   );
-};
+}

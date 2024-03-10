@@ -6,7 +6,7 @@ export const TransactionsWrapper = styled(TableContainer)(({ theme }) => ({
   overflowY: "hidden",
 }));
 export const TransactionTableWrapper = styled("div")(({ theme }) => ({
-  height: "500px",
+  maxHeight: "550px",
   overflowY: "auto",
   "&::-webkit-scrollbar": { display: "none" },
 }));
