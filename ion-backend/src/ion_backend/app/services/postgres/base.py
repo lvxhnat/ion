@@ -130,3 +130,22 @@ class SQLDatabase:
                 raise ex from inner_err
             ex = DatabaseError(f"Execution failed on sql '{args[0]}': {exc}")
             raise ex from err
+
+
+if __name__ == "__main__":
+    import pandas as pd
+    from ion_backend.app.services.postgres.models.economic_calendar import (
+        EconomicCalendar,
+    )
+
+    df = pd.read_csv(
+        "/Users/lohyikuang/sites/ion/_research/economic_calendar.csv"
+    ).rename(columns={"id": "fred_release_id"})
+    df["fred_release_id"] = df["fred_release_id"].astype(str).str.strip()
+    df["name"] = df["name"].str.strip()
+
+    rows = [EconomicCalendar(**entry) for entry in df.to_dict("records")]
+
+    with _get_postgres_session()() as session:
+        session.bulk_save_objects(rows)
+        session.commit()

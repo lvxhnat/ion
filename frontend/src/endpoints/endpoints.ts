@@ -12,6 +12,8 @@ export const ENDPOINTS = {
     FRED_SERIES_ENDPOINT: "economic/fred/series",
     FRED_SEARCH_ENDPOINT: "economic/fred/search",
 
+    ECONOMIC_CALENDAR_ENDPOINT: "economics/economic-calendar",
+
     BASE_PORTFOLIO_ENDPOINT: "portfolio",
     USER_PORTFOLIOS_ENDPOINT: "portfolio/user-portfolios",
     PORTFOLIO_ENDPOINT: "portfolio/portfolio",

@@ -23,6 +23,7 @@ import SelectedSeriesSidebar from "./SelectedSeriesSidebar";
 import SelectedSeriesMainview from "./SelectedSeriesMainview";
 import { ContainerWrapper } from "components/Wrappers/ContainerWrapper";
 import SearchBar from "./Searchbar";
+import EconomicCalendar from "./EconomicCalendar";
 
 export default function Economic() {
   const [titles, setTitles] = React.useState<FredParentNodeDTO>([]);
@@ -125,7 +126,11 @@ export default function Economic() {
                 )}
               </S.ChildNodesPanel>
             </S.SidePanelOpener>
-          ) : null}
+          ) : <div> 
+            <Typography variant="h2">
+              Economic Calendar
+            </Typography>
+            <EconomicCalendar /></div>}
         </Grid>
         <Grid
           item
