@@ -35,8 +35,8 @@ export default function EconomicCalendar() {
           sx={{ width: "100%", height: "100%", tableLayout: "fixed" }}
         >
           <TableBody>
-            {entries.map((entry) => (
-              <TableRow key={`${entry.entry_id}-outstandingPositions`}>
+            {entries.map((entry, index) => (
+              <TableRow key={`row-${index}-outstandingPositions`}>
                 <TableCell width="5%" key={`${entry.entry_id}-cell1`}>🇺🇸</TableCell>
                 <StyledTableCell key={`${entry.entry_id}-cell2`}>
                   {entry.name}

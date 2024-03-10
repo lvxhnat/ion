@@ -33,6 +33,11 @@ export default function SearchBar() {
     }
   }, [debounceSearchQuery]);
 
+  const handleClick = (result: any) => {
+    setValue(result.title)
+    console.log(result)
+  }
+
   const handleClickAway = () => {
     setOpen(false); // Hide dropdown when clicking away
   };
@@ -61,7 +66,7 @@ export default function SearchBar() {
           <S.ResultsWrapper>
             {results.length !== 0 ? (
               results.map((result, index) => (
-                <MenuItem key={index} onClick={() => setValue(result)}>
+                <MenuItem key={index} onClick={() => handleClick(result)}>
                   <Grid container columns={13} columnGap={2}>
                     <GridTypography xs={10} variant="subtitle1" noWrap>
                       {result.title}
