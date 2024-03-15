@@ -11,6 +11,7 @@ import About from "pages/About";
 import Portfolio from "pages/Portfolio";
 import PortfolioView from "pages/[PortfolioView]";
 import UserApiKeys from "pages/UserApiKeys";
+import ReleaseView from "pages/[ReleaseView]";
 
 function App() {
   return (
@@ -28,6 +29,10 @@ function App() {
         <Route
           path={ROUTES.ECONOMIC_DATA}
           element={<Private FC={Economic} />}
+        />
+        <Route
+          path={`${ROUTES.ECONOMIC_DATA}/:releaseId`}
+          element={<Private FC={ReleaseView} />}
         />
         <Route
           path={ROUTES.USER_API_KEYS}

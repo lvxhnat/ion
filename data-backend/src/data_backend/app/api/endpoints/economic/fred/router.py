@@ -7,6 +7,7 @@ from data_backend.app.api.endpoints.economic.fred.clients.search import (
 from data_backend.app.api.endpoints.economic.fred.clients.series import (
     get_children_category_ids,
     get_series_data,
+    get_release_series_data
 )
 from data_backend.app.api.endpoints.economic.fred.params import (
     FredChildParams,
@@ -19,10 +20,9 @@ router = APIRouter(
 )
 
 
-@router.get("/health")
-def health_check():
-    return {"status": "healthy"}
-
+@router.get("/release-series/{release_id}")
+def get_release_series(release_id: str):
+    return get_release_series_data(release_id)
 
 @router.post("/series")
 def get_series(params: FredSeriesParams):

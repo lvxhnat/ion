@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 
@@ -21,7 +21,8 @@ def get_portfolio(
         )
         .filter(
             EconomicCalendar.date.between(
-                datetime.today(), (datetime.today() + timedelta(days=3))
+                datetime.combine(datetime.now().date(), time()),
+                (datetime.today() + timedelta(days=3)),
             )
         )
         .distinct()

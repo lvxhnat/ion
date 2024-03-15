@@ -11,6 +11,9 @@ CATEGORY_ROOT_PATH: str = (
 SERIES_ROOT_PATH: str = (
     lambda series_id: f"{BASE_API_PATH}/series/observations?series_id={series_id}&api_key={secret_config.FRED_API_KEY}&file_type=json"
 )
+RELEASE_ROOT_PATH: str = (
+    lambda release_id: f"{BASE_API_PATH}/release/series?release_id={release_id}&api_key={secret_config.FRED_API_KEY}&file_type=json"
+)
 
 
 def cast_to_float(value):
@@ -79,3 +82,8 @@ def get_category_series(category_id: str) -> List[dict]:
     response = requests.get(request_path).json()["seriess"]
     response = [res for res in response if "DISCONTINUED" not in res["title"]]
     return response
+
+def get_release_series_data(release_id: str):
+    request_path: str = RELEASE_ROOT_PATH(release_id)
+    response = requests.get(request_path).json()
+    return response["seriess"]

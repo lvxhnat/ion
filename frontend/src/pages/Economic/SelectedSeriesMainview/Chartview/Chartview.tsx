@@ -39,25 +39,23 @@ function Chart(props: ChartProps) {
     title: {
       text: props.seriesSelected?.title,
       style: {
-        fontSize: "14px",
+        fontSize: "12px",
         color: defaultColorScheme,
       },
     },
     xAxis: {
       type: "datetime",
       labels: {
-        style: { fontSize: "10px", color: axisColorScheme },
+        style: { fontSize: "8px", color: axisColorScheme },
       },
     },
     yAxis: {
-      title: {
-        text: props.seriesSelected?.units,
-      },
       labels: {
-        style: { fontSize: "10px", color: axisColorScheme },
+        style: { fontSize: "8px", color: axisColorScheme },
       },
-      gridLineColor:
-        themeMode.mode === "dark" ? ColorsEnum.darkGrey : ColorsEnum.coolgray5,
+  title: {
+      text: null
+  }
     },
     legend: {
       enabled: false, // Disable the legend

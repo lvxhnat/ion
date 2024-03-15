@@ -1,4 +1,4 @@
-import { Grid, TableContainer, Typography } from "@mui/material";
+import { Grid, TableContainer, TableRow, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import { ColorsEnum } from "common/theme";
 
@@ -13,6 +13,13 @@ interface FredRowProps {
   children?: any;
   [x: string]: any;
 }
+
+export const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:hover": {
+    cursor: "pointer",
+    backgroundColor: theme.palette.mode === 'dark' ? ColorsEnum.darkGrey : ColorsEnum.coolgray7
+  },
+}));
 
 export const TableContainerWrapper = styled(TableContainer)(({ theme }) => ({
   paddingTop: 10,

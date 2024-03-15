@@ -6,6 +6,7 @@ import { ColorsEnum } from "common/theme";
 import { formatDate } from "common/constant/dates";
 import { getUniqueTickerId } from "common/constant/ids";
 import { SOURCE_TYPES } from "common/constant";
+import Chartview from "pages/Economic/SelectedSeriesMainview/Chartview";
 
 interface MetadataProps {
   seriesSelected: FredSeriesEntry;
@@ -13,7 +14,13 @@ interface MetadataProps {
 
 export default function Metadata(props: MetadataProps) {
   return (
-    <div style={{ padding: 10 }}>
+    <div>
+      <div style={{ height: "250px" }}>
+      <Chartview
+        ticker={props.seriesSelected?.id ?? ""}
+        seriesSelected={props.seriesSelected}
+      />
+      </div>
       <Typography variant="body1" style={{ color: ColorsEnum.beer }}>
         {getUniqueTickerId(
           SOURCE_TYPES.FRED as keyof typeof SOURCE_TYPES,

@@ -1,15 +1,16 @@
 import * as React from "react";
 import * as S from '../style';
+
 import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
-  TableRow,
   Typography,
 } from "@mui/material";
 import { EconomicCalendarEntry, getEconomicCalendar } from "../requests";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "common/constant";
 
 const StyledTableCell = (props: { children?: React.ReactNode }) => {
   return (
@@ -18,13 +19,14 @@ const StyledTableCell = (props: { children?: React.ReactNode }) => {
     </TableCell>
   );
 };
+
 export default function EconomicCalendar() {
+  const navigate = useNavigate();
   const [entries, setEntries] = React.useState<EconomicCalendarEntry[]>([]);
 
   React.useEffect(() => {
     getEconomicCalendar().then((res) => setEntries(res.data))
   }, [])
-
 
   return (
     <S.GridWrapper>
@@ -36,7 +38,7 @@ export default function EconomicCalendar() {
         >
           <TableBody>
             {entries.map((entry, index) => (
-              <TableRow key={`row-${index}-outstandingPositions`}>
+              <S.StyledTableRow key={`row-${index}-outstandingPositions`} onClick={() => navigate(`${ROUTES.ECONOMIC_DATA}/releases/${entry.fred_release_id}`)}>
                 <TableCell width="5%" key={`${entry.entry_id}-cell1`}>🇺🇸</TableCell>
                 <StyledTableCell key={`${entry.entry_id}-cell2`}>
                   {entry.name}
@@ -44,7 +46,7 @@ export default function EconomicCalendar() {
                 <StyledTableCell key={`${entry.entry_id}-cell3`}>
                   {moment(new Date(entry.date)).format("YYYY-MM-DD")}
                 </StyledTableCell>
-              </TableRow>
+              </S.StyledTableRow>
             ))}
           </TableBody>
         </Table>

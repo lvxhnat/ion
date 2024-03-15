@@ -11,7 +11,7 @@ export const ENDPOINTS = {
     FRED_CHILD_ENDPOINT: "economic/fred/child",
     FRED_SERIES_ENDPOINT: "economic/fred/series",
     FRED_SEARCH_ENDPOINT: "economic/fred/search",
-
+    FRED_RELEASE_ENDPOINT: "economic/fred/release-series",
     ECONOMIC_CALENDAR_ENDPOINT: "economics/economic-calendar",
 
     BASE_PORTFOLIO_ENDPOINT: "portfolio",
