@@ -177,7 +177,7 @@ export default function TransactionsTable(props: TransactionsTableProps) {
                       {editId === transaction.transaction_id ? (
                         field.type === "select" ? (
                           <Select
-                            value={value}
+                            value={String(value)}
                             onChange={(e) =>
                               handleChange(
                                 transaction.transaction_id,
