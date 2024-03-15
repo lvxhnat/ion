@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 WORKDIR /app/data-backend
 
 COPY data-backend .
-RUN pip install --upgrade pip
+# RUN pip install --upgrade pip
 RUN pip install -e . --no-cache-dir
 
 EXPOSE 1236
