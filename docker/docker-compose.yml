@@ -8,8 +8,8 @@ services:
       dockerfile: docker/frontend/Dockerfile 
     env_file: frontend/docker.env
     environment: 
-      - REACT_APP_DATA_INGESTION_BASE_URL="http://api.finflow.cloud/"
-      - REACT_APP_ION_BACKEND_BASE_URL="http://api.finflow.cloud/"
+      - REACT_APP_DATA_INGESTION_BASE_URL="https://api.finflow.cloud/"
+      - REACT_APP_ION_BACKEND_BASE_URL="https://ionapi.finflow.cloud/"
     depends_on:
       - data-backend
     ports:
@@ -30,6 +30,22 @@ services:
     env_file: data-backend/docker.env
     ports:
       - "1236:1236"
+    depends_on:
+      - database
+    links:
+      - database:database
+    stdin_open: true
+    tty: true
+    networks:
+      - ion-network
+
+  ion-backend:
+    build: 
+      context: ../
+      dockerfile: docker/ion-backend/Dockerfile 
+    env_file: ion-backend/docker.env
+    ports:
+      - "1237:1237"
     depends_on:
       - database
     links:
