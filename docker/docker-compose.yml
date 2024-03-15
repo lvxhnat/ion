@@ -44,6 +44,8 @@ services:
       context: ../
       dockerfile: docker/ion-backend/Dockerfile 
     env_file: ion-backend/docker.env
+    environment: 
+      - POSTGRES_URI="postgresql://postgres:guest@localhost:5432/postgres"
     ports:
       - "1237:1237"
     depends_on:
